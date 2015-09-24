@@ -1,0 +1,24 @@
+{
+    "name": "pokewhat",
+    "version": "0.0.1",
+    "description": "Phaser.io game",
+    "dependencies": {
+        "beefy": "~2.1.5",
+        "browserify": "~11.2.0",
+        "phaser": "~2.4.3"
+    },
+    "scripts": {
+        "start": "beefy src/game.js:bundle.js --live --open"
+    },
+    "devDependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/arjanfrans/pokewhat"
+    },
+    "keywords": [
+        "phaser",
+        "game",
+    ],
+    "author": "Arjan Frans <arjanfrans.com@gmail.com>",
+    "license": "MIT",
+}

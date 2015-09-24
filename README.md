@@ -1,5 +1,5 @@
 
-# Setup
+## Setup
 
 Clone the repository:
 ```

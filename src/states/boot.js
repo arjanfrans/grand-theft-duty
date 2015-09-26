@@ -1,3 +1,6 @@
+class A {
+
+};
 module.exports = {
     init: function () {
         //Add here your scaling options

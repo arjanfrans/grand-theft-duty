@@ -1,11 +1,31 @@
+let map = {
+    instance: null,
+
+    layers: {},
+
+    preload: function () {
+        game.load.tilemap('map_test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.image('tileset_test', 'assets/maps/spritesheet.png');
+    },
+
+    create: function () {
+        this.instance = game.add.tilemap('map_test');
+        this.instance.addTilesetImage('main', 'tileset_test');
+        this.layers.ground = this.instance.createLayer('ground');
+    }
+};
+
 module.exports = {
     preload: function () {
-        game.load.image('background', 'assets/debug-grid-1920x1920.png');
+        map.preload();
+
         game.load.image('player', 'assets/phaser-dude.png');
+
     },
 
     create: function(){
-        game.add.tileSprite(0, 0, 1920, 1920, 'background');
+        map.create();
+
         game.world.setBounds(0, 0, 1920, 1920);
         game.physics.startSystem(Phaser.Physics.P2JS);
 

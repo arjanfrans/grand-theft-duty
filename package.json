@@ -7,8 +7,7 @@
   },
   "scripts": {
     "clean": "rm -r build",
-    "build": "mkdir -p build/js && browserify src/index.js -t babelify --outfile build/js/index.js",
-    "start": "npm run build && http-server -o -p 8080 -c-1"
+    "start": "gulp"
   },
   "repository": {
     "type": "git",
@@ -21,8 +20,13 @@
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "~11.2.0",
     "babelify": "^6.3.0",
-    "http-server": "^0.8.4"
+    "browser-sync": "^2.9.6",
+    "browserify": "^11.2.0",
+    "exorcist": "^0.4.0",
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.6",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
   }
 }

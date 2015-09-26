@@ -9,7 +9,7 @@ let map = {
         this.instance.setCollisionByExclusion([], true, this.layers.walls);
 
         game.physics.p2.convertTilemap(this.instance, this.layers.walls);
-        game.physics.p2.setBoundsToWorld(true, true, true, true, false);
+        game.physics.setBoundsToWorld(true, true, true, true, false);
     },
 
     preload: function () {
@@ -30,42 +30,105 @@ let map = {
 
 };
 
+let player = {
+    state: 'idle',
+
+    animations: {},
+
+    updateState: function (previousState, newState) {
+        debug('newState', newState);
+        this.state = newState;
+
+        if (newState !== previousState) {
+            if (newState === 'walk') {
+                debug('current state', 'walk');
+                this.animations.walk.play(10, true);
+            }
+
+            // Otherwise idle
+            debug('current state', 'idle');
+            this.animations.idle.play(10, true);
+        }
+    },
+
+    instance: null,
+
+    cursors: null,
+
+    preload: function () {
+
+        game.load.atlas('player_atlas', 'assets/images/character/dude.png', 'assets/images/character/dude.json');
+    },
+
+    create: function (positionX, positionY) {
+        this.instance = game.add.sprite(positionX, positionY, 'player_atlas');
+        let walkFrameNames = Phaser.Animation.generateFrameNames('dude_walk_', 1, 7, '.png', 4);
+        let idleFrameNames = ['dude_idle_0001.png'];
+
+        this.animations.walk = this.instance.animations.add('walk', walkFrameNames, 10, true);
+        this.animations.idle = this.instance.animations.add('idle', idleFrameNames, 10, true);
+
+        this.instance.scale.set(2);
+
+        this.cursors = game.input.keyboard.createCursorKeys()
+    },
+
+    update: function () {
+        this.instance.body.setZeroVelocity();
+        this.instance.body.setZeroRotation();
+
+        let previousState = this.state;
+
+        let isWalking = this.cursors.up.isDown || this.cursors.down.isDown;
+
+        if (isWalking) {
+            if (this.state !== 'walk') {
+                this.animations.walk.play();
+                this.state = 'walk';
+            }
+        } else {
+            if (this.state !== 'idle') {
+                player.animations.idle.play();
+                this.state = 'idle';
+            }
+        }
+
+        if (this.cursors.up.isDown) {
+            this.instance.body.moveForward(300)
+        } else if (this.cursors.down.isDown){
+            this.instance.body.moveBackward(300);
+        }
+
+        if (this.cursors.left.isDown) {
+            this.instance.body.rotateLeft(100);
+        } else if (this.cursors.right.isDown) {
+            this.instance.body.rotateRight(100);
+        }
+    }
+};
+
 module.exports = {
     preload: function () {
         map.preload();
-
-        game.load.image('player', 'assets/phaser-dude.png');
-
+        player.preload();
     },
 
     create: function(){
         game.physics.startSystem(Phaser.Physics.P2JS);
         map.create();
 
-        this.player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+        player.create(game.world.centerX, game.world.centerY);
 
-        game.physics.p2.enable(this.player);
+        game.physics.p2.enable(player.instance);
 
-        this.cursors = game.input.keyboard.createCursorKeys();
-
-        game.camera.follow(this.player);
+        game.camera.follow(player.instance);
     },
     update: function(){
-        this.player.body.setZeroVelocity();
-
-        if (this.cursors.up.isDown) {
-            this.player.body.moveUp(300)
-        } else if (this.cursors.down.isDown){
-            this.player.body.moveDown(300);
-        } if (this.cursors.left.isDown) {
-            this.player.body.velocity.x = -300;
-        } else if (this.cursors.right.isDown) {
-            this.player.body.moveRight(300);
-        }
+        player.update();
     },
 
     render: function() {
         game.debug.cameraInfo(game.camera, 32, 32);
-        game.debug.spriteCoords(this.player, 32, 500);
+        game.debug.spriteCoords(player.instance, 32, 500);
     }
 };

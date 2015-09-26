@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"image": "spritesheet.png",
-		"size": {"w":32,"h":16},
+		"size": {"w":32,"h":32},
 		"scale": "1"
 	},
 	"frames": [
@@ -16,6 +16,14 @@
 		{
 			"filename": "grass.png",
 			"frame": {"x":16,"y":0,"w":16,"h":16},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+			"sourceSize": {"w":16,"h":16}
+		},
+		{
+			"filename": "wall.png",
+			"frame": {"x":0,"y":16,"w":16,"h":16},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},

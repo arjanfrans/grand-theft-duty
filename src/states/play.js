@@ -1,7 +1,16 @@
+let debug = require('debug')('game:states/play.js');
+
 let map = {
     instance: null,
 
     layers: {},
+
+    physics: function () {
+        this.instance.setCollisionByExclusion([], true, this.layers.walls);
+
+        game.physics.p2.convertTilemap(this.instance, this.layers.walls);
+        game.physics.p2.setBoundsToWorld(true, true, true, true, false);
+    },
 
     preload: function () {
         game.load.tilemap('map_test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
@@ -12,7 +21,13 @@ let map = {
         this.instance = game.add.tilemap('map_test');
         this.instance.addTilesetImage('main', 'tileset_test');
         this.layers.ground = this.instance.createLayer('ground');
+        this.layers.walls = this.instance.createLayer('walls');
+
+        this.layers.ground.resizeWorld();
+
+        this.physics();
     }
+
 };
 
 module.exports = {
@@ -24,10 +39,8 @@ module.exports = {
     },
 
     create: function(){
-        map.create();
-
-        game.world.setBounds(0, 0, 1920, 1920);
         game.physics.startSystem(Phaser.Physics.P2JS);
+        map.create();
 
         this.player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
 

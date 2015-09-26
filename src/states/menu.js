@@ -14,7 +14,12 @@ module.exports = {
     },
 
     create: function(){
-        this.menuLabels();
+        // Skip menu state when debugging
+        if (game.globals.debug) {
+            game.state.start('play');
+        } else {
+            this.menuLabels();
+        }
     },
 
     update: function(){

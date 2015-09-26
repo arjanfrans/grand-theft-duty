@@ -1,7 +1,15 @@
+// setup debug module
+localStorage.debug = 'game:*';
+
+let debug = require('debug')('game:index.js');
+
+debug('booting up game...');
+
 //We use window.game because we want it to be accessible from everywhere
 window.game = new Phaser.Game(800, 600, Phaser.AUTO);
 
 game.globals = {
+    debug: true
     //Add variables here that you want to access globally
     //score: 0 could be accessed as game.globals.score for example
 };

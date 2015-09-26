@@ -8,7 +8,6 @@ let map = {
     physics: function () {
         this.instance.setCollisionByExclusion([], true, this.layers.walls);
 
-        game.physics.p2.convertTilemap(this.instance, this.layers.walls);
         game.physics.setBoundsToWorld(true, true, true, true, false);
     },
 
@@ -35,22 +34,6 @@ let player = {
 
     animations: {},
 
-    updateState: function (previousState, newState) {
-        debug('newState', newState);
-        this.state = newState;
-
-        if (newState !== previousState) {
-            if (newState === 'walk') {
-                debug('current state', 'walk');
-                this.animations.walk.play(10, true);
-            }
-
-            // Otherwise idle
-            debug('current state', 'idle');
-            this.animations.idle.play(10, true);
-        }
-    },
-
     instance: null,
 
     cursors: null,
@@ -69,15 +52,18 @@ let player = {
         this.animations.idle = this.instance.animations.add('idle', idleFrameNames, 10, true);
 
         this.instance.scale.set(2);
+        this.instance.anchor.setTo(0.5, 0.5);
+
+        game.physics.enable(this.instance, Phaser.Physics.ARCADE);
+        this.instance.body.collideWorldBounds = true;
 
         this.cursors = game.input.keyboard.createCursorKeys()
     },
 
     update: function () {
-        this.instance.body.setZeroVelocity();
-        this.instance.body.setZeroRotation();
-
-        let previousState = this.state;
+        this.instance.body.velocity.x = 0;
+        this.instance.body.velocity.y = 0;
+        this.instance.body.angularVelocity = 0;
 
         let isWalking = this.cursors.up.isDown || this.cursors.down.isDown;
 
@@ -94,15 +80,15 @@ let player = {
         }
 
         if (this.cursors.up.isDown) {
-            this.instance.body.moveForward(300)
+             game.physics.arcade.velocityFromAngle(this.instance.angle + 90, -300, this.instance.body.velocity);
         } else if (this.cursors.down.isDown){
-            this.instance.body.moveBackward(300);
+             game.physics.arcade.velocityFromAngle(this.instance.angle + 90, 300, this.instance.body.velocity);
         }
 
         if (this.cursors.left.isDown) {
-            this.instance.body.rotateLeft(100);
+            this.instance.body.angularVelocity = -300;
         } else if (this.cursors.right.isDown) {
-            this.instance.body.rotateRight(100);
+            this.instance.body.angularVelocity = 300;
         }
     }
 };
@@ -114,17 +100,17 @@ module.exports = {
     },
 
     create: function(){
-        game.physics.startSystem(Phaser.Physics.P2JS);
+        game.physics.startSystem(Phaser.Physics.ARCADE);
         map.create();
 
         player.create(game.world.centerX, game.world.centerY);
 
-        game.physics.p2.enable(player.instance);
 
-        game.camera.follow(player.instance);
+        game.camera.follow(player.instance, Phaser.Camera.FOLLOW_TOPDOWN);
     },
     update: function(){
         player.update();
+        game.physics.arcade.collide(player.instance, map.layers.walls)
     },
 
     render: function() {

@@ -29,6 +29,8 @@ let map = {
 
 };
 
+let bulletTime = 0;
+
 let player = {
     state: 'idle',
 
@@ -36,7 +38,11 @@ let player = {
 
     instance: null,
 
+    bullets: null,
+
     cursors: null,
+
+    fireButton: null,
 
     preload: function () {
 
@@ -58,6 +64,31 @@ let player = {
         this.instance.body.collideWorldBounds = true;
 
         this.cursors = game.input.keyboard.createCursorKeys()
+
+            this.bullets = game.add.group();
+        this.bullets.enableBody = true;
+        this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
+
+        this.bullets.createMultiple(50, 'bullet');
+        this.bullets.setAll('checkWorldBounds', true);
+        this.bullets.setAll('outOfBoundsKill', true);
+
+        this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    },
+
+    fire: function () {
+        if (game.time.now > bulletTime) {
+            let bullet = this.bullets.getFirstExists(false);
+
+            if (bullet) {
+                bullet.reset(this.instance.x, this.instance.y);
+
+                bullet.angle = this.instance.angle;
+                game.physics.arcade.velocityFromAngle(bullet.angle + 90, -600, bullet.body.velocity);
+                bulletTime = game.time.now + 200;
+            }
+        }
     },
 
     update: function () {
@@ -79,10 +110,14 @@ let player = {
             }
         }
 
+        if (this.fireButton.isDown) {
+            this.fire();
+        }
+
         if (this.cursors.up.isDown) {
-             game.physics.arcade.velocityFromAngle(this.instance.angle + 90, -300, this.instance.body.velocity);
+            game.physics.arcade.velocityFromAngle(this.instance.angle + 90, -300, this.instance.body.velocity);
         } else if (this.cursors.down.isDown){
-             game.physics.arcade.velocityFromAngle(this.instance.angle + 90, 300, this.instance.body.velocity);
+            game.physics.arcade.velocityFromAngle(this.instance.angle + 90, 300, this.instance.body.velocity);
         }
 
         if (this.cursors.left.isDown) {
@@ -97,6 +132,7 @@ module.exports = {
     preload: function () {
         map.preload();
         player.preload();
+        game.load.image('bullet', 'assets/images/bullet.png');
     },
 
     create: function(){
@@ -105,12 +141,13 @@ module.exports = {
 
         player.create(game.world.centerX, game.world.centerY);
 
-
         game.camera.follow(player.instance, Phaser.Camera.FOLLOW_TOPDOWN);
     },
+
     update: function(){
         player.update();
         game.physics.arcade.collide(player.instance, map.layers.walls)
+        game.physics.arcade.collide(player.bullets, map.layers.walls, bulletWallCollision)
     },
 
     render: function() {
@@ -118,3 +155,7 @@ module.exports = {
         game.debug.spriteCoords(player.instance, 32, 500);
     }
 };
+
+function bulletWallCollision (bullet, wall) {
+    bullet.kill();
+}

@@ -1,5 +1,5 @@
-let debug = require('debug')('game:entities/Gun');
-let bulletPool = require('./bullet-pool');
+let debug = require('debug')('game:entities/gun');
+let bulletPool = require('../bullet-pool');
 
 const PHYSICS_ENGINE = Phaser.Physics.ARCADE;
 const BULLET_COUNT = 50;

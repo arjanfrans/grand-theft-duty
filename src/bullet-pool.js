@@ -1,4 +1,4 @@
-let debug = require('debug')('game:entities/bullet-pool');
+let debug = require('debug')('game:bullet-pool');
 
 const PHYSICS_ENGINE = Phaser.Physics.ARCADE;
 const BULLET_COUNT = 50;

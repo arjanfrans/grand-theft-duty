@@ -1,23 +1,43 @@
 let debug = require('debug')('game:entities/gun');
-let bulletPool = require('../bullet-pool');
 
-const PHYSICS_ENGINE = Phaser.Physics.ARCADE;
 const BULLET_COUNT = 50;
 
 class Gun {
 
-    constructor (owner) {
-        bulletPool.create();
-        this.owner = owner;
+    constructor () {
+        this.owner = null;
         this.fireRate = 200;
         this.bulletSpeed = 600;
         this.bulletTime = 0;
-        this.bullets = bulletPool.getBullets();
+        this.bullets = null;
+    }
+
+    preload () {
+        game.load.image('object.bullet', 'assets/images/bullet.png');
+    }
+
+    create (owner) {
+        this.owner = owner;
+
+        this.bullets = game.add.group();
+        this.bullets.enableBody = true;
+        this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
+
+        this.bullets.createMultiple(BULLET_COUNT, 'object.bullet');
+        this.bullets.setAll('checkWorldBounds', true);
+        this.bullets.setAll('outOfBoundsKill', true);
+        this.bullets.setAll('anchor.x', 0.5);
+        this.bullets.setAll('anchor.y', 0.5);
+    }
+
+    getBullets () {
+        return this.bullets;
     }
 
     fire () {
         if (game.time.now > this.bulletTime) {
             let bullet = this.bullets.getFirstExists(false);
+            debug('bullet', bullet);
 
             if (bullet) {
                 bullet.reset(this.owner.x, this.owner.y);

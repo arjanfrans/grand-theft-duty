@@ -7,6 +7,7 @@ const ANIMATION_FRAME_RATE = 15;
 const WALKING_SPEED = 300;
 
 let requiredMethods = ['isWalking', 'move', 'fireGun'];
+
 class Character {
 
     constructor (spriteName) {
@@ -16,7 +17,7 @@ class Character {
 
         this.spriteName = spriteName;
         this.sprite = null;
-        this.gun = null;
+        this.gun = new Gun();
         this.animations = {};
         this.state = 'idle';
         this.speed = WALKING_SPEED;
@@ -24,7 +25,13 @@ class Character {
         this.collisionHandler = null;
     }
 
+
+    getGun () {
+        return this.gun;
+    }
+
     preload () {
+        this.gun.preload();
         game.load.atlas(ATLAS, 'assets/images/character/dude.png', 'assets/images/character/dude.json');
     }
 
@@ -46,7 +53,7 @@ class Character {
         this.sprite.body.collideWorldBounds = true;
 
         // Gun
-        this.gun = new Gun(this.sprite);
+        this.gun.create(this.sprite);
     }
 
     update () {

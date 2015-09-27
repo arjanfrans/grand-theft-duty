@@ -1,4 +1,3 @@
-let bulletPool = require('./bullet-pool');
 
 class Map {
 
@@ -9,7 +8,7 @@ class Map {
 
     preload () {
         game.load.tilemap('map_test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.image('tileset_test', 'assets/maps/spritesheet.png');
+        game.load.image('tileset_test', 'assets/maps/tileset.png');
     }
 
     create () {
@@ -32,11 +31,8 @@ class Map {
 
     }
 
-    update () {
-        // Bullet with wall collision
-        game.physics.arcade.collide(bulletPool.getBullets(), this.layers.walls, (bullet, wall) => {
-            bullet.kill();
-        });
+    getLayers () {
+        return this.layers;
     }
 
 };

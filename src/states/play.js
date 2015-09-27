@@ -1,6 +1,5 @@
 let debug = require('debug')('game:states/play');
 
-let bulletPool = require('../bullet-pool');
 let Player = require('../entities/player');
 let Enemy = require('../entities/enemy');
 let Map = require('../map');
@@ -9,9 +8,18 @@ let map = new Map();
 let player = new Player('dude', true);
 let enemy = new Enemy('dude');
 
+var bulletsWithWallCollisions = function () {
+    game.physics.arcade.collide(player.getGun().getBullets(), map.getLayers().walls, (bullet, wall) => {
+        bullet.kill();
+    });
+
+    game.physics.arcade.collide(enemy.getGun().getBullets(), map.getLayers().walls, (bullet, wall) => {
+        bullet.kill();
+    });
+};
+
 module.exports = {
     preload: function () {
-        bulletPool.preload();
         map.preload();
         player.preload();
         enemy.preload();
@@ -35,7 +43,8 @@ module.exports = {
     update: function(){
         player.update();
         enemy.update();
-        map.update();
+
+        bulletsWithWallCollisions();
     },
 
     render: function() {

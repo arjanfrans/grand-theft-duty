@@ -18,6 +18,14 @@ var bulletsWithWallCollisions = function () {
     });
 };
 
+var bulletWithCharacterCollisions = function () {
+    let enemyBullets = enemy.getGun().getBullets();
+    let playerBullets = player.getGun().getBullets();
+
+    player.overlapsWithBullets(enemyBullets);
+    enemy.overlapsWithBullets(playerBullets);
+};
+
 module.exports = {
     preload: function () {
         map.preload();
@@ -45,6 +53,7 @@ module.exports = {
         enemy.update();
 
         bulletsWithWallCollisions();
+        bulletWithCharacterCollisions();
     },
 
     render: function() {

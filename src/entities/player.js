@@ -42,9 +42,11 @@ class Player extends Character {
     }
 
     fireGun () {
-        if (this.fireInput.isDown) {
-            debug('fire');
-            this.gun.fire();
+        if (this.alive) {
+            if (this.fireInput.isDown) {
+                debug('fire');
+                this.gun.fire();
+            }
         }
     }
 };

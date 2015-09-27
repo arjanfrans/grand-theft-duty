@@ -3,7 +3,7 @@ let Gun = require('./gun');
 
 const SPRITE_SCALE = 2;
 const ATLAS = 'character.dude';
-const ANIMATION_FRAME_RATE = 15;
+const ANIMATION_FRAME_RATE = 10;
 const WALKING_SPEED = 300;
 
 let requiredMethods = ['isWalking', 'move', 'fireGun'];
@@ -21,10 +21,24 @@ class Character {
         this.animations = {};
         this.state = 'idle';
         this.speed = WALKING_SPEED;
+        this.health = 3;
+        this.alive = true;
 
         this.collisionHandler = null;
     }
 
+    damage () {
+        this.health -= 1;
+
+        if (this.health <= 0) {
+            this.alive = false;
+            this.sprite.kill();
+
+            return true;
+        }
+
+        return false;
+    };
 
     getGun () {
         return this.gun;
@@ -68,6 +82,13 @@ class Character {
         if (this.collisionHandler) {
             this.collisionHandler(this.sprite);
         }
+    }
+
+    overlapsWithBullets (bullets) {
+        game.physics.arcade.overlap(bullets, this.sprite, (sprite, bullet) => {
+            bullet.kill();
+            this.damage();
+        });
     }
 
     updateAnimations () {

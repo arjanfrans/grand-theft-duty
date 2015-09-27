@@ -20,8 +20,10 @@ class Enemy extends Character {
     }
 
     fireGun () {
-        if (game.rnd.integerInRange(0, 10) === 5) {
-            this.gun.fire();
+        if (this.alive) {
+            if (game.rnd.integerInRange(0, 10) === 5) {
+                this.gun.fire();
+            }
         }
     }
 };

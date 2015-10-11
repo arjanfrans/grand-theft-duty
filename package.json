@@ -4,7 +4,8 @@
   "description": "Phaser.io game",
   "dependencies": {
     "debug": "^2.2.0",
-    "phaser": "~2.4.3"
+    "phaser": "~2.4.3",
+    "three": "^0.72.0"
   },
   "scripts": {
     "clean": "rm -r build",

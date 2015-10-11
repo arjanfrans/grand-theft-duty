@@ -1,64 +1,41 @@
 let debug = require('debug')('game:states/play');
 
-let Player = require('../entities/player');
-let Enemy = require('../entities/enemy');
-let Map = require('../map');
+let scene = null;
+let camera = null;
+let renderer = null;
 
-let map = new Map();
-let player = new Player('dude', true);
-let enemy = new Enemy('dude');
-
-var bulletsWithWallCollisions = function () {
-    game.physics.arcade.collide(player.getGun().getBullets(), map.getLayers().walls, (bullet, wall) => {
-        bullet.kill();
-    });
-
-    game.physics.arcade.collide(enemy.getGun().getBullets(), map.getLayers().walls, (bullet, wall) => {
-        bullet.kill();
-    });
-};
-
-var bulletWithCharacterCollisions = function () {
-    let enemyBullets = enemy.getGun().getBullets();
-    let playerBullets = player.getGun().getBullets();
-
-    player.overlapsWithBullets(enemyBullets);
-    enemy.overlapsWithBullets(playerBullets);
-};
+let geometry = null;
+let material = null;
+let mesh = null;
 
 module.exports = {
-    preload: function () {
-        map.preload();
-        player.preload();
-        enemy.preload();
-    },
+    init () {
+        scene = new THREE.Scene();
 
-    create: function(){
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        map.create();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.z = 10000;
 
-        player.create(game.world.centerX, game.world.centerY);
-        player.setCollisionHandler(function (sprite) {
-            game.physics.arcade.collide(sprite, map.layers.walls)
+        geometry = new THREE.BoxGeometry(200, 200, 200);
+        material = new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+            wireframe: true
         });
 
-        enemy.create(game.world.randomX, game.world.randomY);
-        enemy.setCollisionHandler(function (sprite) {
-            game.physics.arcade.collide(sprite, map.layers.walls)
-        });
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        document.body.appendChild(renderer.domElement);
     },
 
-    update: function(){
-        player.update();
-        enemy.update();
+    animate () {
+        requestAnimationFrame(animate);
 
-        bulletsWithWallCollisions();
-        bulletWithCharacterCollisions();
-    },
+        mesh.rotation.x += 0.01;
+        mesh.rotation.y += 0.02;
 
-    render: function() {
-        if (game.globals.debug) {
-            game.debug.cameraInfo(game.camera, 32, 32);
-        }
+        renderer.render(scene, camera);
     }
-};
+}

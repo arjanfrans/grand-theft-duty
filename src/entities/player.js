@@ -15,7 +15,7 @@ class Player extends Character {
         super.create(positionX, positionY);
 
         this.cursorInput = game.input.keyboard.createCursorKeys();
-        this.fireInput = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.fireInput = game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
 
         // Camera
         if (this.cameraFollow) {

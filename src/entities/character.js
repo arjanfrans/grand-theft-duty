@@ -33,12 +33,21 @@ class Character {
         if (this.health <= 0) {
             this.alive = false;
             this.sprite.kill();
+            this.respawn();
 
             return true;
         }
 
         return false;
     };
+
+    respawn () {
+        game.time.events.add(Phaser.Timer.SECOND * 3, () => {
+            this.alive = true;
+            this.health = 3;
+            this.sprite.reset(game.world.randomX, game.world.randomY);
+        });
+    }
 
     getGun () {
         return this.gun;

@@ -5,6 +5,6 @@ let debug = require('debug')('game:index');
 
 debug('booting up game...');
 
-let playState = require('./states/play');
+let game = require('./game');
 
-playState.init();
+game.start();

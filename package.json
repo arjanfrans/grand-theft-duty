@@ -1,7 +1,7 @@
 {
-  "name": "pokewhat",
+  "name": "grand-theft-duty",
   "version": "0.0.1",
-  "description": "Phaser.io game",
+  "description": "three.js game",
   "dependencies": {
     "debug": "^2.2.0",
     "phaser": "~2.4.3",
@@ -9,25 +9,31 @@
   },
   "scripts": {
     "clean": "rm -r build",
-    "start": "gulp"
+    "start": "gulp",
+    "lint": "./node_modules/eslint/bin/eslint.js ./src/*"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/arjanfrans/pokewhat"
+    "url": "https://github.com/arjanfrans/grand-theft-duty"
   },
   "keywords": [
-    "phaser",
+    "three.js",
     "game"
   ],
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
+  "pre-commit": [
+      "lint"
+  ],
   "devDependencies": {
     "babelify": "^6.3.0",
     "browser-sync": "^2.9.6",
     "browserify": "^11.2.0",
+    "eslint": "^1.6.0",
     "exorcist": "^0.4.0",
     "gulp": "^3.9.0",
     "gulp-util": "^3.0.6",
+    "pre-commit": "^1.1.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.4.0"
   }

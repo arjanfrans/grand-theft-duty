@@ -18,12 +18,16 @@ class Renderer {
      */
     constructor (rendererType = 'webgl', divName = 'gameDiv') {
         this._view = null;
+
         if (rendererType === 'webgl') {
             this._THREErenderer = new THREE.WebGLRenderer();
         } else {
             this._THREErenderer = new THREE.CanvasRenderer();
         }
+
         this._THREErenderer.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        this._THREErenderer.setClearColor(0xbfd1e5);
+        this._THREErenderer.setPixelRatio(window.devicePixelRatio);
 
         document.getElementById(divName).appendChild(this._THREErenderer.domElement);
     }

@@ -23,8 +23,6 @@ class TextureAtlas {
                 new THREE.Vector2(d.x / this.width, (this.height - (d.y + d.h)) / this.height) // upper left
             ];
 
-            console.warn(bounds);
-
             this.sprites.set(frame.filename, bounds);
         }
     }

@@ -65,7 +65,7 @@ let _createBlock = function (block, blockWidth, blockHeight, blockDepth) {
 
     let texture = _tilesTextureAtlas.texture;
 
-    let material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    let material = new THREE.MeshLambertMaterial({ map: texture, transparent: true });
 
     let geometry = _createBlockGeometry(block, blockWidth, blockHeight, blockDepth);
 
@@ -139,10 +139,10 @@ class DemoView extends View {
 
         this.scene.add(ambientLight);
 
-        let directionalLight = new THREE.DirectionalLight(0x00ffff, 2);
-
-        directionalLight.position.set(world.width / 2, world.height / 2, world.depth).normalize();
-        this.scene.add(directionalLight);
+        // let directionalLight = new THREE.DirectionalLight(0x00ffff, 2);
+        //
+        // directionalLight.position.set(world.width / 2, world.height / 2, world.depth).normalize();
+        // this.scene.add(directionalLight);
     }
 
     update () {

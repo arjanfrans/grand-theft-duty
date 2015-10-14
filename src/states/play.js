@@ -26,9 +26,11 @@ class PlayState extends State {
     /**
      * Update the state. Logic and views are updated.
      *
+     * @param {float} delta - delta time.
+     *
      * @returns {void}
      */
-    update () {
+    update (delta) {
         this.view.update();
     }
 }

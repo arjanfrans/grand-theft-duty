@@ -1,4 +1,3 @@
-
 class Block {
     constructor (id = null) {
         this.id = id;

@@ -6,6 +6,8 @@ let renderer = new Renderer('webgl');
 let states = new Map();
 let currentState = null;
 
+let clock = new THREE.Clock();
+
 /**
  * The game loop. Updates the current state and renders it's Views.
  *
@@ -16,7 +18,7 @@ let _update = function () {
     window.requestAnimationFrame(_update);
 
     if (currentState) {
-        currentState.update();
+        currentState.update(clock.getDelta());
         renderer.render();
     } else {
         debug('no current State');

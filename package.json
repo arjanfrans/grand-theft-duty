@@ -23,7 +23,7 @@
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
   "pre-commit": [
-      "lint"
+    "lint"
   ],
   "devDependencies": {
     "babelify": "^6.3.0",
@@ -34,6 +34,7 @@
     "gulp": "^3.9.0",
     "gulp-util": "^3.0.6",
     "pre-commit": "^1.1.1",
+    "spritesheet-js": "git+https://github.com/arjanfrans/spritesheet.js.git",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.4.0"
   }

@@ -14,8 +14,7 @@ class View {
     constructor (width, height) {
         this.width = width;
         this.height = height;
-        this.camera = new THREE.PerspectiveCamera(75, width / height, 1, 20000);
-        this.camera.position.z = 4000;
+        this.camera = new THREE.PerspectiveCamera(75, width / height, 1, 100000);
         this.scene = new THREE.Scene();
     }
 

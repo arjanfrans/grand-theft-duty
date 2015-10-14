@@ -1,5 +1,40 @@
+let debug = require('debug')('game:views/demo');
 let View = require('../engine/view');
 let ImprovedNoise = require('../utils/improved-noise');
+
+// TODO efficience
+// let _tileCache = new Map();
+
+let _createBlock = function (block, blockWidth, blockHeight, blockDepth) {
+    if (!block) {
+        return null;
+    }
+
+    let texture = THREE.ImageUtils.loadTexture('assets/images/minecraft.png');
+
+    texture.magFilter = THREE.NearestFilter;
+    texture.minFilter = THREE.LinearMipMapLinearFilter;
+
+    let material = new THREE.MeshBasicMaterial({ map: texture });
+
+    // FIXME determine what is what
+    // http://stackoverflow.com/questions/17418118/three-js-cube-with-different-texture-on-each-face
+    let materials = [
+        material, // L?
+        material, // R?
+        material, // T?
+        material, // B?
+        material, // F?
+        material // B?
+    ];
+
+    let mesh = new THREE.Mesh(
+        new THREE.BoxGeometry(blockWidth, blockHeight, blockDepth),
+        new THREE.MeshFaceMaterial(materials)
+    );
+
+    return mesh;
+};
 
 class DemoView extends View {
     constructor (state) {
@@ -9,147 +44,62 @@ class DemoView extends View {
     }
 
     init () {
-        function getY (x, z) {
-            return (data[ x + z * worldWidth ] * 0.2) | 0;
-        }
+        let world = this.state.world;
 
-        function generateHeight (width, height) {
-            let data = [];
-            let perlin = new ImprovedNoise();
-            let size = width * height;
-            let quality = 2;
-            let z = Math.random() * 100;
+        let worldWidth = world.width;
+        let worldDepth = world.depth;
 
-            for (let j = 0; j < 4; j++) {
-                if (j === 0) {
-                    for (let i = 0; i < size; i++) {
-                        data[i] = 0;
-                    }
-                }
+        let tileWidth = world.tileWidth;
+        let tileHeight = world.tileHeight;
+        let tileDepth = world.tileDepth;
 
-                for (let i = 0; i < size; i++) {
-                    let x = i % width;
-                    let y = (i / width) | 0;
-
-                    data[i] += perlin.noise(x / quality, y / quality, z) * quality;
-                }
-
-                quality *= 4;
-            }
-
-            return data;
-        }
-
-        let worldWidth = 128;
-        let worldDepth = 128;
         let worldHalfWidth = worldWidth / 2;
         let worldHalfDepth = worldDepth / 2;
-        let data = generateHeight(worldWidth, worldDepth);
 
-        this.camera.position.y = getY(worldHalfWidth, worldHalfDepth) * 100 + 100;
+        // FIXME
+        this.camera.position.y = (world.height / 2) * tileHeight;
+        this.camera.position.x = (world.width / 2) * tileWidth;
+        this.camera.position.z = tileDepth * 6;
+
+        debug('camera position', this.camera.position);
+        debug('camera rotation', this.camera.rotation);
 
         // Rotate camera for top-down view.
-        this.camera.rotation.x = -90 * Math.PI / 180;
+        this.camera.rotation.z = 90 * Math.PI / 180;
 
-        let matrix = new THREE.Matrix4();
+        let layers = world.mapLayers;
 
-        let pxGeometry = new THREE.PlaneBufferGeometry(100, 100);
+        debug('layer', '\n' + world.map.toString());
 
-        pxGeometry.attributes.uv.array[1] = 0.5;
-        pxGeometry.attributes.uv.array[3] = 0.5;
-        pxGeometry.rotateY(Math.PI / 2);
-        pxGeometry.translate(50, 0, 0);
+        for (let z = 0; z < layers.length; z++) {
+            let layer = layers[z];
 
-        let nxGeometry = new THREE.PlaneBufferGeometry(100, 100);
+            for (let y = 0; y < layer.length; y++) {
+                for (let x = 0; x < layer[y].length; x++) {
+                    let tile = layer[x][y];
 
-        nxGeometry.attributes.uv.array[1] = 0.5;
-        nxGeometry.attributes.uv.array[3] = 0.5;
-        nxGeometry.rotateY(-Math.PI / 2);
-        nxGeometry.translate(-50, 0, 0);
+                    if (tile !== null) {
+                        let block = _createBlock(tile, tileWidth, tileHeight, tileDepth);
 
-        let pyGeometry = new THREE.PlaneBufferGeometry(100, 100);
+                        this.scene.add(block);
 
-        pyGeometry.attributes.uv.array[5] = 0.5;
-        pyGeometry.attributes.uv.array[7] = 0.5;
-        pyGeometry.rotateX(-Math.PI / 2);
-        pyGeometry.translate(0, 50, 0);
+                        block.translateX(x * tileWidth);
+                        block.translateY(y * tileHeight);
+                        block.translateZ(z * tileDepth);
 
-        let pzGeometry = new THREE.PlaneBufferGeometry(100, 100);
-
-        pzGeometry.attributes.uv.array[1] = 0.5;
-        pzGeometry.attributes.uv.array[3] = 0.5;
-        pzGeometry.translate(0, 0, 50);
-
-        let nzGeometry = new THREE.PlaneBufferGeometry(100, 100);
-
-        nzGeometry.attributes.uv.array[1] = 0.5;
-        nzGeometry.attributes.uv.array[3] = 0.5;
-        nzGeometry.rotateY(Math.PI);
-        nzGeometry.translate(0, 0, -50);
-
-        // BufferGeometry cannot be merged yet.
-        let tmpGeometry = new THREE.Geometry();
-        let pxTmpGeometry = new THREE.Geometry().fromBufferGeometry(pxGeometry);
-        let nxTmpGeometry = new THREE.Geometry().fromBufferGeometry(nxGeometry);
-        let pyTmpGeometry = new THREE.Geometry().fromBufferGeometry(pyGeometry);
-        let pzTmpGeometry = new THREE.Geometry().fromBufferGeometry(pzGeometry);
-        let nzTmpGeometry = new THREE.Geometry().fromBufferGeometry(nzGeometry);
-
-        for (let z = 0; z < worldDepth; z++) {
-            for (let x = 0; x < worldWidth; x++) {
-                let h = getY(x, z);
-
-                matrix.makeTranslation(
-                    x * 100 - worldHalfWidth * 100,
-                    h * 100,
-                    z * 100 - worldHalfDepth * 100
-                );
-
-                let px = getY(x + 1, z);
-                let nx = getY(x - 1, z);
-                let pz = getY(x, z + 1);
-                let nz = getY(x, z - 1);
-
-                tmpGeometry.merge(pyTmpGeometry, matrix);
-
-                if ((px !== h && px !== h + 1) || x === 0) {
-                    tmpGeometry.merge(pxTmpGeometry, matrix);
-                }
-
-                if ((nx !== h && nx !== h + 1) || x === worldWidth - 1) {
-                    tmpGeometry.merge(nxTmpGeometry, matrix);
-                }
-
-                if ((pz !== h && pz !== h + 1) || z === worldDepth - 1) {
-                    tmpGeometry.merge(pzTmpGeometry, matrix);
-                }
-
-                if ((nz !== h && nz !== h + 1) || z === 0) {
-                    tmpGeometry.merge(nzTmpGeometry, matrix);
-                }
+                        debug('block position', block.position);
+                    }
+                };
             }
         }
-
-        let geometry = new THREE.BufferGeometry().fromGeometry(tmpGeometry);
-
-        geometry.computeBoundingSphere();
-
-        let texture = THREE.ImageUtils.loadTexture('assets/images/minecraft.png');
-
-        texture.magFilter = THREE.NearestFilter;
-        texture.minFilter = THREE.LinearMipMapLinearFilter;
-
-        let mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ map: texture }));
-
-        this.scene.add(mesh);
 
         let ambientLight = new THREE.AmbientLight(0xcccccc);
 
         this.scene.add(ambientLight);
 
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        let directionalLight = new THREE.DirectionalLight(0x00ffff, 2);
 
-        directionalLight.position.set(1, 1, 0.5).normalize();
+        directionalLight.position.set(world.width / 2, world.height / 2, world.depth).normalize();
         this.scene.add(directionalLight);
     }
 

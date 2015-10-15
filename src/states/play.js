@@ -3,6 +3,7 @@ let debug = require('debug')('game:states/play');
 let State = require('../engine/state');
 let DemoView = require('../views/demo');
 let World = require('../engine/world');
+let Player = require('../engine/player');
 
 /**
  * State of playing the game.
@@ -19,6 +20,7 @@ class PlayState extends State {
         super('play');
 
         this.world = new World();
+        this.player = new Player(300, 300);
         this.view = new DemoView(this);
         this.view.init();
     }

@@ -8,6 +8,8 @@ let TextureAtlas = require('../utils/texture-atlas');
 let _tilesTextureAtlas = null;
 let _tilesMaterial = null;
 
+let _playerTextureAtlas = null;
+
 let _createBlockGeometry = function (block, blockWidth, blockHeight, blockDepth) {
     let geometries = [];
 
@@ -104,6 +106,26 @@ let _createBlock = function (block, blockWidth, blockHeight, blockDepth) {
     return mesh;
 };
 
+let _createPlayer = function (player) {
+    let playerMaterial = new THREE.MeshBasicMaterial({
+        map: _playerTextureAtlas.texture,
+        transparent: true
+    });
+
+    let playerGeometry = new THREE.PlaneGeometry(player.width, player.height);
+
+    let bounds = _playerTextureAtlas.getBounds('dude_idle_0001');
+
+    playerGeometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
+    playerGeometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
+
+    let mesh = new THREE.Mesh(playerGeometry, playerMaterial);
+
+    mesh.position.set(player.x, player.y, player.z);
+
+    return mesh;
+};
+
 class DemoView extends View {
     constructor (state) {
         super(800, 600);
@@ -114,6 +136,8 @@ class DemoView extends View {
             map: _tilesTextureAtlas.texture,
             transparent: true
         });
+
+        _playerTextureAtlas = new TextureAtlas('dude');
     }
 
     init () {
@@ -165,6 +189,14 @@ class DemoView extends View {
                 };
             }
         }
+
+        let player = this.state.player;
+
+        let playerSprite = _createPlayer(player);
+
+        debug('player position', playerSprite.position);
+
+        this.scene.add(playerSprite);
 
         let ambientLight = new THREE.AmbientLight(0xcccccc);
 

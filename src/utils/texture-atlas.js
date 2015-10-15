@@ -1,9 +1,15 @@
 const ATLAS_DIRECTORY = '../../assets/spritesheets/';
 
+let _atlasJson = new Map();
+
+// FIXME Browserify can not do dynamic loading
+_atlasJson.set('dude', require('../../assets/spritesheets/dude.js'));
+_atlasJson.set('tiles', require('../../assets/spritesheets/tiles.js'));
+
 class TextureAtlas {
     constructor (name) {
-        // this.mapping = require(ATLAS_DIRECTORY + name + '.js');
-        this.mapping = require('../../assets/spritesheets/tiles.js');
+        this.mapping = _atlasJson.get(name);
+
         this.texture = THREE.ImageUtils.loadTexture(ATLAS_DIRECTORY + this.mapping.meta.image);
         this.texture.magFilter = THREE.NearestFilter;
         this.texture.minFilter = THREE.LinearMipMapLinearFilter;

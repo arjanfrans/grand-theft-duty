@@ -1,7 +1,7 @@
-{
+module.exports = {
 	"meta": {
 		"image": "dude.png",
-		"size": {"w":40,"h":28},
+		"size": {"w":64,"h":32},
 		"scale": "1"
 	},
 	"frames": [
@@ -70,4 +70,4 @@
 			"sourceSize": {"w":10,"h":14}
 		}
 	]
-}
+};

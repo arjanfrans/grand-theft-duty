@@ -1,9 +1,11 @@
 const SPEED = 10;
 
 class Player {
-    constructor (x, y, width = 10, height = 10) {
+    constructor (x, y, z = 0, width = 32, height = 32) {
         this.x = x;
         this.y = y;
+        this.z = z;
+
         this.velocity = {
             x: 0,
             y: 0

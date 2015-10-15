@@ -12,20 +12,20 @@ class Map {
         this.layers = [];
 
         let layer1 = [
-            [0, 1, 1, 0, 0],
-            [1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1]
+            [1, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 1]
         ];
 
-        let layer2 = [
-            [0, 1, 0, 0, 1],
-            [0, 1, 1, 0, 0],
-            [1, 1, 1, 1, 1],
-            [1, 1, 0, 1, 1],
-            [0, 0, 0, 1, 1]
-        ];
+        // let layer2 = [
+        //     [0, 1, 0, 0, 1],
+        //     [0, 1, 1, 0, 0],
+        //     [1, 1, 1, 1, 1],
+        //     [1, 1, 0, 1, 1],
+        //     [0, 0, 0, 1, 1]
+        // ];
 
         layer1 = layer1.map((row) => {
             return row.map((col) => {
@@ -38,18 +38,18 @@ class Map {
         });
 
         // FIXME Duplication
-        layer2 = layer2.map((row) => {
-            return row.map((col) => {
-                if (col !== 0) {
-                    return new Block(col);
-                }
-
-                return null;
-            });
-        });
-
+        // layer2 = layer2.map((row) => {
+        //     return row.map((col) => {
+        //         if (col !== 0) {
+        //             return new Block(col);
+        //         }
+        //
+        //         return null;
+        //     });
+        // });
+        //
         this.layers.push(layer1);
-        this.layers.push(layer2);
+        // this.layers.push(layer2);
     }
 
     toString () {

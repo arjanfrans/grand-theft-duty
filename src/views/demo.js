@@ -6,56 +6,87 @@ let TextureAtlas = require('../utils/texture-atlas');
 // TODO efficience
 // let _tileCache = new Map();
 let _tilesTextureAtlas = null;
+let _tilesMaterial = null;
 
 let _createBlockGeometry = function (block, blockWidth, blockHeight, blockDepth) {
-    let geometry = new THREE.BoxGeometry(blockWidth, blockHeight, blockDepth);
+    let geometries = [];
 
     // ok
     if (block.south) {
         let south = _tilesTextureAtlas.getBounds(block.south);
 
-        geometry.faceVertexUvs[0][0] = [ south[0], south[1], south[3] ];
-        geometry.faceVertexUvs[0][1] = [ south[1], south[2], south[3] ];
+        let southGeometry = new THREE.PlaneGeometry(blockWidth, blockHeight);
+
+        southGeometry.faceVertexUvs[0][0] = [south[0], south[1], south[3]];
+        southGeometry.faceVertexUvs[0][1] = [south[1], south[2], south[3]];
+        southGeometry.rotateY(Math.PI / 2);
+        southGeometry.translate(blockWidth / 2, 0, 0);
+
+        geometries.push(southGeometry);
     }
+
+    let northGeometry = null;
 
     // ok
     if (block.north) {
         let north = _tilesTextureAtlas.getBounds(block.north);
 
-        geometry.faceVertexUvs[0][2] = [ north[0], north[1], north[3] ];
-        geometry.faceVertexUvs[0][3] = [ north[1], north[2], north[3] ];
+        let northGeometry = new THREE.PlaneGeometry(blockWidth, blockHeight);
+
+        northGeometry.faceVertexUvs[0][0] = [north[0], north[1], north[3]];
+        northGeometry.faceVertexUvs[0][1] = [north[1], north[2], north[3]];
+        northGeometry.rotateY(-(Math.PI / 2));
+        northGeometry.translate(-(blockWidth / 2), 0, 0);
+
+        geometries.push(northGeometry);
     }
 
-    // ok
-    if (block.east) {
-        let east = _tilesTextureAtlas.getBounds(block.east);
-
-        geometry.faceVertexUvs[0][4] = [ east[0], east[1], east[3] ];
-        geometry.faceVertexUvs[0][5] = [ east[1], east[2], east[3] ];
-    }
-
-    //
-    // ok
     if (block.west) {
         let west = _tilesTextureAtlas.getBounds(block.west);
 
-        geometry.faceVertexUvs[0][6] = [ west[0], west[1], west[3] ];
-        geometry.faceVertexUvs[0][7] = [ west[1], west[2], west[3] ];
+        let westGeometry = new THREE.PlaneGeometry(blockWidth, blockHeight);
+
+        westGeometry.faceVertexUvs[0][0] = [west[0], west[1], west[3]];
+        westGeometry.faceVertexUvs[0][1] = [west[1], west[2], west[3]];
+        westGeometry.rotateX((Math.PI / 2));
+        westGeometry.translate(0, -(blockHeight / 2), 0);
+
+        geometries.push(westGeometry);
     }
 
-    // Ok
+    if (block.east) {
+        let east = _tilesTextureAtlas.getBounds(block.east);
+
+        let eastGeometry = new THREE.PlaneGeometry(blockWidth, blockHeight);
+
+        eastGeometry.faceVertexUvs[0][0] = [east[0], east[1], east[3]];
+        eastGeometry.faceVertexUvs[0][1] = [east[1], east[2], east[3]];
+        eastGeometry.rotateX(-(Math.PI / 2));
+        eastGeometry.rotateY((Math.PI / 2));
+        eastGeometry.translate(0, (blockHeight / 2), 0);
+
+        geometries.push(eastGeometry);
+    }
+
     if (block.top) {
         let top = _tilesTextureAtlas.getBounds(block.top);
 
-        geometry.faceVertexUvs[0][8] = [ top[0], top[1], top[3] ];
-        geometry.faceVertexUvs[0][9] = [ top[1], top[2], top[3] ];
+        let topGeometry = new THREE.PlaneGeometry(blockWidth, blockHeight);
+
+        topGeometry.faceVertexUvs[0][0] = [top[0], top[1], top[3]];
+        topGeometry.faceVertexUvs[0][1] = [top[1], top[2], top[3]];
+        topGeometry.translate(0, 0, (blockHeight / 2));
+
+        geometries.push(topGeometry);
     }
 
-    // Bottom
-    // geometry.faceVertexUvs[0][10] = [ wood[0], wood[1], wood[3] ];
-    // geometry.faceVertexUvs[0][11] = [ wood[1], wood[2], wood[3] ];
+    let blockGeometry = new THREE.Geometry();
 
-    return geometry;
+    for (let geometry of geometries) {
+        blockGeometry.merge(geometry);
+    };
+
+    return blockGeometry;
 };
 
 let _createBlock = function (block, blockWidth, blockHeight, blockDepth) {
@@ -63,15 +94,11 @@ let _createBlock = function (block, blockWidth, blockHeight, blockDepth) {
         return null;
     }
 
-    let texture = _tilesTextureAtlas.texture;
-
-    let material = new THREE.MeshLambertMaterial({ map: texture, transparent: true });
-
     let geometry = _createBlockGeometry(block, blockWidth, blockHeight, blockDepth);
 
     let mesh = new THREE.Mesh(
         geometry,
-        material
+        _tilesMaterial
     );
 
     return mesh;
@@ -83,6 +110,10 @@ class DemoView extends View {
 
         this.state = state;
         _tilesTextureAtlas = new TextureAtlas('tiles');
+        _tilesMaterial = new THREE.MeshLambertMaterial({
+            map: _tilesTextureAtlas.texture,
+            transparent: true
+        });
     }
 
     init () {

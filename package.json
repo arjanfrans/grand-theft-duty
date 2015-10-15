@@ -5,6 +5,7 @@
   "dependencies": {
     "debug": "^2.2.0",
     "phaser": "~2.4.3",
+    "stats-js": "git+https://github.com/mrdoob/stats.js",
     "three": "^0.72.0"
   },
   "scripts": {

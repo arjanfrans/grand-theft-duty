@@ -1,5 +1,8 @@
 let debug = require('debug')('game:engine/engine');
 
+let DebugStats = require('stats-js');
+const DEBUG = true;
+
 let Renderer = require('./renderer');
 
 let renderer = new Renderer('webgl');
@@ -8,12 +11,28 @@ let currentState = null;
 
 let clock = new THREE.Clock();
 
+let debugStats = null;
+
+if (DEBUG) {
+    debugStats = new DebugStats();
+    debugStats.setMode(0);
+    debugStats.domElement.style.position = 'absolute';
+    debugStats.domElement.style.left = '0px';
+    debugStats.domElement.style.top = '0px';
+
+    document.body.appendChild(debugStats.domElement);
+}
+
 /**
  * The game loop. Updates the current state and renders it's Views.
  *
  * @returns {void}
  */
 let _update = function () {
+    if (DEBUG) {
+        debugStats.begin();
+    }
+
     // Tell browser to perform animation.
     window.requestAnimationFrame(_update);
 
@@ -22,6 +41,10 @@ let _update = function () {
         renderer.render();
     } else {
         debug('no current State');
+    }
+
+    if (DEBUG) {
+        debugStats.end();
     }
 };
 

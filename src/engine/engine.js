@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/engine');
 
-let DebugStats = require('stats-js');
+let DebugStats = require('stats.js');
 const DEBUG = true;
 
 let Renderer = require('./renderer');

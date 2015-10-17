@@ -121,7 +121,7 @@ let _createPlayer = function (player) {
 
     let mesh = new THREE.Mesh(playerGeometry, playerMaterial);
 
-    mesh.position.set(player.x, player.y, player.z);
+    mesh.position.set(player.position.x, player.position.y, player.position.z);
 
     return mesh;
 };
@@ -138,6 +138,10 @@ class DemoView extends View {
         });
 
         _playerTextureAtlas = new TextureAtlas('dude');
+
+        this.player = this.state.player;
+
+        this.playerView = _createPlayer(this.player);
     }
 
     init () {
@@ -189,14 +193,9 @@ class DemoView extends View {
                 };
             }
         }
+        debug('playerView position', this.playerView.position);
 
-        let player = this.state.player;
-
-        let playerSprite = _createPlayer(player);
-
-        debug('player position', playerSprite.position);
-
-        this.scene.add(playerSprite);
+        this.scene.add(this.playerView);
 
         let ambientLight = new THREE.AmbientLight(0xcccccc);
 
@@ -209,7 +208,13 @@ class DemoView extends View {
     }
 
     update () {
-        // this.mesh.rotation.x += 0.01;
+        console.log(this.player);
+
+        // this.playerView.posit(
+        // this.player.x, this.player.y, this.player.z);
+        this.playerView.position.x = this.player.position.x;
+        this.playerView.position.y = this.player.position.y;
+        this.playerView.position.z = this.player.position.z;
     }
 }
 

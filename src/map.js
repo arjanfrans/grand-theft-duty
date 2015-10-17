@@ -48,8 +48,9 @@ class Map {
         //     });
         // });
         //
-        this.layers.push(layer1);
+        //
         // this.layers.push(layer2);
+        this.layers.push(layer1);
     }
 
     toString () {

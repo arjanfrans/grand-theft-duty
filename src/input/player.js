@@ -1,3 +1,5 @@
+let debug = require('debug')('game:input/player');
+
 let Keyboard = require('../utils/keyboard');
 
 class PlayerInput {
@@ -7,10 +9,12 @@ class PlayerInput {
 
     update () {
         if (Keyboard.isDown(Keyboard.UP)) {
+            debug('PlayerInput up');
             this.player.moveUp();
         } else {
-            this.player.stop();
+            this.player.stopMoving();
         }
     }
-
 }
+
+module.exports = PlayerInput;

@@ -4,6 +4,7 @@ let State = require('../engine/state');
 let DemoView = require('../views/demo');
 let World = require('../engine/world');
 let Player = require('../engine/player');
+let PlayerInput = require('../input/player');
 
 /**
  * State of playing the game.
@@ -20,9 +21,17 @@ class PlayState extends State {
         super('play');
 
         this.world = new World();
-        this.player = new Player(300, 300);
-        this.view = new DemoView(this);
-        this.view.init();
+        this.player = new Player(300, 300, 200);
+
+        let playerInput = new PlayerInput(this.player);
+
+        this.inputs.set('player', playerInput);
+
+        let demoView = new DemoView(this);
+
+        demoView.init();
+
+        this.view = demoView;
     }
 
     /**
@@ -33,6 +42,18 @@ class PlayState extends State {
      * @returns {void}
      */
     update (delta) {
+        this._updateInputs();
+        this.player.update(delta);
+        this._updateView();
+    }
+
+    _updateInputs () {
+        for (let input of this.inputs.values()) {
+            input.update();
+        }
+    }
+
+    _updateView () {
         this.view.update();
     }
 }

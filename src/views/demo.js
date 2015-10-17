@@ -166,7 +166,7 @@ class DemoView extends View {
         debug('camera rotation', this.camera.rotation);
 
         // Rotate camera for top-down view.
-        this.camera.rotation.z = (90) * Math.PI / 180;
+        // this.camera.rotation.z = (-1) * Math.PI / 180;
 
         let layers = world.mapLayers;
 
@@ -177,22 +177,25 @@ class DemoView extends View {
 
             for (let y = 0; y < layer.length; y++) {
                 for (let x = 0; x < layer[y].length; x++) {
-                    let tile = layer[x][y];
+                    let tile = layer[y][x];
 
                     if (tile !== null) {
                         let block = _createBlock(tile, tileWidth, tileHeight, tileDepth);
 
-                        this.scene.add(block);
+                        let layerWidth = (layer.length - 1) * tileWidth;
 
                         block.translateX(x * tileWidth);
-                        block.translateY(y * tileHeight);
+                        block.translateY(layerWidth - y * tileHeight);
                         block.translateZ(z * tileDepth);
+
+                        this.scene.add(block);
 
                         debug('block position', block.position);
                     }
                 };
             }
         }
+
         debug('playerView position', this.playerView.position);
 
         this.scene.add(this.playerView);
@@ -208,9 +211,6 @@ class DemoView extends View {
     }
 
     update () {
-        console.log(this.player);
-
-        // this.playerView.posit(
         // this.player.x, this.player.y, this.player.z);
         this.playerView.position.x = this.player.position.x;
         this.playerView.position.y = this.player.position.y;

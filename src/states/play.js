@@ -4,6 +4,7 @@ let State = require('../engine/state');
 let DemoView = require('../views/demo');
 let World = require('../engine/world');
 let Player = require('../engine/player');
+let Physics = require('../engine/physics');
 let PlayerInput = require('../input/player');
 
 /**
@@ -21,11 +22,15 @@ class PlayState extends State {
         super('play');
 
         this.world = new World();
-        this.player = new Player(300, 300, 200);
+        this.player = new Player(300, 300, 0);
 
         let playerInput = new PlayerInput(this.player);
 
         this.inputs.set('player', playerInput);
+
+        this.physics = new Physics();
+        this.physics.map = this.world.map;
+        this.physics.addEntity(this.player);
 
         let demoView = new DemoView(this);
 
@@ -43,7 +48,11 @@ class PlayState extends State {
      */
     update (delta) {
         this._updateInputs();
+
+        this.physics.update(delta);
+
         this.player.update(delta);
+
         this._updateView();
     }
 

@@ -91,7 +91,7 @@ let _createBlockGeometry = function (block, blockWidth, blockHeight, blockDepth)
     return blockGeometry;
 };
 
-let _createBlock = function (block, blockWidth, blockHeight, blockDepth) {
+let _createBlock = function (block, position, blockWidth, blockHeight, blockDepth) {
     if (!block) {
         return null;
     }
@@ -102,6 +102,8 @@ let _createBlock = function (block, blockWidth, blockHeight, blockDepth) {
         geometry,
         _tilesMaterial
     );
+
+    mesh.position.set(position.x, position.y, position.z);
 
     return mesh;
 };
@@ -118,11 +120,12 @@ let _createPlayer = function (player) {
 
     playerGeometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
     playerGeometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
-    playerGeometry.rotateZ(-90 * (Math.PI / 2));
+    playerGeometry.rotateZ(90 * (Math.PI / 2));
 
     let mesh = new THREE.Mesh(playerGeometry, playerMaterial);
 
     mesh.position.set(player.position.x, player.position.y, player.position.z);
+    mesh.rotation.z = player.angleRadian;
 
     return mesh;
 };
@@ -167,7 +170,7 @@ class DemoView extends View {
         debug('camera rotation', this.camera.rotation);
 
         // Rotate camera for top-down view.
-        this.camera.rotation.z = (-90) * Math.PI / 180;
+        // this.camera.rotation.z = (-90) * Math.PI / 180;
 
         let layers = world.mapLayers;
 
@@ -180,18 +183,18 @@ class DemoView extends View {
                 for (let x = 0; x < layer[y].length; x++) {
                     let tile = layer[y][x];
 
+                    let layerHeight = layer.length * tileHeight;
+
                     if (tile !== null) {
-                        let block = _createBlock(tile, tileWidth, tileHeight, tileDepth);
+                        let position = {
+                            x: x * tileWidth,
+                            y: layerHeight - (y * tileHeight),
+                            z: z * tileDepth
+                        };
 
-                        let layerWidth = (layer.length - 1) * tileWidth;
-
-                        block.translateX(x * tileWidth);
-                        block.translateY(layerWidth - y * tileHeight);
-                        block.translateZ(z * tileDepth);
+                        let block = _createBlock(tile, position, tileWidth, tileHeight, tileDepth);
 
                         this.scene.add(block);
-
-                        debug('block position', block.position);
                     }
                 };
             }
@@ -216,7 +219,7 @@ class DemoView extends View {
         this.playerView.position.y = this.player.position.y;
         this.playerView.position.z = this.player.position.z;
 
-        this.playerView.rotation.z = this.player.angle;
+        this.playerView.rotation.z = this.player.angleRadian;
 
         this.camera.position.setX(this.player.position.x);
         this.camera.position.setY(this.player.position.y);

@@ -21,10 +21,12 @@ let Keyboard = {
 
 window.addEventListener('keyup', function (event) {
     Keyboard.onKeyup(event);
+    event.preventDefault();
 }, false);
 
 window.addEventListener('keydown', function (event) {
     Keyboard.onKeydown(event);
+    event.preventDefault();
 }, false);
 
 module.exports = Keyboard;

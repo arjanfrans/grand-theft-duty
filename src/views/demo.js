@@ -118,6 +118,7 @@ let _createPlayer = function (player) {
 
     playerGeometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
     playerGeometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
+    playerGeometry.rotateZ(-90 * (Math.PI / 2));
 
     let mesh = new THREE.Mesh(playerGeometry, playerMaterial);
 
@@ -166,7 +167,7 @@ class DemoView extends View {
         debug('camera rotation', this.camera.rotation);
 
         // Rotate camera for top-down view.
-        // this.camera.rotation.z = (-1) * Math.PI / 180;
+        this.camera.rotation.z = (-90) * Math.PI / 180;
 
         let layers = world.mapLayers;
 
@@ -211,10 +212,14 @@ class DemoView extends View {
     }
 
     update () {
-        // this.player.x, this.player.y, this.player.z);
         this.playerView.position.x = this.player.position.x;
         this.playerView.position.y = this.player.position.y;
         this.playerView.position.z = this.player.position.z;
+
+        this.playerView.rotation.z = this.player.angle;
+
+        this.camera.position.setX(this.player.position.x);
+        this.camera.position.setY(this.player.position.y);
     }
 }
 

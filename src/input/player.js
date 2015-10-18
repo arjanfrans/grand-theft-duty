@@ -9,10 +9,19 @@ class PlayerInput {
 
     update () {
         if (Keyboard.isDown(Keyboard.UP)) {
-            debug('PlayerInput up');
             this.player.moveUp();
+        } else if (Keyboard.isDown(Keyboard.DOWN)) {
+            this.player.moveDown();
         } else {
             this.player.stopMoving();
+        }
+
+        if (Keyboard.isDown(Keyboard.RIGHT)) {
+            this.player.turnRight();
+        } else if (Keyboard.isDown(Keyboard.LEFT)) {
+            this.player.turnLeft();
+        } else {
+            this.player.stopTurning();
         }
     }
 }

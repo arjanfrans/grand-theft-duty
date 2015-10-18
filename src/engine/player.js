@@ -18,7 +18,7 @@ class Player {
 
         this.angularVelocity = 0;
 
-        this.angleRadian = 90 * (Math.PI / 180);
+        this.angleRadian = 270 * (Math.PI / 180);
 
         this.width = width;
         this.height = height;
@@ -26,13 +26,13 @@ class Player {
     }
 
     moveUp () {
-        this.velocity.x = SPEED * Math.cos(this.angleRadian);
-        this.velocity.y = SPEED * Math.sin(this.angleRadian);
+        this.velocity.x = -SPEED * Math.cos(this.angleRadian);
+        this.velocity.y = -SPEED * Math.sin(this.angleRadian);
     }
 
     moveDown () {
-        this.velocity.x = -SPEED * Math.cos(this.angleRadian);
-        this.velocity.y = -SPEED * Math.sin(this.angleRadian);
+        this.velocity.x = SPEED * Math.cos(this.angleRadian);
+        this.velocity.y = SPEED * Math.sin(this.angleRadian);
     }
 
     turnRight () {
@@ -40,7 +40,7 @@ class Player {
     }
 
     turnLeft () {
-        this.angularVelocity = (ROTATION_SPEED * (Math.PI / 180)) % (Math.PI * 2);
+        this.angularVelocity = ROTATION_SPEED * (Math.PI / 180);
     }
 
     get angleDegree () {
@@ -74,8 +74,6 @@ class Player {
         if (this.angleRadian < 0) {
             this.angleRadian = (Math.PI * 2) - this.angleRadian;
         }
-
-        console.log(this.angleDegree);
 
         this.position.x += this.velocity.x * delta;
         this.position.y += this.velocity.y * delta;

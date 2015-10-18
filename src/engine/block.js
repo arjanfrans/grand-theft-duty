@@ -5,7 +5,7 @@ class Block {
         this.south = 'roof1_edge';
         this.west = 'grass_center';
         this.east = 'roof1_edge';
-        this.top = 'dirt_center';
+        this.top = 'roof1_edge';
 
         // TODO
         this.collidable = true;

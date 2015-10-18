@@ -95,9 +95,9 @@ class Map {
 
         for (let z = 0; z < this.layers.length; z++) {
             if ((z >= start.z && z <= end.z) || (z >= end.z && z <= start.z)) {
-                for (let y = 0; y > this.layers[z].length; y++) {
+                for (let y = 0; y < this.layers[z].length; y++) {
                     if ((y >= start.y && y <= end.y) || (y >= end.y && y <= start.y)) {
-                        for (let x = 0; x > this.layers[z][y].length; x++) {
+                        for (let x = 0; x < this.layers[z][y].length; x++) {
                             if ((x >= start.x && x <= end.x) || (x >= end.x && x <= start.x)) {
                                 let index = { x, y, z };
 
@@ -113,7 +113,7 @@ class Map {
     }
 
     blocksBetweenPositions (start = { x: 0, y: 0, z: 0 }, end = { x: 0, y: 0, z: 0 }) {
-        return this.blocksBetweenIndexes(start, end);
+        return this.blocksBetweenIndexes(this.positionToIndex(start), this.positionToIndex(end));
     }
 
     toString () {

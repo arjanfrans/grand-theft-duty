@@ -3,10 +3,9 @@ let debug = require('debug')('game:engine/map');
 let Block = require('./engine/block');
 
 class Map {
-    constructor (width, height, depth, tileWidth, tileHeight, tileDepth) {
+    constructor (width, height, tileWidth, tileHeight, tileDepth) {
         this.width = width;
         this.height = height;
-        this.depth = depth;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         this.tileDepth = tileDepth;
@@ -29,7 +28,7 @@ class Map {
             [0, 0, 0, 0, 1]
         ];
 
-        let tmpLayers = [layer1, layer2];
+        let tmpLayers = [layer1];
 
         this.layers = [];
 
@@ -51,11 +50,27 @@ class Map {
                     if (row[x] === 0) {
                         this.layers[z][y][x] = null;
                     } else {
-                        this.layers[z][y][x] = new Block(row[x]);
+                        this.layers[z][y][x] = new Block(row[x], {
+                            x: x * tileWidth,
+                            y: y * tileHeight,
+                            z: z * tileDepth
+                        }, tileWidth, tileHeight, tileDepth);
                     }
                 }
             }
         }
+    }
+
+    get depth () {
+        return this.layers.length;
+    }
+
+    get totalWidth () {
+        return this.width * this.tileWidth;
+    }
+
+    get totalHeight () {
+        return this.height * this.tileHeight;
     }
 
     positionToIndex (position) {
@@ -73,6 +88,12 @@ class Map {
     }
 
     blockAtIndex (index) {
+        if (index.x < 0 || index.y < 0 || index.z < 0 ||
+                index.x >= this.width || index.y >= this.height ||
+                index.z >= this.depth) {
+            return null;
+        }
+
         return this.layers[index.z][index.y][index.x];
     }
 
@@ -80,6 +101,20 @@ class Map {
         let indexes = this.positionToIndex(position);
 
         return this.blockAtIndex(indexes);
+    }
+
+    blocksAtPositions (positions) {
+        let blocks = [];
+
+        for (let position of positions) {
+            let block = this.blockAtPosition(position);
+
+            if (block) {
+                blocks.push(block);
+            }
+        }
+
+        return blocks;
     }
 
     /**
@@ -101,7 +136,11 @@ class Map {
                             if ((x >= start.x && x <= end.x) || (x >= end.x && x <= start.x)) {
                                 let index = { x, y, z };
 
-                                blocks.push(this.blockAtIndex(index));
+                                let block = this.blockAtIndex(index);
+
+                                if (block) {
+                                    blocks.push(block);
+                                }
                             }
                         }
                     }

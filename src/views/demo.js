@@ -1,6 +1,5 @@
 let debug = require('debug')('game:views/demo');
 let View = require('../engine/view');
-let ImprovedNoise = require('../utils/improved-noise');
 let TextureAtlas = require('../utils/texture-atlas');
 
 // TODO efficience
@@ -190,13 +189,17 @@ class DemoView extends View {
 
                         let block = _createBlock(tile, position, tileWidth, tileHeight, tileDepth);
 
+                        block.translateX(tileWidth / 2);
+                        block.translateY(tileHeight / 2);
+                        block.translateZ(tileDepth / 2);
+
                         this.scene.add(block);
                     }
                 };
             }
         }
 
-        debug('playerView position', this.playerView.position);
+        this.playerView.translateZ(tileDepth / 2);
 
         this.scene.add(this.playerView);
 

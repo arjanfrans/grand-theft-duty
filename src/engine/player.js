@@ -1,4 +1,6 @@
 let debug = require('debug')('game:engine/player');
+let SAT = require('sat');
+
 const SPEED = 300;
 const ROTATION_SPEED = 300;
 
@@ -18,11 +20,19 @@ class Player {
 
         this.angularVelocity = 0;
 
-        this.angleRadian = 270 * (Math.PI / 180);
+        this.angleRadian = 0 * (Math.PI / 180);
 
         this.width = width;
         this.height = height;
         this.collidable = true;
+    }
+
+    get halfWidth () {
+        return this.width / 2;
+    }
+
+    get halfHeight () {
+        return this.height / 2;
     }
 
     moveUp () {
@@ -45,11 +55,6 @@ class Player {
 
     get angleDegree () {
         return (this.angleRadian / (Math.PI / 180)) % 360;
-    }
-
-    onWallCollision () {
-        this.velocity.x = 0;
-        this.velocity.y = 0;
     }
 
     stopMoving () {

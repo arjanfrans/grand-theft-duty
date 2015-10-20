@@ -1,5 +1,4 @@
 let debug = require('debug')('game:engine/map');
-
 let Block = require('./engine/block');
 
 class Map {

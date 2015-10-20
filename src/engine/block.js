@@ -1,5 +1,3 @@
-let SAT = require('sat');
-
 class Block {
     constructor (id = null, position, width, height, depth) {
         this.id = id;

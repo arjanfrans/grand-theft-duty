@@ -1,16 +1,14 @@
 let debug = require('debug')('game:engine/player');
-let SAT = require('sat');
+
+let Bodies = require('matter-js').Bodies;
+let Body = require('matter-js').Body;
 
 const SPEED = 300;
 const ROTATION_SPEED = 300;
 
 class Player {
     constructor (x, y, z = 0, width = 32, height = 32) {
-        this.position = {
-            x: x,
-            y: y,
-            z: z
-        };
+        this.z = z;
 
         this.velocity = {
             x: 0,
@@ -20,29 +18,35 @@ class Player {
 
         this.angularVelocity = 0;
 
-        this.angleRadian = 0 * (Math.PI / 180);
-
         this.width = width;
         this.height = height;
-        this.collidable = true;
+        this.body = Bodies.rectangle(x, y, width, height);
     }
 
-    get halfWidth () {
-        return this.width / 2;
+    get position () {
+        return {
+            x: this.body.position.x,
+            y: this.body.position.y,
+            z: this.z
+        };
     }
 
-    get halfHeight () {
-        return this.height / 2;
+    set angle (angle) {
+        this.body.angle = angle;
+    }
+
+    get angle () {
+        return this.body.angle;
     }
 
     moveUp () {
-        this.velocity.x = -SPEED * Math.cos(this.angleRadian);
-        this.velocity.y = -SPEED * Math.sin(this.angleRadian);
+        this.velocity.x = -SPEED * Math.cos(this.angle);
+        this.velocity.y = -SPEED * Math.sin(this.angle);
     }
 
     moveDown () {
-        this.velocity.x = SPEED * Math.cos(this.angleRadian);
-        this.velocity.y = SPEED * Math.sin(this.angleRadian);
+        this.velocity.x = SPEED * Math.cos(this.angle);
+        this.velocity.y = SPEED * Math.sin(this.angle);
     }
 
     turnRight () {
@@ -54,7 +58,7 @@ class Player {
     }
 
     get angleDegree () {
-        return (this.angleRadian / (Math.PI / 180)) % 360;
+        return (this.angle / (Math.PI / 180)) % 360;
     }
 
     stopMoving () {
@@ -71,17 +75,17 @@ class Player {
             return;
         }
 
-        this.angleRadian += this.angularVelocity * delta;
+        this.angle += this.angularVelocity * delta;
 
         // Normalize radian
-        this.angleRadian %= Math.PI * 2;
+        this.angle %= Math.PI * 2;
 
-        if (this.angleRadian < 0) {
-            this.angleRadian = (Math.PI * 2) - this.angleRadian;
+        if (this.angle < 0) {
+            this.angle = (Math.PI * 2) - this.angle;
         }
 
-        this.position.x += this.velocity.x * delta;
-        this.position.y += this.velocity.y * delta;
+        this.body.position.x += this.velocity.x * delta;
+        this.body.position.y += this.velocity.y * delta;
     }
 }
 

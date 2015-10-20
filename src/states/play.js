@@ -21,22 +21,13 @@ class PlayState extends State {
     constructor () {
         super('play');
 
-        this.world = new World();
-        this.player = new Player(300, 300, 0);
+        this.world = null;
+        this.player = null;
+        this.physics = null;
+    }
 
-        let playerInput = new PlayerInput(this.player);
-
-        this.inputs.set('player', playerInput);
-
-        this.physics = new Physics();
-        this.physics.map = this.world.map;
-        this.physics.addEntity(this.player);
-
-        let demoView = new DemoView(this);
-
-        demoView.init();
-
-        this.view = demoView;
+    init () {
+        super.init();
     }
 
     /**
@@ -49,9 +40,13 @@ class PlayState extends State {
     update (delta) {
         this._updateInputs();
 
-        this.physics.update(delta);
+        if (this.physics) {
+            this.physics.update(delta);
+        }
 
-        this.player.update(delta);
+        if (this.world) {
+            this.world.update(delta);
+        }
 
         this._updateView();
     }
@@ -63,7 +58,9 @@ class PlayState extends State {
     }
 
     _updateView () {
-        this.view.update();
+        if (this.view) {
+            this.view.update();
+        }
     }
 }
 

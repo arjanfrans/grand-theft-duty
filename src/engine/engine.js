@@ -71,6 +71,7 @@ module.exports = {
      */
     changeState (name) {
         currentState = states.get(name);
+        currentState.init();
         renderer.view = currentState.view;
     },
 

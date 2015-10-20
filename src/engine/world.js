@@ -6,6 +6,13 @@ class World {
         this.height = height;
 
         this.map = new Map(width, height, 100, 100, 100);
+        this.player = null;
+    }
+
+    update (delta) {
+        if (this.player) {
+            this.player.update(delta);
+        }
     }
 
     get tileWidth () {

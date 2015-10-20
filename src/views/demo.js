@@ -123,7 +123,7 @@ let _createPlayer = function (player) {
     let mesh = new THREE.Mesh(playerGeometry, playerMaterial);
 
     mesh.position.set(player.position.x, player.position.y, player.position.z);
-    mesh.rotation.z = player.angleRadian;
+    mesh.rotation.z = player.angle;
 
     return mesh;
 };
@@ -141,13 +141,16 @@ class DemoView extends View {
 
         _playerTextureAtlas = new TextureAtlas('dude');
 
-        this.player = this.state.player;
-
-        this.playerView = _createPlayer(this.player);
+        this.playerView = null;
+        this.scene = null;
     }
 
     init () {
+        this.scene = new THREE.Scene();
+
         let world = this.state.world;
+
+        this.playerView = _createPlayer(world.player);
 
         let worldWidth = world.width;
         let worldDepth = world.depth;
@@ -192,7 +195,6 @@ class DemoView extends View {
                         block.translateX(tileWidth / 2);
                         block.translateY(tileHeight / 2);
                         block.translateZ(tileDepth / 2);
-
                         this.scene.add(block);
                     }
                 };
@@ -214,14 +216,18 @@ class DemoView extends View {
     }
 
     update () {
-        let tw = this.state.world.map.tileWidth;
-        let th = this.state.world.map.tileHeight;
+        let world = this.state.world;
+        let map = world.map;
+        let player = world.player;
 
-        this.playerView.position.x = this.player.position.x;
-        this.playerView.position.y = this.player.position.y;
-        this.playerView.position.z = this.player.position.z;
+        let tw = map.tileWidth;
+        let th = map.tileHeight;
 
-        this.playerView.rotation.z = this.player.angleRadian;
+        this.playerView.position.x = player.position.x;
+        this.playerView.position.y = player.position.y;
+        this.playerView.position.z = player.position.z;
+
+        this.playerView.rotation.z = player.angle;
 
         this.camera.position.setX(this.playerView.position.x);
         this.camera.position.setY(this.playerView.position.y);

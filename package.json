@@ -4,6 +4,9 @@
   "description": "three.js game",
   "dependencies": {
     "debug": "^2.2.0",
+    "js-2dmath": "git+https://github.com/arjanfrans/js-2dmath.git",
+    "math-utils": "git+https://github.com/arjanfrans/math-utils-js.git",
+    "matter-js": "^0.8.0",
     "phaser": "~2.4.3",
     "stats-js": "git+https://github.com/mrdoob/stats.js",
     "three": "^0.72.0"

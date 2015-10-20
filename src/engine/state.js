@@ -14,10 +14,21 @@ class State {
         this.name = name;
         this.inputs = new Map();
         this.view = null;
+        this.initialized = false;
     }
 
     update () {
         throw new TypeError('State requires update() method');
+    }
+
+    init () {
+        if (!this.initialized) {
+            if (this.view) {
+                this.view.init();
+            }
+
+            this.initialized = true;
+        }
     }
 }
 

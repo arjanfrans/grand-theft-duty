@@ -3,8 +3,8 @@ let debug = require('debug')('game:engine/player');
 let Bodies = require('matter-js').Bodies;
 let Body = require('matter-js').Body;
 
-const SPEED = 300;
-const ROTATION_SPEED = 300;
+const SPEED = 3000;
+const ROTATION_SPEED = 5000;
 
 class Player {
     constructor (x, y, z = 0, width = 32, height = 32) {
@@ -21,6 +21,10 @@ class Player {
         this.width = width;
         this.height = height;
         this.body = Bodies.rectangle(x, y, width, height);
+        this.body.friction = 1;
+        this.body.frictionAir = 1;
+        this.body.mass = 0.2;
+        this.body.restitution = 0;
     }
 
     get position () {
@@ -40,21 +44,21 @@ class Player {
     }
 
     moveUp () {
-        this.velocity.x = -SPEED * Math.cos(this.angle);
-        this.velocity.y = -SPEED * Math.sin(this.angle);
+        this.body.force.x = -SPEED * Math.cos(this.angle);
+        this.body.force.y = -SPEED * Math.sin(this.angle);
     }
 
     moveDown () {
-        this.velocity.x = SPEED * Math.cos(this.angle);
-        this.velocity.y = SPEED * Math.sin(this.angle);
+        this.body.force.x = SPEED * Math.cos(this.angle);
+        this.body.force.y = SPEED * Math.sin(this.angle);
     }
 
     turnRight () {
-        this.angularVelocity = -ROTATION_SPEED * (Math.PI / 180);
+        this.body.torque = -ROTATION_SPEED * 50;
     }
 
     turnLeft () {
-        this.angularVelocity = ROTATION_SPEED * (Math.PI / 180);
+        this.body.torque = ROTATION_SPEED * 50;
     }
 
     get angleDegree () {
@@ -71,21 +75,6 @@ class Player {
     }
 
     update (delta) {
-        if (delta === 0) {
-            return;
-        }
-
-        this.angle += this.angularVelocity * delta;
-
-        // Normalize radian
-        this.angle %= Math.PI * 2;
-
-        if (this.angle < 0) {
-            this.angle = (Math.PI * 2) - this.angle;
-        }
-
-        this.body.position.x += this.velocity.x * delta;
-        this.body.position.y += this.velocity.y * delta;
     }
 }
 

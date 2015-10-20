@@ -1,11 +1,13 @@
 var gulp        = require('gulp');
 var gutil       = require('gulp-util');
+var streamify = require('gulp-streamify');
 var source      = require('vinyl-source-stream');
 var babelify    = require('babelify');
 var watchify    = require('watchify');
 var exorcist    = require('exorcist');
 var browserify  = require('browserify');
 var browserSync = require('browser-sync').create();
+var uglify = require('gulp-uglify');
 
 // Input file.
 watchify.args.debug = true;
@@ -31,6 +33,7 @@ function bundle() {
         })
         .pipe(exorcist('build/js/bundle.js.map'))
         .pipe(source('bundle.js'))
+        .pipe(streamify(uglify()))
         .pipe(gulp.dest('./build/js'))
         .pipe(browserSync.stream({once: true}));
 }

@@ -4,13 +4,15 @@ let Player = require('../engine/player');
 let Physics = require('../engine/physics');
 let PlayerInput = require('../input/player');
 let PlayState = require('../states/play');
+let Map = require('../map');
 
 let PhysicsEngine = require('matter-js').Engine;
 
 module.exports = {
     playState: function () {
         let playState = new PlayState();
-        let world = new World();
+        let map = new Map(5, 5, 100, 100, 100);
+        let world = new World(map);
 
         let player = new Player(300, 300, 0);
         let playerInput = new PlayerInput(player);
@@ -19,10 +21,13 @@ module.exports = {
 
         world.player = player;
 
-        let physics = new Physics();
+        let physics = new Physics(map.totalWidth, map.totalHeight);
 
         physics.addEntity(player);
-        playState.physics = physics;
+
+        physics.addEntities(map.blocks);
+
+        world.physics = physics;
 
         playState.world = world;
 

@@ -4,9 +4,8 @@
   "description": "three.js game",
   "dependencies": {
     "debug": "^2.2.0",
-    "js-2dmath": "git+https://github.com/arjanfrans/js-2dmath.git",
     "math-utils": "git+https://github.com/arjanfrans/math-utils-js.git",
-    "matter-js": "^0.8.0",
+    "matter-js": "git+https://github.com/arjanfrans/matter-js.git",
     "phaser": "~2.4.3",
     "stats-js": "git+https://github.com/mrdoob/stats.js",
     "three": "^0.72.0"
@@ -36,6 +35,8 @@
     "eslint": "^1.6.0",
     "exorcist": "^0.4.0",
     "gulp": "^3.9.0",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^1.4.2",
     "gulp-util": "^3.0.6",
     "pre-commit": "^1.1.1",
     "spritesheet-js": "git+https://github.com/arjanfrans/spritesheet.js.git",

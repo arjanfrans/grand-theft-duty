@@ -1,6 +1,12 @@
 let debug = require('debug')('game:engine/map');
 let Block = require('./engine/block');
 
+function flatten (arr) {
+    return arr.reduce(function (flat, toFlatten) {
+        return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+    }, []);
+}
+
 class Map {
     constructor (width, height, tileWidth, tileHeight, tileDepth) {
         this.width = width;
@@ -58,6 +64,16 @@ class Map {
                 }
             }
         }
+    }
+
+    get blocks () {
+        return this.blocksBetweenIndexes({
+            x: 0, y: 0, z: 0
+        }, {
+            x: this.width - 1,
+            y: this.height - 1,
+            z: this.depth - 1
+        });
     }
 
     get depth () {

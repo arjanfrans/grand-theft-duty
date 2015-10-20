@@ -1,3 +1,5 @@
+let Bodies = require('matter-js').Bodies;
+
 class Block {
     constructor (id = null, position, width, height, depth) {
         this.id = id;
@@ -13,6 +15,8 @@ class Block {
 
         // TODO
         this.collidable = true;
+
+        this.body = Bodies.rectangle(position.x, position.y, width, height, { isStatic: true });
     }
 }
 

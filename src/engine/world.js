@@ -1,17 +1,22 @@
 let Map = require('../map');
 
 class World {
-    constructor (width = 5, height = 5, depth = 5) {
+    constructor (map, width = 5, height = 5, depth = 5) {
         this.width = width;
         this.height = height;
 
-        this.map = new Map(width, height, 100, 100, 100);
+        this.map = map;
         this.player = null;
+        this.physics = null;
     }
 
     update (delta) {
         if (this.player) {
             this.player.update(delta);
+        }
+
+        if (this.physics) {
+            this.physics.update(delta);
         }
     }
 

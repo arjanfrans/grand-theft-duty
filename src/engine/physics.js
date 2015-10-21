@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/physics');
 
-let _calculateRayPosition = function (entity) {
-    let rayDistance = 100;
+let _calculateRayPositions = function (entity) {
+    let rayDistance = 101;
 
     let x = entity.position.x;
     let y = entity.position.y;
@@ -9,15 +9,46 @@ let _calculateRayPosition = function (entity) {
 
     let reverse = entity.reverse ? -1 : 1;
 
+    let start = {};
+    let end = {};
+
     if (Math.abs(entity.velocity.x) > 0) {
         x -= rayDistance * Math.cos(angle) * reverse;
+    } else {
+        x -= rayDistance * reverse;
+    }
+
+    if (entity.velocity.x < 0) {
+        start.x = x;
+        end.x = entity.position.x;
+    } else {
+        start.x = entity.position.x;
+        end.x = x;
     }
 
     if (Math.abs(entity.velocity.y) > 0) {
         y -= rayDistance * Math.sin(angle) * reverse;
+        start.y = y;
+        end.y = entity.position.y;
+    } else {
+        y -= rayDistance * reverse;
+        start.y = entity.position.y;
+        end.y = y;
     }
 
-    return { x: x, y: y, z: entity.position.z };
+    if (entity.velocity.y < 0) {
+        start.y = y;
+        end.y = entity.position.y;
+    } else {
+        start.y = entity.position.y;
+        end.y = y;
+    }
+
+    // No 3d dimension for now
+    start.z = entity.position.z;
+    end.z = entity.position.z;
+
+    return { min: start, max: end };
 };
 let inBlock = false;
 
@@ -33,10 +64,10 @@ class Physics {
 
     update (delta) {
         for (let entity of this.entities) {
-            let ray = _calculateRayPosition(entity);
+            let ray = _calculateRayPositions(entity);
 
-            if (!(entity.position.x === ray.x && entity.position === ray.y)) {
-                let blocks = this.map.blocksBetweenPositions(entity.position, ray);
+            if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {
+                let blocks = this.map.blocksBetweenPositions(ray.min, ray.max);
 
                 let playerBlock = this.map.blockAtPosition(entity.position);
 
@@ -45,9 +76,6 @@ class Physics {
                         inBlock = true;
                         console.log(inBlock);
                     }
-
-                    // console.log(playerBlock.position);
-                    // console.log('view', playerBlock.view.position);
                 } else {
                     if (inBlock) {
                         inBlock = false;
@@ -55,15 +83,10 @@ class Physics {
                     }
                 }
 
-                // if (blocks.length > 0) {
-                //     debug('collision candidates', blocks[0].position, entity.position, ray);
-                // }
+                if (blocks.length > 0) {
+                    debug('collision candidates', blocks.length);
+                }
             }
-
-            // if (!(entity.position.x === ray.x && entity.position.y === ray.y)) {
-            //     debug('old x, y', [entity.position.x, entity.position.y],
-            //             'new x, y', [ray.x, ray.y]);
-            // }
         }
     }
 }

@@ -18,9 +18,9 @@ class Map {
         this.layers = [];
 
         let layer1 = [
-            [0, 0, 0, 0, 1],
+            [0, 1, 0, 0, 1],
             [0, 0, 0, 0, 0],
-            [0, 0, 1, 0, 0],
+            [0, 1, 1, 0, 0],
             [0, 0, 0, 0, 0],
             [1, 0, 0, 0, 0]
         ];
@@ -89,29 +89,25 @@ class Map {
     }
 
     positionToIndex (position) {
-        let x = position.x;
-        let y = position.y;
-        let z = position.z;
+        let x = Math.max(0, position.x);
+        let y = Math.max(0, position.y);
+        let z = Math.max(0, position.z);
 
-        let indexX = x > 0 ? Math.floor(x / this.tileWidth) : 0;
-        let indexY = y > 0 ? Math.floor(y / this.tileHeight) : 0;
-        let indexZ = z > 0 ? Math.floor(z / this.tileDepth) : 0;
+        let index = {};
 
-        return {
-            x: indexX,
-            y: indexY,
-            z: indexZ
-        };
+        index.x = Math.floor(x / this.tileWidth);
+        index.y = Math.floor(y / this.tileHeight);
+        index.z = Math.floor(z / this.tileDepth);
+
+        return index;
     }
 
     blockAtIndex (index) {
-        if (index.x < 0 || index.y < 0 || index.z < 0 ||
-                index.x >= this.width || index.y >= this.height ||
-                index.z >= this.depth) {
-            return null;
-        }
+        let x = Math.min(Math.max(0, index.x), this.width - 1);
+        let y = Math.min(Math.max(0, index.y), this.height - 1);
+        let z = Math.min(Math.max(0, index.z), this.depth - 1);
 
-        return this.layers[index.z][index.y][index.x];
+        return this.layers[z][y][x];
     }
 
     blockAtPosition (position) {
@@ -147,21 +143,6 @@ class Map {
 
         let min = start;
         let max = end;
-
-        if (start.x > end.x) {
-            max.x = start.x;
-            min.x = end.x;
-        }
-
-        if (start.y > end.y) {
-            max.y = start.y;
-            min.y = end.y;
-        }
-
-        if (start.z > end.z) {
-            max.z = start.z;
-            min.z = end.z;
-        }
 
         for (let z = 0; z < this.layers.length; z++) {
             if ((z >= min.z && z <= max.z)) {

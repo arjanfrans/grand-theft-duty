@@ -1,14 +1,15 @@
 let debug = require('debug')('game:engine/player');
 
-let Bodies = require('matter-js').Bodies;
-let Body = require('matter-js').Body;
-
-const SPEED = 3000;
-const ROTATION_SPEED = 5000;
+const SPEED = 300;
+const ROTATION_SPEED = 300;
 
 class Player {
     constructor (x, y, z = 0, width = 32, height = 32) {
-        this.z = z;
+        this.position = {
+            x: x,
+            y: y,
+            z: z
+        };
 
         this.velocity = {
             x: 0,
@@ -18,47 +19,40 @@ class Player {
 
         this.angularVelocity = 0;
 
+        this.angle = 0 * (Math.PI / 180);
+
         this.width = width;
         this.height = height;
-        this.body = Bodies.rectangle(x, y, width, height);
-        this.body.friction = 1;
-        this.body.frictionAir = 1;
-        this.body.mass = 0.2;
-        this.body.restitution = 0;
+        this.collidable = true;
+        this.reverse = false;
     }
 
-    get position () {
-        return {
-            x: this.body.position.x,
-            y: this.body.position.y,
-            z: this.z
-        };
+    get halfWidth () {
+        return this.width / 2;
     }
 
-    set angle (angle) {
-        this.body.angle = angle;
-    }
-
-    get angle () {
-        return this.body.angle;
+    get halfHeight () {
+        return this.height / 2;
     }
 
     moveUp () {
-        this.body.force.x = -SPEED * Math.cos(this.angle);
-        this.body.force.y = -SPEED * Math.sin(this.angle);
+        this.reverse = false;
+        this.velocity.x = -SPEED * Math.cos(this.angle);
+        this.velocity.y = -SPEED * Math.sin(this.angle);
     }
 
     moveDown () {
-        this.body.force.x = SPEED * Math.cos(this.angle);
-        this.body.force.y = SPEED * Math.sin(this.angle);
+        this.reverse = true;
+        this.velocity.x = SPEED * Math.cos(this.angle);
+        this.velocity.y = SPEED * Math.sin(this.angle);
     }
 
     turnRight () {
-        this.body.torque = -ROTATION_SPEED * 50;
+        this.angularVelocity = -ROTATION_SPEED * (Math.PI / 180);
     }
 
     turnLeft () {
-        this.body.torque = ROTATION_SPEED * 50;
+        this.angularVelocity = ROTATION_SPEED * (Math.PI / 180);
     }
 
     get angleDegree () {
@@ -75,6 +69,21 @@ class Player {
     }
 
     update (delta) {
+        if (delta === 0) {
+            return;
+        }
+
+        this.angle += this.angularVelocity * delta;
+
+        // Normalize radian
+        this.angle %= Math.PI * 2;
+
+        if (this.angle < 0) {
+            this.angle = (Math.PI * 2) - this.angle;
+        }
+
+        this.position.x += this.velocity.x * delta;
+        this.position.y += this.velocity.y * delta;
     }
 }
 

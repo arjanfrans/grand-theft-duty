@@ -1,41 +1,69 @@
 let debug = require('debug')('game:engine/physics');
 
-let Engine = require('matter-js').Engine;
-let World = require('matter-js').World;
-let Bodies = require('matter-js').Bodies;
+let _calculateRayPosition = function (entity) {
+    let rayDistance = 100;
 
-let engine = Engine.create({
-    render: {
-        visible: false,
-        options: {
-            enabled: false
-        }
+    let x = entity.position.x;
+    let y = entity.position.y;
+    let angle = entity.angle;
+
+    let reverse = entity.reverse ? -1 : 1;
+
+    if (Math.abs(entity.velocity.x) > 0) {
+        x -= rayDistance * Math.cos(angle) * reverse;
     }
-});
 
-engine.world.gravity.y = 0;
-engine.world.gravity.z = 0;
-engine.world.bounds.min.x = -Number.Infinity;
-engine.world.bounds.min.y = -Number.Infinity;
-engine.world.bounds.max.x = Number.Infinity;
-engine.world.bounds.max.y = Number.Infinity;
+    if (Math.abs(entity.velocity.y) > 0) {
+        y -= rayDistance * Math.sin(angle) * reverse;
+    }
+
+    return { x: x, y: y, z: entity.position.z };
+};
+let inBlock = false;
 
 class Physics {
     constructor () {
+        this.entities = new Set();
+        this.map = null;
     }
 
     addEntity (entity) {
-        World.addBody(engine.world, entity.body);
-    }
-
-    addEntities (entities) {
-        for (let entity of entities) {
-            World.addBody(engine.world, entity.body);
-        }
+        this.entities.add(entity);
     }
 
     update (delta) {
-        Engine.update(engine, delta);
+        for (let entity of this.entities) {
+            let ray = _calculateRayPosition(entity);
+
+            if (!(entity.position.x === ray.x && entity.position === ray.y)) {
+                let blocks = this.map.blocksBetweenPositions(entity.position, ray);
+
+                let playerBlock = this.map.blockAtPosition(entity.position)
+                if (playerBlock) {
+                    if (!inBlock) {
+                        inBlock = true;
+                        console.log(inBlock);
+                    }
+                    // console.log(playerBlock.position);
+                    // console.log('view', playerBlock.view.position);
+                } else {
+                    if (inBlock) {
+                        inBlock = false;
+                        console.log(inBlock);
+                    }
+                }
+
+
+                // if (blocks.length > 0) {
+                //     debug('collision candidates', blocks[0].position, entity.position, ray);
+                // }
+            }
+
+            // if (!(entity.position.x === ray.x && entity.position.y === ray.y)) {
+            //     debug('old x, y', [entity.position.x, entity.position.y],
+            //             'new x, y', [ray.x, ray.y]);
+            // }
+        }
     }
 }
 

@@ -186,15 +186,18 @@ class DemoView extends View {
                     if (tile !== null) {
                         let position = {
                             x: x * tileWidth,
-                            y: layerHeight - (y * tileHeight),
+                            y: y * tileHeight,
                             z: z * tileDepth
                         };
 
                         let block = _createBlock(tile, position, tileWidth, tileHeight, tileDepth);
 
+                        layers[z][y][x].view = block;
+
                         block.translateX(tileWidth / 2);
                         block.translateY(tileHeight / 2);
                         block.translateZ(tileDepth / 2);
+                        console.log(block.position);
                         this.scene.add(block);
                     }
                 };

@@ -18,11 +18,11 @@ class Map {
         this.layers = [];
 
         let layer1 = [
-            [1, 0, 0, 1, 1],
-            [0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 1],
             [0, 0, 0, 0, 0],
             [0, 0, 1, 0, 0],
-            [1, 0, 0, 0, 1]
+            [0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0]
         ];
 
         let layer2 = [
@@ -89,11 +89,13 @@ class Map {
     }
 
     positionToIndex (position) {
-        let {x, y, z} = position;
+        let x = position.x;
+        let y = position.y;
+        let z = position.z;
 
-        let indexX = x > 0 ? Math.floor(x / this.tileWidth) : Math.ceil(x / this.tileWidth);
-        let indexY = y > 0 ? Math.floor(y / this.tileHeight) : Math.ceil(y / this.tileHeight);
-        let indexZ = z > 0 ? Math.floor(z / this.tileDepth) : Math.ceil(z / this.tileDepth);
+        let indexX = x > 0 ? Math.floor(x / this.tileWidth) : 0;
+        let indexY = y > 0 ? Math.floor(y / this.tileHeight) : 0;
+        let indexZ = z > 0 ? Math.floor(z / this.tileDepth) : 0;
 
         return {
             x: indexX,
@@ -143,12 +145,30 @@ class Map {
     blocksBetweenIndexes (start = { x: 0, y: 0, z: 0 }, end = { x: 0, y: 0, z: 0 }) {
         let blocks = [];
 
+        let min = start;
+        let max = end;
+
+        if (start.x > end.x) {
+            max.x = start.x;
+            min.x = end.x;
+        }
+
+        if (start.y > end.y) {
+            max.y = start.y;
+            min.y = end.y;
+        }
+
+        if (start.z > end.z) {
+            max.z = start.z;
+            min.z = end.z;
+        }
+
         for (let z = 0; z < this.layers.length; z++) {
-            if ((z >= start.z && z <= end.z) || (z >= end.z && z <= start.z)) {
+            if ((z >= min.z && z <= max.z)) {
                 for (let y = 0; y < this.layers[z].length; y++) {
-                    if ((y >= start.y && y <= end.y) || (y >= end.y && y <= start.y)) {
+                    if ((y >= min.y && y <= max.y)) {
                         for (let x = 0; x < this.layers[z][y].length; x++) {
-                            if ((x >= start.x && x <= end.x) || (x >= end.x && x <= start.x)) {
+                            if ((x >= min.x && x <= max.x)) {
                                 let index = { x, y, z };
 
                                 let block = this.blockAtIndex(index);

@@ -15,8 +15,7 @@ class Block {
 
         // TODO
         this.collidable = true;
-
-        this.body = Bodies.rectangle(position.x, position.y, width, height, { isStatic: true });
+        this.view = null;
     }
 }
 

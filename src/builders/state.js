@@ -6,8 +6,6 @@ let PlayerInput = require('../input/player');
 let PlayState = require('../states/play');
 let Map = require('../map');
 
-let PhysicsEngine = require('matter-js').Engine;
-
 module.exports = {
     playState: function () {
         let playState = new PlayState();
@@ -24,8 +22,7 @@ module.exports = {
         let physics = new Physics(map.totalWidth, map.totalHeight);
 
         physics.addEntity(player);
-
-        physics.addEntities(map.blocks);
+        physics.map = map;
 
         world.physics = physics;
 

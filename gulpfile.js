@@ -33,7 +33,7 @@ function bundle() {
         })
         .pipe(exorcist('build/js/bundle.js.map'))
         .pipe(source('bundle.js'))
-        .pipe(streamify(uglify()))
+        // .pipe(streamify(uglify()))
         .pipe(gulp.dest('./build/js'))
         .pipe(browserSync.stream({once: true}));
 }

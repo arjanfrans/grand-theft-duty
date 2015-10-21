@@ -1,4 +1,3 @@
-let Bodies = require('matter-js').Bodies;
 
 class Block {
     constructor (id = null, position, width, height, depth) {

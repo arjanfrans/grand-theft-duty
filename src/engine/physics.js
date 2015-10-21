@@ -38,12 +38,14 @@ class Physics {
             if (!(entity.position.x === ray.x && entity.position === ray.y)) {
                 let blocks = this.map.blocksBetweenPositions(entity.position, ray);
 
-                let playerBlock = this.map.blockAtPosition(entity.position)
+                let playerBlock = this.map.blockAtPosition(entity.position);
+
                 if (playerBlock) {
                     if (!inBlock) {
                         inBlock = true;
                         console.log(inBlock);
                     }
+
                     // console.log(playerBlock.position);
                     // console.log('view', playerBlock.view.position);
                 } else {
@@ -52,7 +54,6 @@ class Physics {
                         console.log(inBlock);
                     }
                 }
-
 
                 // if (blocks.length > 0) {
                 //     debug('collision candidates', blocks[0].position, entity.position, ray);

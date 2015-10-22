@@ -26,14 +26,14 @@ class Map {
         ];
 
         let layer2 = [
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1]
         ];
 
-        let tmpLayers = [layer1];
+        let tmpLayers = [layer1, layer2];
 
         this.layers = [];
 

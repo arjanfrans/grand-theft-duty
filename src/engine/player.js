@@ -1,5 +1,8 @@
 let debug = require('debug')('game:engine/player');
 
+let Vector2 = require('math-utils').Vector2;
+let Polygon = require('../utils/geometry/polygon');
+
 const SPEED = 300;
 const ROTATION_SPEED = 300;
 
@@ -25,6 +28,23 @@ class Player {
         this.height = height;
         this.collidable = true;
         this.reverse = false;
+    }
+
+    get polygon () {
+        return new Polygon(this.position, [
+            new Vector2(this.x - (this.width / 2), this.y - (this.height / 2)),
+            new Vector2(this.x + (this.width / 2), this.y - (this.height / 2)),
+            new Vector2(this.x - (this.width / 2), this.y + (this.height / 2)),
+            new Vector2(this.x + (this.width / 2), this.y + (this.height / 2))
+        ]);
+    }
+
+    get x () {
+        return this.position.x;
+    }
+
+    get y () {
+        return this.position.y;
     }
 
     get halfWidth () {

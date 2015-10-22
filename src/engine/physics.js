@@ -1,7 +1,8 @@
 let debug = require('debug')('game:engine/physics');
+let Sat = require('./sat');
 
 let _calculateRayPositions = function (entity) {
-    let rayDistance = 101;
+    let rayDistance = 10;
 
     let x = entity.position.x;
     let y = entity.position.y;
@@ -55,7 +56,20 @@ let inBlock = false;
 
 let _detectWalls = function (entity, nextPosition, blocks) {
     for (let block of blocks) {
+        let polygons = block.wallPolygons;
 
+        for (let polygon of polygons) {
+            console.log(polygon);
+            if (Sat.polygonsOverlap(polygon, entity.polygon)) {
+                // entity.position.x = polygon.vertices[0].x;
+                // entity.position.y = polygon.vertices[0].y;
+
+                entity.velocity.x = 0;
+                entity.velocity.y = 0;
+                console.log('collided');
+                break;
+            }
+        }
     }
 };
 
@@ -97,9 +111,9 @@ class Physics {
                 //     }
                 // }
 
-                if (blocks.length > 0) {
-                    debug('collision candidates', blocks.length);
-                }
+                // if (blocks.length > 0) {
+                //     debug('collision candidates', blocks.length);
+                // }
             }
         }
     }

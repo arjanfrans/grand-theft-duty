@@ -2,7 +2,7 @@ let debug = require('debug')('game:engine/physics');
 let Sat = require('./sat');
 
 let _calculateRayPositions = function (entity) {
-    let rayDistance = 10;
+    let rayDistance = 100;
 
     let x = entity.position.x;
     let y = entity.position.y;
@@ -59,8 +59,7 @@ let _detectWalls = function (entity, nextPosition, blocks) {
         let polygons = block.wallPolygons;
 
         for (let polygon of polygons) {
-            console.log(polygon);
-            if (Sat.polygonsOverlap(polygon, entity.polygon)) {
+            if (Sat.polygonsOverlap(entity.polygon, polygon)) {
                 // entity.position.x = polygon.vertices[0].x;
                 // entity.position.y = polygon.vertices[0].y;
 

@@ -11,12 +11,12 @@ let Vector2 = require('math-utils').Vector2;
  * @return {object} min and max values on the given axis.
  */
 let _project = function (polygon, axis) {
-    axis = axis.normalize();
+    axis = axis.clone().normalize();
 
     let min = polygon.vertices[0].dot(axis);
     let max = min;
 
-    for (let i = 0; i < polygon.length; i++) {
+    for (let i = 0; i < polygon.vertices.length; i++) {
         let projection = polygon.vertices[i].dot(axis);
 
         if (projection < min) {

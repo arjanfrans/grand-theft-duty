@@ -34,8 +34,8 @@ class Player {
         return new Polygon(this.position, [
             new Vector2(this.x - (this.width / 2), this.y - (this.height / 2)),
             new Vector2(this.x + (this.width / 2), this.y - (this.height / 2)),
-            new Vector2(this.x - (this.width / 2), this.y + (this.height / 2)),
-            new Vector2(this.x + (this.width / 2), this.y + (this.height / 2))
+            new Vector2(this.x + (this.width / 2), this.y + (this.height / 2)),
+            new Vector2(this.x - (this.width / 2), this.y + (this.height / 2))
         ]);
     }
 

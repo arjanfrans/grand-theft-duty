@@ -18,11 +18,11 @@ class Map {
         this.layers = [];
 
         let layer1 = [
-            [0, 1, 0, 0, 1],
             [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0],
-            [1, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1]
         ];
 
         let layer2 = [
@@ -33,7 +33,7 @@ class Map {
             [0, 0, 0, 0, 1]
         ];
 
-        let tmpLayers = [layer1, layer2];
+        let tmpLayers = [layer1];
 
         this.layers = [];
 

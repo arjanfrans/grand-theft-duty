@@ -136,7 +136,8 @@ class DemoView extends View {
         _tilesTextureAtlas = new TextureAtlas('tiles');
         _tilesMaterial = new THREE.MeshLambertMaterial({
             map: _tilesTextureAtlas.texture,
-            transparent: true
+            transparent: true,
+            side: THREE.DoubleSide
         });
 
         _playerTextureAtlas = new TextureAtlas('dude');

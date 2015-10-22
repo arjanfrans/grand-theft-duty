@@ -19,12 +19,16 @@ class Block {
         this.view = null;
     }
 
+    get position2D () {
+        return new Vector2(this.x, this.y);
+    }
+
     get wallPolygons () {
         let polygons = [];
 
         if (this.south) {
             polygons.push(
-                new Polygon(this.position, [
+                new Polygon(this.position2D, [
                     new Vector2(this.x, this.y),
                     new Vector2(this.x + this.width, this.y)
                 ])
@@ -33,7 +37,7 @@ class Block {
 
         if (this.north) {
             polygons.push(
-                new Polygon(this.position, [
+                new Polygon(this.position2D, [
                     new Vector2(this.x, this.y + this.height),
                     new Vector2(this.x + this.width, this.y + this.height)
                 ])
@@ -42,7 +46,7 @@ class Block {
 
         if (this.east) {
             polygons.push(
-                new Polygon(this.position, [
+                new Polygon(this.position2D, [
                     new Vector2(this.x + this.width, this.y),
                     new Vector2(this.x + this.width, this.y + this.height)
                 ])
@@ -51,7 +55,7 @@ class Block {
 
         if (this.west) {
             polygons.push(
-                new Polygon(this.position, [
+                new Polygon(this.position2D, [
                     new Vector2(this.x, this.y),
                     new Vector2(this.x, this.y + this.height)
                 ])

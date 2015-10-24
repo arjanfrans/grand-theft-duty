@@ -1,7 +1,6 @@
 let debug = require('debug')('game:engine/player');
 
-let Vector2 = require('math-utils').Vector2;
-let Polygon = require('../utils/geometry/polygon');
+let polygon = require('./sat/polygon');
 
 const SPEED = 300;
 const ROTATION_SPEED = 300;
@@ -31,12 +30,16 @@ class Player {
     }
 
     get polygon () {
-        return new Polygon(this.position, [
-            new Vector2(this.x - (this.width / 2), this.y - (this.height / 2)),
-            new Vector2(this.x + (this.width / 2), this.y - (this.height / 2)),
-            new Vector2(this.x + (this.width / 2), this.y + (this.height / 2)),
-            new Vector2(this.x - (this.width / 2), this.y + (this.height / 2))
+        let p = polygon.create(this.position, [
+            { x: 0, y: 0 },
+            { x: 0, y: this.height },
+            { x: this.width, y: this.height },
+            { x: this.width, y: 0 }
         ]);
+
+        polygon.setAngle(p, this.angle);
+
+        return p;
     }
 
     get x () {

@@ -1,5 +1,4 @@
-let Polygon = require('../utils/geometry/polygon');
-let Vector2 = require('math-utils').Vector2;
+let polygon = require('./sat/polygon');
 
 class Block {
     constructor (id = null, position, width, height, depth) {
@@ -7,11 +6,11 @@ class Block {
         this.width = width;
         this.height = height;
         this.depth = depth;
-        this.north = 'animation_water_0003';
-        this.south = 'roof1_edge';
-        this.west = 'grass_center';
+        // this.west = 'animation_water_0003';
         this.east = 'roof1_edge';
-        this.top = 'roof1_edge';
+        // this.south = 'grass_center';
+        // this.north = 'roof1_edge';
+        // this.top = 'roof1_edge';
         this.position = position;
 
         // TODO
@@ -19,45 +18,41 @@ class Block {
         this.view = null;
     }
 
-    get position2D () {
-        return new Vector2(this.x, this.y);
-    }
-
     get wallPolygons () {
         let polygons = [];
 
-        if (this.south) {
+        if (this.west) {
             polygons.push(
-                new Polygon(this.position2D, [
-                    new Vector2(this.x, this.y),
-                    new Vector2(this.x + this.width, this.y)
-                ])
-            );
-        }
-
-        if (this.north) {
-            polygons.push(
-                new Polygon(this.position2D, [
-                    new Vector2(this.x, this.y + this.height),
-                    new Vector2(this.x + this.width, this.y + this.height)
+                polygon.create(this.position, [
+                    { x: 0, y: 0 },
+                    { x: this.width, y: 0 }
                 ])
             );
         }
 
         if (this.east) {
             polygons.push(
-                new Polygon(this.position2D, [
-                    new Vector2(this.x + this.width, this.y),
-                    new Vector2(this.x + this.width, this.y + this.height)
+                polygon.create(this.position, [
+                    { x: 0, y: this.height },
+                    { x: this.width, y: this.height }
                 ])
             );
         }
 
-        if (this.west) {
+        if (this.south) {
             polygons.push(
-                new Polygon(this.position2D, [
-                    new Vector2(this.x, this.y),
-                    new Vector2(this.x, this.y + this.height)
+                polygon.create(this.position, [
+                    { x: this.width, y: 0 },
+                    { x: this.width, y: this.height }
+                ])
+            );
+        }
+
+        if (this.north) {
+            polygons.push(
+                polygon.create(this.position, [
+                    { x: 0, y: 0 },
+                    { x: 0, y: this.height }
                 ])
             );
         }

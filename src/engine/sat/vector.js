@@ -61,7 +61,7 @@ function rotate (v, angle) {
   };
 }
 
-function reverse (v) {
+function negate (v) {
   return {
     x: -v.x,
     y: -v.y
@@ -78,7 +78,7 @@ function project (v1, v2) {
 }
 
 function reflect (v, axis) {
-  return reverse(scale(project(v, axis), 2));
+  return negate(scale(project(v, axis), 2));
 }
 
 module.exports = {
@@ -94,7 +94,7 @@ module.exports = {
     dot: dot,
     perp: perp,
     rotate: rotate,
-    reverse: reverse,
+    negate: negate,
     project: project,
     reflect: reflect
 };

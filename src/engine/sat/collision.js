@@ -95,44 +95,29 @@ let _flattenPointsOn = function (points, normal) {
     };
 };
 
-let _isSeparatingAxis = function (aPos, bPos, aPoints, bPoints, axis) {
-    let offsetV = v.sub(bPos, aPos);
+let _isSeparatingAxis = function (polygonA, polygonB, axis) {
+    let offsetV = v.sub(polygonB.position, polygonA.position);
     let projectedOffset = v.dot(offsetV, axis);
-    let rangeA = _flattenPointsOn(aPoints, axis);
-    let rangeB = _flattenPointsOn(bPoints, axis);
+
+    // Ensure normal is facing away from polygonA
+    let aPos = polygonA.position;
+    let bPos = polygonB.position;
+
+    if (aPos.x < bPos.x) {
+        axis = { x: -axis.x, y: axis.y };
+    }
+
+    if (aPos.y > bPos.y) {
+        axis = { x: axis.x, y: -axis.y };
+    }
+
+    let rangeA = _flattenPointsOn(polygonA.calcPoints, axis);
+    let rangeB = _flattenPointsOn(polygonB.calcPoints, axis);
 
     rangeB.min += projectedOffset;
     rangeB.max += projectedOffset;
 
     return (rangeA.min > rangeB.max || rangeB.min > rangeA.max);
-};
-
-let _getOverlap = function (aPos, bPos, aPoints, bPoints, axis) {
-    let offsetV = v.sub(bPos, aPos);
-    let projectedOffset = v.dot(offsetV, axis);
-    let rangeA = _flattenPointsOn(aPoints, axis);
-    let rangeB = _flattenPointsOn(bPoints, axis);
-
-    rangeB.min += projectedOffset;
-    rangeB.max += projectedOffset;
-
-    if (!(rangeA.min > rangeB.max || rangeB.min > rangeA.max)) {
-        return Math.min(rangeA.max, rangeB.max) - Math.min(rangeA.min, rangeB.min);
-    };
-
-    return 0;
-};
-
-let _contains = function (aPos, bPos, aPoints, bPoints, axis) {
-    let offsetV = v.sub(bPos, aPos);
-    let projectedOffset = v.dot(offsetV, axis);
-    let rangeA = _flattenPointsOn(aPoints, axis);
-    let rangeB = _flattenPointsOn(bPoints, axis);
-
-    rangeB.min += projectedOffset;
-    rangeB.max += projectedOffset;
-
-    return rangeB.min > rangeA.min && rangeB.max < rangeA.max;
 };
 
 let _testPolygonPolygon = function (a, b) {
@@ -141,44 +126,19 @@ let _testPolygonPolygon = function (a, b) {
     let bPoints = b.calcPoints;
     let bLen = bPoints.length;
 
-    let largestOverlap = Number.MAX_VALUE;
-    let smallestAxis = null;
-
-    for (let i = 0; i < aLen; i += 1) {
-        if (_isSeparatingAxis(a.position, b.position, aPoints, bPoints, a.normals[i])) {
-            return null;
-        } else {
-            let overlap = _getOverlap(a.position, b.position, aPoints, bPoints, a.normals[i]);
-
-            if ((_contains(a.position, b.positon, aPoints, bPoints, a.normals[i])) ||
-                    (_contains(b.position, a.positon, bPoints, aPoints, b.normals[i]))) {
-                let mins = Math.abs()
-            }
-
-            if (overlap < largestOverlap) {
-                largestOverlap = overlap;
-                smallestAxis = a.normals[i];
-            }
+    for (let i = 0; i < aLen; i++) {
+        if (_isSeparatingAxis(a, b, a.normals[i])) {
+            return false;
         }
     }
 
-    for (let i = 0;i < bLen; i += 1) {
-        if (_isSeparatingAxis(a.position, b.position, aPoints, bPoints, b.normals[i])) {
-            return null;
-        } else {
-            let overlap = _getOverlap(a.position, b.position, aPoints, bPoints, a.normals[i]);
-
-            if (overlap < largestOverlap) {
-                largestOverlap = overlap;
-                smallestAxis = a.normals[i];
-            }
+    for (let i = 0;i < bLen; i++) {
+        if (_isSeparatingAxis(a, b, b.normals[i])) {
+            return false;
         }
     }
 
-    return {
-        overlap: largestOverlap,
-        axis: smallestAxis
-    };
+    return true;
 };
 
 let _testVectorCircle = function (point, circle) {

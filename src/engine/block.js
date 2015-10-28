@@ -6,9 +6,9 @@ class Block {
         this.width = width;
         this.height = height;
         this.depth = depth;
-        // this.west = 'animation_water_0003';
-        this.east = 'roof1_edge';
-        // this.south = 'grass_center';
+        this.west = 'animation_water_0003';
+        // this.east = 'roof1_edge';
+        this.south = 'grass_center';
         // this.north = 'roof1_edge';
         // this.top = 'roof1_edge';
         this.position = position;

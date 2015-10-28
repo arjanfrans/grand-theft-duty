@@ -54,7 +54,7 @@ function perp(v) {
   };
 }
 
-function rotate(v, angle) {
+function rotate (v, angle) {
   return {
     x: v.x * Math.cos(angle) - v.y * Math.sin(angle),
     y: v.x * Math.sin(angle) + v.y * Math.cos(angle)

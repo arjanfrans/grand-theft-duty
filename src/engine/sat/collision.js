@@ -89,7 +89,10 @@ let _flattenPointsOn = function (points, normal) {
         if (d > max) { max = d; }
     }
 
-    return [min, max];
+    return {
+        min: min,
+        max: max
+    };
 };
 
 let _isSeparatingAxis = function (aPos, bPos, aPoints, bPoints, axis) {
@@ -98,10 +101,38 @@ let _isSeparatingAxis = function (aPos, bPos, aPoints, bPoints, axis) {
     let rangeA = _flattenPointsOn(aPoints, axis);
     let rangeB = _flattenPointsOn(bPoints, axis);
 
-    rangeB[0] += projectedOffset;
-    rangeB[1] += projectedOffset;
+    rangeB.min += projectedOffset;
+    rangeB.max += projectedOffset;
 
-    return (rangeA[0] > rangeB[1] || rangeB[0] > rangeA[1]);
+    return (rangeA.min > rangeB.max || rangeB.min > rangeA.max);
+};
+
+let _getOverlap = function (aPos, bPos, aPoints, bPoints, axis) {
+    let offsetV = v.sub(bPos, aPos);
+    let projectedOffset = v.dot(offsetV, axis);
+    let rangeA = _flattenPointsOn(aPoints, axis);
+    let rangeB = _flattenPointsOn(bPoints, axis);
+
+    rangeB.min += projectedOffset;
+    rangeB.max += projectedOffset;
+
+    if (!(rangeA.min > rangeB.max || rangeB.min > rangeA.max)) {
+        return Math.min(rangeA.max, rangeB.max) - Math.min(rangeA.min, rangeB.min);
+    };
+
+    return 0;
+};
+
+let _contains = function (aPos, bPos, aPoints, bPoints, axis) {
+    let offsetV = v.sub(bPos, aPos);
+    let projectedOffset = v.dot(offsetV, axis);
+    let rangeA = _flattenPointsOn(aPoints, axis);
+    let rangeB = _flattenPointsOn(bPoints, axis);
+
+    rangeB.min += projectedOffset;
+    rangeB.max += projectedOffset;
+
+    return rangeB.min > rangeA.min && rangeB.max < rangeA.max;
 };
 
 let _testPolygonPolygon = function (a, b) {
@@ -110,19 +141,44 @@ let _testPolygonPolygon = function (a, b) {
     let bPoints = b.calcPoints;
     let bLen = bPoints.length;
 
+    let largestOverlap = Number.MAX_VALUE;
+    let smallestAxis = null;
+
     for (let i = 0; i < aLen; i += 1) {
         if (_isSeparatingAxis(a.position, b.position, aPoints, bPoints, a.normals[i])) {
-            return false;
+            return null;
+        } else {
+            let overlap = _getOverlap(a.position, b.position, aPoints, bPoints, a.normals[i]);
+
+            if ((_contains(a.position, b.positon, aPoints, bPoints, a.normals[i])) ||
+                    (_contains(b.position, a.positon, bPoints, aPoints, b.normals[i]))) {
+                let mins = Math.abs()
+            }
+
+            if (overlap < largestOverlap) {
+                largestOverlap = overlap;
+                smallestAxis = a.normals[i];
+            }
         }
     }
 
     for (let i = 0;i < bLen; i += 1) {
         if (_isSeparatingAxis(a.position, b.position, aPoints, bPoints, b.normals[i])) {
-            return false;
+            return null;
+        } else {
+            let overlap = _getOverlap(a.position, b.position, aPoints, bPoints, a.normals[i]);
+
+            if (overlap < largestOverlap) {
+                largestOverlap = overlap;
+                smallestAxis = a.normals[i];
+            }
         }
     }
 
-    return true;
+    return {
+        overlap: largestOverlap,
+        axis: smallestAxis
+    };
 };
 
 let _testVectorCircle = function (point, circle) {

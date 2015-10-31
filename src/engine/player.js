@@ -1,6 +1,7 @@
 let debug = require('debug')('game:engine/player');
 
-let polygon = require('./sat/polygon');
+let Polygon = require('./sat/Polygon');
+let Vector = require('./sat/Vector');
 
 const SPEED = 300;
 const ROTATION_SPEED = 300;
@@ -30,14 +31,15 @@ class Player {
     }
 
     get polygon () {
-        let p = polygon.create(this.position, [
-            { x: 0, y: 0 },
-            { x: 0, y: this.height },
-            { x: this.width, y: this.height },
-            { x: this.width, y: 0 }
+        let position = new Vector(this.x, this.y);
+        let p = new Polygon(position, [
+            new Vector(0, 0),
+            new Vector(0, this.height),
+            new Vector(this.width, this.height),
+            new Vector(this.width, 0)
         ]);
 
-        polygon.setAngle(p, this.angle);
+        p.setAngle(p, this.angle);
 
         return p;
     }

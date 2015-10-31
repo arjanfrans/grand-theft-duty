@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/physics');
 
-let Collision = require('./sat/collision');
+let SAT = require('./sat/SAT');
 
 let _calculateRayPositions = function (entity) {
     let rayDistance = 100;
@@ -60,7 +60,8 @@ let _detectWalls = function (entity, nextPosition, blocks) {
         let polygons = block.wallPolygons;
 
         for (let polygon of polygons) {
-            if (Collision.test(entity.polygon, polygon)) {
+            console.log(entity.position, polygon.position);
+            if (SAT.testPolygonPolygon(entity.polygon, polygon)) {
                 console.log('collision');
                 entity.velocity.x = 0;
                 entity.velocity.y = 0;
@@ -86,7 +87,8 @@ class Physics {
             let ray = _calculateRayPositions(entity);
 
             if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {
-                let blocks = this.map.blocksBetweenPositions(ray.min, ray.max);
+                // let blocks = this.map.blocksBetweenPositions(ray.min, ray.max);
+                let blocks = this.map.blocksBetweenPositions({ x: 0, y: 0, z: 0}, { x: 900, y: 900, z: 0 } );
 
                 let nextEntityPosition = {
                     x: entity.position.x + (entity.velocity.x * delta),

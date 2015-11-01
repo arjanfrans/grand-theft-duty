@@ -54,8 +54,6 @@ let _calculateRayPositions = function (entity) {
     return { min: start, max: end };
 };
 
-let inBlock = false;
-
 let _detectWalls = function (entity, nextPosition, blocks) {
     for (let block of blocks) {
         let polygons = block.wallPolygons;
@@ -64,11 +62,23 @@ let _detectWalls = function (entity, nextPosition, blocks) {
             let response = new CollisionResponse();
 
             if (SAT.testPolygonPolygon(entity.polygon, polygon, response)) {
-                console.log('collision', response);
-                entity.velocity.x = 0;
-                entity.velocity.y = 0;
+                // console.log('collision', response);
+                //
+                if (Math.abs(response.overlapV.x) > 0) {
+                    entity.velocity.x = 0;
+                }
 
-                // break;
+                if (Math.abs(response.overlapV.y) > 0) {
+                    entity.velocity.y = 0;
+                }
+
+                //
+                //
+                // console.log(response)
+                // entity.position.x -= response.overlapV.x;
+                // entity.position.y -= response.overlapV.y;
+                //
+                break;
             }
         }
     }
@@ -89,8 +99,8 @@ class Physics {
             let ray = _calculateRayPositions(entity);
 
             if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {
-                // let blocks = this.map.blocksBetweenPositions(ray.min, ray.max);
-                let blocks = this.map.blocksBetweenPositions({ x: 0, y: 0, z: 0}, { x: 900, y: 900, z: 0 } );
+                let blocks = this.map.blocksBetweenPositions(ray.min, ray.max);
+                // let blocks = this.map.blocksBetweenPositions({ x: 0, y: 0, z: 0}, { x: 900, y: 900, z: 0 } );
 
                 let nextEntityPosition = {
                     x: entity.position.x + (entity.velocity.x * delta),
@@ -98,24 +108,6 @@ class Physics {
                 };
 
                 _detectWalls(entity, nextEntityPosition, blocks);
-
-                // let playerBlock = this.map.blockAtPosition(entity.position);
-                //
-                // if (playerBlock) {
-                //     if (!inBlock) {
-                //         inBlock = true;
-                //         console.log(inBlock);
-                //     }
-                // } else {
-                //     if (inBlock) {
-                //         inBlock = false;
-                //         console.log(inBlock);
-                //     }
-                // }
-
-                // if (blocks.length > 0) {
-                //     debug('collision candidates', blocks.length);
-                // }
             }
         }
     }

@@ -3,7 +3,7 @@ let debug = require('debug')('game:engine/player');
 let Polygon = require('./sat/Polygon');
 let Vector = require('./sat/Vector');
 
-const SPEED = 300;
+const SPEED = 200;
 const ROTATION_SPEED = 300;
 
 class Player {
@@ -108,6 +108,7 @@ class Player {
         }
 
         this.position.x += this.velocity.x * delta;
+
         this.position.y += this.velocity.y * delta;
     }
 }

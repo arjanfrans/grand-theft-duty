@@ -7,16 +7,15 @@ class World {
 
         this.map = map;
         this.player = null;
-        this.physics = null;
     }
 
     update (delta) {
-        if (this.player) {
-            this.player.update(delta);
-        }
-
         if (this.physics) {
             this.physics.update(delta);
+        }
+
+        if (this.player) {
+            this.player.update(delta);
         }
     }
 

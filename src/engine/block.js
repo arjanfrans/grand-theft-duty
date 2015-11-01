@@ -20,33 +20,53 @@ class Block {
     }
 
     get wallPolygons () {
+        // If fully closed block (nothing should be inside it)
+        if (this.top && this.west && this.east && this.south && this.north) {
+            return [
+                new Polygon(new Vector(this.x, this.y), [
+                    new Vector(0, 0),
+                    new Vector(this.width, 0),
+                    new Vector(this.width, this.height),
+                    new Vector(0, this.height)
+                ])
+            ];
+        }
+
         let polygons = [];
 
         if (this.west) {
             polygons.push(new Polygon(new Vector(this.x, this.y), [
                 new Vector(0, 0),
-                new Vector(this.width, 0)
+                new Vector(this.width, 0),
+                // new Vector(this.width, 0.1),
+                // new Vector(0, 0.1)
             ]));
         }
 
         if (this.east) {
             polygons.push(new Polygon(new Vector(this.x, this.y + this.height), [
                 new Vector(0, 0),
-                new Vector(this.width, 0)
+                new Vector(this.width, 0),
+                // new Vector(this.width, 0.1),
+                // new Vector(0, 0.1)
             ]));
         }
 
         if (this.south) {
             polygons.push(new Polygon(new Vector(this.x + this.width, this.y), [
                 new Vector(0, 0),
-                new Vector(0, this.height)
+                new Vector(0, this.height),
+                // new Vector(-0.1, this.height),
+                // new Vector(-0.1, 0)
             ]));
         }
 
         if (this.north) {
             polygons.push(new Polygon(new Vector(this.x, this.y), [
                 new Vector(0, 0),
-                new Vector(0, this.height)
+                new Vector(0, this.height),
+                // new Vector(-0.1, this.height),
+                // new Vector(-0.1, 0)
             ]));
         }
 

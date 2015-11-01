@@ -39,7 +39,7 @@ class Player {
             new Vector(this.width, 0)
         ]);
 
-        p.setAngle(p, this.angle);
+        p.setAngle(this.angle);
 
         return p;
     }

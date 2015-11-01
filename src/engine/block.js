@@ -8,7 +8,7 @@ class Block {
         this.height = height;
         this.depth = depth;
         // this.west = 'animation_water_0003';
-        // this.east = 'roof1_edge';
+        this.east = 'roof1_edge';
         this.south = 'grass_center';
         // this.north = 'roof1_edge';
         // this.top = 'roof1_edge';
@@ -32,14 +32,12 @@ class Block {
         //     );
         // }
         //
-        // if (this.east) {
-        //     polygons.push(
-        //         polygon.create({ x: this.x, y: this.y + this.height }, [
-        //             { x: 0, y: 0 },
-        //             { x: this.width, y: 0 }
-        //         ])
-        //     );
-        // }
+        if (this.east) {
+            polygons.push(new Polygon(new Vector(this.x, this.y + this.height), [
+                new Vector(0, 0),
+                new Vector(this.width, 0)
+            ]));
+        }
 
         if (this.south) {
             polygons.push(new Polygon(position, [

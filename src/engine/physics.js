@@ -60,7 +60,6 @@ let _detectWalls = function (entity, nextPosition, blocks) {
         let polygons = block.wallPolygons;
 
         for (let polygon of polygons) {
-            console.log(entity.position, polygon.position);
             if (SAT.testPolygonPolygon(entity.polygon, polygon)) {
                 console.log('collision');
                 entity.velocity.x = 0;

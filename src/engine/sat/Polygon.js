@@ -1,5 +1,11 @@
 let Vector = require('./Vector');
-let Box = require('./Box');
+
+let _boxToPolygon = function (position, width, height) {
+    return new Polygon(new Vector(position.x, position.y), [
+        new Vector(), new Vector(width, 0),
+        new Vector(width, height), new Vector(0, height)
+    ]);
+};
 
 // ## Polygon
 //
@@ -21,7 +27,7 @@ let Box = require('./Box');
  * @constructor
  */
 class Polygon {
-    constructor (position = new Vecotr(), vertices = []) {
+    constructor (position = new Vector(), vertices = []) {
         this.position = position;
         this.angle = 0;
         this.offset = new Vector();
@@ -60,7 +66,7 @@ class Polygon {
         this._compute();
 
         return this;
-    };
+    }
 
     /**
      * Set the current rotation angle of the polygon.
@@ -73,7 +79,7 @@ class Polygon {
         this._compute();
 
         return this;
-    };
+    }
 
     /**
      * Set the current offset to apply to the `vertices` before applying the `angle` rotation.
@@ -86,7 +92,7 @@ class Polygon {
         this._compute();
 
         return this;
-    };
+    }
 
     /**
      * Rotates this polygon counter-clockwise around the origin of *its local coordinate system* (i.e. `pos`).
@@ -105,7 +111,7 @@ class Polygon {
         this._compute();
 
         return this;
-    };
+    }
 
     /**
      * Translates the vertices of this polygon by a specified amount relative to the origin of *its own coordinate
@@ -132,7 +138,7 @@ class Polygon {
         this._compute();
 
         return this;
-    };
+    }
 
     /**
      * Computes the calculated collision polygon. Applies the `angle` and `offset` to the original vertices then recalculates the
@@ -161,13 +167,13 @@ class Polygon {
         let len = vertices.length;
 
         for (let i = 0; i < len; i++) {
-            let computedVertices = computedVertices[i].copy(vertices[i]);
+            let computedVertex = computedVertices[i].copy(vertices[i]);
 
-            computedVertices.x += offset.x;
-            computedVertices.y += offset.y;
+            computedVertex.x += offset.x;
+            computedVertex.y += offset.y;
 
             if (angle !== 0) {
-                computedVertices.rotate(angle);
+                computedVertex.rotate(angle);
             }
         }
 
@@ -181,7 +187,7 @@ class Polygon {
         }
 
         return this;
-    };
+    }
 
     /**
      * Compute the axis-aligned bounding box. Any current state
@@ -215,8 +221,8 @@ class Polygon {
             }
         }
 
-        return new Box(this.position.clone().add(new Vector(xMin, yMin)), xMax - xMin, yMax - yMin).toPolygon();
-    };
+        return boxToPolygon(this.position.clone().add(new Vector(xMin, yMin)), xMax - xMin, yMax - yMin);
+    }
 }
 
 module.exports = Polygon;

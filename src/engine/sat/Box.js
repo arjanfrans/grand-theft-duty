@@ -1,4 +1,4 @@
-let Polygon = require('./Polygon');
+let Polygon = require('./Polygon.js');
 let Vector = require('./Vector');
 
 // ## Box
@@ -33,7 +33,7 @@ class Box {
             new Vector(), new Vector(w, 0),
             new Vector(w, h), new Vector(0, h)
         ]);
-    };
+    }
 }
 
 module.exports = Box;

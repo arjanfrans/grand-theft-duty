@@ -33,10 +33,10 @@ class Player {
     get polygon () {
         let position = new Vector(this.x, this.y);
         let p = new Polygon(position, [
-            new Vector(0, 0),
-            new Vector(0, this.height),
-            new Vector(this.width, this.height),
-            new Vector(this.width, 0)
+            new Vector(-this.halfWidth, -this.halfHeight),
+            new Vector(-this.halfWidth, this.halfHeight),
+            new Vector(this.halfWidth, this.halfHeight),
+            new Vector(this.halfWidth, 0)
         ]);
 
         p.setAngle(this.angle);

@@ -7,10 +7,10 @@ class Block {
         this.width = width;
         this.height = height;
         this.depth = depth;
-        // this.west = 'animation_water_0003';
+        this.west = 'animation_water_0003';
         this.east = 'roof1_edge';
         this.south = 'grass_center';
-        // this.north = 'roof1_edge';
+        this.north = 'roof1_edge';
         // this.top = 'roof1_edge';
         this.position = position;
 
@@ -20,18 +20,15 @@ class Block {
     }
 
     get wallPolygons () {
-        let position = new Vector(this.x, this.y);
         let polygons = [];
-        //
-        // if (this.west) {
-        //     polygons.push(
-        //         polygon.create(this.position, [
-        //             { x: 0, y: 0 },
-        //             { x: this.width, y: 0 }
-        //         ])
-        //     );
-        // }
-        //
+
+        if (this.west) {
+            polygons.push(new Polygon(new Vector(this.x, this.y), [
+                new Vector(0, 0),
+                new Vector(this.width, 0)
+            ]));
+        }
+
         if (this.east) {
             polygons.push(new Polygon(new Vector(this.x, this.y + this.height), [
                 new Vector(0, 0),
@@ -40,20 +37,18 @@ class Block {
         }
 
         if (this.south) {
-            polygons.push(new Polygon(position, [
+            polygons.push(new Polygon(new Vector(this.x + this.width, this.y), [
                 new Vector(0, 0),
                 new Vector(0, this.height)
             ]));
         }
 
-        // if (this.north) {
-        //     polygons.push(
-        //         polygon.create({ x: this.x, y: this.y }, [
-        //             { x: 0, y: 0 },
-        //             { x: 0, y: this.height }
-        //         ])
-        //     );
-        // }
+        if (this.north) {
+            polygons.push(new Polygon(new Vector(this.x, this.y), [
+                new Vector(0, 0),
+                new Vector(0, this.height)
+            ]));
+        }
 
         return polygons;
     }

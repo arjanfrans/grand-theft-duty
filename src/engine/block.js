@@ -38,8 +38,8 @@ class Block {
             polygons.push(new Polygon(new Vector(this.x, this.y), [
                 new Vector(0, 0),
                 new Vector(this.width, 0),
-                // new Vector(this.width, 0.1),
-                // new Vector(0, 0.1)
+                new Vector(this.width, 1),
+                new Vector(0, 1)
             ]));
         }
 
@@ -47,8 +47,8 @@ class Block {
             polygons.push(new Polygon(new Vector(this.x, this.y + this.height), [
                 new Vector(0, 0),
                 new Vector(this.width, 0),
-                // new Vector(this.width, 0.1),
-                // new Vector(0, 0.1)
+                new Vector(this.width, 1),
+                new Vector(0, 1)
             ]));
         }
 
@@ -56,8 +56,8 @@ class Block {
             polygons.push(new Polygon(new Vector(this.x + this.width, this.y), [
                 new Vector(0, 0),
                 new Vector(0, this.height),
-                // new Vector(-0.1, this.height),
-                // new Vector(-0.1, 0)
+                new Vector(-1, this.height),
+                new Vector(-1, 0)
             ]));
         }
 
@@ -65,8 +65,8 @@ class Block {
             polygons.push(new Polygon(new Vector(this.x, this.y), [
                 new Vector(0, 0),
                 new Vector(0, this.height),
-                // new Vector(-0.1, this.height),
-                // new Vector(-0.1, 0)
+                new Vector(-1, this.height),
+                new Vector(-1, 0)
             ]));
         }
 

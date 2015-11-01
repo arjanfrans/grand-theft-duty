@@ -64,21 +64,19 @@ let _detectWalls = function (entity, nextPosition, blocks) {
             if (SAT.testPolygonPolygon(entity.polygon, polygon, response)) {
                 // console.log('collision', response);
                 //
-                if (Math.abs(response.overlapV.x) > 0) {
-                    entity.velocity.x = 0;
-                }
-
-                if (Math.abs(response.overlapV.y) > 0) {
-                    entity.velocity.y = 0;
-                }
-
+                // if (Math.abs(response.overlapV.x) > 0) {
+                //     entity.velocity.x = 0;
+                // }
+                //
+                // if (Math.abs(response.overlapV.y) > 0) {
+                //     entity.velocity.y = 0;
+                // }
+                //
                 //
                 //
                 // console.log(response)
-                // entity.position.x -= response.overlapV.x;
-                // entity.position.y -= response.overlapV.y;
-                //
-                break;
+                entity.position.x -= response.overlapV.x;
+                entity.position.y -= response.overlapV.y;
             }
         }
     }

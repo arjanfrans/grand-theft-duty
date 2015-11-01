@@ -30,6 +30,14 @@ class Player {
         this.reverse = false;
     }
 
+    get turnedPolygon () {
+        let p = this.polygon;
+
+        p.setAngle(this.angle);
+
+        return p;
+    }
+
     get polygon () {
         let position = new Vector(this.x, this.y);
         let p = new Polygon(position, [
@@ -38,8 +46,6 @@ class Player {
             new Vector(this.halfWidth, this.halfHeight),
             new Vector(this.halfWidth, 0)
         ]);
-
-        p.setAngle(this.angle);
 
         return p;
     }

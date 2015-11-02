@@ -3,6 +3,8 @@ let debug = require('debug')('game:engine/physics');
 let SAT = require('./sat/SAT');
 let CollisionResponse = require('./sat/Response');
 
+const GRAVITY = 50;
+
 let _calculateRayPositions = function (entity) {
     let rayDistance = 100;
 
@@ -82,6 +84,22 @@ let _detectWalls = function (entity, nextPosition, blocks) {
     }
 };
 
+let _detectFloorCollision = function (entity, nextEntityPosition, block) {
+    if (block) {
+        if (nextEntityPosition.z < block.position.z + block.depth) {
+            entity.position.z = block.position.z + block.depth;
+            entity.stopFalling();
+            console.log('block', block.position);
+            console.log('sss', entity.position);
+        }
+    } else if (entity.position.z < 0) {
+        entity.position.z = 0;
+        entity.stopFalling();
+    } else {
+        // entity.fall();
+    }
+};
+
 class Physics {
     constructor () {
         this.entities = new Set();
@@ -96,17 +114,28 @@ class Physics {
         for (let entity of this.entities) {
             let ray = _calculateRayPositions(entity);
 
+            let nextEntityPosition = {
+                x: entity.position.x + (entity.velocity.x * delta),
+                y: entity.position.y + (entity.velocity.y * delta),
+                z: entity.position.z + (entity.velocity.z * delta)
+            };
+
             if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {
                 let blocks = this.map.blocksBetweenPositions(ray.min, ray.max);
                 // let blocks = this.map.blocksBetweenPositions({ x: 0, y: 0, z: 0}, { x: 900, y: 900, z: 0 } );
 
-                let nextEntityPosition = {
-                    x: entity.position.x + (entity.velocity.x * delta),
-                    y: entity.position.y + (entity.velocity.y * delta)
-                };
-
                 _detectWalls(entity, nextEntityPosition, blocks);
             }
+
+            // nextEntityPosition.z -= 100;
+            //
+            // let floorBlockIndex = this.map.positionToIndex(entity.position);
+            //
+            // floorBlockIndex.z -= 1;
+            //
+            // let block = this.map.blockAtIndex(floorBlockIndex);
+            //
+            // _detectFloorCollision(entity, nextEntityPosition, block);
         }
     }
 }

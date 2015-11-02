@@ -5,6 +5,7 @@ let Vector = require('./sat/Vector');
 
 const SPEED = 200;
 const ROTATION_SPEED = 300;
+const GRAVITY = -100;
 
 class Player {
     constructor (x, y, z = 0, width = 32, height = 32) {
@@ -66,6 +67,14 @@ class Player {
         return this.height / 2;
     }
 
+    fall () {
+        this.velocity.z = GRAVITY;
+    }
+
+    stopFalling () {
+        this.velocity.z = 0;
+    }
+
     moveUp () {
         this.reverse = false;
         this.velocity.x = -SPEED * Math.cos(this.angle);
@@ -114,8 +123,8 @@ class Player {
         }
 
         this.position.x += this.velocity.x * delta;
-
         this.position.y += this.velocity.y * delta;
+        this.position.z += this.velocity.z * delta;
     }
 }
 

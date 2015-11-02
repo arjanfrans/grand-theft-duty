@@ -12,7 +12,7 @@ module.exports = {
         let map = new Map(5, 5, 100, 100, 100);
         let world = new World(map);
 
-        let player = new Player(300, 300, 0);
+        let player = new Player(450, 300, 0);
         let playerInput = new PlayerInput(player);
 
         playState.inputs.set('player', playerInput);

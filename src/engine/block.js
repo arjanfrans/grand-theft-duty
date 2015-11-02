@@ -11,7 +11,7 @@ class Block {
         this.east = 'roof1_edge';
         this.south = 'grass_center';
         this.north = 'roof1_edge';
-        // this.top = 'roof1_edge';
+        this.top = 'roof1_edge';
         this.position = position;
 
         // TODO

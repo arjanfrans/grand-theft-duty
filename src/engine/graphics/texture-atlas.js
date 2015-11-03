@@ -3,8 +3,8 @@ const ATLAS_DIRECTORY = '../../assets/spritesheets/';
 let _atlasJson = new Map();
 
 // FIXME Browserify can not do dynamic loading
-_atlasJson.set('dude', require('../../assets/spritesheets/dude.js'));
-_atlasJson.set('tiles', require('../../assets/spritesheets/tiles.js'));
+_atlasJson.set('dude', require('../../../assets/spritesheets/dude.js'));
+_atlasJson.set('tiles', require('../../../assets/spritesheets/tiles.js'));
 
 class TextureAtlas {
     constructor (name) {
@@ -16,7 +16,7 @@ class TextureAtlas {
         this.width = this.mapping.meta.size.w;
         this.height = this.mapping.meta.size.h;
 
-        this.sprites = new Map();
+        this.frames = new Map();
 
         for (let frame of this.mapping.frames) {
             let d = frame.frame;
@@ -29,12 +29,34 @@ class TextureAtlas {
                 new THREE.Vector2(d.x / this.width, (this.height - (d.y + d.h)) / this.height) // upper left
             ];
 
-            this.sprites.set(frame.filename, bounds);
+            this.frames.set(frame.filename, {
+                bounds: bounds,
+                frame: frame,
+                framePosition: {
+                    x: d.x,
+                    y: this.height - d.y
+                },
+                frameSize: {
+                    width: d.w,
+                    height: d.h
+                }
+            });
         }
     }
 
+    getFrameOffset (name) {
+        let d = this.frames.get(name + '.png').framePosition;
+        let size = this.frames.get(name + '.png').frameSize;
+
+        return new THREE.Vector2(d.x / this.width, (this.height - (d.y) - size.height) / this.height);
+    }
+
+    getFrameSize (name) {
+        return this.frames.get(name + '.png').frameSize;
+    }
+
     getBounds (name) {
-        return this.sprites.get(name + '.png');
+        return this.frames.get(name + '.png').bounds;
     }
 }
 

@@ -18,7 +18,7 @@ class View {
         this.scene = new THREE.Scene();
     }
 
-    update () {
+    update (delta) {
         throw new TypeError('View requires update() method');
     }
 }

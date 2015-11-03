@@ -1,6 +1,7 @@
 let debug = require('debug')('game:views/demo');
 let View = require('../engine/view');
-let TextureAtlas = require('../utils/texture-atlas');
+let TextureAtlas = require('../engine/graphics/texture-atlas');
+let Animation = require('../engine/graphics/animation');
 
 // TODO efficience
 // let _tileCache = new Map();
@@ -115,10 +116,11 @@ let _createPlayer = function (player) {
 
     let playerGeometry = new THREE.PlaneGeometry(player.width, player.height);
 
-    let bounds = _playerTextureAtlas.getBounds('dude_idle_0001');
+    let bounds = _playerTextureAtlas.getBounds('dude_walk_0001');
 
     playerGeometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
     playerGeometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
+    console.log(bounds);
 
     let mesh = new THREE.Mesh(playerGeometry, playerMaterial);
 
@@ -127,6 +129,33 @@ let _createPlayer = function (player) {
 
     return mesh;
 };
+
+let _animations = new Map();
+
+let _createAnimatedPlayer = function (player) {
+    let playerGeometry = new THREE.PlaneGeometry(player.width, player.height);
+
+    playerGeometry.uvsNeedUpdate = true;
+
+    let animation = new Animation('dude', playerGeometry, 100, true,
+            ['walk_0001', 'walk_0002', 'walk_0003', 'walk_0004'], 'dude_');
+
+    let playerMaterial = new THREE.MeshBasicMaterial({
+        map: animation.texture,
+        transparent: true
+    });
+
+    let mesh = new THREE.Mesh(playerGeometry, playerMaterial);
+
+    mesh.position.set(player.position.x, player.position.y, player.position.z);
+    mesh.rotation.z = player.angle;
+
+    _animations.set('player', animation);
+
+    return mesh;
+};
+
+let _playerAnimation = null;
 
 class DemoView extends View {
     constructor (state) {
@@ -140,7 +169,7 @@ class DemoView extends View {
             side: THREE.DoubleSide
         });
 
-        _playerTextureAtlas = new TextureAtlas('dude');
+        // _playerTextureAtlas = new TextureAtlas('dude');
 
         this.playerView = null;
         this.scene = null;
@@ -151,7 +180,8 @@ class DemoView extends View {
 
         let world = this.state.world;
 
-        this.playerView = _createPlayer(world.player);
+        // this.playerView = _createPlayer(world.player);
+        this.playerView = _createAnimatedPlayer(world.player);
 
         let worldWidth = world.width;
         let worldDepth = world.depth;
@@ -219,7 +249,7 @@ class DemoView extends View {
         // this.scene.add(directionalLight);
     }
 
-    update () {
+    update (delta) {
         let world = this.state.world;
         let map = world.map;
         let player = world.player;
@@ -235,6 +265,10 @@ class DemoView extends View {
 
         this.camera.position.setX(this.playerView.position.x);
         this.camera.position.setY(this.playerView.position.y);
+
+        for (let animation of _animations.values()) {
+            animation.update(delta);
+        }
     }
 }
 

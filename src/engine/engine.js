@@ -29,6 +29,8 @@ if (DEBUG) {
  * @returns {void}
  */
 let _update = function () {
+    let delta = clock.getDelta();
+
     if (DEBUG) {
         debugStats.begin();
     }
@@ -37,8 +39,8 @@ let _update = function () {
     window.requestAnimationFrame(_update);
 
     if (currentState) {
-        currentState.update(clock.getDelta());
-        renderer.render();
+        currentState.update(delta);
+        renderer.render(delta);
     } else {
         debug('no current State');
     }

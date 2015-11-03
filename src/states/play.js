@@ -38,7 +38,7 @@ class PlayState extends State {
             this.world.update(delta);
         }
 
-        this._updateView();
+        this._updateView(delta);
     }
 
     _updateInputs () {
@@ -47,9 +47,9 @@ class PlayState extends State {
         }
     }
 
-    _updateView () {
+    _updateView (delta) {
         if (this.view) {
-            this.view.update();
+            this.view.update(delta);
         }
     }
 }

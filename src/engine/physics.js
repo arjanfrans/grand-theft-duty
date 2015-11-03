@@ -85,18 +85,20 @@ let _detectWalls = function (entity, nextPosition, blocks) {
 };
 
 let _detectFloorCollision = function (entity, nextEntityPosition, block) {
+    if (entity.position.z <= 0) {
+        entity.stopFalling();
+        entity.position.z = 0;
+
+        return true;
+    }
+
     if (block) {
-        if (nextEntityPosition.z < block.position.z + block.depth) {
+        if (nextEntityPosition.z <= block.position.z + block.depth) {
             entity.position.z = block.position.z + block.depth;
             entity.stopFalling();
-            console.log('block', block.position);
-            console.log('sss', entity.position);
         }
-    } else if (entity.position.z < 0) {
-        entity.position.z = 0;
-        entity.stopFalling();
     } else {
-        // entity.fall();
+        entity.fall();
     }
 };
 
@@ -122,20 +124,19 @@ class Physics {
 
             if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {
                 let blocks = this.map.blocksBetweenPositions(ray.min, ray.max);
+
                 // let blocks = this.map.blocksBetweenPositions({ x: 0, y: 0, z: 0}, { x: 900, y: 900, z: 0 } );
 
                 _detectWalls(entity, nextEntityPosition, blocks);
             }
 
-            // nextEntityPosition.z -= 100;
-            //
-            // let floorBlockIndex = this.map.positionToIndex(entity.position);
-            //
-            // floorBlockIndex.z -= 1;
-            //
-            // let block = this.map.blockAtIndex(floorBlockIndex);
-            //
-            // _detectFloorCollision(entity, nextEntityPosition, block);
+            let floorBlockIndex = this.map.positionToIndex(entity.position);
+
+            floorBlockIndex.z -= 1;
+
+            let block = this.map.blockAtIndex(floorBlockIndex);
+
+            _detectFloorCollision(entity, nextEntityPosition, block);
         }
     }
 }

@@ -54,6 +54,8 @@ let UNIT_SQUARE = new Box(new Vector(), 1, 1).toPolygon();
  * @param {Array.<number>} result An array.  After calling this function,
  *   result[0] will be the minimum value,
  *   result[1] will be the maximum value.
+ *
+ * @returns {void}
  */
 let _flattenVerticesOn = function (vertices, normal, result) {
     let min = Number.MAX_VALUE;

@@ -5,7 +5,7 @@ let Vector = require('./sat/Vector');
 
 const SPEED = 200;
 const ROTATION_SPEED = 300;
-const GRAVITY = -100;
+const GRAVITY = -400;
 
 class Player {
     constructor (x, y, z = 0, width = 32, height = 32) {

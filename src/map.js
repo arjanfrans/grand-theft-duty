@@ -89,9 +89,9 @@ class Map {
     }
 
     positionToIndex (position) {
-        let x = Math.max(0, position.x);
-        let y = Math.max(0, position.y);
-        let z = Math.max(0, position.z);
+        let x = position.x;
+        let y = position.y;
+        let z = position.z;
 
         let index = {};
 
@@ -103,11 +103,19 @@ class Map {
     }
 
     blockAtIndex (index) {
-        let x = Math.min(Math.max(0, index.x), this.width - 1);
-        let y = Math.min(Math.max(0, index.y), this.height - 1);
-        let z = Math.min(Math.max(0, index.z), this.depth - 1);
+        if (index.z < 0 || index.z >= this.depth) {
+            return null;
+        }
 
-        return this.layers[z][y][x];
+        if (index.y < 0 || index.y >= this.height) {
+            return null;
+        }
+
+        if (index.x < 0 || index.x >= this.width) {
+            return null;
+        }
+
+        return this.layers[index.z][index.y][index.x];
     }
 
     blockAtPosition (position) {

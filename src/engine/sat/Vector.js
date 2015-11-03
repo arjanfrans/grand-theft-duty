@@ -75,7 +75,7 @@ class Vector {
     normalize () {
         let d = this.len();
 
-        if( d > 0) {
+        if (d > 0) {
             this.x = this.x / d;
             this.y = this.y / d;
         }

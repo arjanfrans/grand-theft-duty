@@ -1,21 +1,33 @@
-let DemoView = require('../views/demo');
+'use strict';
+
+let debug = require('debug')('game:builders/state');
+
+let WorldView = require('../views/world');
 let World = require('../engine/world');
-let Player = require('../engine/player');
+let Player = require('../engine/entities/player');
 let Physics = require('../engine/physics');
-let PlayerInput = require('../input/player');
+let PlayerInput = require('../engine/input/player');
+let PlayerView = require('../engine/views/player');
 let PlayState = require('../states/play');
-let Map = require('../map');
+let Map = require('../engine/map');
 
 module.exports = {
     playState: function () {
         let playState = new PlayState();
-        let map = new Map(5, 5, 100, 100, 100);
-        let world = new World(map);
 
-        let player = new Player(475, 475, 900);
+        // Player
+        let player = new Player(475, 475, 900, 32, 32);
         let playerInput = new PlayerInput(player);
+        let playerView = new PlayerView(player);
 
         playState.inputs.set('player', playerInput);
+
+        let player2 = new Player(300, 300, 900, 32, 32);
+        let player2View = new PlayerView(player2);
+
+        // World
+        let map = new Map(5, 5, 100, 100, 100);
+        let world = new World(map);
 
         world.player = player;
 
@@ -28,9 +40,12 @@ module.exports = {
 
         playState.world = world;
 
-        let view = new DemoView(playState);
+        let worldView = new WorldView(world);
 
-        playState.view = view;
+        worldView.dynamicViews.add(playerView);
+        worldView.dynamicViews.add(playerView);
+
+        playState.view = worldView;
 
         return playState;
     }

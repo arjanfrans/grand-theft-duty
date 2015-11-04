@@ -1,9 +1,11 @@
+'use strict';
+
 let debug = require('debug')('game:engine/engine');
 
 let DebugStats = require('stats.js');
 const DEBUG = true;
 
-let Renderer = require('./renderer');
+let Renderer = require('./graphics/renderer');
 
 let renderer = new Renderer('webgl');
 let states = new Map();

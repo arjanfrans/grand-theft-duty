@@ -1,4 +1,6 @@
-let Polygon = require('./Polygon.js');
+'use strict';
+
+let Polygon = require('./Polygon');
 let Vector = require('./Vector');
 
 // ## Box

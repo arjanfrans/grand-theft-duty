@@ -1,3 +1,5 @@
+'use strict';
+
 // setup debug module
 localStorage.debug = 'game:*';
 

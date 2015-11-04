@@ -1,3 +1,5 @@
+'use strict';
+
 let Vector = require('./Vector');
 
 let _boxToPolygon = function (position, width, height) {

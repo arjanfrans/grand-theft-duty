@@ -1,7 +1,9 @@
+'use strict';
+
 let debug = require('debug')('game:engine/physics');
 
-let SAT = require('./sat/SAT');
-let CollisionResponse = require('./sat/Response');
+let SAT = require('./collision/SAT');
+let CollisionResponse = require('./collision/Response');
 
 const GRAVITY = 50;
 
@@ -58,12 +60,12 @@ let _calculateRayPositions = function (entity) {
 
 let _detectWalls = function (entity, nextPosition, blocks) {
     for (let block of blocks) {
-        let polygons = block.wallPolygons;
+        let polygons = block.bodies;
 
         for (let polygon of polygons) {
             let response = new CollisionResponse();
 
-            if (SAT.testPolygonPolygon(entity.polygon, polygon, response)) {
+            if (SAT.testPolygonPolygon(entity.body, polygon, response)) {
                 // console.log('collision', response);
                 //
                 // if (Math.abs(response.overlapV.x) > 0) {

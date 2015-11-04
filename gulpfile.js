@@ -1,11 +1,13 @@
-var gulp        = require('gulp');
-var gutil       = require('gulp-util');
+'use strict';
+
+var gulp = require('gulp');
+var gutil = require('gulp-util');
 var streamify = require('gulp-streamify');
-var source      = require('vinyl-source-stream');
-var babelify    = require('babelify');
-var watchify    = require('watchify');
-var exorcist    = require('exorcist');
-var browserify  = require('browserify');
+var source = require('vinyl-source-stream');
+var babelify = require('babelify');
+var watchify = require('watchify');
+var exorcist = require('exorcist');
+var browserify = require('browserify');
 var browserSync = require('browser-sync').create();
 var uglify = require('gulp-uglify');
 var gulpCopy = require('gulp-copy');

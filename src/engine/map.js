@@ -1,5 +1,8 @@
+'use strict';
+
 let debug = require('debug')('game:engine/map');
-let Block = require('./engine/block');
+
+let Block = require('./world/block');
 
 function flatten (arr) {
     return arr.reduce(function (flat, toFlatten) {
@@ -59,7 +62,13 @@ class Map {
                             x: x * tileWidth,
                             y: y * tileHeight,
                             z: z * tileDepth
-                        }, tileWidth, tileHeight, tileDepth);
+                        }, tileWidth, tileHeight, tileDepth, {
+                            north: 'grass_center',
+                            south: 'roof1_edge',
+                            west: 'animation_water_0008',
+                            east: 'roof1_corner',
+                            top: 'roof1_center'
+                        });
                     }
                 }
             }

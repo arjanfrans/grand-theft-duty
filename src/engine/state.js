@@ -1,3 +1,7 @@
+'use strict';
+
+let debug = require('debug')('game:engine/state');
+
 /**
  * Base class for all states.
  *

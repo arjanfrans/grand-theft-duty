@@ -1,3 +1,5 @@
+'use strict';
+
 let debug = require('debug')('game:states/play');
 
 let State = require('../engine/state');
@@ -17,7 +19,6 @@ class PlayState extends State {
         super('play');
 
         this.world = null;
-        this.player = null;
     }
 
     init () {

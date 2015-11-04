@@ -1,3 +1,5 @@
+'use strict';
+
 let engine = require('./engine/engine');
 let PlayState = require('./states/play');
 

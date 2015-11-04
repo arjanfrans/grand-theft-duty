@@ -1,9 +1,9 @@
-let TextureAtlas = require('./texture-atlas');
+'use strict';
 
 class Animation {
-    constructor (atlasName, geometry, interval = 2000, repeat = true, frames = [],
+    constructor (textureAtlas, geometry, interval = 2000, repeat = true, frames = [],
             framePrefix = '') {
-        this.textureAtlas = new TextureAtlas(atlasName);
+        this.textureAtlas = textureAtlas;
         this.geometry = geometry;
 
         let frameSize = this.textureAtlas.getFrameSize(framePrefix + frames[0]);

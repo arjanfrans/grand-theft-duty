@@ -1,3 +1,7 @@
+'use strict';
+
+let debug = require('debug')('game:engine/utils/graham');
+
 /**
  * Graham's Scan Convex Hull Algorithm
  * @desc An implementation of the Graham's Scan Convex Hull algorithm in Javascript.

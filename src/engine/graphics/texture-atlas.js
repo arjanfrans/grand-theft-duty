@@ -1,3 +1,5 @@
+'use strict';
+
 const ATLAS_DIRECTORY = '../../assets/spritesheets/';
 
 let _atlasJson = new Map();
@@ -6,11 +8,13 @@ let _atlasJson = new Map();
 _atlasJson.set('dude', require('../../../assets/spritesheets/dude.js'));
 _atlasJson.set('tiles', require('../../../assets/spritesheets/tiles.js'));
 
+let textureLoader = new THREE.TextureLoader();
+
 class TextureAtlas {
     constructor (name) {
         this.mapping = _atlasJson.get(name);
 
-        this.texture = THREE.ImageUtils.loadTexture(ATLAS_DIRECTORY + this.mapping.meta.image);
+        this.texture = textureLoader.load(ATLAS_DIRECTORY + this.mapping.meta.image);
         this.texture.magFilter = THREE.NearestFilter;
         this.texture.minFilter = THREE.LinearMipMapLinearFilter;
         this.width = this.mapping.meta.size.w;

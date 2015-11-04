@@ -1,6 +1,6 @@
 {
     "ecmaFeatures": {
-        "modules": false,
+        "modules": true,
         "experimentalObjectRestSpread": true
     },
 

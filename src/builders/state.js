@@ -21,7 +21,7 @@ module.exports = {
 
         playState.inputs.set('player', playerInput);
 
-        let player2 = new Player(300, 300, 900, 32, 32);
+        let player2 = new Player(300, 300, 300, 32, 32);
         let player2View = new PlayerView(player2);
 
         // World
@@ -33,6 +33,7 @@ module.exports = {
         let physics = new Physics(map.totalWidth, map.totalHeight);
 
         physics.addEntity(player);
+        physics.addEntity(player2);
         physics.map = map;
 
         world.physics = physics;
@@ -42,7 +43,9 @@ module.exports = {
         let worldView = new WorldView(world);
 
         worldView.dynamicViews.add(playerView);
-        worldView.dynamicViews.add(playerView);
+        worldView.dynamicViews.add(player2View);
+
+        debug('player2', player2, player2View);
 
         playState.view = worldView;
 

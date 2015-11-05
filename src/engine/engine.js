@@ -1,29 +1,24 @@
-'use strict';
-
 let debug = require('debug')('game:engine/engine');
 
-let DebugStats = require('stats.js');
 const DEBUG = true;
 
 let Renderer = require('./graphics/renderer');
 
-let renderer = new Renderer('webgl');
+let _renderer = new Renderer('webgl');
+
+let _renderDebug = null;
+
+if (DEBUG) {
+    let RenderDebug = require('./debug/render-debug');
+
+    _renderDebug = new RenderDebug(_renderer._THREErenderer);
+}
+
 let states = new Map();
+
 let currentState = null;
 
 let clock = new THREE.Clock();
-
-let debugStats = null;
-
-if (DEBUG) {
-    debugStats = new DebugStats();
-    debugStats.setMode(0);
-    debugStats.domElement.style.position = 'absolute';
-    debugStats.domElement.style.left = '0px';
-    debugStats.domElement.style.top = '0px';
-
-    document.body.appendChild(debugStats.domElement);
-}
 
 /**
  * The game loop. Updates the current state and renders it's Views.
@@ -34,7 +29,7 @@ let _update = function () {
     let delta = clock.getDelta();
 
     if (DEBUG) {
-        debugStats.begin();
+        _renderDebug.before();
     }
 
     // Tell browser to perform animation.
@@ -42,13 +37,13 @@ let _update = function () {
 
     if (currentState) {
         currentState.update(delta);
-        renderer.render(delta);
+        _renderer.render(delta);
     } else {
         debug('no current State');
     }
 
     if (DEBUG) {
-        debugStats.end();
+        _renderDebug.after();
     }
 };
 
@@ -76,7 +71,7 @@ module.exports = {
     changeState (name) {
         currentState = states.get(name);
         currentState.init();
-        renderer.view = currentState.view;
+        _renderer.view = currentState.view;
     },
 
     /**

@@ -1,5 +1,3 @@
-'use strict';
-
 let debug = require('debug')('game:engine/graphics/renderer');
 
 const DEFAULT_WIDTH = 800;

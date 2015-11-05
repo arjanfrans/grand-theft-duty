@@ -4,7 +4,6 @@
   "description": "Inspired by GTA2 and Call of Duty 2",
   "dependencies": {
     "debug": "^2.2.0",
-    "stats.js": "git+https://github.com/mrdoob/stats.js.git",
     "three": "^0.73.0"
   },
   "scripts": {
@@ -17,7 +16,7 @@
     "url": "https://github.com/arjanfrans/grand-theft-duty"
   },
   "keywords": [
-    "three.js",
+    "THREE.js",
     "game",
     "grand theft duty"
   ],

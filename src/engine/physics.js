@@ -1,5 +1,3 @@
-'use strict';
-
 let debug = require('debug')('game:engine/physics');
 
 let SAT = require('./collision/SAT');
@@ -60,27 +58,29 @@ let _calculateRayPositions = function (entity) {
 
 let _detectWalls = function (entity, nextPosition, blocks) {
     for (let block of blocks) {
-        let polygons = block.bodies;
+        if (block.collidable) {
+            let polygons = block.bodies;
 
-        for (let polygon of polygons) {
-            let response = new CollisionResponse();
+            for (let polygon of polygons) {
+                let response = new CollisionResponse();
 
-            if (SAT.testPolygonPolygon(entity.body, polygon, response)) {
-                // console.log('collision', response);
-                //
-                // if (Math.abs(response.overlapV.x) > 0) {
-                //     entity.velocity.x = 0;
-                // }
-                //
-                // if (Math.abs(response.overlapV.y) > 0) {
-                //     entity.velocity.y = 0;
-                // }
-                //
-                //
-                //
-                // console.log(response)
-                entity.position.x -= response.overlapV.x;
-                entity.position.y -= response.overlapV.y;
+                if (SAT.testPolygonPolygon(entity.body, polygon, response)) {
+                    // console.log('collision', response);
+                    //
+                    // if (Math.abs(response.overlapV.x) > 0) {
+                    //     entity.velocity.x = 0;
+                    // }
+                    //
+                    // if (Math.abs(response.overlapV.y) > 0) {
+                    //     entity.velocity.y = 0;
+                    // }
+                    //
+                    //
+                    //
+                    // console.log(response)
+                    entity.position.x -= response.overlapV.x;
+                    entity.position.y -= response.overlapV.y;
+                }
             }
         }
     }
@@ -94,7 +94,7 @@ let _detectFloorCollision = function (entity, nextEntityPosition, block) {
         return true;
     }
 
-    if (block) {
+    if (block && block.collidable) {
         if (nextEntityPosition.z <= block.position.z + block.depth) {
             entity.position.z = block.position.z + block.depth;
             entity.stopFalling();

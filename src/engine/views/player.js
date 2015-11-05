@@ -1,5 +1,3 @@
-'use strict';
-
 let debug = require('debug')('game:engine/views/player');
 
 let TextureAtlas = require('../graphics/texture-atlas');

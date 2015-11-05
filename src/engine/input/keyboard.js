@@ -1,5 +1,3 @@
-'use strict';
-
 let Keyboard = {
     _pressed: {},
 

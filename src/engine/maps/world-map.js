@@ -1,78 +1,15 @@
-'use strict';
+let debug = require('debug')('game:engine/maps/world-map');
 
-let debug = require('debug')('game:engine/map');
-
-let Block = require('./world/block');
-
-function flatten (arr) {
-    return arr.reduce(function (flat, toFlatten) {
-        return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
-    }, []);
-}
-
-class Map {
-    constructor (width, height, tileWidth, tileHeight, tileDepth) {
+class WorldMap {
+    constructor (layers, width, height, depth, tileWidth, tileHeight, tileDepth) {
         this.width = width;
         this.height = height;
+        this.depth = depth;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         this.tileDepth = tileDepth;
 
-        this.layers = [];
-
-        let layer1 = [
-            [0, 0, 0, 0, 0],
-            [0, 1, 1, 0, 0],
-            [0, 1, 1, 0, 0],
-            [0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1]
-        ];
-
-        let layer2 = [
-            [0, 0, 0, 0, 1],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1]
-        ];
-
-        let tmpLayers = [layer1, layer2];
-
-        this.layers = [];
-
-        for (let z = 0; z < tmpLayers.length; z++) {
-            let layer = tmpLayers[z];
-
-            if (!this.layers[z]) {
-                this.layers[z] = [];
-            }
-
-            for (let y = 0; y < layer.length; y++) {
-                let row = layer[y];
-
-                if (!this.layers[z][y]) {
-                    this.layers[z][y] = [];
-                }
-
-                for (let x = 0; x < row.length; x++) {
-                    if (row[x] === 0) {
-                        this.layers[z][y][x] = null;
-                    } else {
-                        this.layers[z][y][x] = new Block(row[x], {
-                            x: x * tileWidth,
-                            y: y * tileHeight,
-                            z: z * tileDepth
-                        }, tileWidth, tileHeight, tileDepth, {
-                            north: 'grass_center',
-                            south: 'roof1_edge',
-                            west: 'animation_water_0008',
-                            east: 'roof1_corner',
-                            top: 'roof1_center'
-                        });
-                    }
-                }
-            }
-        }
+        this.layers = layers;
     }
 
     get blocks () {
@@ -85,16 +22,16 @@ class Map {
         });
     }
 
-    get depth () {
-        return this.layers.length;
-    }
-
     get totalWidth () {
         return this.width * this.tileWidth;
     }
 
     get totalHeight () {
         return this.height * this.tileHeight;
+    }
+
+    get totalDepth () {
+        return this.depth * this.tileDepth;
     }
 
     positionToIndex (position) {
@@ -208,4 +145,4 @@ class Map {
     }
 }
 
-module.exports = Map;
+module.exports = WorldMap;

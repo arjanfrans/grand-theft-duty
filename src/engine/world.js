@@ -1,8 +1,4 @@
-'use strict';
-
 let debug = require('debug')('game:engine/state');
-
-let Map = require('./map');
 
 class World {
     constructor (map, width = 5, height = 5, depth = 5) {

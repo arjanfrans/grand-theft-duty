@@ -1,5 +1,3 @@
-'use strict';
-
 let debug = require('debug')('game:builders/state');
 
 let WorldView = require('../views/world');
@@ -9,7 +7,8 @@ let Physics = require('../engine/physics');
 let PlayerInput = require('../engine/input/player');
 let PlayerView = require('../engine/views/player');
 let PlayState = require('../states/play');
-let Map = require('../engine/map');
+
+let _mapLoader = require('../engine/maps/loader');
 
 module.exports = {
     playState: function () {
@@ -26,7 +25,7 @@ module.exports = {
         let player2View = new PlayerView(player2);
 
         // World
-        let map = new Map(5, 5, 100, 100, 100);
+        let map = _mapLoader.load('level1');
         let world = new World(map);
 
         world.player = player;

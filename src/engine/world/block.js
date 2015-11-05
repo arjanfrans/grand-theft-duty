@@ -6,8 +6,7 @@ let Polygon = require('../collision/Polygon');
 let Vector = require('../collision/Vector');
 
 class Block {
-    constructor (id, position, width, height, depth, walls = {}) {
-        this.id = id;
+    constructor (position, width, height, depth, walls = {}) {
         this.width = width;
         this.height = height;
         this.depth = depth;

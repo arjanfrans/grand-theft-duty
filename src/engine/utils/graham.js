@@ -1,5 +1,3 @@
-'use strict';
-
 let debug = require('debug')('game:engine/utils/graham');
 
 /**
@@ -27,14 +25,14 @@ ConvexHullGrahamScan.prototype = {
     },
 
     _findPolarAngle: function (a, b) {
-        var deltaX = (b.x - a.x);
-        var deltaY = (b.y - a.y);
+        let deltaX = (b.x - a.x);
+        let deltaY = (b.y - a.y);
 
         if (deltaX === 0 && deltaY === 0) {
             return 0;
         }
 
-        var angle = Math.atan2(deltaY, deltaX) * ONE_RADIAN;
+        let angle = Math.atan2(deltaY, deltaX) * ONE_RADIAN;
 
         if (this.reverse) {
             if (angle <= 0) {
@@ -68,11 +66,11 @@ ConvexHullGrahamScan.prototype = {
     },
 
     _sortPoints: function () {
-        var self = this;
+        let self = this;
 
         return this.points.sort(function (a, b) {
-            var polarA = self._findPolarAngle(self.anchorPoint, a);
-            var polarB = self._findPolarAngle(self.anchorPoint, b);
+            let polarA = self._findPolarAngle(self.anchorPoint, a);
+            let polarB = self._findPolarAngle(self.anchorPoint, b);
 
             if (polarA < polarB) {
                 return -1;
@@ -86,9 +84,9 @@ ConvexHullGrahamScan.prototype = {
     },
 
     _checkPoints: function (p0, p1, p2) {
-        var difAngle;
-        var cwAngle = this._findPolarAngle(p0, p1);
-        var ccwAngle = this._findPolarAngle(p0, p2);
+        let difAngle;
+        let cwAngle = this._findPolarAngle(p0, p1);
+        let ccwAngle = this._findPolarAngle(p0, p2);
 
         if (cwAngle > ccwAngle) {
             difAngle = cwAngle - ccwAngle;

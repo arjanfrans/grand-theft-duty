@@ -1,98 +1,118 @@
+let debug = require('debug')('game:engine/debug/statsjs');
+
 /**
  * @author mrdoob / http://mrdoob.com/
  */
 
 let Stats = function () {
-    let now = ( self.performance && self.performance.now ) ? self.performance.now.bind( performance ) : Date.now;
+    let now = (self.performance && self.performance.now) ? self.performance.now.bind(performance) : Date.now;
 
-    let startTime = now(), prevTime = startTime;
-    let frames = 0, mode = 0;
+    let startTime = now();
+    let prevTime = startTime;
+    let frames = 0;
+    let modes = [0];
 
-    function createElement ( tag, id, css ) {
-        let element = document.createElement( tag );
+    function createElement (tag, id, css) {
+        let element = document.createElement(tag);
+
         element.id = id;
         element.style.cssText = css;
-        return element;
 
+        return element;
     }
 
-    function createPanel ( id, fg, bg ) {
-        let div = createElement( 'div', id, 'padding:0 0 3px 3px;text-align:left;background:' + bg );
+    function createPanel (id, fg, bg) {
+        let div = createElement('div', id, 'padding:0 0 3px 3px;text-align:left;background:' + bg);
 
-        let text = createElement( 'div', id + 'Text', 'font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:' + fg );
+        let text = createElement('div', id + 'Text', 'font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:' + fg);
+
         text.innerHTML = id.toUpperCase();
-        div.appendChild( text );
+        div.appendChild(text);
 
-        let graph = createElement( 'div', id + 'Graph', 'width:74px;height:30px;background:' + fg );
-        div.appendChild( graph );
+        let graph = createElement('div', id + 'Graph', 'width:74px;height:30px;background:' + fg);
 
-        for ( var i = 0; i < 74; i++ ) {
+        div.appendChild(graph);
 
-            graph.appendChild( createElement( 'span', '', 'width:1px;height:30px;float:left;opacity:0.9;background:' + bg ) );
-
+        for (let i = 0; i < 74; i++) {
+            graph.appendChild(createElement('span', '', 'width:1px;height:30px;float:left;opacity:0.9;background:' + bg));
         }
 
         return div;
     }
 
-    function setMode ( value ) {
-        var children = container.children;
+    function setModes (values) {
+        let children = container.children;
 
-        for ( var i = 0; i < children.length; i++ ) {
+        for (let i = 0; i < children.length; i++) {
+            if (values.indexOf(i) < 0) {
+                children[i].style.display = 'none';
+            } else {
+                children[i].style.display = 'block';
+            }
+        }
+
+        modes = values;
+    }
+
+    function setMode (value) {
+        let children = container.children;
+
+        for (let i = 0; i < children.length; i++) {
             children[ i ].style.display = i === value ? 'block' : 'none';
         }
 
-        mode = value;
+        modes = [value];
     }
 
-    function updateGraph ( dom, value ) {
-        var child = dom.appendChild( dom.firstChild );
-        child.style.height = Math.min( 30, 30 - value * 30 ) + 'px';
+    function updateGraph (dom, value) {
+        let child = dom.appendChild(dom.firstChild);
 
+        child.style.height = Math.min(30, 30 - value * 30) + 'px';
     }
 
-    //
-
-    var container = createElement( 'div', 'stats', 'width:80px;opacity:0.9;cursor:pointer' );
-    container.addEventListener( 'mousedown', function ( event ) {
-        event.preventDefault();
-        setMode( ++mode % container.children.length );
-    }, false );
+    let container = createElement('div', 'stats', 'width:80px;opacity:0.9;cursor:pointer');
 
     // FPS
-    let fps = 0, fpsMin = Infinity, fpsMax = 0;
+    let fps = 0;
+    let fpsMin = Number.POSITIVE_INFINITY;
+    let fpsMax = 0;
 
-    let fpsDiv = createPanel( 'fps', '#0ff', '#002' );
-    let fpsText = fpsDiv.children[ 0 ];
-    let fpsGraph = fpsDiv.children[ 1 ];
+    let fpsDiv = createPanel('fps', '#0ff', '#002');
+    let fpsText = fpsDiv.children[0];
+    let fpsGraph = fpsDiv.children[1];
 
-    container.appendChild( fpsDiv );
+    container.appendChild(fpsDiv);
 
     // MS
-    let ms = 0, msMin = Infinity, msMax = 0;
+    let ms = 0;
+    let msMin = Number.POSITIVE_INFINITY;
+    let msMax = 0;
 
-    let msDiv = createPanel( 'ms', '#0f0', '#020' );
-    let msText = msDiv.children[ 0 ];
-    let msGraph = msDiv.children[ 1 ];
+    let msDiv = createPanel('ms', '#0f0', '#020');
+    let msText = msDiv.children[0];
+    let msGraph = msDiv.children[1];
 
-    container.appendChild( msDiv );
+    container.appendChild(msDiv);
 
-    let mem = 0, memMin = Infinity, memMax = 0;
-    let memDiv = createPanel( 'mb', '#f08', '#201' );
-    let memText = memDiv.children[ 0 ];
-    let memGraph = memDiv.children[ 1 ];
+    let mem = 0;
+    let memMin = Number.POSITIVE_INFINITY;
+    let memMax = 0;
+    let memDiv = createPanel('mb', '#f08', '#201');
+    let memText = memDiv.children[0];
+    let memGraph = memDiv.children[1];
 
     // MEM
-    if (self.performance && self.performance.memory ) {
+    if (self.performance && self.performance.memory) {
         container.appendChild(memDiv);
     }
 
-    setMode(mode);
+    setModes([modes]);
 
     return {
         REVISION: 14,
         domElement: container,
         setMode: setMode,
+        setModes: setModes,
         begin: function () {
             startTime = now();
         },
@@ -100,50 +120,45 @@ let Stats = function () {
             let time = now();
 
             ms = time - startTime;
-            msMin = Math.min( msMin, ms );
-            msMax = Math.max( msMax, ms );
+            msMin = Math.min(msMin, ms);
+            msMax = Math.max(msMax, ms);
 
-            msText.textContent = ( ms | 0 ) + ' MS (' + ( msMin | 0 ) + '-' + ( msMax | 0 ) + ')';
-            updateGraph( msGraph, ms / 200 );
+            msText.textContent = (ms | 0) + ' MS (' + (msMin | 0) + '-' + (msMax | 0) + ')';
+            updateGraph(msGraph, ms / 200);
 
             frames++;
 
-            if ( time > prevTime + 1000 ) {
-                fps = Math.round( ( frames * 1000 ) / ( time - prevTime ) );
-                fpsMin = Math.min( fpsMin, fps );
-                fpsMax = Math.max( fpsMax, fps );
+            if (time > prevTime + 1000) {
+                fps = Math.round((frames * 1000) / (time - prevTime));
+                fpsMin = Math.min(fpsMin, fps);
+                fpsMax = Math.max(fpsMax, fps);
 
                 fpsText.textContent = fps + ' FPS (' + fpsMin + '-' + fpsMax + ')';
-                updateGraph( fpsGraph, fps / 100 );
+                updateGraph(fpsGraph, fps / 100);
 
                 prevTime = time;
                 frames = 0;
 
-                if ( mem !== undefined ) {
-
+                if (typeof mem !== 'undefined') {
                     let heapSize = performance.memory.usedJSHeapSize;
                     let heapSizeLimit = performance.memory.jsHeapSizeLimit;
 
-                    mem = Math.round( heapSize * 0.000000954 );
-                    memMin = Math.min( memMin, mem );
-                    memMax = Math.max( memMax, mem );
+                    mem = Math.round(heapSize * 0.000000954);
+                    memMin = Math.min(memMin, mem);
+                    memMax = Math.max(memMax, mem);
 
                     memText.textContent = mem + ' MB (' + memMin + '-' + memMax + ')';
-                    updateGraph( memGraph, heapSize / heapSizeLimit );
-
+                    updateGraph(memGraph, heapSize / heapSizeLimit);
                 }
-
             }
 
             return time;
-
         },
 
         update: function () {
             startTime = this.end();
         }
     };
-
 };
 
 module.exports = Stats;

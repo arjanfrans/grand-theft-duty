@@ -1,4 +1,4 @@
-'use strict';
+let debug = require('debug')('game:engine/collision/vector');
 
 class Vector {
     constructor (x = 0, y = 0) {

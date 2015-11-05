@@ -1,5 +1,3 @@
-'use strict';
-
 let debug = require('debug')('game:views/world');
 
 let BlockView = require('../engine/views/block');

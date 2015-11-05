@@ -1,3 +1,5 @@
+let debug = require('debug')('game:engine/input/gamepad');
+
 let GamepadMicro = require('./gamepad-micro');
 
 let _gp = new GamepadMicro();

@@ -1,3 +1,5 @@
+let debug = require('debug')('game:game');
+
 let engine = require('./engine/engine');
 let stateBuilder = require('./builders/state');
 let assetLoader = require('./engine/asset-loader');

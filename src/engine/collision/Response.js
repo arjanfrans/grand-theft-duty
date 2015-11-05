@@ -1,4 +1,4 @@
-'use strict';
+let debug = require('debug')('game:engine/collision/response');
 
 let Vector = require('./Vector');
 

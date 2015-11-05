@@ -1,4 +1,4 @@
-'use strict';
+let debug = require('debug')('game:engine/collision/circle');
 
 let Vector = require('./Vector');
 let Box = require('./Box');

@@ -1,5 +1,3 @@
-'use strict';
-
 let debug = require('debug')('game:engine/entities/entity');
 
 let Polygon = require('../collision/Polygon');

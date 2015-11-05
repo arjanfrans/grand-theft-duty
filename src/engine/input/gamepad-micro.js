@@ -1,3 +1,5 @@
+let debug = require('debug')('game:engine/input/gamepad-micro');
+
 /**
  * Copyright 2014 Christopher Dolphin. All Rights Reserved.
  *

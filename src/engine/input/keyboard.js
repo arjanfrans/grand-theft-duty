@@ -1,3 +1,5 @@
+let debug = require('debug')('game:engine/input/keyboard');
+
 let Keyboard = {
     _pressed: {},
 

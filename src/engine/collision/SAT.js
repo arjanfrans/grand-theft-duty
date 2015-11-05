@@ -1,4 +1,4 @@
-'use strict';
+let debug = require('debug')('game:engine/collision/sat');
 
 // Version 0.5.0 - Copyright 2012 - 2015 -  Jim Riecken <jimr@jimr.ca>
 //

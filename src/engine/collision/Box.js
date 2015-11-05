@@ -1,3 +1,5 @@
+let debug = require('debug')('game:engine/collision/box');
+
 let Polygon = require('./Polygon');
 let Vector = require('./Vector');
 

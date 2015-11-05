@@ -1,25 +1,31 @@
+let debug = require('debug')('game:engine/debug/render-debug');
+
 let DebugStats = require('./statsjs');
 
 let _rendererStats = function () {
     let msMin = 100;
     let msMax = 0;
 
-    let container = document.createElement( 'div' );
+    let container = document.createElement('div');
+
     container.style.cssText = 'width:80px;opacity:0.9;cursor:pointer';
 
-    let msDiv = document.createElement( 'div' );
-    msDiv.style.cssText = 'padding:0 0 3px 3px;text-align:left;background-color:#200;';
-    container.appendChild( msDiv );
+    let msDiv = document.createElement('div');
 
-    let msText = document.createElement( 'div' );
+    msDiv.style.cssText = 'padding:0 0 3px 3px;text-align:left;background-color:#200;';
+    container.appendChild(msDiv);
+
+    let msText = document.createElement('div');
+
     msText.style.cssText = 'color:#f00;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px';
     msText.innerHTML = 'WebGLRenderer';
-    msDiv.appendChild( msText );
+    msDiv.appendChild(msText);
 
     let msTexts = [];
     let nLines = 9;
+
     for (let i = 0; i < nLines; i++) {
-        msTexts[i] = document.createElement( 'div' );
+        msTexts[i] = document.createElement('div');
         msTexts[i].style.cssText = 'color:#f00;background-color:#311;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px';
         msDiv.appendChild(msTexts[i]);
         msTexts[i].innerHTML = '-';
@@ -69,12 +75,12 @@ class RenderDebug {
         this.renderer = renderer;
 
         this.statjs = new DebugStats();
-        this.statjs.setMode(0);
+        this.statjs.setModes([0, 1, 2]);
 
         // Stats.js
         this.statjs.domElement.style.position = 'absolute';
-        this.statjs.domElement.style.left = '0px';
-        this.statjs.domElement.style.top = '0px';
+        this.statjs.domElement.style.left = '81px';
+        this.statjs.domElement.style.bottom = '0px';
 
         document.body.appendChild(this.statjs.domElement);
 

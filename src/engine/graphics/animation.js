@@ -1,3 +1,4 @@
+let debug = require('debug')('game:engine/graphics/animation');
 
 class Animation {
     constructor (textureAtlas, geometry, interval = 2000, repeat = true, frames = [],

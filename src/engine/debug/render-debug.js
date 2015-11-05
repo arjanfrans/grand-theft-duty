@@ -1,25 +1,25 @@
 let DebugStats = require('./statsjs');
 
 let _rendererStats = function () {
-    let msMin   = 100;
-    let msMax   = 0;
+    let msMin = 100;
+    let msMax = 0;
 
-    let container   = document.createElement( 'div' );
+    let container = document.createElement( 'div' );
     container.style.cssText = 'width:80px;opacity:0.9;cursor:pointer';
 
-    let msDiv   = document.createElement( 'div' );
+    let msDiv = document.createElement( 'div' );
     msDiv.style.cssText = 'padding:0 0 3px 3px;text-align:left;background-color:#200;';
     container.appendChild( msDiv );
 
-    let msText  = document.createElement( 'div' );
+    let msText = document.createElement( 'div' );
     msText.style.cssText = 'color:#f00;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px';
-    msText.innerHTML= 'WebGLRenderer';
+    msText.innerHTML = 'WebGLRenderer';
     msDiv.appendChild( msText );
 
     let msTexts = [];
-    let nLines  = 9;
-    for(let i = 0; i < nLines; i++){
-        msTexts[i]  = document.createElement( 'div' );
+    let nLines = 9;
+    for (let i = 0; i < nLines; i++) {
+        msTexts[i] = document.createElement( 'div' );
         msTexts[i].style.cssText = 'color:#f00;background-color:#311;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px';
         msDiv.appendChild(msTexts[i]);
         msTexts[i].innerHTML = '-';
@@ -30,12 +30,12 @@ let _rendererStats = function () {
     return {
         domElement: container,
 
-        update: function(webGLRenderer){
+        update: function (webGLRenderer) {
             // sanity check
             console.assert(webGLRenderer instanceof THREE.WebGLRenderer);
 
             // refresh only 30time per second
-            if (Date.now() - lastTime < 1000/30) {
+            if (Date.now() - lastTime < 1000 / 30) {
                 return;
             }
 
@@ -44,7 +44,7 @@ let _rendererStats = function () {
             let i = 0;
 
             msTexts[i++].textContent = '== Memory =====';
-            msTexts[i++].textContent = 'Programs: ' + webGLRenderer.info.memory.programs;
+            msTexts[i++].textContent = 'Programs: ' + webGLRenderer.info.programs.length;
             msTexts[i++].textContent = 'Geometries: ' + webGLRenderer.info.memory.geometries;
             msTexts[i++].textContent = 'Textures: ' + webGLRenderer.info.memory.textures;
 

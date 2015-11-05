@@ -8,7 +8,7 @@ let Stats = function () {
     let startTime = now(), prevTime = startTime;
     let frames = 0, mode = 0;
 
-    function createElement( tag, id, css ) {
+    function createElement ( tag, id, css ) {
         let element = document.createElement( tag );
         element.id = id;
         element.style.cssText = css;
@@ -16,7 +16,7 @@ let Stats = function () {
 
     }
 
-    function createPanel( id, fg, bg ) {
+    function createPanel ( id, fg, bg ) {
         let div = createElement( 'div', id, 'padding:0 0 3px 3px;text-align:left;background:' + bg );
 
         let text = createElement( 'div', id + 'Text', 'font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:' + fg );
@@ -26,7 +26,7 @@ let Stats = function () {
         let graph = createElement( 'div', id + 'Graph', 'width:74px;height:30px;background:' + fg );
         div.appendChild( graph );
 
-        for ( var i = 0; i < 74; i ++ ) {
+        for ( var i = 0; i < 74; i++ ) {
 
             graph.appendChild( createElement( 'span', '', 'width:1px;height:30px;float:left;opacity:0.9;background:' + bg ) );
 
@@ -35,17 +35,17 @@ let Stats = function () {
         return div;
     }
 
-    function setMode( value ) {
+    function setMode ( value ) {
         var children = container.children;
 
-        for ( var i = 0; i < children.length; i ++ ) {
+        for ( var i = 0; i < children.length; i++ ) {
             children[ i ].style.display = i === value ? 'block' : 'none';
         }
 
         mode = value;
     }
 
-    function updateGraph( dom, value ) {
+    function updateGraph ( dom, value ) {
         var child = dom.appendChild( dom.firstChild );
         child.style.height = Math.min( 30, 30 - value * 30 ) + 'px';
 
@@ -56,7 +56,7 @@ let Stats = function () {
     var container = createElement( 'div', 'stats', 'width:80px;opacity:0.9;cursor:pointer' );
     container.addEventListener( 'mousedown', function ( event ) {
         event.preventDefault();
-        setMode( ++ mode % container.children.length );
+        setMode( ++mode % container.children.length );
     }, false );
 
     // FPS
@@ -77,16 +77,14 @@ let Stats = function () {
 
     container.appendChild( msDiv );
 
+    let mem = 0, memMin = Infinity, memMax = 0;
+    let memDiv = createPanel( 'mb', '#f08', '#201' );
+    let memText = memDiv.children[ 0 ];
+    let memGraph = memDiv.children[ 1 ];
 
     // MEM
-    if ( self.performance && self.performance.memory ) {
-        var mem = 0, memMin = Infinity, memMax = 0;
-
-        var memDiv = createPanel( 'mb', '#f08', '#201' );
-        var memText = memDiv.children[ 0 ];
-        var memGraph = memDiv.children[ 1 ];
-
-        container.appendChild( memDiv );
+    if (self.performance && self.performance.memory ) {
+        container.appendChild(memDiv);
     }
 
     setMode(mode);
@@ -108,7 +106,7 @@ let Stats = function () {
             msText.textContent = ( ms | 0 ) + ' MS (' + ( msMin | 0 ) + '-' + ( msMax | 0 ) + ')';
             updateGraph( msGraph, ms / 200 );
 
-            frames ++;
+            frames++;
 
             if ( time > prevTime + 1000 ) {
                 fps = Math.round( ( frames * 1000 ) / ( time - prevTime ) );

@@ -1,5 +1,3 @@
-'use strict';
-
 let Polygon = require('./Polygon');
 let Vector = require('./Vector');
 
@@ -27,9 +25,9 @@ class Box {
      * @return {Polygon} A new Polygon that represents this box.
      */
     toPolygon () {
-        var pos = this.position;
-        var w = this.width;
-        var h = this.height;
+        let pos = this.position;
+        let w = this.width;
+        let h = this.height;
 
         return new Polygon(new Vector(pos.x, pos.y), [
             new Vector(), new Vector(w, 0),

@@ -92,7 +92,7 @@ class BlockView {
     init () {
         let block = this.block;
 
-        this.textureAtlas = new TextureAtlas('tiles');
+        this.textureAtlas = new TextureAtlas('tiles', false);
 
         this.geometry = _createBlockGeometry(block, this.textureAtlas);
 

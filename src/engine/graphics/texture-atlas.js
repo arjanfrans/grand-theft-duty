@@ -1,20 +1,17 @@
-'use strict';
+let debug = require('debug')('game:engine/graphics/texture-atlas');
 
-const ATLAS_DIRECTORY = '../../assets/spritesheets/';
-
-let _atlasJson = new Map();
-
-// FIXME Browserify can not do dynamic loading
-_atlasJson.set('dude', require('../../../assets/spritesheets/dude.js'));
-_atlasJson.set('tiles', require('../../../assets/spritesheets/tiles.js'));
-
-let textureLoader = new THREE.TextureLoader();
+let _assetLoader = require('../asset-loader');
 
 class TextureAtlas {
-    constructor (name) {
-        this.mapping = _atlasJson.get(name);
+    constructor (name, clone = true) {
+        this.mapping = _assetLoader.getAtlasMapping(name);
 
-        this.texture = textureLoader.load(ATLAS_DIRECTORY + this.mapping.meta.image);
+        if (clone) {
+            this.texture = _assetLoader.cloneAtlasTexture(name);
+        } else {
+            this.texture = _assetLoader.getAtlasTexture(name);
+        }
+
         this.texture.magFilter = THREE.NearestFilter;
         this.texture.minFilter = THREE.LinearMipMapLinearFilter;
         this.width = this.mapping.meta.size.w;

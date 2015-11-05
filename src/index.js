@@ -1,6 +1,3 @@
-'use strict';
-
-// setup debug module
 localStorage.debug = 'game:*';
 
 let debug = require('debug')('game:index');

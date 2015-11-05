@@ -1,17 +1,18 @@
-'use strict';
-
 let engine = require('./engine/engine');
-let PlayState = require('./states/play');
-
 let stateBuilder = require('./builders/state');
+let assetLoader = require('./engine/asset-loader');
 
 module.exports = {
     start () {
-        let playState = stateBuilder.playState();
+        assetLoader.init().then(function () {
+            let playState = stateBuilder.playState();
 
-        engine.addState('play', playState);
-        engine.changeState('play');
+            engine.addState('play', playState);
+            engine.changeState('play');
 
-        engine.update();
+            engine.update();
+        }).catch(function (err) {
+            throw err;
+        });
     }
 };

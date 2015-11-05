@@ -45,8 +45,6 @@ module.exports = {
         worldView.dynamicViews.add(playerView);
         worldView.dynamicViews.add(player2View);
 
-        debug('player2', player2, player2View);
-
         playState.view = worldView;
 
         return playState;

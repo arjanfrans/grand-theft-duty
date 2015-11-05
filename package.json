@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "description": "Inspired by GTA2 and Call of Duty 2",
   "dependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.0.14",
     "debug": "^2.2.0",
     "three": "^0.73.0"
   },

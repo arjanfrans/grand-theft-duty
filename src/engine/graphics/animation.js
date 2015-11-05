@@ -1,4 +1,3 @@
-'use strict';
 
 class Animation {
     constructor (textureAtlas, geometry, interval = 2000, repeat = true, frames = [],

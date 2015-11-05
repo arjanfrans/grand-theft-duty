@@ -77,13 +77,14 @@ let Stats = function () {
 
     container.appendChild( msDiv );
 
+
     // MEM
     if ( self.performance && self.performance.memory ) {
-        let mem = 0, memMin = Infinity, memMax = 0;
+        var mem = 0, memMin = Infinity, memMax = 0;
 
-        let memDiv = createPanel( 'mb', '#f08', '#201' );
-        let memText = memDiv.children[ 0 ];
-        let memGraph = memDiv.children[ 1 ];
+        var memDiv = createPanel( 'mb', '#f08', '#201' );
+        var memText = memDiv.children[ 0 ];
+        var memGraph = memDiv.children[ 1 ];
 
         container.appendChild( memDiv );
     }

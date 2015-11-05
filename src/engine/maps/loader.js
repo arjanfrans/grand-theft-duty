@@ -1,9 +1,6 @@
 let debug = require('debug')('game:engine/maps/loader');
 
-// TODO browserify doesn't support dynamic require, so pre define here.
-let _maps = new Map();
-
-_maps.set('level1', require('../../../assets/maps/level1.js'));
+let _assetLoader = require('../asset-loader');
 
 let Block = require('../world/block');
 let WorldMap = require('./world-map');
@@ -73,7 +70,7 @@ let _parseRawMap = function (rawMap) {
 
 module.exports = {
     load: function (name) {
-        let rawMap = _maps.get(name);
+        let rawMap = _assetLoader.getMap(name);
 
         return _parseRawMap(rawMap);
     }

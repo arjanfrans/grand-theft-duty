@@ -1,4 +1,4 @@
-module.exports = {
+{
 	"meta": {
 		"image": "tiles.png",
 		"size": {"w":256,"h":256},
@@ -126,4 +126,4 @@ module.exports = {
 			"sourceSize": {"w":64,"h":64}
 		}
 	]
-};
+}

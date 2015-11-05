@@ -12,6 +12,7 @@ module.exports = {
 
             engine.update();
         }).catch(function (err) {
+            console.error(err.stack);
             throw err;
         });
     }

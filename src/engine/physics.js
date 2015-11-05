@@ -94,7 +94,8 @@ let _detectFloorCollision = function (entity, nextEntityPosition, block) {
         return true;
     }
 
-    if (block && block.collidable) {
+    if (block && block.collidable && block.walls.top) {
+        // TODO check collision right on edge
         if (nextEntityPosition.z <= block.position.z + block.depth) {
             entity.position.z = block.position.z + block.depth;
             entity.stopFalling();

@@ -1,4 +1,4 @@
-module.exports = {
+{
     "name": "level 1",
     "width": 5,
     "height": 5,
@@ -68,4 +68,4 @@ module.exports = {
             }
         }
     ]
-};
+}

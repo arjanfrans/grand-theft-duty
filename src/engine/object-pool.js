@@ -1,3 +1,4 @@
+// http://blog.sklambert.com/javascript-object-pool/
 /**
  * The object to be held within the Object Pool.
  */

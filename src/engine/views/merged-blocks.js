@@ -1,4 +1,4 @@
-let debug = require('debug')('game:engine/views/block');
+let debug = require('debug')('game:engine/views/merged-block');
 
 let TextureAtlas = require('../graphics/texture-atlas');
 
@@ -83,17 +83,40 @@ let _createBlockGeometry = function (block, textureAtlas) {
     return blockGeometry;
 };
 
-class BlockView {
-    constructor (block) {
-        this.block = block;
+let _createMergedBlockGeometry = function (blocks, textureAtlas) {
+    let mergedGeometry = new THREE.Geometry();
+
+    for (let block of blocks) {
+        let geometry = _createBlockGeometry(block, textureAtlas);
+
+        geometry.translate(block.position.x, block.position.y, block.position.z);
+
+        mergedGeometry.merge(geometry);
+        mergedGeometry.mergeVertices();
+    }
+
+    return mergedGeometry;
+};
+
+class MergedBlocksView {
+    constructor (blocks) {
+        this.blocks = blocks;
+
+        if (blocks.length > 0) {
+            this.blockWidth = blocks[0].width;
+            this.blockHeight = blocks[0].height;
+            this.blockDepth = blocks[0].depth;
+        } else {
+            this.blockWidth = 0;
+            this.blockHeight = 0;
+            this.blockDepth = 0;
+        }
     }
 
     init () {
-        let block = this.block;
-
         this.textureAtlas = new TextureAtlas('tiles', false);
 
-        this.geometry = _createBlockGeometry(block, this.textureAtlas);
+        this.geometry = _createMergedBlockGeometry(this.blocks, this.textureAtlas);
 
         this.material = new THREE.MeshLambertMaterial({
             map: this.textureAtlas.texture,
@@ -103,18 +126,12 @@ class BlockView {
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-        let position = {
-            x: block.position.x,
-            y: block.position.y,
-            z: block.position.z
-        };
-
-        this.mesh.position.set(position.x, position.y, position.z);
+        this.mesh.position.set(0, 0, 0);
 
         // Set the center of the blocks to bottom left (instead of center)
-        this.mesh.translateX(block.width / 2);
-        this.mesh.translateY(block.height / 2);
-        this.mesh.translateZ(block.depth / 2);
+        this.mesh.translateX(this.blockWidth / 2);
+        this.mesh.translateY(this.blockHeight / 2);
+        this.mesh.translateZ(this.blockDepth / 2);
     }
 
     get texture () {
@@ -122,4 +139,4 @@ class BlockView {
     }
 }
 
-module.exports = BlockView;
+module.exports = MergedBlocksView;

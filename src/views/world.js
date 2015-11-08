@@ -1,10 +1,10 @@
 let debug = require('debug')('game:views/world');
 
 let BlockView = require('../engine/views/block');
+let MergedBlocksView = require('../engine/views/merged-blocks');
 
-// TODO this can be much more efficient (merge the geometries)
-let _createBlockViews = function (layers) {
-    let blockViews = [];
+let _createMergedBlockView = function (layers) {
+    let blocks = [];
 
     for (let z = 0; z < layers.length; z++) {
         let layer = layers[z];
@@ -14,13 +14,13 @@ let _createBlockViews = function (layers) {
                 let block = layer[y][x];
 
                 if (block !== null) {
-                    blockViews.push(new BlockView(block));
+                    blocks.push(block);
                 }
             };
         }
     }
 
-    return blockViews;
+    return new MergedBlocksView(blocks);
 };
 
 class WorldView {
@@ -43,13 +43,11 @@ class WorldView {
 
         this.scene = new THREE.Scene();
 
-        let blockViews = _createBlockViews(this.world.mapLayers);
+        let blockView = _createMergedBlockView(this.world.mapLayers);
 
-        for (let blockView of blockViews) {
-            blockView.init();
+        blockView.init();
 
-            this.scene.add(blockView.mesh);
-        }
+        this.scene.add(blockView.mesh);
 
         for (let view of this.dynamicViews.values()) {
             view.init();

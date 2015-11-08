@@ -24,6 +24,79 @@
         },
         {
             "position": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center",
+                "north": "grass_center",
+                "south": "roof1_corner",
+                "west": "grass_center",
+                "east": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 2,
+                "y": 0,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center",
+                "north": "grass_center",
+                "south": "roof1_corner",
+                "west": "roof1_edge",
+                "east": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 3,
+                "y": 0,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "north": "dirt_center",
+                "south": "roof1_corner",
+                "west": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 0,
+                "y": 4,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "roof1_corner",
+                "north": "dirt_center",
+                "south": "dirt_center",
+                "east": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 3,
+                "y": 3,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center",
+                "north": "grass_center",
+                "south": "roof1_corner",
+                "west": "grass_center",
+                "east": "grass_center"
+            }
+        },
+
+        {
+            "position": {
                 "x": 4,
                 "y": 4,
                 "z": 2

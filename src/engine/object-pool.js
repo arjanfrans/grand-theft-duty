@@ -1,4 +1,45 @@
 // http://blog.sklambert.com/javascript-object-pool/
+
+class PoolObject {
+    constructor (object) {
+        this.object = object;
+        this.inUse = false;
+    }
+
+    allocate (updatePropertiesFuntion) {
+        updatePropertiesFuntion(this.object);
+        this.inUse = true;
+    }
+
+    release () {
+        this.inUse = false;
+    }
+
+    update (inUseFunction) {
+        let stillInUse = inUseFunction(this.object);
+
+        if (!stillInUse) {
+            this.release();
+        }
+    }
+}
+
+class ObjectPool {
+    constructor (objectType, objectArgs, size) {
+        this.objects = [];
+
+        for (let i = 0; i < size; i++) {
+            let poolObject = new PoolObject(new objectType(...objectArgs));
+
+            this.objects.push(poolObject);
+        }
+    }
+
+    get () {
+
+    }
+}
+
 /**
  * The object to be held within the Object Pool.
  */
@@ -38,6 +79,7 @@ function Obj() {
         this.inUse = false;
     };
 }
+
 /**
  * The Object Pool. Unused objects are grabbed from the back of
  * the array and pushed to the front of the array. When using an

@@ -70,10 +70,12 @@ let _rendererStats = function () {
  * @param {Object} Camera the camera to update
 */
 
-class RenderDebug {
+export default class RenderDebug {
     constructor (renderer) {
         this.renderer = renderer;
+    }
 
+    init () {
         this.statjs = new DebugStats();
         this.statjs.setModes([0, 1, 2]);
 
@@ -104,5 +106,3 @@ class RenderDebug {
         this.rendererStats.update(this.renderer);
     }
 }
-
-module.exports = RenderDebug;

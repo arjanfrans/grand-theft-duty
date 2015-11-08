@@ -1,53 +1,22 @@
 let debug = require('debug')('game:engine/engine');
 
-const DEBUG = true;
-
-let Renderer = require('./graphics/renderer');
-
-let _renderer = new Renderer('webgl');
-
-let _renderDebug = null;
-
-if (DEBUG) {
-    let RenderDebug = require('./debug/render-debug');
-
-    _renderDebug = new RenderDebug(_renderer._THREErenderer);
-}
-
-let states = new Map();
-
-let currentState = null;
+import RenderDebug from './debug/render-debug';
+import Renderer from './graphics/renderer';
 
 let clock = new THREE.Clock();
 
-/**
- * The game loop. Updates the current state and renders it's Views.
- *
- * @returns {void}
- */
-let _update = function () {
-    let delta = clock.getDelta();
+class Engine {
+    constructor (options = { debugMode: false }) {
+        this.debugMode = options.debugMode;
+        this.states = new Map();
+        this.currentState = null;
+        this._renderer = new Renderer('webgl');
 
-    if (DEBUG) {
-        _renderDebug.before();
+        if (this.debugMode) {
+            this._renderDebug = new RenderDebug(this._renderer._THREErenderer);
+            this._renderDebug.init();
+        }
     }
-
-    // Tell browser to perform animation.
-    window.requestAnimationFrame(_update);
-
-    if (currentState) {
-        currentState.update(delta);
-        _renderer.render(delta);
-    } else {
-        debug('no current State');
-    }
-
-    if (DEBUG) {
-        _renderDebug.after();
-    }
-};
-
-module.exports = {
 
     /**
      * Add a State to the engine.
@@ -58,8 +27,8 @@ module.exports = {
      * @returns {void}
      */
     addState (name, state) {
-        states.set(name, state);
-    },
+        this.states.set(name, state);
+    }
 
     /**
      * Change the current state.
@@ -69,10 +38,10 @@ module.exports = {
      * @returns {void}
      */
     changeState (name) {
-        currentState = states.get(name);
-        currentState.init();
-        _renderer.view = currentState.view;
-    },
+        this.currentState = this.states.get(name);
+        this.currentState.init();
+        this._renderer.view = this.currentState.view;
+    }
 
     /**
      * Remove a state from the engine.
@@ -82,13 +51,39 @@ module.exports = {
      * @returns {void}
      */
     removeState (name) {
-        states.delete(name);
-    },
+        this.states.delete(name);
+    }
 
     /**
-     * Call game loop.
+     * The game loop. Updates the current state and renders it's Views.
      *
      * @returns {void}
      */
-    update: _update
-};
+    update () {
+        let loop = () => {
+            let delta = clock.getDelta();
+
+            if (this.debugMode) {
+                this._renderDebug.before();
+            }
+
+            // Tell browser to perform animation.
+            window.requestAnimationFrame(loop);
+
+            if (this.currentState) {
+                this.currentState.update(delta);
+                this._renderer.render(delta);
+            } else {
+                debug('no current State');
+            }
+
+            if (this.debugMode) {
+                this._renderDebug.after();
+            }
+        };
+
+        loop();
+    }
+}
+
+export default Engine;

@@ -1,6 +1,6 @@
 let debug = require('debug')('game:states/play');
 
-let State = require('../engine/state');
+import State from '../engine/state';
 
 /**
  * State of playing the game.

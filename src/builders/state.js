@@ -1,14 +1,14 @@
 let debug = require('debug')('game:builders/state');
 
-let WorldView = require('../views/world');
-let World = require('../engine/world');
-let Player = require('../engine/entities/player');
-let Physics = require('../engine/physics');
-let PlayerInput = require('../engine/input/player');
-let PlayerView = require('../engine/views/player');
-let PlayState = require('../states/play');
+import WorldView from '../views/world';
+import World from '../engine/world';
+import Player from '../engine/entities/player';
+import Physics from '../engine/physics';
+import PlayerInput from '../engine/input/player';
+import PlayerView from '../engine/views/player';
+import PlayState from '../states/play';
 
-let _mapLoader = require('../engine/maps/loader');
+import MapLoader from '../engine/maps/map-loader';
 
 module.exports = {
     playState: function () {
@@ -25,7 +25,7 @@ module.exports = {
         let player2View = new PlayerView(player2);
 
         // World
-        let map = _mapLoader.load('level1');
+        let map = MapLoader.load('level1');
         let world = new World(map);
 
         world.player = player;

@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/views/player');
 
-let TextureAtlas = require('../graphics/texture-atlas');
-let Animation = require('../graphics/animation');
+import TextureAtlas from '../graphics/texture-atlas';
+import Animation from '../graphics/animation';
 
 const WALK_FRAMES = ['walk_0001', 'walk_0002', 'walk_0003', 'walk_0004'];
 const IDLE_FRAMES = ['idle_0001'];
@@ -59,4 +59,4 @@ class PlayerView {
     }
 }
 
-module.exports = PlayerView;
+export default PlayerView;

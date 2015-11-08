@@ -1,8 +1,8 @@
 let debug = require('debug')('game:engine/entities/player');
 
-let Entity = require('./entity');
+import Character from './character';
 
-class Player extends Entity {
+class Player extends Character {
     constructor (x, y, z, width, height) {
         super(x, y, z, width, height);
     }

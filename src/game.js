@@ -1,12 +1,18 @@
 let debug = require('debug')('game:game');
 
-let engine = require('./engine/engine');
+import Engine from './engine/engine';
+
 let stateBuilder = require('./builders/state');
-let assetLoader = require('./engine/asset-loader');
+
+import assetLoader from './engine/asset-loader';
 
 module.exports = {
     start () {
         assetLoader.init().then(function () {
+            let engine = new Engine({
+                debugMode: true
+            });
+
             let playState = stateBuilder.playState();
 
             engine.addState('play', playState);
@@ -14,7 +20,6 @@ module.exports = {
 
             engine.update();
         }).catch(function (err) {
-            console.error(err.stack);
             throw err;
         });
     }

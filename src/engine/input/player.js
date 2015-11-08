@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/input/player');
 
-let Keyboard = require('./keyboard');
-let Gamepad = require('./gamepad');
+import Keyboard from './keyboard';
+import Gamepad from './gamepad';
 
 class PlayerInput {
     constructor (player) {
@@ -23,6 +23,10 @@ class PlayerInput {
             this.player.turn('left');
         } else {
             this.player.stopTurning();
+        }
+
+        if (Keyboard.isDown(Keyboard.CTRL)) {
+            this.player.fireBullet();
         }
     }
 }

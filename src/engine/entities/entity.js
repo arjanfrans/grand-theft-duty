@@ -5,7 +5,6 @@ let Vector = require('../collision/Vector');
 
 const DEFAULT_SPEED = 200;
 const DEFAULT_ROTATION_SPEED = 300;
-const GRAVITY = -400;
 
 class Entity {
     constructor (x, y, z = 0, width = 0, height = 0) {
@@ -38,10 +37,17 @@ class Entity {
         this.shouldUpdate = true;
 
         this.isMoving = false;
+
+        this._body = new Polygon(new Vector(this.x, this.y), [
+            new Vector(-this.halfWidth, -this.halfHeight),
+            new Vector(-this.halfWidth, this.halfHeight),
+            new Vector(this.halfWidth, this.halfHeight),
+            new Vector(this.halfWidth, 0)
+        ]);
     }
 
     get rotatedBody () {
-        let body = this.body;
+        let body = this._body;
 
         body.setAngle(this.angle);
 
@@ -49,14 +55,10 @@ class Entity {
     }
 
     get body () {
-        let position = new Vector(this.x, this.y);
+        this._body.position.x = this.position.x;
+        this._body.position.y = this.position.y;
 
-        return new Polygon(position, [
-            new Vector(-this.halfWidth, -this.halfHeight),
-            new Vector(-this.halfWidth, this.halfHeight),
-            new Vector(this.halfWidth, this.halfHeight),
-            new Vector(this.halfWidth, 0)
-        ]);
+        return this._body;
     }
 
     get x () {
@@ -135,14 +137,6 @@ class Entity {
 
     stopTurning () {
         this.angularVelocity = 0;
-    }
-
-    fall () {
-        this.velocity.z = GRAVITY;
-    }
-
-    stopFalling () {
-        this.velocity.z = 0;
     }
 
     update (delta) {

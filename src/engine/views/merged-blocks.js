@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/views/merged-block');
 
-let TextureAtlas = require('../graphics/texture-atlas');
+import TextureAtlas from '../graphics/texture-atlas';
 
 let _createBlockGeometry = function (block, textureAtlas) {
     let geometries = [];
@@ -139,4 +139,4 @@ class MergedBlocksView {
     }
 }
 
-module.exports = MergedBlocksView;
+export default MergedBlocksView;

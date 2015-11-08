@@ -1,15 +1,15 @@
 let debug = require('debug')('game:engine/graphics/texture-atlas');
 
-let _assetLoader = require('../asset-loader');
+import AssetLoader from '../asset-loader';
 
 class TextureAtlas {
     constructor (name, clone = true) {
-        this.mapping = _assetLoader.getAtlasMapping(name);
+        this.mapping = AssetLoader.getAtlasMapping(name);
 
         if (clone) {
-            this.texture = _assetLoader.cloneAtlasTexture(name);
+            this.texture = AssetLoader.cloneAtlasTexture(name);
         } else {
-            this.texture = _assetLoader.getAtlasTexture(name);
+            this.texture = AssetLoader.getAtlasTexture(name);
         }
 
         this.texture.magFilter = THREE.NearestFilter;
@@ -61,4 +61,4 @@ class TextureAtlas {
     }
 }
 
-module.exports = TextureAtlas;
+export default TextureAtlas;

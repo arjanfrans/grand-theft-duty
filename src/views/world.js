@@ -1,7 +1,6 @@
 let debug = require('debug')('game:views/world');
 
-let BlockView = require('../engine/views/block');
-let MergedBlocksView = require('../engine/views/merged-blocks');
+import MergedBlocksView from '../engine/views/merged-blocks';
 
 let _createMergedBlockView = function (layers) {
     let blocks = [];

@@ -72,7 +72,7 @@ let _loadMap = function (name) {
     });
 };
 
-module.exports = {
+let AssetLoader = {
     init: function () {
         let assetsToLoad = [];
 
@@ -113,3 +113,5 @@ module.exports = {
         return _assets.atlases.get(name);
     }
 };
+
+export default AssetLoader;

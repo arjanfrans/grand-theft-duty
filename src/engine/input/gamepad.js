@@ -81,4 +81,4 @@ _gp.onUpdate(function (gamepads) {
     }
 });
 
-module.exports = Gamepad;
+export default Gamepad;

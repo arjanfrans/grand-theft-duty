@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/views/block');
 
-let TextureAtlas = require('../graphics/texture-atlas');
+import TextureAtlas from '../graphics/texture-atlas';
 
 let _createBlockGeometry = function (block, textureAtlas) {
     let geometries = [];
@@ -122,4 +122,4 @@ class BlockView {
     }
 }
 
-module.exports = BlockView;
+export default BlockView;

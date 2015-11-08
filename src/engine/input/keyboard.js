@@ -3,6 +3,7 @@ let debug = require('debug')('game:engine/input/keyboard');
 let Keyboard = {
     _pressed: {},
 
+    CTRL: 17,
     LEFT: 37,
     UP: 38,
     RIGHT: 39,
@@ -31,4 +32,4 @@ window.addEventListener('keydown', function (event) {
     event.preventDefault();
 }, false);
 
-module.exports = Keyboard;
+export default Keyboard;

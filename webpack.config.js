@@ -1,5 +1,7 @@
-var path = require('path');
-var webpack = require('webpack');
+'use strict';
+
+let path = require('path');
+let webpack = require('webpack');
 
 module.exports = {
     devtool: 'source-map',
@@ -18,6 +20,6 @@ module.exports = {
                     presets: ['es2015']
                 }
             }
-         ]
+        ]
     }
 };

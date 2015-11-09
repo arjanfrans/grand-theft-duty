@@ -1,6 +1,8 @@
 let debug = require('debug')('game:views/world');
 
 import MergedBlocksView from '../engine/views/merged-blocks';
+import BulletView from '../engine/views/bullet';
+import ObjectPool from '../engine/object-pool';
 
 let _createMergedBlockView = function (layers) {
     let blocks = [];
@@ -31,16 +33,24 @@ class WorldView {
         this.world = world;
 
         this.dynamicViews = new Set();
+        this.bulletViewPool = null;
+        this.bulletViewPairs = new WeakMap();
     }
 
     init () {
+        this.scene = new THREE.Scene();
+
+        this.bulletViewPool = new ObjectPool(() => {
+            let bullet = new BulletView(null);
+
+            return bullet;
+        }, 10, 10);
+
         this.camera = new THREE.PerspectiveCamera(75, this.width / this.height, 1, 100000);
 
         this.camera.position.x = (this.world.width / 2) * this.world.tileWidth;
         this.camera.position.y = (this.world.height / 2) * this.world.tileHeight;
         this.camera.position.z = this.world.tileDepth * 6;
-
-        this.scene = new THREE.Scene();
 
         let blockView = _createMergedBlockView(this.world.mapLayers);
 
@@ -72,6 +82,30 @@ class WorldView {
 
         for (let view of this.dynamicViews) {
             view.update(delta);
+        }
+
+        let bulletSystem = this.world.bulletSystem;
+
+        // Keep viewPool in sync with bullet pool
+        if (bulletSystem.poolSize > this.bulletViewPool.size) {
+            this.bulletViewPool.allocate(bulletSystem.poolSize - this.bulletViewPool.size);
+        }
+
+        for (let bullet of bulletSystem.activeBullets) {
+            let bulletView = this.bulletViewPairs.get(bullet);
+
+            if (!bulletView) {
+                bulletView = this.bulletViewPool.get();
+
+                bulletView.bullet = bullet;
+                bulletView.init();
+
+                this.scene.add(bulletView.mesh);
+
+                this.bulletViewPairs.set(bullet, bulletView);
+            }
+
+            bulletView.update(delta);
         }
     }
 }

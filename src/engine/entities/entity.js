@@ -44,6 +44,11 @@ class Entity {
             new Vector(this.halfWidth, this.halfHeight),
             new Vector(this.halfWidth, 0)
         ]);
+
+        this.dead = false;
+
+        // Actions can trigger things that should happen in the next update.
+        this.actions = {};
     }
 
     get rotatedBody () {
@@ -79,6 +84,14 @@ class Entity {
 
     get halfHeight () {
         return this.height / 2;
+    }
+
+    kill () {
+        this.dead = true;
+    }
+
+    revive () {
+        this.dead = false;
     }
 
     /**

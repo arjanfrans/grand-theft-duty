@@ -7,9 +7,15 @@ class World {
 
         this.map = map;
         this.player = null;
+        this.physics = null;
+        this.bulletSystem = null;
     }
 
     update (delta) {
+        if (this.bulletSystem) {
+            this.bulletSystem.update(delta);
+        }
+
         if (this.physics) {
             this.physics.update(delta);
         }

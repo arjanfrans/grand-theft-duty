@@ -8,6 +8,8 @@ const GRAVITY = -400;
 class Character extends Entity {
     constructor (x, y, z, width, height) {
         super(x, y, z, width, height);
+
+        this.canFireBullet = true;
     }
 
     fall () {
@@ -19,13 +21,13 @@ class Character extends Entity {
     }
 
     fireBullet () {
-        debug('fireing bullet');
-
-        let bullet = new Bullet(this.position.x, this.position.y, this.position.z, 5, 5);
-
-        bullet.angle = this.angle;
-
-        return bullet;
+        if (this.canFireBullet) {
+            this.canFireBullet = false;
+            setTimeout(() => {
+                this.actions.firedBullet = true;
+                this.canFireBullet = true;
+            }, 200);
+        }
     }
 }
 

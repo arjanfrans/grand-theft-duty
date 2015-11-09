@@ -1,0 +1,89 @@
+let debug = require('debug')('game:engine/entities/bullet');
+
+import ObjectPool from './object-pool';
+import Bullet from './entities/bullet';
+
+import SAT from './collision/SAT';
+import CollisionResponse from './collision/Response';
+import BulletView from '../engine/views/bullet';
+
+class BulletSystem {
+    constructor () {
+        this.activeBullets = new Set();
+
+        this.bulletPool = new ObjectPool(() => {
+            let bullet = new Bullet(0, 0, 0, 2, 8);
+
+            return bullet;
+        }, 10, 10);
+
+        this.entities = new Set();
+    }
+
+    get poolSize () {
+        return this.bulletPool.size;
+    }
+
+    _fireBullet (firedBy) {
+        let bullet = this.bulletPool.get();
+
+        // If the pool is full, reused the first item.
+        if (!bullet) {
+            let firstBullet = this.activeBullets.values().next().value;
+
+            this.bulletPool.free(firstBullet);
+
+            bullet = this.bulletPool.get();
+        }
+
+        bullet.revive();
+        bullet.firedBy = firedBy;
+        bullet.position.x = firedBy.position.x;
+        bullet.position.y = firedBy.position.y;
+        bullet.position.z = firedBy.position.z;
+        bullet.angle = firedBy.angle;
+
+        this.activeBullets.add(bullet);
+
+        return bullet;
+    }
+
+    addEntity (entity) {
+        this.entities.add(entity);
+    }
+
+    update (delta) {
+        for (let entity of this.entities) {
+            if (entity.actions.firedBullet) {
+                this._fireBullet(entity);
+                entity.actions.firedBullet = false;
+            }
+        }
+
+        for (let bullet of this.activeBullets) {
+            bullet.update(delta);
+
+            if (bullet.dead) {
+                this.activeBullets.delete(bullet);
+                this.bulletPool.free(bullet);
+            } else {
+                for (let entity of this.entities) {
+                    if (!entity.dead) {
+                        // Can't kill itself
+                        if (bullet.firedBy !== entity) {
+                            let response = new CollisionResponse();
+
+                            if (SAT.testPolygonPolygon(entity.body, bullet.body, response)) {
+                                entity.kill();
+                                bullet.kill();
+                                this.bulletPool.free(bullet);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
+export default BulletSystem;

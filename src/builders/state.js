@@ -4,6 +4,7 @@ import WorldView from '../views/world';
 import World from '../engine/world';
 import Player from '../engine/entities/player';
 import Physics from '../engine/physics';
+import BulletSystem from '../engine/bullet-system';
 import PlayerInput from '../engine/input/player';
 import PlayerView from '../engine/views/player';
 import PlayState from '../states/play';
@@ -21,7 +22,7 @@ module.exports = {
 
         playState.inputs.set('player', playerInput);
 
-        let player2 = new Player(300, 300, 300, 32, 32);
+        let player2 = new Player(300, 500, 300, 32, 32);
         let player2View = new PlayerView(player2);
 
         // World
@@ -37,6 +38,12 @@ module.exports = {
         physics.map = map;
 
         world.physics = physics;
+
+        let bulletSystem = new BulletSystem();
+
+        bulletSystem.addEntity(player);
+        bulletSystem.addEntity(player2);
+        world.bulletSystem = bulletSystem;
 
         playState.world = world;
 

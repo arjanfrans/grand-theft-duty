@@ -5,7 +5,8 @@ const MAPS_DIRECTORY = '../../assets/maps/';
 
 const TEXTURE_ATLASES = [
     'dude',
-    'tiles'
+    'tiles',
+    'world'
 ];
 
 const MAPS = [

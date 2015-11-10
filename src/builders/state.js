@@ -9,6 +9,7 @@ import BulletSystemView from '../engine/views/bullet-system';
 import PlayerInput from '../engine/input/player';
 import PlayerView from '../engine/views/player';
 import PlayState from '../states/play';
+import Network from '../network';
 
 import MapLoader from '../engine/maps/map-loader';
 

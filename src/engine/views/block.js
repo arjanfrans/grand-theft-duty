@@ -88,7 +88,7 @@ class BlockView {
         this.block = block;
     }
 
-    init () {
+    init (sceneUpdates) {
         let block = this.block;
 
         this.textureAtlas = new TextureAtlas('tiles', false);

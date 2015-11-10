@@ -18,6 +18,9 @@ class BulletSystem {
         }, 10, 10);
 
         this.entities = new Set();
+
+        // Bullets that died last turn
+        this.deadBullets = new Set();
     }
 
     get poolSize () {
@@ -64,6 +67,7 @@ class BulletSystem {
             bullet.update(delta);
 
             if (bullet.dead) {
+                this.deadBullets.add(bullet);
                 this.activeBullets.delete(bullet);
                 this.bulletPool.free(bullet);
             } else {

@@ -42,9 +42,9 @@ class BulletView {
         this.mesh.rotation.z = this.bullet.angle + (90 * (Math.PI / 180));
 
         if (this.bullet.dead) {
-            this.visible = false;
+            this.mesh.visible = false;
         } else {
-            this.visible = true;
+            this.mesh.visible = true;
         }
     }
 }

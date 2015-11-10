@@ -33,18 +33,10 @@ class WorldView {
         this.world = world;
 
         this.dynamicViews = new Set();
-        this.bulletViewPool = null;
-        this.bulletViewPairs = new WeakMap();
     }
 
     init () {
         this.scene = new THREE.Scene();
-
-        this.bulletViewPool = new ObjectPool(() => {
-            let bullet = new BulletView(null);
-
-            return bullet;
-        }, 10, 10);
 
         this.camera = new THREE.PerspectiveCamera(75, this.width / this.height, 1, 100000);
 
@@ -61,17 +53,13 @@ class WorldView {
         for (let view of this.dynamicViews.values()) {
             view.init();
 
+            // If a view only has one mesh
             this.scene.add(view.mesh);
         }
 
         let ambientLight = new THREE.AmbientLight(0xcccccc);
 
         this.scene.add(ambientLight);
-
-        // let directionalLight = new THREE.DirectionalLight(0x00ffff, 2);
-        //
-        // directionalLight.position.set(world.width / 2, world.height / 2, world.depth).normalize();
-        // this.scene.add(directionalLight);
     }
 
     update (delta) {
@@ -81,31 +69,13 @@ class WorldView {
         this.camera.position.setY(player.position.y);
 
         for (let view of this.dynamicViews) {
-            view.update(delta);
-        }
-
-        let bulletSystem = this.world.bulletSystem;
-
-        // Keep viewPool in sync with bullet pool
-        if (bulletSystem.poolSize > this.bulletViewPool.size) {
-            this.bulletViewPool.allocate(bulletSystem.poolSize - this.bulletViewPool.size);
-        }
-
-        for (let bullet of bulletSystem.activeBullets) {
-            let bulletView = this.bulletViewPairs.get(bullet);
-
-            if (!bulletView) {
-                bulletView = this.bulletViewPool.get();
-
-                bulletView.bullet = bullet;
-                bulletView.init();
-
-                this.scene.add(bulletView.mesh);
-
-                this.bulletViewPairs.set(bullet, bulletView);
-            }
-
-            bulletView.update(delta);
+            view.update(delta, (updates) => {
+                if (updates.add) {
+                    this.scene.add(...updates.add);
+                } else if (updates.remove) {
+                    this.scene.remove(...updates.remove);
+                }
+            });
         }
     }
 }

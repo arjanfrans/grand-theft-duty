@@ -1,5 +1,7 @@
 let debug = require('debug')('game:engine/state');
 
+let i = 0;
+
 class World {
     constructor (map, width = 5, height = 5, depth = 5) {
         this.width = width;
@@ -9,6 +11,7 @@ class World {
         this.player = null;
         this.physics = null;
         this.bulletSystem = null;
+        this.enemies = null;
     }
 
     update (delta) {
@@ -22,6 +25,10 @@ class World {
 
         if (this.player) {
             this.player.update(delta);
+        }
+
+        for (let enemy of this.enemies) {
+            enemy.update(delta);
         }
     }
 

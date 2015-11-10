@@ -47,6 +47,10 @@ class PlayerView {
     }
 
     update (delta) {
+        if (this.player.dead) {
+            this.mesh.visible = false;
+        }
+
         this.mesh.position.x = this.player.position.x;
         this.mesh.position.y = this.player.position.y;
         this.mesh.position.z = this.player.position.z;

@@ -3,13 +3,14 @@ let debug = require('debug')('game:builders/state');
 import WorldView from '../views/world';
 import World from '../engine/world';
 import Player from '../engine/entities/player';
+import Character from '../engine/entities/character';
 import Physics from '../engine/physics';
 import BulletSystem from '../engine/bullet-system';
 import BulletSystemView from '../engine/views/bullet-system';
 import PlayerInput from '../engine/input/player';
 import PlayerView from '../engine/views/player';
+import EnemiesView from '../engine/views/enemies';
 import PlayState from '../states/play';
-import Network from '../network';
 
 import MapLoader from '../engine/maps/map-loader';
 
@@ -24,9 +25,6 @@ module.exports = {
 
         playState.inputs.set('player', playerInput);
 
-        let player2 = new Player(300, 500, 300, 32, 32);
-        let player2View = new PlayerView(player2);
-
         // World
         let map = MapLoader.load('level1');
         let world = new World(map);
@@ -35,27 +33,43 @@ module.exports = {
 
         let worldView = new WorldView(world);
 
+        // Physics
         let physics = new Physics(map.totalWidth, map.totalHeight);
 
         physics.addEntity(player);
-        physics.addEntity(player2);
         physics.map = map;
 
         world.physics = physics;
+
+        // Enemies
+        let enemies = [
+            new Character(300, 450, 300, 32, 32),
+            new Character(350, 450, 300, 32, 32),
+            new Character(350, 350, 300, 32, 32),
+            new Character(200, 500, 300, 32, 32)
+        ];
+
+        world.enemies = enemies;
+
+        let enemiesView = new EnemiesView(enemies);
 
         // Bullet system
         let bulletSystem = new BulletSystem();
 
         bulletSystem.addEntity(player);
-        bulletSystem.addEntity(player2);
 
         world.bulletSystem = bulletSystem;
+
+        enemies.forEach((enemy) => {
+            physics.addEntity(enemy);
+            bulletSystem.addEntity(enemy);
+        });
 
         let bulletSystemView = new BulletSystemView(bulletSystem);
 
         worldView.dynamicViews.add(bulletSystemView);
         worldView.dynamicViews.add(playerView);
-        worldView.dynamicViews.add(player2View);
+        worldView.dynamicViews.add(enemiesView);
 
         playState.world = world;
         playState.view = worldView;

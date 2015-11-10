@@ -13,24 +13,8 @@ class BulletSystemView {
         this.bulletViewPairs = new WeakMap();
     }
 
-    init (sceneUpdate) {
+    init () {
         this.mesh = new THREE.Object3D();
-
-        // Do initial pairing of bullet to view
-        for (let i = 0; i < this.bulletSystem.poolSize; i++) {
-            let bullet = this.bulletSystem.bulletPool.get();
-
-            let view = this.bulletViewPool.get();
-
-            view.bullet = bullet;
-            view.init();
-
-            this.mesh.add(view.mesh);
-
-            this.bulletViewPairs.set(bullet, view);
-
-            this.bulletSystem.bulletPool.free(bullet);
-        }
     }
 
     update (delta, sceneUpdates) {
@@ -55,9 +39,7 @@ class BulletSystemView {
                 bulletView.bullet = bullet;
                 bulletView.init();
 
-                sceneUpdates({
-                    add: [ bulletView.mesh ]
-                });
+                this.mesh.add(bulletView.mesh);
 
                 this.bulletViewPairs.set(bullet, bulletView);
             }

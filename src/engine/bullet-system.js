@@ -75,12 +75,15 @@ class BulletSystem {
                     if (!entity.dead) {
                         // Can't kill itself
                         if (bullet.firedBy !== entity) {
-                            let response = new CollisionResponse();
+                            // Check if on same level
+                            if (bullet.position.z >= entity.position.z && bullet.position.z < entity.position.y + 50) {
+                                let response = new CollisionResponse();
 
-                            if (SAT.testPolygonPolygon(entity.body, bullet.body, response)) {
-                                entity.kill();
-                                bullet.kill();
-                                this.bulletPool.free(bullet);
+                                if (SAT.testPolygonPolygon(entity.body, bullet.body, response)) {
+                                    entity.kill();
+                                    bullet.kill();
+                                    this.bulletPool.free(bullet);
+                                }
                             }
                         }
                     }

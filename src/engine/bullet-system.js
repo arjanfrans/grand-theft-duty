@@ -1,11 +1,10 @@
 let debug = require('debug')('game:engine/entities/bullet');
 
-import ObjectPool from './object-pool';
+import ObjectPool from './utils/object-pool';
 import Bullet from './entities/bullet';
 
 import SAT from './collision/SAT';
 import CollisionResponse from './collision/Response';
-import BulletView from '../engine/views/bullet';
 
 class BulletSystem {
     constructor () {
@@ -44,6 +43,7 @@ class BulletSystem {
         bullet.position.x = firedBy.position.x;
         bullet.position.y = firedBy.position.y;
         bullet.position.z = firedBy.position.z;
+
         bullet.angle = firedBy.angle;
 
         this.activeBullets.add(bullet);
@@ -59,7 +59,6 @@ class BulletSystem {
         for (let entity of this.entities) {
             if (entity.actions.firedBullet) {
                 this._fireBullet(entity);
-                entity.actions.firedBullet = false;
             }
         }
 

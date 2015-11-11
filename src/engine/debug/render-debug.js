@@ -3,9 +3,6 @@ let debug = require('debug')('game:engine/debug/render-debug');
 let DebugStats = require('./statsjs');
 
 let _rendererStats = function () {
-    let msMin = 100;
-    let msMax = 0;
-
     let container = document.createElement('div');
 
     container.style.cssText = 'width:80px;opacity:0.9;cursor:pointer';
@@ -62,13 +59,6 @@ let _rendererStats = function () {
         }
     };
 };
-
-/**
- * provide info on THREE.WebGLRenderer
- *
- * @param {Object} renderer the renderer to update
- * @param {Object} Camera the camera to update
-*/
 
 export default class RenderDebug {
     constructor (renderer) {

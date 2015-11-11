@@ -31,7 +31,7 @@ class Engine {
     }
 
     /**
-     * Change the current state.
+     * Change the current state and change the renderer's view to the view of the state.
      *
      * @param {string} name - Name of the state to change to.
      *
@@ -40,7 +40,11 @@ class Engine {
     changeState (name) {
         this.currentState = this.states.get(name);
         this.currentState.init();
-        this._renderer.view = this.currentState.view;
+        if (this.currentState.view) {
+            this._renderer.view = this.currentState.view;
+        } else {
+            debug('currentState has no View');
+        }
     }
 
     /**

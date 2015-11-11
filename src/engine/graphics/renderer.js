@@ -41,6 +41,12 @@ class Renderer {
      */
     set view (view) {
         this._view = view;
+        console.log(view);
+        this._view.size = {
+            width: DEFAULT_WIDTH,
+            height: DEFAULT_HEIGHT
+        };
+
         this._THREErenderer.setSize(view.width, view.height);
     }
 
@@ -61,8 +67,6 @@ class Renderer {
     render () {
         if (this.view) {
             this._THREErenderer.render(this.view.scene, this.view.camera);
-        } else {
-            debug('Renderer has no View');
         }
     }
 }

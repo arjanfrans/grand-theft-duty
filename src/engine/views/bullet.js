@@ -1,9 +1,12 @@
 let debug = require('debug')('game:engine/views/bullet');
 
 import TextureAtlas from '../graphics/texture-atlas';
+import View from './view';
 
-class BulletView {
+class BulletView extends View {
     constructor (bullet) {
+        super();
+
         this.bullet = bullet;
     }
 

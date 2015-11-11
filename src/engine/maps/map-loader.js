@@ -2,7 +2,7 @@ let debug = require('debug')('game:engine/maps/loader');
 
 import AssetLoader from '../asset-loader';
 
-import Block from '../world/block';
+import Block from './block';
 import WorldMap from './world-map';
 
 let _parseBlock = function (rawBlock, blockWidth, blockHeight, blockDepth) {
@@ -43,7 +43,6 @@ let _createEmptyLayers = function (mapWidth, mapHeight, mapDepth) {
 
 let _parseRawMap = function (rawMap) {
     // TODO validate map
-    let name = rawMap.name;
     let rawBlocks = rawMap.blocks;
 
     let blockWidth = rawMap.blockWidth;
@@ -65,7 +64,11 @@ let _parseRawMap = function (rawMap) {
         layers[position.z][position.y][position.x] = block;
     }
 
-    return new WorldMap(layers, mapWidth, mapHeight, mapDepth, blockWidth, blockHeight, blockDepth);
+    let worldMap = new WorldMap(layers, mapWidth, mapHeight, mapDepth, blockWidth, blockHeight, blockDepth);
+
+    worldMap.name = rawMap.name;
+
+    return worldMap;
 };
 
 let MapLoader = {

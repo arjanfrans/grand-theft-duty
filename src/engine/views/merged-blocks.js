@@ -1,11 +1,11 @@
 let debug = require('debug')('game:engine/views/merged-block');
 
 import TextureAtlas from '../graphics/texture-atlas';
+import View from './view';
 
 let _createBlockGeometry = function (block, textureAtlas) {
     let geometries = [];
 
-    // ok
     if (block.walls.south) {
         let south = textureAtlas.getBounds(block.walls.south);
 
@@ -19,9 +19,6 @@ let _createBlockGeometry = function (block, textureAtlas) {
         geometries.push(southGeometry);
     }
 
-    let northGeometry = null;
-
-    // ok
     if (block.walls.north) {
         let north = textureAtlas.getBounds(block.walls.north);
 
@@ -98,8 +95,10 @@ let _createMergedBlockGeometry = function (blocks, textureAtlas) {
     return mergedGeometry;
 };
 
-class MergedBlocksView {
+class MergedBlocksView extends View {
     constructor (blocks) {
+        super();
+
         this.blocks = blocks;
 
         if (blocks.length > 0) {
@@ -132,10 +131,6 @@ class MergedBlocksView {
         this.mesh.translateX(this.blockWidth / 2);
         this.mesh.translateY(this.blockHeight / 2);
         this.mesh.translateZ(this.blockDepth / 2);
-    }
-
-    get texture () {
-        return this.textureAtlas.texture;
     }
 }
 

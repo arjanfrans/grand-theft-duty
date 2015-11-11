@@ -49,6 +49,13 @@ class Entity {
 
         // Actions can trigger things that should happen in the next update.
         this.actions = {};
+
+        this.options = {
+            physics: false,
+            bullets: false,
+            isPlayer: false,
+            isCharacter: false
+        };
     }
 
     get rotatedBody () {

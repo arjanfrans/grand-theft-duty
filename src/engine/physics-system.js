@@ -3,8 +3,6 @@ let debug = require('debug')('game:engine/physics');
 let SAT = require('./collision/SAT');
 let CollisionResponse = require('./collision/Response');
 
-const GRAVITY = 50;
-
 let _calculateRayPositions = function (entity) {
     let rayDistance = 100;
 
@@ -105,10 +103,10 @@ let _detectFloorCollision = function (entity, nextEntityPosition, block) {
     }
 };
 
-class Physics {
-    constructor () {
+class PhysicsSystem {
+    constructor (map) {
         this.entities = new Set();
-        this.map = null;
+        this.map = map;
     }
 
     addEntity (entity) {
@@ -144,4 +142,4 @@ class Physics {
     }
 }
 
-module.exports = Physics;
+module.exports = PhysicsSystem;

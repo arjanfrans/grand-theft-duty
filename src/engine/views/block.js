@@ -1,11 +1,11 @@
 let debug = require('debug')('game:engine/views/block');
 
 import TextureAtlas from '../graphics/texture-atlas';
+import View from './view';
 
 let _createBlockGeometry = function (block, textureAtlas) {
     let geometries = [];
 
-    // ok
     if (block.walls.south) {
         let south = textureAtlas.getBounds(block.walls.south);
 
@@ -19,9 +19,6 @@ let _createBlockGeometry = function (block, textureAtlas) {
         geometries.push(southGeometry);
     }
 
-    let northGeometry = null;
-
-    // ok
     if (block.walls.north) {
         let north = textureAtlas.getBounds(block.walls.north);
 
@@ -83,12 +80,14 @@ let _createBlockGeometry = function (block, textureAtlas) {
     return blockGeometry;
 };
 
-class BlockView {
+class BlockView extends View {
     constructor (block) {
+        super();
+
         this.block = block;
     }
 
-    init (sceneUpdates) {
+    init () {
         let block = this.block;
 
         this.textureAtlas = new TextureAtlas('tiles', false);
@@ -115,10 +114,6 @@ class BlockView {
         this.mesh.translateX(block.width / 2);
         this.mesh.translateY(block.height / 2);
         this.mesh.translateZ(block.depth / 2);
-    }
-
-    get texture () {
-        return this.textureAtlas.texture;
     }
 }
 

@@ -223,7 +223,7 @@ class Polygon {
             }
         }
 
-        return boxToPolygon(this.position.clone().add(new Vector(xMin, yMin)), xMax - xMin, yMax - yMin);
+        return _boxToPolygon(this.position.clone().add(new Vector(xMin, yMin)), xMax - xMin, yMax - yMin);
     }
 }
 

@@ -18,6 +18,11 @@ let debug = require('debug')('game:engine/input/gamepad-micro');
  * @author dolphin@likethemammal.com (Chris Dolphin)
  */
 
+/**
+ * GamepadMicro provides an easy interface to the Gamepad API.
+ *
+ * @constructor
+ */
 function GamepadMicro () {
     this._buttonNames = [
         'actionSouth',
@@ -56,7 +61,7 @@ GamepadMicro.prototype.reset = function () {
     this._heldTimestampByGamepad = {};
 };
 
-function _newGamepad () {
+let _newGamepad = function () {
     return {
         leftStick: { x: 0, y: 0 },
         rightStick: { x: 0, y: 0 },
@@ -65,7 +70,7 @@ function _newGamepad () {
         _pressed: {},
         timestamp: 0
     };
-}
+};
 
 GamepadMicro.prototype.onUpdate = function (callback) {
     this._updateCallback = callback;
@@ -126,7 +131,7 @@ GamepadMicro.prototype._onGamepadDisconnected = function (event) {
     this.update();
 };
 
-function _getRawGamepads () {
+let _getRawGamepads = function () {
     let gamepads = (navigator.getGamepads && navigator.getGamepads()) || (navigator.webkitGetGamepads && navigator.webkitGetGamepads());
     let standardGamepads = [];
 
@@ -141,9 +146,9 @@ function _getRawGamepads () {
     }
 
     return standardGamepads;
-}
+};
 
-function _buttonPressed (gamepad, index) {
+let _buttonPressed = function (gamepad, index) {
     if (!gamepad || !gamepad.buttons || index >= gamepad.buttons.length) {
         return false;
     }
@@ -162,7 +167,7 @@ function _buttonPressed (gamepad, index) {
     }
 
     return (pressure === 1.0);
-}
+};
 
 GamepadMicro.prototype._checkForGamepadChange = function () {
     let rawGamepads = _getRawGamepads();
@@ -325,10 +330,10 @@ GamepadMicro.prototype._removePoll = function () {
     this._ticking = false;
 };
 
-function _gamepadSupported () {
+let _gamepadSupported = function () {
     return navigator.getGamepads ||
         !!navigator.webkitGetGamepads ||
         !!navigator.webkitGamepads;
-}
+};
 
 module.exports = GamepadMicro;

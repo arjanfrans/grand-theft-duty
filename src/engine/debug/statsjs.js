@@ -1,9 +1,10 @@
 let debug = require('debug')('game:engine/debug/statsjs');
 
 /**
- * @author mrdoob / http://mrdoob.com/
+ * View that shows FPS, memory usage and render time.
+ *
+ * @returns {object} statsjs object
  */
-
 let Stats = function () {
     let now = (self.performance && self.performance.now) ? self.performance.now.bind(performance) : Date.now;
 
@@ -12,16 +13,16 @@ let Stats = function () {
     let frames = 0;
     let modes = [0];
 
-    function createElement (tag, id, css) {
+    let createElement = function (tag, id, css) {
         let element = document.createElement(tag);
 
         element.id = id;
         element.style.cssText = css;
 
         return element;
-    }
+    };
 
-    function createPanel (id, fg, bg) {
+    let createPanel = function (id, fg, bg) {
         let div = createElement('div', id, 'padding:0 0 3px 3px;text-align:left;background:' + bg);
 
         let text = createElement('div', id + 'Text', 'font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:' + fg);
@@ -38,9 +39,9 @@ let Stats = function () {
         }
 
         return div;
-    }
+    };
 
-    function setModes (values) {
+    let setModes = function (values) {
         let children = container.children;
 
         for (let i = 0; i < children.length; i++) {
@@ -52,9 +53,9 @@ let Stats = function () {
         }
 
         modes = values;
-    }
+    };
 
-    function setMode (value) {
+    let setMode = function (value) {
         let children = container.children;
 
         for (let i = 0; i < children.length; i++) {
@@ -62,13 +63,13 @@ let Stats = function () {
         }
 
         modes = [value];
-    }
+    };
 
-    function updateGraph (dom, value) {
+    let updateGraph = function (dom, value) {
         let child = dom.appendChild(dom.firstChild);
 
         child.style.height = Math.min(30, 30 - value * 30) + 'px';
-    }
+    };
 
     let container = createElement('div', 'stats', 'width:80px;opacity:0.9;cursor:pointer');
 

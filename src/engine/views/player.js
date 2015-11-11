@@ -2,12 +2,15 @@ let debug = require('debug')('game:engine/views/player');
 
 import TextureAtlas from '../graphics/texture-atlas';
 import Animation from '../graphics/animation';
+import View from './view';
 
 const WALK_FRAMES = ['walk_0001', 'walk_0002', 'walk_0003', 'walk_0004'];
 const IDLE_FRAMES = ['idle_0001'];
 
-class PlayerView {
+class PlayerView extends View {
     constructor (player) {
+        super();
+
         this.player = player;
     }
 

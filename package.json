@@ -1,6 +1,6 @@
 {
   "name": "grand-theft-duty",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Inspired by GTA2 and Call of Duty 2",
   "dependencies": {
     "debug": "^2.2.0",

@@ -1,10 +1,13 @@
 let debug = require('debug')('game:engine/views/bullet-system');
 
 import BulletView from './bullet';
-import ObjectPool from '../object-pool';
+import ObjectPool from '../utils/object-pool';
+import View from './view';
 
-class BulletSystemView {
+class BulletSystemView extends View {
     constructor (bulletSystem) {
+        super();
+
         this.bulletSystem = bulletSystem;
         this.bulletViewPool = new ObjectPool(() => {
             return new BulletView(null);
@@ -17,7 +20,7 @@ class BulletSystemView {
         this.mesh = new THREE.Object3D();
     }
 
-    update (delta, sceneUpdates) {
+    update (delta) {
         // Keep viewPool in sync with bullet pool
         if (this.bulletSystem.poolSize > this.bulletViewPool.size) {
             this.bulletViewPool.allocate(this.bulletSystem.poolSize - this.bulletViewPool.size);

@@ -1,45 +1,56 @@
 let debug = require('debug')('game:builders/state');
 
-import WorldView from '../views/world';
+import PlayStateView from '../engine/states/play/play-view';
+
 import World from '../engine/world';
 import Player from '../engine/entities/player';
 import Character from '../engine/entities/character';
-import Physics from '../engine/physics';
+import PhysicsSystem from '../engine/physics-system';
 import BulletSystem from '../engine/bullet-system';
 import BulletSystemView from '../engine/views/bullet-system';
 import PlayerInput from '../engine/input/player';
 import PlayerView from '../engine/views/player';
-import EnemiesView from '../engine/views/enemies';
-import PlayState from '../states/play';
+import MergedBlocksView from '../engine/views/merged-blocks';
+import CharactersView from '../engine/views/characters';
+import PlayState from '../engine/states/play/play-state';
 
 import MapLoader from '../engine/maps/map-loader';
 
+let _createPlayView = function (state) {
+    let world = state.world;
+
+    let playView = new PlayStateView(world);
+
+    // Static views
+    let blocksView = new MergedBlocksView(world.map.blocks);
+
+    playView.addStaticView(blocksView);
+
+    // Dynamic Views
+    let playerView = new PlayerView(world.player);
+    let charactersView = new CharactersView(world.characters);
+    let bulletSystemView = new BulletSystemView(state.bulletSystem);
+
+    playView.addDynamicView(playerView);
+    playView.addDynamicView(charactersView);
+    playView.addDynamicView(bulletSystemView);
+
+    // Camera follow
+    playView.cameraFollowView = playerView;
+
+    return playView;
+};
+
 module.exports = {
-    playState: function () {
-        let playState = new PlayState();
-
-        // Player
-        let player = new Player(475, 475, 900, 32, 32);
-        let playerInput = new PlayerInput(player);
-        let playerView = new PlayerView(player);
-
-        playState.inputs.set('player', playerInput);
-
+    playState () {
         // World
         let map = MapLoader.load('level1');
         let world = new World(map);
 
-        world.player = player;
+        let state = new PlayState(world);
 
-        let worldView = new WorldView(world);
-
-        // Physics
-        let physics = new Physics(map.totalWidth, map.totalHeight);
-
-        physics.addEntity(player);
-        physics.map = map;
-
-        world.physics = physics;
+        // Player
+        let player = new Player(475, 475, 900, 32, 32);
 
         // Enemies
         let enemies = [
@@ -49,31 +60,26 @@ module.exports = {
             new Character(200, 500, 300, 32, 32)
         ];
 
-        world.enemies = enemies;
-
-        let enemiesView = new EnemiesView(enemies);
+        // Physics
+        let physicsSystem = new PhysicsSystem(map);
 
         // Bullet system
         let bulletSystem = new BulletSystem();
 
-        bulletSystem.addEntity(player);
+        state.bulletSystem = bulletSystem;
+        state.physicsSystem = physicsSystem;
 
-        world.bulletSystem = bulletSystem;
+        state.addEntities(enemies);
+        state.addEntity(player);
 
-        enemies.forEach((enemy) => {
-            physics.addEntity(enemy);
-            bulletSystem.addEntity(enemy);
-        });
+        let worldView = _createPlayView(state);
 
-        let bulletSystemView = new BulletSystemView(bulletSystem);
+        state.view = worldView;
 
-        worldView.dynamicViews.add(bulletSystemView);
-        worldView.dynamicViews.add(playerView);
-        worldView.dynamicViews.add(enemiesView);
+        let playerInput = new PlayerInput(world.player);
 
-        playState.world = world;
-        playState.view = worldView;
+        state.inputs.set('player', playerInput);
 
-        return playState;
+        return state;
     }
 };

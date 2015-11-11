@@ -10,6 +10,7 @@ class WorldMap {
         this.tileDepth = tileDepth;
 
         this.layers = layers;
+        this.name = null;
     }
 
     get blocks () {

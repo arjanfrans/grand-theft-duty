@@ -9,7 +9,6 @@ let debug = require('debug')('game:engine/collision/sat');
 /** @preserve SAT.js - Version 0.5.0 - Copyright 2012 - 2015 - Jim Riecken <jimr@jimr.ca> - released under the MIT License. https://github.com/jriecken/sat-js */
 
 let Vector = require('./Vector');
-let Circle = require('./Circle');
 let Box = require('./Box');
 let Response = require('./Response');
 

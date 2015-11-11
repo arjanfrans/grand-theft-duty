@@ -1,4 +1,4 @@
-let debug = require('debug')('game:engine/world/block');
+let debug = require('debug')('game:engine/maps/block');
 
 let Polygon = require('../collision/Polygon');
 let Vector = require('../collision/Vector');

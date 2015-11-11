@@ -1,4 +1,4 @@
-let debug = require('debug')('game:engine/state');
+let debug = require('debug')('game:engine/states/state');
 
 /**
  * Base class for all states.
@@ -16,7 +16,7 @@ class State {
         this.name = name;
         this.inputs = new Map();
         this.view = null;
-        this.initialized = false;
+        this._initialized = false;
     }
 
     update () {
@@ -24,12 +24,12 @@ class State {
     }
 
     init () {
-        if (!this.initialized) {
+        if (!this._initialized) {
             if (this.view) {
                 this.view.init();
             }
 
-            this.initialized = true;
+            this._initialized = true;
         }
     }
 }

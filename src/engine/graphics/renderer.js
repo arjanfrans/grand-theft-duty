@@ -17,7 +17,8 @@ class Renderer {
      * @param {string} [divName=gameDiv] - id of the html div to render into.
      */
     constructor (rendererType = 'webgl', divName = 'gameDiv') {
-        this._view = null;
+        this._backView = null;
+        this._frontView = null;
 
         if (rendererType === 'webgl') {
             this._THREErenderer = new THREE.WebGLRenderer();
@@ -28,44 +29,39 @@ class Renderer {
         this._THREErenderer.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this._THREErenderer.setClearColor(0xbfd1e5);
         this._THREErenderer.setPixelRatio(window.devicePixelRatio);
+        this._THREErenderer.autoClear = false;
 
         document.getElementById(divName).appendChild(this._THREErenderer.domElement);
     }
 
-    /**
-     * Set the view that should be rendered.
-     *
-     * @param {View} view - view to render.
-     *
-     * @returns {void}
-     */
-    set view (view) {
-        this._view = view;
-        console.log(view);
-        this._view.size = {
+    set backView (backView) {
+        this._backView = backView;
+
+        this._backView.size = {
             width: DEFAULT_WIDTH,
             height: DEFAULT_HEIGHT
         };
 
-        this._THREErenderer.setSize(view.width, view.height);
-        this._THREErenderer.autoClear = false;
+        this._THREErenderer.setSize(backView.width, backView.height);
     }
 
-    /**
-     * Get the view that is being rendered.
-     *
-     * @returns {View} View that is being rendererd.
-     */
-    get view () {
-        return this._view;
+    get backView () {
+        return this._backView;
     }
 
-    set hudView (view) {
-        this._hudView = view;
+    set frontView (frontView) {
+        this._frontView = frontView;
+
+        this._frontView.size = {
+            width: DEFAULT_WIDTH,
+            height: DEFAULT_HEIGHT
+        };
+
+        this._THREErenderer.setSize(frontView.width, frontView.height);
     }
 
-    get hudView () {
-        return this._hudView;
+    get frontView () {
+        return this._frontView;
     }
 
     /**
@@ -76,13 +72,13 @@ class Renderer {
     render () {
         this._THREErenderer.clear();
 
-        if (this.view) {
-            this._THREErenderer.render(this.view.scene, this.view.camera);
+        if (this.backView) {
+            this._THREErenderer.render(this.backView.scene, this.backView.camera);
         }
 
-        if (this.uiView) {
+        if (this.frontView) {
             this._THREErenderer.clearDepth();
-            this._THREErenderer.render(this.uiView.scene, this.uiView.camera);
+            this._THREErenderer.render(this.frontView.scene, this.frontView.camera);
         }
     }
 }

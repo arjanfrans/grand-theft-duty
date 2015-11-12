@@ -1,18 +1,21 @@
 import TextureAtlas from '../graphics/texture-atlas';
 
-class UI {
+// FIXME rename StateView
+import StateView from '../states/state-view';
+
+class UI extends StateView {
     constructor () {
+        super();
+
         this.width = 800;
         this.height = 600;
-
-        this.mesh = null;
     }
 
     init () {
-        this.scene = new THREE.Scene();
+        super.init();
 
-        this.camera = new THREE.OrthographicCamera(-width / 2, width / 2,
-            height / 2, -height / 2, 1, 100000);
+        this.camera = new THREE.OrthographicCamera(-this.width / 2, this.width / 2,
+            this.height / 2, -this.height / 2, 0, 1);
 
         let textureAtlas = new TextureAtlas('ui');
 
@@ -31,11 +34,19 @@ class UI {
 
         let heartMesh = new THREE.Mesh(geometry, material);
 
+        heartMesh.scale.set(0.5, 0.5, 0);
+
+        heartMesh.position.x = -(this.width / 2) + heartSize.width;
+        heartMesh.position.y = (this.height / 2) - heartSize.height;
+        heartMesh.rotation.z = -90 * (Math.PI / 180);
+
         this.scene.add(heartMesh);
+
+        this._initialized = true;
     }
 
-    update () {
-
+    update (delta) {
+        super.update(delta);
     }
 
 }

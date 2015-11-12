@@ -39,10 +39,6 @@ let _createPlayView = function (state) {
     // Camera follow
     playView.cameraFollowView = playerView;
 
-    let UIView = new UI();
-
-    playView.addUIView(UIView);
-
     return playView;
 };
 
@@ -79,7 +75,11 @@ module.exports = {
 
         let worldView = _createPlayView(state);
 
-        state.view = worldView;
+        state.addView(0, worldView);
+
+        let UIView = new UI();
+
+        state.addView(1, UIView);
 
         let playerInput = new PlayerInput(world.player);
 

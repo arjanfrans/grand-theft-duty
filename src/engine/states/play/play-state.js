@@ -100,8 +100,8 @@ class PlayState extends State {
     }
 
     _updateView (delta) {
-        if (this.view) {
-            this.view.update(delta);
+        for (let view of this.views.values()) {
+            view.update(delta);
         }
     }
 }

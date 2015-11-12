@@ -40,8 +40,9 @@ class Engine {
     changeState (name) {
         this.currentState = this.states.get(name);
         this.currentState.init();
-        if (this.currentState.view) {
-            this._renderer.view = this.currentState.view;
+        if (this.currentState.views.size > 0) {
+            this._renderer.backView = this.currentState.views.get(0);
+            this._renderer.frontView = this.currentState.views.get(1);
         } else {
             debug('currentState has no View');
         }

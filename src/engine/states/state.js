@@ -15,8 +15,12 @@ class State {
     constructor (name) {
         this.name = name;
         this.inputs = new Map();
-        this.view = null;
+        this.views = new Map();
         this._initialized = false;
+    }
+
+    addView (index, view) {
+        this.views.set(index, view);
     }
 
     update () {
@@ -25,8 +29,8 @@ class State {
 
     init () {
         if (!this._initialized) {
-            if (this.view) {
-                this.view.init();
+            for (let view of this.views.values()) {
+                view.init();
             }
 
             this._initialized = true;

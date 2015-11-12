@@ -1,9 +1,7 @@
 import TextureAtlas from '../graphics/texture-atlas';
+import RenderView from '../graphics/RenderView';
 
-// FIXME rename StateView
-import StateView from '../states/state-view';
-
-class UI extends StateView {
+class UI extends RenderView {
     constructor () {
         super();
 
@@ -34,7 +32,7 @@ class UI extends StateView {
 
         let heartMesh = new THREE.Mesh(geometry, material);
 
-        heartMesh.scale.set(0.5, 0.5, 0);
+        heartMesh.scale.set(0.5, 0.5, 1);
 
         heartMesh.position.x = -(this.width / 2) + heartSize.width;
         heartMesh.position.y = (this.height / 2) - heartSize.height;

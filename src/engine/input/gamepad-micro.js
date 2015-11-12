@@ -154,7 +154,7 @@ let _buttonPressed = function (gamepad, index) {
     }
 
     let b = gamepad.buttons[index];
-    let pressure;
+    let pressure = null;
 
     if (!b) {
         return false;
@@ -177,8 +177,8 @@ GamepadMicro.prototype._checkForGamepadChange = function () {
 
     for (let i = 0; i < rawGamepads.length; i++) {
         let gamepad = rawGamepads[i];
-        let heldTimestamps;
-        let hasBeenHeld;
+        let heldTimestamps = null;
+        let hasBeenHeld = null;
 
         if (!gamepad.timestamp) {
             continue;

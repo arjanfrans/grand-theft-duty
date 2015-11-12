@@ -15,12 +15,12 @@ class State {
     constructor (name) {
         this.name = name;
         this.inputs = new Map();
-        this.views = new Map();
+        this.views = new Set();
         this._initialized = false;
     }
 
-    addView (index, view) {
-        this.views.set(index, view);
+    addView (view) {
+        this.views.add(view);
     }
 
     update () {

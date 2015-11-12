@@ -75,11 +75,11 @@ module.exports = {
 
         let worldView = _createPlayView(state);
 
-        state.addView(0, worldView);
+        state.addView(worldView);
 
         let UIView = new UI();
 
-        state.addView(1, UIView);
+        state.addView(UIView);
 
         let playerInput = new PlayerInput(world.player);
 

@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/engine');
 
-import RenderDebug from './debug/render-debug';
+import RenderDebug from './utils/debug/RenderDebug';
 import Renderer from './graphics/renderer';
 
 let clock = new THREE.Clock();
@@ -10,7 +10,7 @@ class Engine {
         this.debugMode = options.debugMode;
         this.states = new Map();
         this.currentState = null;
-        this._renderer = new Renderer('webgl');
+        this._renderer = new Renderer();
 
         if (this.debugMode) {
             this._renderDebug = new RenderDebug(this._renderer._THREErenderer);
@@ -41,8 +41,7 @@ class Engine {
         this.currentState = this.states.get(name);
         this.currentState.init();
         if (this.currentState.views.size > 0) {
-            this._renderer.backView = this.currentState.views.get(0);
-            this._renderer.frontView = this.currentState.views.get(1);
+            this._renderer.views = this.currentState.views;
         } else {
             debug('currentState has no View');
         }

@@ -1,6 +1,6 @@
-let debug = require('debug')('game:engine/state-view');
+let debug = require('debug')('game:engine/graphics/render-view');
 
-class StateView {
+class RenderView {
     constructor () {
         this.width = 800;
         this.height = 600;
@@ -78,4 +78,4 @@ class StateView {
     }
 }
 
-export default StateView;
+export default RenderView;

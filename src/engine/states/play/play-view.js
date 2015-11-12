@@ -1,8 +1,8 @@
 let debug = require('debug')('game:engine/states/play/play-view');
 
-import StateView from '../state-view';
+import RenderView from '../../graphics/RenderView';
 
-class PlayStateView extends StateView {
+class PlayStateView extends RenderView {
     constructor (world) {
         super();
 

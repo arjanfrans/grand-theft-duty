@@ -12,6 +12,7 @@ import PlayerInput from '../engine/input/player';
 import PlayerView from '../engine/views/player';
 import MergedBlocksView from '../engine/views/merged-blocks';
 import CharactersView from '../engine/views/characters';
+import UI from '../engine/ui/ui';
 import PlayState from '../engine/states/play/play-state';
 
 import MapLoader from '../engine/maps/map-loader';
@@ -37,6 +38,10 @@ let _createPlayView = function (state) {
 
     // Camera follow
     playView.cameraFollowView = playerView;
+
+    let UIView = new UI();
+
+    playView.addUIView(UIView);
 
     return playView;
 };

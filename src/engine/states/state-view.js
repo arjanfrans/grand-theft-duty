@@ -21,7 +21,7 @@ class StateView {
             this.scene.add(staticView.mesh);
         }
 
-        for (let view of this.dynamicViews.values()) {
+        for (let view of this.dynamicViews) {
             view.init();
             this.scene.add(view.mesh);
         }

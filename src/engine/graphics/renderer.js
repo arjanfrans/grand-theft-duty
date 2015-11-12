@@ -48,6 +48,7 @@ class Renderer {
         };
 
         this._THREErenderer.setSize(view.width, view.height);
+        this._THREErenderer.autoClear = false;
     }
 
     /**
@@ -59,14 +60,29 @@ class Renderer {
         return this._view;
     }
 
+    set hudView (view) {
+        this._hudView = view;
+    }
+
+    get hudView () {
+        return this._hudView;
+    }
+
     /**
      * Render the view
      *
      * @returns {void}
      */
     render () {
+        this._THREErenderer.clear();
+
         if (this.view) {
             this._THREErenderer.render(this.view.scene, this.view.camera);
+        }
+
+        if (this.uiView) {
+            this._THREErenderer.clearDepth();
+            this._THREErenderer.render(this.uiView.scene, this.uiView.camera);
         }
     }
 }

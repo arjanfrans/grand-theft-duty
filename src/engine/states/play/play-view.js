@@ -7,11 +7,6 @@ class PlayStateView extends RenderView {
         super();
 
         this.world = world;
-
-        this.staticViews = new Set();
-        this.dynamicViews = new Set();
-        this._initialized = false;
-
         this.cameraFollowView = null;
     }
 

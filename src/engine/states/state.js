@@ -14,7 +14,7 @@ class State {
      */
     constructor (name) {
         this.name = name;
-        this.inputs = new Map();
+        this.inputs = new Set();
         this.views = new Set();
         this._initialized = false;
     }
@@ -36,6 +36,19 @@ class State {
             this._initialized = true;
         }
     }
+
+    updateInputs () {
+        for (let input of this.inputs.values()) {
+            input.update();
+        }
+    }
+
+    updateView (delta) {
+        for (let view of this.views.values()) {
+            view.update(delta);
+        }
+    }
+
 }
 
 export default State;

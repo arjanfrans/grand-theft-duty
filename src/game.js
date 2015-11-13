@@ -2,7 +2,7 @@ let debug = require('debug')('game:game');
 
 import Engine from './engine/engine';
 
-let stateBuilder = require('./builders/state');
+import StateBuilder from './builders/StateBuilder';
 
 import assetLoader from './engine/asset-loader';
 
@@ -19,10 +19,14 @@ module.exports = {
                 debugMode: true
             });
 
-            let playState = stateBuilder.playState();
+            let playState = StateBuilder.PlayState.create();
+            let menuState = StateBuilder.MenuState.create();
 
             engine.addState('play', playState);
-            engine.changeState('play');
+            engine.addState('menu', menuState);
+
+            // engine.changeState('play');
+            engine.changeState('menu');
 
             engine.update();
         }).catch(function (err) {

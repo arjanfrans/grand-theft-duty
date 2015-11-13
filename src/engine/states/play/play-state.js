@@ -76,7 +76,7 @@ class PlayState extends State {
      * @returns {void}
      */
     update (delta) {
-        this._updateInputs();
+        super.updateInputs();
 
         if (this.bulletSystem) {
             this.bulletSystem.update(delta);
@@ -90,19 +90,7 @@ class PlayState extends State {
             this.physicsSystem.update(delta);
         }
 
-        this._updateView(delta);
-    }
-
-    _updateInputs () {
-        for (let input of this.inputs.values()) {
-            input.update();
-        }
-    }
-
-    _updateView (delta) {
-        for (let view of this.views.values()) {
-            view.update(delta);
-        }
+        super.updateView(delta);
     }
 }
 

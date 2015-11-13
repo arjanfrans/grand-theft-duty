@@ -8,7 +8,7 @@ import Character from '../engine/entities/character';
 import PhysicsSystem from '../engine/physics-system';
 import BulletSystem from '../engine/bullet-system';
 import BulletSystemView from '../engine/views/bullet-system';
-import PlayerInput from '../engine/input/player';
+import PlayerInput from '../engine/input/play/player';
 import PlayerView from '../engine/views/player';
 import MergedBlocksView from '../engine/views/merged-blocks';
 import CharactersView from '../engine/views/characters';
@@ -42,8 +42,8 @@ let _createPlayView = function (state) {
     return playView;
 };
 
-module.exports = {
-    playState () {
+let PlayStateBuilder = {
+    create () {
         // World
         let map = MapLoader.load('level1');
         let world = new World(map);
@@ -83,8 +83,10 @@ module.exports = {
 
         let playerInput = new PlayerInput(world.player);
 
-        state.inputs.set('player', playerInput);
+        state.inputs.add(playerInput);
 
         return state;
     }
 };
+
+export default PlayStateBuilder;

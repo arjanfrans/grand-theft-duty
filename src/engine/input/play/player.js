@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/input/player');
 
-import Keyboard from './keyboard';
-import Gamepad from './gamepad';
+import Keyboard from '../utils/keyboard';
+import Gamepad from '../utils/gamepad';
 
 class PlayerInput {
     constructor (player) {

@@ -13,17 +13,22 @@ class MenuItemsView extends View {
         this.mesh = new THREE.Object3D();
 
         this.material = new THREE.MeshPhongMaterial({
-            color: 0xdddddd
+            color: 0xffdddd
         });
 
         for (let menuItem of this.menu.menuItems) {
             let geometry = new THREE.TextGeometry(menuItem, {
-                font: 'absender'
+                font: 'optimer',
+                weight: 'normal',
+                style: 'normal',
+                size: 40,
+                height: 500
             });
 
-            let mesh = new THREE.Mesh(geometry, mater);
-
             geometry.computeBoundingBox();
+            geometry.computeVertexNormals();
+
+            let mesh = new THREE.Mesh(geometry, this.material);
 
             this.mesh.add(mesh);
         }

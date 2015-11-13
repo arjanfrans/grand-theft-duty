@@ -18,8 +18,8 @@ let MenuStateBuilder = {
 
         state.inputs.add(menuInput);
 
-        menuView.addStaticView(new MenuItemsView(menu));
-
+        // menuView.addStaticView(new MenuItemsView(menu));
+        //
         state.addView(menuView);
 
         return state;

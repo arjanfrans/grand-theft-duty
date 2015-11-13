@@ -21,6 +21,7 @@ class CharactersView extends View {
 
     init () {
         this.mesh = new THREE.Object3D();
+        this._initialized = true;
     }
 
     update (delta) {

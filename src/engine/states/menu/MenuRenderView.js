@@ -3,8 +3,9 @@ let debug = require('debug')('game:engine/states/menu/MenuRenderView');
 import RenderView from '../../graphics/RenderView';
 
 class MenuRenderView extends RenderView {
-    constructor () {
-        super();
+    constructor (state) {
+        super(state);
+        this.menu = state.menu;
     }
 
     init () {

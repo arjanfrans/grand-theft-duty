@@ -114,6 +114,7 @@ class BlockView extends View {
         this.mesh.translateX(block.width / 2);
         this.mesh.translateY(block.height / 2);
         this.mesh.translateZ(block.depth / 2);
+        this._initialized = true;
     }
 }
 

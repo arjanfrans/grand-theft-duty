@@ -35,6 +35,8 @@ class PlayerView extends View {
 
         this.mesh.position.set(player.position.x, player.position.y, player.position.z);
         this.mesh.rotation.z = player.angle;
+
+        this._initialized = true;
     }
 
     get texture () {

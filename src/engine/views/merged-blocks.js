@@ -131,6 +131,8 @@ class MergedBlocksView extends View {
         this.mesh.translateX(this.blockWidth / 2);
         this.mesh.translateY(this.blockHeight / 2);
         this.mesh.translateZ(this.blockDepth / 2);
+
+        this._initialized = true;
     }
 }
 

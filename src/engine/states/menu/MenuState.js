@@ -4,8 +4,10 @@ import State from '../state';
 
 class MenuState extends State {
 
-    constructor () {
+    constructor (menu) {
         super('menu');
+
+        this.menu = menu;
     }
 
     init () {

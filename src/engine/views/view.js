@@ -3,6 +3,7 @@ let debug = require('debug')('game:engine/views/view');
 class View {
     constructor () {
         this.mesh = null;
+        this._initialized = false;
     }
 
     init () {

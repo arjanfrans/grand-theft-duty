@@ -1,6 +1,5 @@
 let debug = require('debug')('game:engine/views/text');
 
-import UI from '../../engine/ui/ui';
 import View from './view';
 import createTextGeometry from 'three-bmfont-text';
 import AssetLoader from '../asset-loader';
@@ -20,7 +19,7 @@ class TextView extends View {
             text: this.text,
             width: this.options.width,
             align: this.options.align,
-            font: font.mapping,
+            font: font.mapping
         });
 
         this.texture = font.texture;
@@ -28,8 +27,7 @@ class TextView extends View {
         this.material = new THREE.MeshBasicMaterial({
             map: this.texture,
             transparent: true,
-            color: 0xff0000,
-            // side: THREE.DoubleSide
+            color: 0xff0000
         });
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -39,7 +37,11 @@ class TextView extends View {
         this.mesh.rotation.y = 180 * (Math.PI / 180);
         this.mesh.rotation.z = 180 * (Math.PI / 180);
 
-         this._initialized = true;
+        this._initialized = true;
+    }
+
+    set color (color) {
+        this.material.color.setHex(color);
     }
 }
 

@@ -1,6 +1,5 @@
 let debug = require('debug')('game:builders/states/menu-state');
 
-import UI from '../../engine/ui/ui';
 import MenuState from '../../engine/states/menu/MenuState';
 import MenuRenderView from '../../engine/states/menu/MenuRenderView';
 import Menu from '../../engine/logic/menu/Menu';
@@ -8,18 +7,32 @@ import MenuInput from '../../engine/input/menu/MenuInput';
 
 import MenuItemsView from '../../engine/views/menu/MenuItemsView';
 
-let MenuStateBuilder = {
-    create () {
-        let menu = new Menu();
+let _createMenu = function (engine) {
+    let menu = new Menu();
 
-        let state = new MenuState(menu);
+    menu.addMenuItem('Start', function () {
+        engine.changeState('play');
+    });
+
+    menu.addMenuItem('Options', function () {
+        debug('not implemented');
+    });
+
+    return menu;
+};
+
+let MenuStateBuilder = {
+    create (engine) {
+        let menu = _createMenu(engine);
+
+        let state = new MenuState(engine, menu);
 
         let menuInput = new MenuInput(menu);
         let menuView = new MenuRenderView(menu);
 
         state.inputs.add(menuInput);
 
-        menuView.addStaticView(new MenuItemsView(menu));
+        menuView.addDynamicView(new MenuItemsView(menu));
 
         state.addView(menuView);
 

@@ -4,8 +4,8 @@ import State from '../state';
 
 class MenuState extends State {
 
-    constructor (menu) {
-        super('menu');
+    constructor (engine, menu) {
+        super('menu', engine);
 
         this.menu = menu;
     }

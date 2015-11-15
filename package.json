@@ -11,7 +11,6 @@
   "scripts": {
     "clean": "rm -r build",
     "lint": "eslint ./src/*",
-    "postinstall": "cp ./node_modules/three/three.min.js lib/three/",
     "start": "webpack-dev-server --colors"
   },
   "repository": {

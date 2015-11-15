@@ -1,4 +1,5 @@
-import AssetLoader from '../asset-loader';
+let debug = require('debug')('game:engine/ui/ui');
+
 import TextureAtlas from '../graphics/texture-atlas';
 import RenderView from '../graphics/RenderView';
 
@@ -21,7 +22,7 @@ class UI extends RenderView {
         let heartSize = textureAtlas.getFrameSize('heart');
 
         let material = new THREE.MeshBasicMaterial({
-            map: AssetLoader.getAtlasTexture('long_shot_0'),
+            map: textureAtlas.texture,
             transparent: true
         });
 

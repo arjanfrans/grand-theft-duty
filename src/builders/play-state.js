@@ -43,12 +43,12 @@ let _createPlayView = function (state) {
 };
 
 let PlayStateBuilder = {
-    create () {
+    create (engine) {
         // World
         let map = MapLoader.load('level1');
         let world = new World(map);
 
-        let state = new PlayState(world);
+        let state = new PlayState(engine, world);
 
         // Player
         let player = new Player(475, 475, 900, 32, 32);

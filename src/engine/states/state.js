@@ -11,9 +11,11 @@ class State {
      * @constructor
      *
      * @param {string} name - name of the state.
+     * @param {Engine} engine - game engine instance.
      */
-    constructor (name) {
+    constructor (name, engine) {
         this.name = name;
+        this.engine = engine;
         this.inputs = new Set();
         this.views = new Set();
         this._initialized = false;

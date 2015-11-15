@@ -14,8 +14,8 @@ class PlayState extends State {
      * @constructor
      * @param {object} world The game world
      */
-    constructor (world) {
-        super('play');
+    constructor (engine, world) {
+        super('play', engine);
 
         this.world = world;
         this.physicsSystem = null;

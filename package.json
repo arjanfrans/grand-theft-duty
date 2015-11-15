@@ -4,6 +4,7 @@
   "description": "Inspired by GTA2 and Call of Duty 2",
   "dependencies": {
     "debug": "^2.2.0",
+    "howler": "^2.0.0-beta4",
     "three": "^0.73.0",
     "three-bmfont-text": "^1.2.0"
   },
@@ -28,6 +29,7 @@
     "lint"
   ],
   "devDependencies": {
+    "audiosprite": "^0.5.0",
     "babel-loader": "^6.1.0",
     "babel-preset-es2015": "^6.1.18",
     "convert-bmfont": "^1.0.2",

@@ -1,8 +1,12 @@
-let debug = require('debug')('game:engine/asset-loader');
+let debug = require('debug')('game:engine/AssetManager');
+
+// import * as Howler from 'howler';
+let Howler = require('howler');
 
 const ATLAS_DIRECTORY = '../../assets/spritesheets/';
 const MAPS_DIRECTORY = '../../assets/maps/';
 const FONTS_DIRECTORY = '../../assets/fonts/';
+const AUDIO_SPRITE_DIRECTORY = '../../assets/audio/sprites/';
 
 let _textureLoader = new THREE.TextureLoader();
 let _xhrLoader = new THREE.XHRLoader();
@@ -11,7 +15,36 @@ let _assets = {
     atlases: new Map(),
     textures: new Map(),
     maps: new Map(),
-    fonts: new Map()
+    fonts: new Map(),
+    audio: new Map()
+};
+
+let _loadAudioSprite = function (name) {
+    return _loadJson(AUDIO_SPRITE_DIRECTORY + name + '.json').then(function (spriteJson) {
+        spriteJson.onend = () => {
+            debug('audio played', name);
+        };
+
+        // FIXME change "urls" to "src" to work with Howler 2
+        spriteJson.src = spriteJson.urls;
+
+        let fullSources = [];
+
+        for (let src of spriteJson.src) {
+            fullSources.push(AUDIO_SPRITE_DIRECTORY + src);
+        }
+
+        spriteJson.src = fullSources;
+
+        let sound = new Howler.Howl(spriteJson);
+
+        let audio = {
+            mapping: spriteJson,
+            sound: sound
+        };
+
+        _assets.audio.set(name, audio);
+    });
 };
 
 let _loadFont = function (name) {
@@ -99,6 +132,10 @@ let AssetLoader = {
             assetsToLoad.push(_loadFont(fontName));
         }
 
+        for (let audioSpriteName of assetConfig.audio) {
+            assetsToLoad.push(_loadAudioSprite(audioSpriteName));
+        }
+
         return Promise.all(assetsToLoad);
     },
 
@@ -149,6 +186,16 @@ let AssetLoader = {
         }
 
         return font;
+    },
+
+    getAudioSprite (name) {
+        let audioSprite = _assets.audio.get(name);
+
+        if (!audioSprite) {
+            throw new Error('Audio sprite does not exist: ' + name);
+        }
+
+        return audioSprite;
     }
 };
 

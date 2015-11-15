@@ -16,6 +16,10 @@ const ASSET_CONFIG = {
     ],
     fonts: [
         'long_shot'
+    ],
+    audio: [
+        'guns',
+        'background'
     ]
 };
 

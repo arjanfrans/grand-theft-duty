@@ -1,8 +1,8 @@
-let debug = require('debug')('game:engine/views/text');
+let debug = require('debug')('game:engine/views/TextView');
 
-import View from './view';
-import createTextGeometry from 'three-bmfont-text';
+import View from './View';
 import AssetManager from '../AssetManager';
+import createTextGeometry from 'three-bmfont-text';
 
 class TextView extends View {
     constructor (text,
@@ -31,9 +31,7 @@ class TextView extends View {
         });
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
-        this.mesh.position.x = 0;
-        this.mesh.position.y = 0;
-        this.mesh.position.z = 0;
+
         this.mesh.rotation.y = 180 * (Math.PI / 180);
         this.mesh.rotation.z = 180 * (Math.PI / 180);
 

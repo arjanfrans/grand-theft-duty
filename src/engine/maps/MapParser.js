@@ -1,4 +1,4 @@
-let debug = require('debug')('game:engine/maps/loader');
+let debug = require('debug')('game:engine/maps/MapParser');
 
 import AssetManager from '../AssetManager';
 

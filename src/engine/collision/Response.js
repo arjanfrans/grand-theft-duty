@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/collision/response');
 
-let Vector = require('./Vector');
+import Vector from './Vector';
 
 // ## Response
 //
@@ -39,4 +39,4 @@ class Response {
     };
 }
 
-module.exports = Response;
+export default Response;

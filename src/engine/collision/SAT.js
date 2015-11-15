@@ -8,9 +8,9 @@ let debug = require('debug')('game:engine/collision/sat');
 // polygons using the Separating Axis Theorem.
 /** @preserve SAT.js - Version 0.5.0 - Copyright 2012 - 2015 - Jim Riecken <jimr@jimr.ca> - released under the MIT License. https://github.com/jriecken/sat-js */
 
-let Vector = require('./Vector');
-let Box = require('./Box');
-let Response = require('./Response');
+import Vector from './Vector';
+import Box from './Box';
+import Response from './Response';
 
 // ## Object Pools
 
@@ -526,7 +526,7 @@ let _testPolygonPolygon = function (a, b, response) {
     return true;
 };
 
-module.exports = {
+let SAT = {
     testPolygonPolygon: _testPolygonPolygon,
     testCirclePolygon: _testCirclePolygon,
     testPolygonCircle: _testPolygonCircle,
@@ -534,3 +534,5 @@ module.exports = {
     pointInPolygon: _pointInPolygon,
     pointInCircle: _pointInCircle
 };
+
+export default SAT;

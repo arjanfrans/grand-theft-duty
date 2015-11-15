@@ -1,18 +1,24 @@
 let debug = require('debug')('game:builders/states/PlayStateBuilder');
 
-import PlayRenderView from '../../engine/states/play/PlayRenderView';
-import World from '../../engine/logic/play/World';
-import PhysicsSystem from '../../engine/logic/play/PhysicsSystem';
-import BulletSystem from '../../engine/logic/play/BulletSystem';
-import BulletSystemView from '../../engine/views/bullet-system';
-import PlayerInput from '../../engine/input/play/PlayerInput';
-import PlayerView from '../../engine/views/player';
-import MergedBlocksView from '../../engine/views/merged-blocks';
-import CharactersView from '../../engine/views/characters';
-import StatsRenderView from '../../engine/ui/StatsRenderView';
-import PlayState from '../../engine/states/play/PlayState';
+import World from '../../game/logic/play/World';
 
-import Entities from '../../engine/logic/play/entities';
+import PlayState from '../../game/states/play/PlayState';
+import PlayRenderView from '../../game/states/play/PlayRenderView';
+
+import PhysicsSystem from '../../game/logic/play/PhysicsSystem';
+import BulletSystem from '../../game/logic/play/BulletSystem';
+import BulletSystemView from '../../game/views/bullet-system';
+
+import PlayerInput from '../../game/input/play/PlayerInput';
+import PlayerView from '../../game/views/player';
+
+import StaticBlocksView from '../../engine/views/StaticBlocksView';
+
+import CharactersView from '../../game/views/characters';
+
+import StatsRenderView from '../../game/ui/StatsRenderView';
+
+import Entities from '../../game/logic/play/entities';
 
 import MapParser from '../../engine/maps/MapParser';
 
@@ -22,7 +28,7 @@ let _createPlayView = function (state) {
     let playView = new PlayRenderView(world);
 
     // Static views
-    let blocksView = new MergedBlocksView(world.map.blocks);
+    let blocksView = new StaticBlocksView(world.map.blocks, 'tiles');
 
     playView.addStaticView(blocksView);
 

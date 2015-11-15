@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/collision/circle');
 
-let Vector = require('./Vector');
-let Box = require('./Box');
+import Vector from './Vector';
+import Box from './Box';
 
 // ## Circle
 //
@@ -35,4 +35,4 @@ class Circle {
     };
 }
 
-module.exports = Circle;
+export default Circle;

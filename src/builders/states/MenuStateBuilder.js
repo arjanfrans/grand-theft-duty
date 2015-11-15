@@ -1,11 +1,11 @@
 let debug = require('debug')('game:builders/states/MenuStateBuilder');
 
-import MenuState from '../../engine/states/menu/MenuState';
-import MenuRenderView from '../../engine/states/menu/MenuRenderView';
-import Menu from '../../engine/logic/menu/Menu';
-import MenuInput from '../../engine/input/menu/MenuInput';
+import MenuState from '../../game/states/menu/MenuState';
+import MenuRenderView from '../../game/states/menu/MenuRenderView';
+import Menu from '../../game/logic/menu/Menu';
+import MenuInput from '../../game/input/menu/MenuInput';
 
-import MenuItemsView from '../../engine/views/menu/MenuItemsView';
+import MenuItemsView from '../../game/views/menu/MenuItemsView';
 
 let _createMenu = function (engine) {
     let menu = new Menu();

@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/collision/polygon');
 
-let Vector = require('./Vector');
+import Vector from './Vector';
 
 let _boxToPolygon = function (position, width, height) {
     return new Polygon(new Vector(position.x, position.y), [
@@ -227,4 +227,4 @@ class Polygon {
     }
 }
 
-module.exports = Polygon;
+export default Polygon;

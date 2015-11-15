@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/maps/block');
 
-let Polygon = require('../collision/Polygon');
-let Vector = require('../collision/Vector');
+import Polygon from '../collision/Polygon';
+import Vector from '../collision/Vector';
 
 class Block {
     constructor (position, width, height, depth, walls = {}) {
@@ -11,6 +11,7 @@ class Block {
         this._walls = walls;
         this._position = position;
 
+        // TODO give this as a param
         this.collidable = true;
 
         this._computeBodies();
@@ -97,4 +98,4 @@ class Block {
     }
 }
 
-module.exports = Block;
+export default Block;

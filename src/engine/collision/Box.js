@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/collision/box');
 
-let Polygon = require('./Polygon');
-let Vector = require('./Vector');
+import Vector from './Vector';
+import Polygon from './Polygon';
 
 // ## Box
 //
@@ -38,4 +38,4 @@ class Box {
     }
 }
 
-module.exports = Box;
+export default Box;

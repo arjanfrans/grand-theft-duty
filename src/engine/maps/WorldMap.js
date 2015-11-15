@@ -1,4 +1,4 @@
-let debug = require('debug')('game:engine/maps/world-map');
+let debug = require('debug')('game:engine/maps/WorldMap');
 
 class WorldMap {
     constructor (layers, width, height, depth, tileWidth, tileHeight, tileDepth) {
@@ -146,4 +146,4 @@ class WorldMap {
     }
 }
 
-module.exports = WorldMap;
+export default WorldMap;

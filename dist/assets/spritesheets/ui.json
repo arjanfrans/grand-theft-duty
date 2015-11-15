@@ -1,0 +1,17 @@
+{
+	"meta": {
+		"image": "ui.png",
+		"size": {"w":64,"h":64},
+		"scale": "1"
+	},
+	"frames": [
+		{
+			"filename": "heart.png",
+			"frame": {"x":0,"y":0,"w":64,"h":64},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+			"sourceSize": {"w":64,"h":64}
+		}
+	]
+}

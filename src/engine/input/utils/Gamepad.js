@@ -1,4 +1,4 @@
-let debug = require('debug')('game:engine/input/gamepad');
+let debug = require('debug')('game:engine/input/utils/Gamepad');
 
 let GamepadMicro = require('./gamepad-micro');
 

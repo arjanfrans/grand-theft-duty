@@ -1,7 +1,7 @@
-import MenuStateBuilder from './states/menu-state';
+let debug = require('debug')('game:builders/StateBuilder');
 
-// TODO move it
-import PlayStateBuilder from './play-state';
+import MenuStateBuilder from './states/MenuStateBuilder';
+import PlayStateBuilder from './states/PlayStateBuilder';
 
 let StateBuilder = {
     PlayState: PlayStateBuilder,

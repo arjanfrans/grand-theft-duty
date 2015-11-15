@@ -71,7 +71,7 @@ export default class RenderDebug {
 
         // Stats.js
         this.statjs.domElement.style.position = 'absolute';
-        this.statjs.domElement.style.left = '81px';
+        this.statjs.domElement.style.right = '81px';
         this.statjs.domElement.style.bottom = '0px';
 
         document.body.appendChild(this.statjs.domElement);
@@ -81,7 +81,7 @@ export default class RenderDebug {
         // renderer-stats.js
         this.rendererStats.domElement.style.position = 'absolute';
 
-        this.rendererStats.domElement.style.left = '0px';
+        this.rendererStats.domElement.style.right = '0px';
         this.rendererStats.domElement.style.bottom = '0px';
 
         document.body.appendChild(this.rendererStats.domElement);

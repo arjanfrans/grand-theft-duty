@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/views/player');
 
-import TextureAtlas from '../graphics/texture-atlas';
-import Animation from '../graphics/animation';
+import TextureAtlas from '../graphics/TextureAtlas';
+import Animation from '../graphics/Animation';
 import View from './view';
 
 const WALK_FRAMES = ['walk_0001', 'walk_0002', 'walk_0003', 'walk_0004'];

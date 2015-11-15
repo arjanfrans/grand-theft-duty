@@ -1,8 +1,8 @@
-let debug = require('debug')('game:engine/states/play/play-view');
+let debug = require('debug')('game:engine/states/play/PlayRenderView');
 
 import RenderView from '../../graphics/RenderView';
 
-class PlayStateView extends RenderView {
+class PlayRenderView extends RenderView {
     constructor (world) {
         super();
 
@@ -36,4 +36,4 @@ class PlayStateView extends RenderView {
     }
 }
 
-module.exports = PlayStateView;
+module.exports = PlayRenderView;

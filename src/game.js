@@ -1,20 +1,33 @@
 let debug = require('debug')('game:game');
 
-import Engine from './engine/engine';
-
+import Engine from './engine/Engine';
 import StateBuilder from './builders/StateBuilder';
+import AssetManager from './engine/AssetManager';
 
-import assetLoader from './engine/asset-loader';
+const ASSET_CONFIG = {
+    textureAtlases: [
+        'dude',
+        'tiles',
+        'world',
+        'ui'
+    ],
+    maps: [
+        'level1'
+    ],
+    fonts: [
+        'long_shot'
+    ]
+};
 
 module.exports = {
 
     /**
-     * Start the game.
+     * Load assets and start the game.
      *
      * @returns {void}
      */
     start () {
-        assetLoader.init().then(function () {
+        AssetManager.init(ASSET_CONFIG).then(function () {
             let engine = new Engine({
                 debugMode: true
             });
@@ -25,7 +38,6 @@ module.exports = {
             engine.addState('menu', menuState);
             engine.addState('play', playState);
 
-            // engine.changeState('play');
             engine.changeState('menu');
 
             engine.update();

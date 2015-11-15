@@ -1,7 +1,7 @@
-let debug = require('debug')('game:engine/input/player');
+let debug = require('debug')('game:engine/input/play/PlayerInput');
 
-import Keyboard from '../utils/keyboard';
-import Gamepad from '../utils/gamepad';
+import Keyboard from '../utils/Keyboard';
+import Gamepad from '../utils/Gamepad';
 
 class PlayerInput {
     constructor (player) {
@@ -31,4 +31,4 @@ class PlayerInput {
     }
 }
 
-module.exports = PlayerInput;
+export default PlayerInput;

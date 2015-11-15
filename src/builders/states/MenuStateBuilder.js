@@ -1,4 +1,4 @@
-let debug = require('debug')('game:builders/states/menu-state');
+let debug = require('debug')('game:builders/states/MenuStateBuilder');
 
 import MenuState from '../../engine/states/menu/MenuState';
 import MenuRenderView from '../../engine/states/menu/MenuRenderView';

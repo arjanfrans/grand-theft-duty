@@ -1,4 +1,4 @@
-let debug = require('debug')('game:engine/states/state');
+let debug = require('debug')('game:engine/states/State');
 
 /**
  * Base class for all states.

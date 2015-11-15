@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/physics');
 
-let SAT = require('./collision/SAT');
-let CollisionResponse = require('./collision/Response');
+let SAT = require('../../collision/SAT');
+let CollisionResponse = require('../../collision/Response');
 
 let _calculateRayPositions = function (entity) {
     let rayDistance = 100;

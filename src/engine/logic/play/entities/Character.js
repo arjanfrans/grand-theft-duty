@@ -1,6 +1,6 @@
-let debug = require('debug')('game:engine/entities/character');
+let debug = require('debug')('game:engine/logic/play/entities/Character');
 
-import Entity from './entity';
+import Entity from './Entity';
 
 const GRAVITY = -400;
 
@@ -11,6 +11,7 @@ class Character extends Entity {
         this.canFireBullet = true;
         this.fireRate = 100;
         this.firedTime = 0;
+        this.lives = 5;
 
         this.options.physics = true;
         this.options.bullets = true;
@@ -19,6 +20,14 @@ class Character extends Entity {
 
     fall () {
         this.velocity.z = GRAVITY;
+    }
+
+    hitByBullet () {
+        this.lives -= 1;
+
+        if (this.lives === 0) {
+            this.kill();
+        }
     }
 
     stopFalling () {
@@ -30,6 +39,13 @@ class Character extends Entity {
             this.actions.firedBullet = true;
             this.canFireBullet = false;
         }
+    }
+
+    reset () {
+        this.lives = 5;
+        this.canFireBullet = true;
+        this.firedTime = 0;
+        this.actions.firedBullet = false;
     }
 
     update (delta) {

@@ -1,6 +1,6 @@
-let debug = require('debug')('game:engine/states/play/play-state');
+let debug = require('debug')('game:engine/states/play/PlayState');
 
-import State from '../state';
+import State from '../State';
 
 /**
  * State of playing the game.
@@ -94,4 +94,4 @@ class PlayState extends State {
     }
 }
 
-module.exports = PlayState;
+export default PlayState;

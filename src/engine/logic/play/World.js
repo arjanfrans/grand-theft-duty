@@ -1,4 +1,4 @@
-let debug = require('debug')('game:engine/state');
+let debug = require('debug')('game:engine/logic/play/World');
 
 class World {
     constructor (map, width = 5, height = 5, depth = 5) {
@@ -35,4 +35,4 @@ class World {
     }
 }
 
-module.exports = World;
+export default World;

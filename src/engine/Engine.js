@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/engine');
 
 import RenderDebug from './utils/debug/RenderDebug';
-import Renderer from './graphics/renderer';
+import Renderer from './graphics/Renderer';
 
 let clock = new THREE.Clock();
 

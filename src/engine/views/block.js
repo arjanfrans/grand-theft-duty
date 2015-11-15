@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/views/block');
 
-import TextureAtlas from '../graphics/texture-atlas';
+import TextureAtlas from '../graphics/TextureAtlas';
 import View from './view';
 
 let _createBlockGeometry = function (block, textureAtlas) {

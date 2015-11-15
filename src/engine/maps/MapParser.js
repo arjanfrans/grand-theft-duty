@@ -1,9 +1,9 @@
 let debug = require('debug')('game:engine/maps/loader');
 
-import AssetLoader from '../asset-loader';
+import AssetManager from '../AssetManager';
 
-import Block from './block';
-import WorldMap from './world-map';
+import Block from './Block';
+import WorldMap from './WorldMap';
 
 let _parseBlock = function (rawBlock, blockWidth, blockHeight, blockDepth) {
     let position = {
@@ -71,12 +71,12 @@ let _parseRawMap = function (rawMap) {
     return worldMap;
 };
 
-let MapLoader = {
-    load: function (name) {
-        let rawMap = AssetLoader.getMap(name);
+let MapParser = {
+    parse: function (name) {
+        let rawMap = AssetManager.getMap(name);
 
         return _parseRawMap(rawMap);
     }
 };
 
-export default MapLoader;
+export default MapParser;

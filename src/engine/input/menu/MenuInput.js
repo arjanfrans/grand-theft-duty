@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/input/menu/MenuInput');
 
-import Keyboard from '../utils/keyboard';
-import Gamepad from '../utils/gamepad';
+import Keyboard from '../utils/Keyboard';
+import Gamepad from '../utils/Gamepad';
 
 class MenuInput {
     constructor (menu) {
@@ -15,7 +15,7 @@ class MenuInput {
             this.menu.moveDown();
         }
 
-        if (Keyboard.isDown(Keyboard.SPACE)) {
+        if (Keyboard.isDown(Keyboard.SPACE) || Keyboard.isDown(Keyboard.ENTER)) {
             this.menu.selectCurrentItem();
         }
     }

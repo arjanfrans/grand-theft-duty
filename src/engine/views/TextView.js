@@ -2,18 +2,18 @@ let debug = require('debug')('game:engine/views/text');
 
 import View from './view';
 import createTextGeometry from 'three-bmfont-text';
-import AssetLoader from '../asset-loader';
+import AssetManager from '../AssetManager';
 
 class TextView extends View {
     constructor (text,
-            options = { font: 'long_shot_0', width: 100, align: 'left' }) {
+            options = { font: 'long_shot', width: 100, align: 'left' }) {
         super();
         this.text = text;
         this.options = options;
     }
 
     init () {
-        let font = AssetLoader.getFont(this.options.font);
+        let font = AssetManager.getFont(this.options.font);
 
         this.geometry = createTextGeometry({
             text: this.text,

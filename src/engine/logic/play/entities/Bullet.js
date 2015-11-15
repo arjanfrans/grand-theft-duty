@@ -1,6 +1,6 @@
-let debug = require('debug')('game:engine/entities/bullet');
+let debug = require('debug')('game:engine/logic/play/entities/bullet');
 
-import Entity from './entity';
+import Entity from './Entity';
 
 class Bullet extends Entity {
     constructor (x, y, z, width, height) {

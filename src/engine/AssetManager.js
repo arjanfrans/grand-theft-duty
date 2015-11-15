@@ -1,25 +1,8 @@
 let debug = require('debug')('game:engine/asset-loader');
 
-import * as LoadFont from 'load-bmfont';
-
 const ATLAS_DIRECTORY = '../../assets/spritesheets/';
 const MAPS_DIRECTORY = '../../assets/maps/';
 const FONTS_DIRECTORY = '../../assets/fonts/';
-
-const TEXTURE_ATLASES = [
-    'dude',
-    'tiles',
-    'world',
-    'ui'
-];
-
-const MAPS = [
-    'level1'
-];
-
-const FONTS = [
-    'long_shot_0'
-];
 
 let _textureLoader = new THREE.TextureLoader();
 let _xhrLoader = new THREE.XHRLoader();
@@ -40,7 +23,8 @@ let _loadFont = function (name) {
     return _loadJson(FONTS_DIRECTORY + name + '.json').then((fontJson) => {
         font.mapping = fontJson;
 
-        return _loadTexture(name, FONTS_DIRECTORY + name + '.png');
+        // TODO only supports 1 font page for now
+        return _loadTexture(name, FONTS_DIRECTORY + fontJson.pages[0]);
     }).then(() => {
         font.texture = _assets.textures.get(name);
 
@@ -100,52 +84,71 @@ let _loadMap = function (name) {
 };
 
 let AssetLoader = {
-    init: function () {
+    init: function (assetConfig) {
         let assetsToLoad = [];
 
-        for (let atlasName of TEXTURE_ATLASES) {
+        for (let atlasName of assetConfig.textureAtlases) {
             assetsToLoad.push(_loadAtlas(atlasName));
         }
 
-        for (let mapName of MAPS) {
+        for (let mapName of assetConfig.maps) {
             assetsToLoad.push(_loadMap(mapName));
         }
 
-        for(let fontName of FONTS) {
+        for (let fontName of assetConfig.fonts) {
             assetsToLoad.push(_loadFont(fontName));
         }
 
         return Promise.all(assetsToLoad);
     },
 
-    getAtlasTexture (name) {
-        return _assets.textures.get(name);
-    },
-
-    cloneAtlasTexture (name) {
+    getTexture (name) {
         let texture = _assets.textures.get(name);
 
-        if (texture) {
-            let clone = texture.clone();
-
-            clone.needsUpdate = true;
-
-            return clone;
-        } else {
-            return null;
+        if (!texture) {
+            throw new Error('Texture does not exist: ' + name);
         }
+
+        return texture;
+    },
+
+    cloneTexture (name) {
+        let texture = this.getTexture(name);
+        let clone = texture.clone();
+
+        clone.needsUpdate = true;
+
+        return clone;
     },
 
     getMap (name) {
-        return _assets.maps.get(name);
+        let map = _assets.maps.get(name);
+
+        if (!map) {
+            throw new Error('Map does not exist: ' + name);
+        }
+
+        return map;
     },
 
     getAtlasMapping (name) {
-        return _assets.atlases.get(name);
+        let mapping = _assets.atlases.get(name);
+
+        if (!mapping) {
+            throw new Error('Atlas mapping does not exist: ' + name);
+        }
+
+        return mapping;
     },
 
     getFont (name) {
-        return _assets.fonts.get(name);
+        let font = _assets.fonts.get(name);
+
+        if (!font) {
+            throw new Error('Font does not exist: ' + name);
+        }
+
+        return font;
     }
 };
 

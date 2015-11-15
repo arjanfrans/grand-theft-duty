@@ -1,10 +1,13 @@
-let debug = require('debug')('game:engine/input/keyboard');
+let debug = require('debug')('game:engine/input/utils/Keyboard');
 
 let Keyboard = {
     _pressed: {},
 
     CTRL: 17,
     SPACE: 32,
+    ENTER: 13,
+    SHIFT: 16,
+    ESC: 27,
     LEFT: 37,
     UP: 38,
     RIGHT: 39,

@@ -1,9 +1,9 @@
-let debug = require('debug')('game:engine/ui/ui');
+let debug = require('debug')('game:engine/ui/StatsRenderView');
 
-import TextureAtlas from '../graphics/texture-atlas';
+import TextureAtlas from '../graphics/TextureAtlas';
 import RenderView from '../graphics/RenderView';
 
-class UI extends RenderView {
+class StatsRenderView extends RenderView {
     constructor () {
         super();
 
@@ -51,4 +51,4 @@ class UI extends RenderView {
 
 }
 
-export default UI;
+export default StatsRenderView;

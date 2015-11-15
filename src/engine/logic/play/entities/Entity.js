@@ -1,7 +1,7 @@
-let debug = require('debug')('game:engine/entities/entity');
+let debug = require('debug')('game:engine/logic/play/entities/Entity');
 
-let Polygon = require('../collision/Polygon');
-let Vector = require('../collision/Vector');
+let Polygon = require('../../../collision/Polygon');
+let Vector = require('../../../collision/Vector');
 
 const DEFAULT_SPEED = 200;
 const DEFAULT_ROTATION_SPEED = 300;
@@ -179,4 +179,4 @@ class Entity {
     }
 };
 
-module.exports = Entity;
+export default Entity;

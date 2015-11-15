@@ -1,26 +1,25 @@
-let debug = require('debug')('game:builders/state');
+let debug = require('debug')('game:builders/states/PlayStateBuilder');
 
-import PlayStateView from '../engine/states/play/play-view';
+import PlayRenderView from '../../engine/states/play/PlayRenderView';
+import World from '../../engine/logic/play/World';
+import PhysicsSystem from '../../engine/logic/play/PhysicsSystem';
+import BulletSystem from '../../engine/logic/play/BulletSystem';
+import BulletSystemView from '../../engine/views/bullet-system';
+import PlayerInput from '../../engine/input/play/PlayerInput';
+import PlayerView from '../../engine/views/player';
+import MergedBlocksView from '../../engine/views/merged-blocks';
+import CharactersView from '../../engine/views/characters';
+import StatsRenderView from '../../engine/ui/StatsRenderView';
+import PlayState from '../../engine/states/play/PlayState';
 
-import World from '../engine/world';
-import Player from '../engine/entities/player';
-import Character from '../engine/entities/character';
-import PhysicsSystem from '../engine/physics-system';
-import BulletSystem from '../engine/bullet-system';
-import BulletSystemView from '../engine/views/bullet-system';
-import PlayerInput from '../engine/input/play/player';
-import PlayerView from '../engine/views/player';
-import MergedBlocksView from '../engine/views/merged-blocks';
-import CharactersView from '../engine/views/characters';
-import UI from '../engine/ui/ui';
-import PlayState from '../engine/states/play/play-state';
+import Entities from '../../engine/logic/play/entities';
 
-import MapLoader from '../engine/maps/map-loader';
+import MapParser from '../../engine/maps/MapParser';
 
 let _createPlayView = function (state) {
     let world = state.world;
 
-    let playView = new PlayStateView(world);
+    let playView = new PlayRenderView(world);
 
     // Static views
     let blocksView = new MergedBlocksView(world.map.blocks);
@@ -45,20 +44,20 @@ let _createPlayView = function (state) {
 let PlayStateBuilder = {
     create (engine) {
         // World
-        let map = MapLoader.load('level1');
+        let map = MapParser.parse('level1');
         let world = new World(map);
 
         let state = new PlayState(engine, world);
 
         // Player
-        let player = new Player(475, 475, 900, 32, 32);
+        let player = new Entities.Player(475, 475, 900, 32, 32);
 
         // Enemies
         let enemies = [
-            new Character(300, 450, 300, 32, 32),
-            new Character(350, 450, 300, 32, 32),
-            new Character(350, 350, 300, 32, 32),
-            new Character(200, 500, 300, 32, 32)
+            new Entities.Character(300, 450, 300, 32, 32),
+            new Entities.Character(350, 450, 300, 32, 32),
+            new Entities.Character(350, 350, 300, 32, 32),
+            new Entities.Character(200, 500, 300, 32, 32)
         ];
 
         // Physics
@@ -77,9 +76,9 @@ let PlayStateBuilder = {
 
         state.addView(worldView);
 
-        let UIView = new UI();
+        let statsView = new StatsRenderView();
 
-        state.addView(UIView);
+        state.addView(statsView);
 
         let playerInput = new PlayerInput(world.player);
 

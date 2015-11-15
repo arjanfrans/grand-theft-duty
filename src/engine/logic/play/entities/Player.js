@@ -1,6 +1,6 @@
-let debug = require('debug')('game:engine/entities/player');
+let debug = require('debug')('game:engine/logic/play/entities/Player');
 
-import Character from './character';
+import Character from './Character';
 
 class Player extends Character {
     constructor (x, y, z, width, height) {
@@ -14,4 +14,4 @@ class Player extends Character {
     }
 }
 
-module.exports = Player;
+export default Player;

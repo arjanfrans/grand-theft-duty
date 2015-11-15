@@ -1,15 +1,19 @@
 let debug = require('debug')('game:engine/graphics/texture-atlas');
 
-import AssetLoader from '../asset-loader';
+import AssetManager from '../AssetManager';
 
 class TextureAtlas {
     constructor (name, clone = true) {
-        this.mapping = AssetLoader.getAtlasMapping(name);
+        this.mapping = AssetManager.getAtlasMapping(name);
+
+        if (!this.mapping) {
+            throw new Error('TextureAtlas does not exists', name);
+        }
 
         if (clone) {
-            this.texture = AssetLoader.cloneAtlasTexture(name);
+            this.texture = AssetManager.cloneTexture(name);
         } else {
-            this.texture = AssetLoader.getAtlasTexture(name);
+            this.texture = AssetManager.getTexture(name);
         }
 
         this.texture.magFilter = THREE.NearestFilter;

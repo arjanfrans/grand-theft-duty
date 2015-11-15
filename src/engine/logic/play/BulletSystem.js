@@ -1,17 +1,17 @@
-let debug = require('debug')('game:engine/entities/bullet');
+let debug = require('debug')('game:engine/logic/play/BulletSystem');
 
-import ObjectPool from './utils/object-pool';
-import Bullet from './entities/bullet';
+import ObjectPool from '../../utils/object-pool';
+import Entities from './entities';
 
-import SAT from './collision/SAT';
-import CollisionResponse from './collision/Response';
+import SAT from '../../collision/SAT';
+import CollisionResponse from '../../collision/Response';
 
 class BulletSystem {
     constructor () {
         this.activeBullets = new Set();
 
         this.bulletPool = new ObjectPool(() => {
-            let bullet = new Bullet(0, 0, 0, 2, 8);
+            let bullet = new Entities.Bullet(0, 0, 0, 2, 8);
 
             return bullet;
         }, 10, 10);
@@ -75,11 +75,11 @@ class BulletSystem {
                         // Can't kill itself
                         if (bullet.firedBy !== entity) {
                             // Check if on same level
-                            if (bullet.position.z >= entity.position.z && bullet.position.z < entity.position.y + 50) {
+                            if ((bullet.position.z >= entity.position.z) && (bullet.position.z < entity.position.z + 50)) {
                                 let response = new CollisionResponse();
 
                                 if (SAT.testPolygonPolygon(entity.body, bullet.body, response)) {
-                                    entity.kill();
+                                    entity.hitByBullet();
                                     bullet.kill();
                                     this.bulletPool.free(bullet);
                                 }

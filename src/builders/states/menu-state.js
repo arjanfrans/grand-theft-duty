@@ -1,5 +1,6 @@
 let debug = require('debug')('game:builders/states/menu-state');
 
+import UI from '../../engine/ui/ui';
 import MenuState from '../../engine/states/menu/MenuState';
 import MenuRenderView from '../../engine/states/menu/MenuRenderView';
 import Menu from '../../engine/logic/menu/Menu';
@@ -18,8 +19,8 @@ let MenuStateBuilder = {
 
         state.inputs.add(menuInput);
 
-        // menuView.addStaticView(new MenuItemsView(menu));
-        //
+        menuView.addStaticView(new MenuItemsView(menu));
+
         state.addView(menuView);
 
         return state;

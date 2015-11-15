@@ -1,7 +1,10 @@
 let debug = require('debug')('game:engine/asset-loader');
 
+import * as LoadFont from 'load-bmfont';
+
 const ATLAS_DIRECTORY = '../../assets/spritesheets/';
 const MAPS_DIRECTORY = '../../assets/maps/';
+const FONTS_DIRECTORY = '../../assets/fonts/';
 
 const TEXTURE_ATLASES = [
     'dude',
@@ -14,13 +17,35 @@ const MAPS = [
     'level1'
 ];
 
+const FONTS = [
+    'long_shot_0'
+];
+
 let _textureLoader = new THREE.TextureLoader();
 let _xhrLoader = new THREE.XHRLoader();
 
 let _assets = {
     atlases: new Map(),
     textures: new Map(),
-    maps: new Map()
+    maps: new Map(),
+    fonts: new Map()
+};
+
+let _loadFont = function (name) {
+    let font = {
+        mapping: null,
+        texture: null
+    };
+
+    return _loadJson(FONTS_DIRECTORY + name + '.json').then((fontJson) => {
+        font.mapping = fontJson;
+
+        return _loadTexture(name, FONTS_DIRECTORY + name + '.png');
+    }).then(() => {
+        font.texture = _assets.textures.get(name);
+
+        _assets.fonts.set(name, font);
+    });
 };
 
 let _loadTexture = function (name, url) {
@@ -86,6 +111,10 @@ let AssetLoader = {
             assetsToLoad.push(_loadMap(mapName));
         }
 
+        for(let fontName of FONTS) {
+            assetsToLoad.push(_loadFont(fontName));
+        }
+
         return Promise.all(assetsToLoad);
     },
 
@@ -113,6 +142,10 @@ let AssetLoader = {
 
     getAtlasMapping (name) {
         return _assets.atlases.get(name);
+    },
+
+    getFont (name) {
+        return _assets.fonts.get(name);
     }
 };
 

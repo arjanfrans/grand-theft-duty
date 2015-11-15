@@ -19,11 +19,11 @@ module.exports = {
                 debugMode: true
             });
 
-            let playState = StateBuilder.PlayState.create();
+            // let playState = StateBuilder.PlayState.create();
             let menuState = StateBuilder.MenuState.create();
 
-            engine.addState('play', playState);
             engine.addState('menu', menuState);
+            // engine.addState('play', playState);
 
             // engine.changeState('play');
             engine.changeState('menu');

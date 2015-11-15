@@ -1,39 +1,41 @@
+let debug = require('debug')('game:engine/views/menu/MenuItemsView');
+
+import TextView from '../text';
 import View from '../view';
+
+import TextureAtlas from '../../graphics/texture-atlas';
 
 class MenuItemsView extends View {
     constructor (menu) {
         super();
 
         this.menu = menu;
+        this.textViews = [];
     }
 
     init () {
-        this._initialized = true;
-
         this.mesh = new THREE.Object3D();
 
         this.material = new THREE.MeshPhongMaterial({
             color: 0xffdddd
         });
 
+        let distance = 100;
+        let startY = 200;
+        let itemCount = 0;
+
         for (let menuItem of this.menu.menuItems) {
-            let geometry = new THREE.TextGeometry(menuItem, {
-                font: 'optimer',
-                weight: 'normal',
-                style: 'normal',
-                size: 40,
-                height: 500
-            });
+            let textView = new TextView(menuItem);
 
-            geometry.computeBoundingBox();
-            geometry.computeVertexNormals();
+            textView.init();
+            textView.mesh.position.y = startY - (distance * itemCount);
 
-            let mesh = new THREE.Mesh(geometry, this.material);
+            this.textViews.push(textView);
 
-            this.mesh.add(mesh);
+            this.mesh.add(textView.mesh);
+            itemCount += 1;
         }
 
-        this._initialized = true;
     }
 }
 

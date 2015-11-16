@@ -50,7 +50,7 @@ class State {
         }
     }
 
-    updateView (delta) {
+    render (delta) {
         for (let view of this.views.values()) {
             view.update(delta);
         }

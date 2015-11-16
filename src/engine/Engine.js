@@ -2,8 +2,7 @@ let debug = require('debug')('game:engine/engine');
 
 import RenderDebug from './utils/debug/RenderDebug';
 import Renderer from './graphics/Renderer';
-
-let clock = new THREE.Clock();
+import MainLoop from './utils/mainloop';
 
 class Engine {
     constructor (options = { debugMode: false }) {
@@ -63,30 +62,35 @@ class Engine {
      *
      * @returns {void}
      */
-    update () {
-        let loop = () => {
-            let delta = clock.getDelta();
+    run () {
+        let render = (interpolationPercentage) => {
+            this.currentState.render(interpolationPercentage);
+            this._renderer.render(interpolationPercentage);
+        };
 
-            if (this.debugMode) {
-                this._renderDebug.before();
-            }
-
-            // Tell browser to perform animation.
-            window.requestAnimationFrame(loop);
-
+        let update = (delta) => {
             if (this.currentState) {
                 this.currentState.update(delta);
-                this._renderer.render(delta);
             } else {
                 debug('no current State');
             }
+        };
 
+        let before = () => {
+            if (this.debugMode) {
+                this._renderDebug.before();
+            }
+        };
+
+        let after = () => {
             if (this.debugMode) {
                 this._renderDebug.after();
             }
         };
 
-        loop();
+        let loop = MainLoop.setUpdate(update).setDraw(render).setBegin(before).setEnd(after);
+
+        loop.start();
     }
 }
 

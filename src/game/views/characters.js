@@ -24,7 +24,7 @@ class CharactersView extends View {
         this._initialized = true;
     }
 
-    update (delta) {
+    update (interpolationPercentage) {
         // Keep viewPool in sync with character pool
         if (this.viewPool.poolSize > this.characters.length) {
             this.viewPool.allocate(this.characters.length - this.viewPool.size);
@@ -43,7 +43,7 @@ class CharactersView extends View {
 
                 this.viewPairs.set(character, view);
             } else if (view) {
-                view.update(delta);
+                view.update(interpolationPercentage);
 
                 if (character.dead && this.viewPairs.has(character)) {
                     this.viewPool.free(view);

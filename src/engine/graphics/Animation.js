@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/graphics/animation');
 
 class Animation {
-    constructor (textureAtlas, geometry, interval = 2000, repeat = true, frames = [],
+    constructor (textureAtlas, geometry, interval = 10, repeat = true, frames = [],
             framePrefix = '') {
         this.textureAtlas = textureAtlas;
         this.geometry = geometry;
@@ -41,10 +41,8 @@ class Animation {
     }
 
     update (delta) {
-        // Convert to millis
-        this.currentDisplayTime += delta * 1000;
+        this.currentDisplayTime += 1;
 
-        // console.log(this.interval, this.currentDisplayTime);
         if (this.currentDisplayTime > this.interval) {
             this.currentDisplayTime = 0;
 

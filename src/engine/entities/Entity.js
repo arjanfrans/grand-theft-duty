@@ -3,8 +3,8 @@ let debug = require('debug')('game:engine/logic/play/entities/Entity');
 import Polygon from '../collision/Polygon';
 import Vector from '../collision/Vector';
 
-const DEFAULT_SPEED = 200;
-const DEFAULT_ROTATION_SPEED = 300;
+const DEFAULT_SPEED = 0.2;
+const DEFAULT_ROTATION_SPEED = 0.3;
 
 class Entity {
     constructor (x, y, z = 0, width = 0, height = 0) {
@@ -18,6 +18,12 @@ class Entity {
             x: 0,
             y: 0,
             z: 0
+        };
+
+        this.previousPosition = {
+            x: x,
+            y: y,
+            z: z
         };
 
         this.angularVelocity = 0;
@@ -161,18 +167,15 @@ class Entity {
     }
 
     update (delta) {
-        if (!this.shouldUpdate || delta === 0) {
-            return;
-        }
-
         this.angle += this.angularVelocity * delta;
-
-        // Normalize radian
-        this.angle %= Math.PI * 2;
 
         if (this.angle < 0) {
             this.angle = (Math.PI * 2) - this.angle;
         }
+
+        this.previousPosition.x = this.position.x;
+        this.previousPosition.y = this.position.y;
+        this.previousPosition.z = this.position.z;
 
         this.position.x += this.velocity.x * delta;
         this.position.y += this.velocity.y * delta;

@@ -98,6 +98,7 @@ class PlayState extends State {
         if (this.bulletSystem) {
             this.bulletSystem.update(delta);
         }
+
         if (this.world) {
             this.world.update(delta);
         }
@@ -105,8 +106,6 @@ class PlayState extends State {
         if (this.physicsSystem) {
             this.physicsSystem.update(delta);
         }
-
-        super.updateView(delta);
     }
 }
 

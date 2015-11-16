@@ -45,7 +45,7 @@ module.exports = {
 
             engine.changeState('menu');
 
-            engine.update();
+            engine.run();
         }).catch(function (err) {
             throw err;
         });

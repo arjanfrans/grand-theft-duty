@@ -22,8 +22,8 @@ class PlayerView extends View {
         this.textureAtlas = new TextureAtlas('dude');
 
         this.animations = {
-            walk: new Animation(this.textureAtlas, this.geometry, 100, true, WALK_FRAMES, 'dude_'),
-            idle: new Animation(this.textureAtlas, this.geometry, 100, true, IDLE_FRAMES, 'dude_')
+            walk: new Animation(this.textureAtlas, this.geometry, 8, true, WALK_FRAMES, 'dude_'),
+            idle: new Animation(this.textureAtlas, this.geometry, 8, true, IDLE_FRAMES, 'dude_')
         };
 
         this.material = new THREE.MeshBasicMaterial({
@@ -51,20 +51,23 @@ class PlayerView extends View {
         return this.animations.idle;
     }
 
-    update (delta) {
+    update (interpolationPercentage) {
         if (this.player.dead) {
             this.mesh.visible = false;
         }
 
-        this.mesh.position.x = this.player.position.x;
-        this.mesh.position.y = this.player.position.y;
-        this.mesh.position.z = this.player.position.z;
+        let previous = this.player.previousPosition;
+        let current = this.player.position;
+
+        this.mesh.position.x = previous.x + (current.x - previous.x) * interpolationPercentage;
+        this.mesh.position.y = previous.y + (current.y - previous.y) * interpolationPercentage;
+        this.mesh.position.z = previous.z + (current.z - previous.z) * interpolationPercentage;
 
         this.mesh.rotation.z = this.player.angle;
 
         let currentAnimation = this._currentAnimation();
 
-        currentAnimation.update(delta);
+        currentAnimation.update(interpolationPercentage);
     }
 }
 

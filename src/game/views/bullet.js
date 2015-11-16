@@ -38,10 +38,13 @@ class BulletView extends View {
         return this.textureAtlas.texture;
     }
 
-    update (delta) {
-        this.mesh.position.x = this.bullet.position.x;
-        this.mesh.position.y = this.bullet.position.y;
-        this.mesh.position.z = this.bullet.position.z;
+    update (interpolationPercentage) {
+        let previous = this.bullet.previousPosition;
+        let current = this.bullet.position;
+
+        this.mesh.position.x = previous.x + (current.x - previous.x) * interpolationPercentage;
+        this.mesh.position.y = previous.y + (current.y - previous.y) * interpolationPercentage;
+        this.mesh.position.z = previous.z + (current.z - previous.z) * interpolationPercentage;
 
         this.mesh.rotation.z = this.bullet.angle + (90 * (Math.PI / 180));
 

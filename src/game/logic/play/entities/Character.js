@@ -2,14 +2,14 @@ let debug = require('debug')('game:engine/logic/play/entities/Character');
 
 import Entity from '../../../../engine/entities/Entity';
 
-const GRAVITY = -400;
+const GRAVITY = -0.4;
 
 class Character extends Entity {
     constructor (x, y, z, width, height) {
         super(x, y, z, width, height);
 
         this.canFireBullet = true;
-        this.fireRate = 100;
+        this.fireRate = 150;
         this.firedTime = 0;
         this.lives = 5;
 
@@ -56,7 +56,7 @@ class Character extends Entity {
         }
 
         if (!this.canFireBullet) {
-            this.firedTime += delta * 1000;
+            this.firedTime += delta;
             if (this.firedTime > this.fireRate) {
                 this.firedTime = 0;
                 this.canFireBullet = true;

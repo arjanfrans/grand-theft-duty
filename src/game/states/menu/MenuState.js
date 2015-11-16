@@ -18,8 +18,6 @@ class MenuState extends State {
         super.updateInputs();
 
         super.updateAudio();
-
-        super.updateView(delta);
     }
 }
 

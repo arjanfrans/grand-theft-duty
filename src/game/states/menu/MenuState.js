@@ -1,7 +1,6 @@
 let debug = require('debug')('game:engine/states/menu/MenuState');
 
 import State from '../../../engine/states/State';
-import AssetManager from '../../../engine/AssetManager';
 
 class MenuState extends State {
 
@@ -13,13 +12,12 @@ class MenuState extends State {
 
     init () {
         super.init();
-
-        // FIXME move this out of here
-        AssetManager.getAudioSprite('background').sound.play('russia');
     }
 
     update (delta) {
         super.updateInputs();
+
+        super.updateAudio();
 
         super.updateView(delta);
     }

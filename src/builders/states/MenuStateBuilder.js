@@ -7,6 +7,8 @@ import MenuInput from '../../game/input/menu/MenuInput';
 
 import MenuItemsView from '../../game/views/menu/MenuItemsView';
 
+import MenuAudio from '../../game/audio/MenuAudio';
+
 let _createMenu = function (engine) {
     let menu = new Menu();
 
@@ -35,6 +37,7 @@ let MenuStateBuilder = {
         menuView.addDynamicView(new MenuItemsView(menu));
 
         state.addView(menuView);
+        state.audio = new MenuAudio(menu, 'menu_effects', 'background');
 
         return state;
     }

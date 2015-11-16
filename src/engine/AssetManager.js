@@ -19,12 +19,31 @@ let _assets = {
     audio: new Map()
 };
 
-let _loadAudioSprite = function (name) {
-    return _loadJson(AUDIO_SPRITE_DIRECTORY + name + '.json').then(function (spriteJson) {
-        spriteJson.onend = () => {
-            debug('audio played', name);
+let _loadHowlerAudio = function (name, spriteJson) {
+    return new Promise((resolve, reject) => {
+        spriteJson.onload = function () {
+            debug('audio sprite loaded', spriteJson);
+            return resolve();
         };
 
+        spriteJson.onloaderror = function (soundId, err) {
+            return reject(err);
+        };
+
+        let sound = new Howler.Howl(spriteJson);
+
+        let audio = {
+            mapping: spriteJson,
+            sound: sound
+        };
+
+        _assets.audio.set(name, audio);
+        console.log(_assets);
+    });
+};
+
+let _loadAudioSprite = function (name) {
+    return _loadJson(AUDIO_SPRITE_DIRECTORY + name + '.json').then(function (spriteJson) {
         // FIXME change "urls" to "src" to work with Howler 2
         spriteJson.src = spriteJson.urls;
 
@@ -36,14 +55,7 @@ let _loadAudioSprite = function (name) {
 
         spriteJson.src = fullSources;
 
-        let sound = new Howler.Howl(spriteJson);
-
-        let audio = {
-            mapping: spriteJson,
-            sound: sound
-        };
-
-        _assets.audio.set(name, audio);
+        return _loadHowlerAudio(name, spriteJson);
     });
 };
 

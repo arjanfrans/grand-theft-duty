@@ -6,8 +6,6 @@ import Entities from './entities';
 import SAT from '../../../engine/collision/SAT';
 import CollisionResponse from '../../../engine/collision/Response';
 
-import AssetManager from '../../../engine/AssetManager';
-
 class BulletSystem {
     constructor () {
         this.activeBullets = new Set();
@@ -61,9 +59,6 @@ class BulletSystem {
         for (let entity of this.entities) {
             if (entity.actions.firedBullet) {
                 this._fireBullet(entity);
-
-                // FIXME move this out of here
-                AssetManager.getAudioSprite('guns').sound.play('mp44');
             }
         }
 

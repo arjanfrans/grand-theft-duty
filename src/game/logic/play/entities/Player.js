@@ -7,6 +7,7 @@ class Player extends Character {
         super(x, y, z, width, height);
 
         this.options.isPlayer = true;
+        this.options.audio = true;
     }
 
     update (delta) {

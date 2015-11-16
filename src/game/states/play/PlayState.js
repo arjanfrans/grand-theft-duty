@@ -33,12 +33,16 @@ class PlayState extends State {
             this.world.characters.add(entity);
         }
 
-        if (entity.options.physics) {
+        if (this.physicsSystem && entity.options.physics) {
             this.physicsSystem.addEntity(entity);
         }
 
-        if (entity.options.bullets) {
+        if (this.bulletSystem && entity.options.bullets) {
             this.bulletSystem.addEntity(entity);
+        }
+
+        if (this.audio && entity.options.audio) {
+            this.audio.addEntity(entity);
         }
 
         this.world.entities.add(entity);
@@ -55,8 +59,18 @@ class PlayState extends State {
             this.world.player = null;
         }
 
-        this.physicsSystem.entities.delete(entity);
-        this.bulletSystem.entities.delete(entity);
+        if (this.physicsSystem) {
+            this.physicsSystem.entities.delete(entity);
+        }
+
+        if (this.bulletSystem) {
+            this.bulletSystem.entities.delete(entity);
+        }
+
+        if (this.audio) {
+            this.audio.entities.delete(entity);
+        }
+
         this.world.entities.delete(entity);
         this.world.characters.delete(entity);
         this.world.enemies.delete(entity);
@@ -78,10 +92,12 @@ class PlayState extends State {
     update (delta) {
         super.updateInputs();
 
+        super.updateAudio(delta);
+
+        // Relies on previous turn
         if (this.bulletSystem) {
             this.bulletSystem.update(delta);
         }
-
         if (this.world) {
             this.world.update(delta);
         }

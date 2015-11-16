@@ -12,6 +12,8 @@ import BulletSystemView from '../../game/views/bullet-system';
 import PlayerInput from '../../game/input/play/PlayerInput';
 import PlayerView from '../../game/views/player';
 
+import PlayAudio from '../../game/audio/PlayAudio';
+
 import StaticBlocksView from '../../engine/views/StaticBlocksView';
 
 import CharactersView from '../../game/views/characters';
@@ -47,6 +49,21 @@ let _createPlayView = function (state) {
     return playView;
 };
 
+let _createEntities = function () {
+    let entities = [];
+
+    // Player
+    entities.push(new Entities.Player(475, 475, 900, 32, 32));
+
+    // Enemies
+    return entities.concat([
+        new Entities.Character(300, 450, 300, 32, 32),
+        new Entities.Character(350, 450, 300, 32, 32),
+        new Entities.Character(350, 350, 300, 32, 32),
+        new Entities.Character(200, 500, 300, 32, 32)
+    ]);
+};
+
 let PlayStateBuilder = {
     create (engine) {
         // World
@@ -54,17 +71,6 @@ let PlayStateBuilder = {
         let world = new World(map);
 
         let state = new PlayState(engine, world);
-
-        // Player
-        let player = new Entities.Player(475, 475, 900, 32, 32);
-
-        // Enemies
-        let enemies = [
-            new Entities.Character(300, 450, 300, 32, 32),
-            new Entities.Character(350, 450, 300, 32, 32),
-            new Entities.Character(350, 350, 300, 32, 32),
-            new Entities.Character(200, 500, 300, 32, 32)
-        ];
 
         // Physics
         let physicsSystem = new PhysicsSystem(map);
@@ -74,9 +80,9 @@ let PlayStateBuilder = {
 
         state.bulletSystem = bulletSystem;
         state.physicsSystem = physicsSystem;
+        state.audio = new PlayAudio('guns', 'background');
 
-        state.addEntities(enemies);
-        state.addEntity(player);
+        state.addEntities(_createEntities());
 
         let worldView = _createPlayView(state);
 

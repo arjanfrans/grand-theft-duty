@@ -53,6 +53,7 @@ class Entity {
         this.options = {
             physics: false,
             bullets: false,
+            audio: false,
             isPlayer: false,
             isCharacter: false
         };

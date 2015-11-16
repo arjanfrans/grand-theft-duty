@@ -19,7 +19,8 @@ const ASSET_CONFIG = {
     ],
     audio: [
         'guns',
-        'background'
+        'background',
+        'menu_effects'
     ]
 };
 

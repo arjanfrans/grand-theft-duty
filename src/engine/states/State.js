@@ -18,6 +18,7 @@ class State {
         this.engine = engine;
         this.inputs = new Set();
         this.views = new Set();
+        this.audio = null;
         this._initialized = false;
     }
 
@@ -31,6 +32,10 @@ class State {
 
     init () {
         if (!this._initialized) {
+            if (this.audio) {
+                this.audio.init();
+            }
+
             for (let view of this.views.values()) {
                 view.init();
             }
@@ -51,6 +56,11 @@ class State {
         }
     }
 
+    updateAudio (delta) {
+        if (this.audio) {
+            this.audio.update(delta);
+        }
+    }
 }
 
 export default State;

@@ -11,8 +11,8 @@
   "scripts": {
     "clean": "rm -r build",
     "lint": "eslint ./src/*",
-    "start": "webpack-dev-server --colors",
-    "build": "webpack"
+    "start": "webpack-dev-server --config webpack.development.config --colors",
+    "build": "webpack --config webpack.production.config --optimize-minimize"
   },
   "repository": {
     "type": "git",

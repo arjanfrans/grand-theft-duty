@@ -90,6 +90,10 @@ class Engine {
 
         let loop = MainLoop.setUpdate(update).setDraw(render).setBegin(before).setEnd(after);
 
+        // TODO make FPS configurable
+        // loop.setSimulationTimestep(1000 / 30);
+        // loop.setMaxAllowedFPS(30);
+
         loop.start();
     }
 }

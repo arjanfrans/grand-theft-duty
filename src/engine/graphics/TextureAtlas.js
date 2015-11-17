@@ -29,9 +29,9 @@ class TextureAtlas {
             // Origin image is y-inverted compared to what THREE wants
             let bounds = [
                 new THREE.Vector2(d.x / this.width, (this.height - (d.y)) / this.height), // lower left
-                new THREE.Vector2((d.x + d.w) / this.width, (this.height - (d.y)) / this.height), // lower right
+                new THREE.Vector2(d.x / this.width, (this.height - (d.y + d.h)) / this.height), // upper left
                 new THREE.Vector2((d.x + d.w) / this.width, (this.height - (d.y + d.h)) / this.height), // upper right
-                new THREE.Vector2(d.x / this.width, (this.height - (d.y + d.h)) / this.height) // upper left
+                new THREE.Vector2((d.x + d.w) / this.width, (this.height - (d.y)) / this.height), // lower right
             ];
 
             this.frames.set(frame.filename, {

@@ -39,8 +39,6 @@ class HealthView extends View {
 
                 this.mesh.scale.set(value, 1, 1);
                 this.mesh.position.x = oldX;
-                this.geometry.verticesNee = true;
-                this.geometry.dynamic = true;
             }
         }
     }

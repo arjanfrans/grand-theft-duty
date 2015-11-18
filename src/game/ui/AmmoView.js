@@ -2,6 +2,7 @@ let debug = require('debug')('game:game/ui/AmmoView');
 
 import View from '../../engine/views/View';
 import TextureAtlas from '../../engine/graphics/TextureAtlas';
+import TextView from '../../engine/views/TextView';
 
 class AmmoView extends View {
     constructor () {
@@ -9,6 +10,8 @@ class AmmoView extends View {
     }
 
     init () {
+        this.mesh = new THREE.Object3D();
+
         let textureAtlas = new TextureAtlas('ui');
 
         let material = new THREE.MeshBasicMaterial({
@@ -17,36 +20,38 @@ class AmmoView extends View {
         });
 
         let ammoSize = textureAtlas.getFrameSize('ammo');
-
-        let mergedGeometry = new THREE.Geometry();
-
         let bounds = textureAtlas.getBounds('ammo');
 
-        for (let i = 0; i < 5; i++) {
-            console.log(ammoSize);
-            let geometry = new THREE.PlaneGeometry(ammoSize.width, ammoSize.height);
+        this.geometry = new THREE.PlaneGeometry(ammoSize.width, ammoSize.height);
 
-            geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
-            geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
-            // geometry.rotateZ((Math.PI));
+        this.geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
+        this.geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
 
-            geometry.translate(i * ammoSize.width, 0, 0);
-
-            mergedGeometry.merge(geometry);
-        }
-
-        let ammoMesh = new THREE.Mesh(mergedGeometry, material);
+        let ammoMesh = new THREE.Mesh(this.geometry, material);
 
         ammoMesh.scale.set(0.5, 0.5, 1);
 
-        // TODO make nice positioning system for ui
-        // ammoMesh.position.x = -(800 / 2) + ammoSize.width;
-        // ammoMesh.position.y = (600 / 2) - ammoSize.height;
-        // ammoMesh.rotation.z = -90 * (Math.PI / 180);
+        this.textView = new TextView('0', {
+            color: 0xD2ff33
+        });
 
-        this.mesh = ammoMesh;
+        this.textView.init();
+
+        this.textView.mesh.scale.set(2, 2, 1);
+
+        this.textView.position = {
+            x: ammoSize.width + 10,
+            y: -this.textView.height
+        };
+
+        this.mesh.add(this.textView.mesh);
+        this.mesh.add(ammoMesh);
 
         this._initialized = true;
+    }
+
+    set ammo (ammo) {
+        this.textView.text = ammo;
     }
 
     update (delta) {

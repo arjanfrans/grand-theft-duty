@@ -18,6 +18,7 @@ import StaticBlocksView from '../../engine/views/StaticBlocksView';
 
 import CharactersView from '../../game/views/characters';
 
+import Stats from '../../game/logic/play/Stats';
 import StatsRenderView from '../../game/ui/StatsRenderView';
 
 import Entities from '../../game/logic/play/entities';
@@ -88,7 +89,8 @@ let PlayStateBuilder = {
 
         state.addView(worldView);
 
-        let statsView = new StatsRenderView();
+        let stats = new Stats(state);
+        let statsView = new StatsRenderView(stats);
 
         state.addView(statsView);
 

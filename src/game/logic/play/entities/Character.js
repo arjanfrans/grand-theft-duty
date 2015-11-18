@@ -11,7 +11,8 @@ class Character extends Entity {
         this.canFireBullet = true;
         this.fireRate = 150;
         this.firedTime = 0;
-        this.lives = 5;
+        this.health = 5;
+        this.ammo = 31;
 
         this.options.physics = true;
         this.options.bullets = true;
@@ -23,9 +24,9 @@ class Character extends Entity {
     }
 
     hitByBullet () {
-        this.lives -= 1;
+        this.health -= 1;
 
-        if (this.lives === 0) {
+        if (this.health === 0) {
             this.kill();
         }
     }
@@ -36,13 +37,17 @@ class Character extends Entity {
 
     fireBullet () {
         if (this.canFireBullet) {
-            this.actions.firedBullet = true;
+            if (this.ammo > 0) {
+                this.actions.firedBullet = true;
+                this.ammo -= 1;
+            }
+
             this.canFireBullet = false;
         }
     }
 
     reset () {
-        this.lives = 5;
+        this.health = 5;
         this.canFireBullet = true;
         this.firedTime = 0;
         this.actions.firedBullet = false;

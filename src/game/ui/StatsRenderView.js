@@ -31,8 +31,8 @@ class StatsRenderView extends RenderView {
 
         this.healthView.init();
         this.healthView.position = {
-            x: this.width - 192,
-            y: this.height - 64
+            x: this.width - 210,
+            y: this.height - 30
         };
 
         this.scene.add(this.healthView.mesh);
@@ -56,6 +56,10 @@ class StatsRenderView extends RenderView {
         super.update(delta);
 
         this.ammoView.ammo = this.stats.player.ammo;
+
+        let healthScale = this.stats.player.health / this.stats.player.maxHealth;
+
+        this.healthView.healthScale = healthScale;
     }
 
 }

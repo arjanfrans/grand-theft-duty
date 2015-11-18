@@ -1,51 +1,48 @@
 let debug = require('debug')('game:game/ui/HealthView');
 
 import View from '../../engine/views/View';
-import TextureAtlas from '../../engine/graphics/TextureAtlas';
 
 class HealthView extends View {
     constructor () {
         super();
+
+        this._healthScale = 1;
     }
 
     init () {
-        let textureAtlas = new TextureAtlas('ui');
-
         let material = new THREE.MeshBasicMaterial({
-            map: textureAtlas.texture,
-            transparent: true
+            color: 0xff0000
         });
 
-        let healthSize = textureAtlas.getFrameSize('heart');
+        this.geometry = new THREE.PlaneGeometry(200, 20);
 
-        let mergedGeometry = new THREE.Geometry();
+        // Change originX to left side
+        this.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(100, 0, 0));
 
-        let bounds = textureAtlas.getBounds('heart');
-
-        for (let i = 0; i < 5; i++) {
-            console.log(healthSize);
-            let geometry = new THREE.PlaneGeometry(healthSize.width, healthSize.height);
-
-            geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
-            geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
-
-            geometry.translate(i * healthSize.width, 0, 0);
-
-            mergedGeometry.merge(geometry);
-        }
-
-        let healthMesh = new THREE.Mesh(mergedGeometry, material);
-
-        healthMesh.scale.set(0.5, 0.5, 1);
-
-        // TODO make nice positioning system for ui
-        // healthMes.position.x = -(800 / 2) + healthSize.width;
-        // healthMes.position.y = (600 / 2) - healthSize.height;
-        // healthMesh.rotation.z = -90 * (Math.PI / 180);
-
-        this.mesh = healthMesh;
+        this.mesh = new THREE.Mesh(this.geometry, material);
 
         this._initialized = true;
+    }
+
+    set healthScale (value) {
+        if (value !== this._healthScale) {
+            this._healthScale = value;
+
+            if (value <= 0) {
+                this.mesh.visible = false;
+            } else {
+                if (!this.mesh.visible) {
+                    this.mesh.visible = true;
+                }
+
+                let oldX = this.mesh.position.x;
+
+                this.mesh.scale.set(value, 1, 1);
+                this.mesh.position.x = oldX;
+                this.geometry.verticesNee = true;
+                this.geometry.dynamic = true;
+            }
+        }
     }
 
     update (delta) {

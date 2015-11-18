@@ -10,6 +10,7 @@ import BulletSystem from '../../game/logic/play/BulletSystem';
 import BulletSystemView from '../../game/views/bullet-system';
 
 import PlayerInput from '../../game/input/play/PlayerInput';
+import ComputerInput from '../../game/input/play/ComputerInput';
 import PlayerView from '../../game/views/player';
 
 import PlayAudio from '../../game/audio/PlayAudio';
@@ -50,15 +51,25 @@ let _createPlayView = function (state) {
     return playView;
 };
 
-let _createEntities = function () {
+let _createEntities = function (state) {
     let entities = [];
+    let player = new Entities.Player(475, 475, 900, 32, 32);
 
     // Player
-    entities.push(new Entities.Player(475, 475, 900, 32, 32));
+    entities.push(player);
+
+    let playerInput = new PlayerInput(player);
+
+    state.inputs.add(playerInput);
+
+    let enemy = new Entities.Character(300, 450, 300, 32, 32);
+
+    entities.push(enemy);
+
+    state.inputs.add(new ComputerInput(enemy));
 
     // Enemies
     return entities.concat([
-        new Entities.Character(300, 450, 300, 32, 32),
         new Entities.Character(350, 450, 300, 32, 32),
         new Entities.Character(350, 350, 300, 32, 32),
         new Entities.Character(200, 500, 300, 32, 32)
@@ -83,7 +94,9 @@ let PlayStateBuilder = {
         state.physicsSystem = physicsSystem;
         state.audio = new PlayAudio('guns', 'background');
 
-        state.addEntities(_createEntities());
+        let entities = _createEntities(state);
+
+        state.addEntities(entities);
 
         let worldView = _createPlayView(state);
 
@@ -93,10 +106,6 @@ let PlayStateBuilder = {
         let statsView = new StatsRenderView(stats);
 
         state.addView(statsView);
-
-        let playerInput = new PlayerInput(world.player);
-
-        state.inputs.add(playerInput);
 
         return state;
     }

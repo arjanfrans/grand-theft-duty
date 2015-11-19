@@ -12,17 +12,24 @@ let Keyboard = {
     UP: 38,
     RIGHT: 39,
     DOWN: 40,
+    R: 82,
+    X: 88,
+    Z: 90,
 
     isDown: function (keyCode) {
         return this._pressed[keyCode];
     },
 
     onKeydown: function (event) {
+        if (this._previousKey !== event.keyCode) {
+            this._previousKey = event.keyCode;
+        }
+
         this._pressed[event.keyCode] = true;
     },
 
     onKeyup: function (event) {
-        delete this._pressed[event.keyCode];
+        this._pressed[event.keyCode] = false;
     }
 };
 

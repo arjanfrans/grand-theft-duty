@@ -15,9 +15,9 @@ class MenuState extends State {
     }
 
     update (delta) {
-        super.updateInputs();
+        super.updateInputs(delta);
 
-        super.updateAudio();
+        super.updateAudio(delta);
     }
 }
 

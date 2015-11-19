@@ -44,9 +44,9 @@ class State {
         }
     }
 
-    updateInputs () {
+    updateInputs (delta) {
         for (let input of this.inputs.values()) {
-            input.update();
+            input.update(delta);
         }
     }
 

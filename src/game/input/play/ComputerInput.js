@@ -9,6 +9,12 @@ class ComputerInput {
         if (Math.random() < 0.05) {
             this.entity.fireBullet();
         }
+
+        if (this.entity.currentWeapon) {
+            if (this.entity.currentWeapon.magazine === 0) {
+                this.entity.reload();
+            }
+        }
     }
 }
 

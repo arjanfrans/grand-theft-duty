@@ -31,27 +31,52 @@ class AmmoView extends View {
 
         ammoMesh.scale.set(0.5, 0.5, 1);
 
-        this.textView = new TextView('0', {
+        this.magazineText = new TextView('0', {
             color: 0xD2ff33
         });
 
-        this.textView.init();
+        this.magazineText.init();
 
-        this.textView.mesh.scale.set(2, 2, 1);
+        this.magazineText.mesh.scale.set(2, 2, 1);
 
-        this.textView.position = {
+        this.magazineText.position = {
             x: ammoSize.width + 10,
-            y: -this.textView.height
+            y: -this.magazineText.height
         };
 
-        this.mesh.add(this.textView.mesh);
+        this.mesh.add(this.magazineText.mesh);
+
+        this.ammoText = new TextView('0', {
+            color: 0xD2ff33
+        });
+
+        this.ammoText.init();
+
+        this.ammoText.mesh.scale.set(1, 1, 1);
+
+        this.ammoText.position = {
+            x: ammoSize.width + 64,
+            y: -this.ammoText.height
+        };
+
+        this.mesh.add(this.ammoText.mesh);
         this.mesh.add(ammoMesh);
 
         this._initialized = true;
     }
 
     set ammo (ammo) {
-        this.textView.text = ammo;
+        if (ammo === null) {
+            this.ammoText.text = '-';
+        }
+        this.ammoText.text = ammo;
+    }
+
+    set magazine (magazine) {
+        if (magazine === null) {
+            this.magazineText.text = '-';
+        }
+        this.magazineText.text = magazine;
     }
 
     update (delta) {

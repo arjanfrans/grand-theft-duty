@@ -90,7 +90,7 @@ class PlayState extends State {
      * @returns {void}
      */
     update (delta) {
-        super.updateInputs();
+        super.updateInputs(delta);
 
         super.updateAudio(delta);
 

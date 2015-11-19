@@ -6,32 +6,56 @@ import TextureAtlas from '../../engine/graphics/TextureAtlas';
 class WeaponView extends View {
     constructor () {
         super();
+
+        this._weapon = null;
     }
 
     init () {
-        let textureAtlas = new TextureAtlas('ui');
+        this.textureAtlas = new TextureAtlas('ui');
+        this.texture = this.textureAtlas.texture;
 
         let material = new THREE.MeshBasicMaterial({
-            map: textureAtlas.texture,
+            map: this.textureAtlas.texture,
             transparent: true
         });
 
-        let weaponSize = textureAtlas.getFrameSize('mp44');
+        // TODO remove hardcoded mp44
+        let weaponSize = this.textureAtlas.getFrameSize('mp44');
 
-        let bounds = textureAtlas.getBounds('mp44');
+        let bounds = this.textureAtlas.getBounds('mp44');
 
-        let geometry = new THREE.PlaneGeometry(weaponSize.width, weaponSize.height);
+        // TODO set a standard size
+        this.geometry = new THREE.PlaneGeometry(weaponSize.width, weaponSize.height);
 
-        geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
-        geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
+        this.geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
+        this.geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
 
-        let weaponMesh = new THREE.Mesh(geometry, material);
+        let weaponMesh = new THREE.Mesh(this.geometry, material);
 
         // weaponMesh.scale.set(0.5, 0.5, 1);
 
         this.mesh = weaponMesh;
 
         this._initialized = true;
+    }
+
+    set weapon (weapon) {
+        if (this._weapon !== weapon) {
+            if (!this.mesh.visible) {
+                this.mesh.visible = true;
+            }
+
+            this._weapon = weapon;
+
+            let bounds = this.textureAtlas.getFrameOffset(weapon);
+
+            this.texture.offset = bounds;
+            this.geometry.uvsNeedUpdate = true;
+        } else if (weapon === null) {
+            if (this.mesh.visible) {
+                this.mesh.visible = false;
+            }
+        }
     }
 
     update (delta) {

@@ -6,9 +6,11 @@ import Gamepad from '../../../engine/input/Gamepad';
 class PlayerInput {
     constructor (player) {
         this.player = player;
+
+        this.previousKeys = {};
     }
 
-    update () {
+    update (delta) {
         if (Keyboard.isDown(Keyboard.UP) || Gamepad.isStickDown(0, 'left', 'up')) {
             this.player.move('up');
         } else if (Keyboard.isDown(Keyboard.DOWN) || Gamepad.isStickDown(0, 'left', 'down')) {
@@ -27,6 +29,28 @@ class PlayerInput {
 
         if (Keyboard.isDown(Keyboard.CTRL)) {
             this.player.fireBullet();
+        }
+
+        // TODO built better mechanism to detect if pressed down once
+        if (!this.previousKeys.R && Keyboard.isDown(Keyboard.R)) {
+            this.previousKeys.R = true;
+            this.player.reload();
+        } else if (this.previousKeys.R && !Keyboard.isDown(Keyboard.R)) {
+            this.previousKeys.R = false;
+        }
+
+        if (!this.previousKeys.X && Keyboard.isDown(Keyboard.X)) {
+            this.previousKeys.X = true;
+            this.player.scrollWeapons('down');
+        } else if (this.previousKeys.X && !Keyboard.isDown(Keyboard.X)) {
+            this.previousKeys.X = false;
+        }
+
+        if (!this.previousKeys.Z && Keyboard.isDown(Keyboard.Z)) {
+            this.previousKeys.Z = true;
+            this.player.scrollWeapons('up');
+        } else if (this.previousKeys.Z && !Keyboard.isDown(Keyboard.Z)) {
+            this.previousKeys.Z = false;
         }
     }
 }

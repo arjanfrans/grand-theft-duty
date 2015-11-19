@@ -40,6 +40,7 @@ class BulletSystem {
 
         bullet.revive();
         bullet.firedBy = firedBy;
+        bullet.firedByWeapon = firedBy.currentWeapon;
         bullet.position.x = firedBy.position.x;
         bullet.position.y = firedBy.position.y;
         bullet.position.z = firedBy.position.z;
@@ -79,7 +80,7 @@ class BulletSystem {
                                 let response = new CollisionResponse();
 
                                 if (SAT.testPolygonPolygon(entity.body, bullet.body, response)) {
-                                    entity.hitByBullet();
+                                    entity.hitByBullet(bullet);
                                     bullet.kill();
                                     this.bulletPool.free(bullet);
                                 }

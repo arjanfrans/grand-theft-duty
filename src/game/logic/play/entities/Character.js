@@ -1,6 +1,7 @@
 let debug = require('debug')('game:engine/logic/play/entities/Character');
 
 import Entity from '../../../../engine/entities/Entity';
+import WeaponFactory from '../weapons/WeaponFactory';
 
 const GRAVITY = -0.4;
 
@@ -8,24 +9,62 @@ class Character extends Entity {
     constructor (x, y, z, width, height) {
         super(x, y, z, width, height);
 
-        this.canFireBullet = true;
-        this.fireRate = 150;
-        this.firedTime = 0;
-        this.maxHealth = 5;
-        this.health = 5;
-        this.ammo = 31;
+        this.maxHealth = 100;
+        this.health = 100;
+
+        this.weapons = [];
+        this.currentWeaponIndex = 0;
+        this.currentWeapon = null;
+
+        // TODO remove this hardcoded stuff
+        this.addWeapon(WeaponFactory.mp44());
+        this.addWeapon(WeaponFactory.thompson());
+        this.currentWeapon = this.weapons[0];
 
         this.options.physics = true;
         this.options.bullets = true;
         this.options.isCharacter = true;
+
+        this.actions.firedBullet = false;
+    }
+
+    addWeapon (weapon) {
+        // TODO increase ammo if weapon is the same
+        this.weapons.push(weapon);
+    }
+
+    scrollWeapons (direction) {
+        if (direction === 'up') {
+            if (this.currentWeaponIndex === this.weapons.length - 1) {
+                this.currentWeaponIndex = 0;
+            } else {
+                this.currentWeaponIndex += 1;
+            }
+        } else if (direction === 'down') {
+            if (this.currentWeaponIndex === 0) {
+                this.currentWeaponIndex = this.weapons.length - 1;
+            } else {
+                this.currentWeaponIndex -= 1;
+            }
+        } else {
+            throw new Error('direction is not "up" or "down"');
+        }
+
+        this.currentWeapon = this.weapons[this.currentWeaponIndex];
+    }
+
+    reload () {
+        if (!this.dead && this.currentWeapon) {
+            this.currentWeapon.reload();
+        }
     }
 
     fall () {
         this.velocity.z = GRAVITY;
     }
 
-    hitByBullet () {
-        this.health -= 1;
+    hitByBullet (bullet) {
+        this.health -= bullet.damage;
 
         if (this.health === 0) {
             this.kill();
@@ -37,20 +76,17 @@ class Character extends Entity {
     }
 
     fireBullet () {
-        if (this.canFireBullet && !this.dead) {
-            if (this.ammo > 0) {
-                this.actions.firedBullet = true;
-                this.ammo -= 1;
-            }
+        if (!this.dead && this.currentWeapon) {
+            let fired = this.currentWeapon.fire();
 
-            this.canFireBullet = false;
+            if (fired) {
+                this.actions.firedBullet = true;
+            }
         }
     }
 
     reset () {
         this.health = this.maxHealth;
-        this.canFireBullet = true;
-        this.firedTime = 0;
         this.actions.firedBullet = false;
     }
 
@@ -61,12 +97,8 @@ class Character extends Entity {
             this.actions.firedBullet = false;
         }
 
-        if (!this.canFireBullet) {
-            this.firedTime += delta;
-            if (this.firedTime > this.fireRate) {
-                this.firedTime = 0;
-                this.canFireBullet = true;
-            }
+        if (this.currentWeapon) {
+            this.currentWeapon.update(delta);
         }
     }
 }

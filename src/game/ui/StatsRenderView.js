@@ -37,17 +37,17 @@ class StatsRenderView extends RenderView {
 
         this.scene.add(this.healthView.mesh);
 
-        let weaponView = new WeaponView();
+        this.weaponView = new WeaponView();
 
-        weaponView.init();
-        weaponView.position = {
+        this.weaponView.init();
+        this.weaponView.position = {
             x: this.width - 96,
             y: 40
         };
 
-        weaponView.mesh.width = 2;
+        this.weaponView.mesh.width = 2;
 
-        this.scene.add(weaponView.mesh);
+        this.scene.add(this.weaponView.mesh);
 
         this._initialized = true;
     }
@@ -55,7 +55,19 @@ class StatsRenderView extends RenderView {
     update (delta) {
         super.update(delta);
 
-        this.ammoView.ammo = this.stats.player.ammo;
+        if (this.stats.player.currentWeapon) {
+            let weapon = this.stats.player.currentWeapon;
+
+            this.weaponView.weapon = weapon.name;
+
+            this.ammoView.ammo = weapon.ammo;
+            this.ammoView.magazine = weapon.magazine;
+        } else {
+            this.weaponView.weapon = null;
+
+            this.ammoView.ammo = null;
+            this.ammoView.magazine = null;
+        }
 
         let healthScale = this.stats.player.health / this.stats.player.maxHealth;
 

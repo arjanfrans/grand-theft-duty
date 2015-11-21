@@ -63,7 +63,7 @@ class PlayerView extends View {
         this.mesh.position.y = previous.y + (current.y - previous.y) * interpolationPercentage;
         this.mesh.position.z = previous.z + (current.z - previous.z) * interpolationPercentage;
 
-        this.mesh.rotation.z = this.player.angle + (90 * (Math.PI / 180))
+        this.mesh.rotation.z = this.player.angle + (90 * (Math.PI / 180));
 
         let currentAnimation = this._currentAnimation();
 

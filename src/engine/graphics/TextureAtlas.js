@@ -18,6 +18,9 @@ class TextureAtlas {
 
         this.texture.magFilter = THREE.NearestFilter;
         this.texture.minFilter = THREE.LinearMipMapLinearFilter;
+        this.texture.wrapS = THREE.RepeatWrapping;
+        this.texture.wrapT = THREE.RepeatWrapping;
+
         this.width = this.mapping.meta.size.w;
         this.height = this.mapping.meta.size.h;
 
@@ -51,9 +54,8 @@ class TextureAtlas {
 
     getFrameOffset (name) {
         let d = this.frames.get(name + '.png').framePosition;
-        let size = this.frames.get(name + '.png').frameSize;
 
-        return new THREE.Vector2(d.x / this.width, (this.height - (d.y) - size.height) / this.height);
+        return new THREE.Vector2(d.x / this.width, d.y / this.height); // lower left
     }
 
     getFrameSize (name) {

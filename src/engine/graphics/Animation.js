@@ -1,15 +1,8 @@
-let debug = require('debug')('game:engine/graphics/animation');
-
 class Animation {
     constructor (textureAtlas, geometry, interval = 10, repeat = true, frames = [],
             framePrefix = '') {
         this.textureAtlas = textureAtlas;
         this.geometry = geometry;
-
-        let frameSize = this.textureAtlas.getFrameSize(framePrefix + frames[0]);
-
-        this.frameWidth = frameSize.width;
-        this.frameHeight = frameSize.height;
 
         this.interval = interval;
         this.frames = frames;
@@ -17,27 +10,25 @@ class Animation {
         this.currentFrameIndex = 0;
         this.currentDisplayTime = 0;
 
-        this._updateGeometry();
+        // Use the first frame as a size reference
+        let bounds = this.textureAtlas.getBounds(framePrefix + frames[0]);
+
+        this.geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
+        this.geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
+
+        this._updateTexture();
     }
 
     get texture () {
         return this.textureAtlas.texture;
     }
 
-    _updateGeometry () {
-        let currentFrame = this.frames[this.currentFrameIndex];
-        let bounds = this.textureAtlas.getBounds(this.framePrefix + currentFrame);
-
-        this.geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
-        this.geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
-        this.geometry.uvsNeedUpdate = true;
-    }
-
     _updateTexture () {
-        let currentFrame = this.frames[this.currentFrameIndex];
-        let bounds = this.textureAtlas.getFrameOffset(this.framePrefix + currentFrame);
+        let currentFrame = this.framePrefix + this.frames[this.currentFrameIndex];
 
-        this.texture.offset = bounds;
+        let offset = this.textureAtlas.getFrameOffset(currentFrame);
+
+        this.texture.offset = offset;
     }
 
     update (delta) {

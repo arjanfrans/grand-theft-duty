@@ -1,7 +1,7 @@
 let debug = require('debug')('game:game/ui/AmmoView');
 
 import View from '../../engine/views/View';
-import TextureAtlas from '../../engine/graphics/TextureAtlas';
+import TextureManager from '../../engine/graphics/TextureManager';
 import TextView from '../../engine/views/TextView';
 
 class AmmoView extends View {
@@ -12,7 +12,7 @@ class AmmoView extends View {
     init () {
         this.mesh = new THREE.Object3D();
 
-        let textureAtlas = new TextureAtlas('ui');
+        let textureAtlas = TextureManager.getAtlas('ui', false);
 
         let material = new THREE.MeshBasicMaterial({
             map: textureAtlas.texture,

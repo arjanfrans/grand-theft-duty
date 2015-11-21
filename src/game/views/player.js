@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/views/player');
 
-import TextureAtlas from '../../engine/graphics/TextureAtlas';
+import TextureManager from '../../engine/graphics/TextureManager';
 import Animation from '../../engine/graphics/Animation';
 import View from '../../engine/views/View';
 
@@ -19,15 +19,15 @@ class PlayerView extends View {
 
         this.geometry = new THREE.PlaneGeometry(player.width, player.height);
 
-        this.textureAtlas = new TextureAtlas('dude');
+        let textureAtlas = TextureManager.getAtlas('dude', true);
 
         this.animations = {
-            walk: new Animation(this.textureAtlas, this.geometry, 8, true, WALK_FRAMES, 'dude_'),
-            idle: new Animation(this.textureAtlas, this.geometry, 8, true, IDLE_FRAMES, 'dude_')
+            walk: new Animation(textureAtlas, this.geometry, 8, true, WALK_FRAMES, 'dude_'),
+            idle: new Animation(textureAtlas, this.geometry, 8, true, IDLE_FRAMES, 'dude_')
         };
 
         this.material = new THREE.MeshBasicMaterial({
-            map: this.textureAtlas.texture,
+            map: textureAtlas.texture,
             transparent: true
         });
 
@@ -37,10 +37,6 @@ class PlayerView extends View {
         this.mesh.rotation.z = player.angle;
 
         this._initialized = true;
-    }
-
-    get texture () {
-        return this.textureAtlas.texture;
     }
 
     _currentAnimation () {

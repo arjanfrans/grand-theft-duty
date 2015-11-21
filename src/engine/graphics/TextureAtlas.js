@@ -3,7 +3,7 @@ let debug = require('debug')('game:engine/graphics/texture-atlas');
 import AssetManager from '../AssetManager';
 
 class TextureAtlas {
-    constructor (name, clone = true) {
+    constructor (name, clone) {
         this.mapping = AssetManager.getAtlasMapping(name);
 
         if (!this.mapping) {
@@ -42,7 +42,7 @@ class TextureAtlas {
                 frame: frame,
                 framePosition: {
                     x: d.x,
-                    y: this.height - d.y
+                    y: d.y
                 },
                 frameSize: {
                     width: d.w,
@@ -55,7 +55,7 @@ class TextureAtlas {
     getFrameOffset (name) {
         let d = this.frames.get(name + '.png').framePosition;
 
-        return new THREE.Vector2(d.x / this.width, d.y / this.height); // lower left
+        return new THREE.Vector2(d.x / this.width, (this.height - d.y) / this.height);
     }
 
     getFrameSize (name) {

@@ -13,7 +13,7 @@ class BulletSystemView extends View {
             return new BulletView(null);
         }, this.bulletSystem.poolSize, 10);
 
-        this.bulletViewPairs = new WeakMap();
+        this.bulletViewPairs = new Map();
     }
 
     init () {

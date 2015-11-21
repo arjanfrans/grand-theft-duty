@@ -1,6 +1,7 @@
 let debug = require('debug')('game:engine/views/bullet');
 
-import TextureAtlas from '../../engine/graphics/TextureAtlas';
+import TextureManager from '../../engine/graphics/TextureManager';
+import DynamicTexture from '../../engine/graphics/DynamicTexture';
 import View from '../../engine/views/View';
 
 class BulletView extends View {
@@ -13,17 +14,14 @@ class BulletView extends View {
     init () {
         let bullet = this.bullet;
 
-        this.textureAtlas = new TextureAtlas('world', false);
+        let textureAtlas = TextureManager.getAtlas('world', false);
 
         this.geometry = new THREE.PlaneGeometry(bullet.width, bullet.height);
 
-        let bounds = this.textureAtlas.getBounds('bullet1');
-
-        this.geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
-        this.geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
+        this.dynamicTexture = new DynamicTexture(textureAtlas, this.geometry);
 
         this.material = new THREE.MeshBasicMaterial({
-            map: this.textureAtlas.texture,
+            map: this.dynamicTexture.texture,
             transparent: true
         });
 
@@ -31,11 +29,8 @@ class BulletView extends View {
 
         this.mesh.position.set(bullet.position.x, bullet.position.y, bullet.position.z);
         this.mesh.rotation.z = bullet.angle + (90 * (Math.PI / 180));
-        this._initialized = true;
-    }
 
-    get texture () {
-        return this.textureAtlas.texture;
+        this._initialized = true;
     }
 
     update (interpolationPercentage) {

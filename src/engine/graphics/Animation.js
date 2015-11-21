@@ -1,20 +1,19 @@
+import DynamicTexture from './DynamicTexture';
+
 class Animation {
     constructor (textureAtlas, geometry, interval = 10, repeat = true, frames = [],
             framePrefix = '') {
         this.textureAtlas = textureAtlas;
         this.geometry = geometry;
 
+        // Use the first frame as a size reference
+        this.dynamicTexture = new DynamicTexture(this.textureAtlas, geometry, framePrefix + frames[0]);
+
         this.interval = interval;
         this.frames = frames;
         this.framePrefix = framePrefix;
         this.currentFrameIndex = 0;
         this.currentDisplayTime = 0;
-
-        // Use the first frame as a size reference
-        let bounds = this.textureAtlas.getBounds(framePrefix + frames[0]);
-
-        this.geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
-        this.geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
 
         this._updateTexture();
     }
@@ -26,9 +25,7 @@ class Animation {
     _updateTexture () {
         let currentFrame = this.framePrefix + this.frames[this.currentFrameIndex];
 
-        let offset = this.textureAtlas.getFrameOffset(currentFrame);
-
-        this.texture.offset = offset;
+        this.dynamicTexture.frame = currentFrame;
     }
 
     update (delta) {

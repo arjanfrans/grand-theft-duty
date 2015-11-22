@@ -6,6 +6,15 @@
     "blockWidth": 100,
     "blockHeight": 100,
     "blockDepth": 100,
+    "respawns": [
+        {
+             "position": {
+                "x": 4.5,
+                "y": 4.5,
+                "z": 3.5
+            }
+        }
+    ],
     "blocks": [
         {
             "position": {
@@ -17,9 +26,7 @@
             "walls": {
                 "top": "grass_center",
                 "north": "grass_center",
-                "south": "roof1_corner",
-                "west": "grass_center",
-                "east": "grass_center"
+                "west": "grass_center"
             }
         },
         {
@@ -32,9 +39,7 @@
             "walls": {
                 "top": "grass_center",
                 "north": "grass_center",
-                "south": "roof1_corner",
-                "west": "grass_center",
-                "east": "grass_center"
+                "west": "grass_center"
             }
         },
         {
@@ -47,11 +52,103 @@
             "walls": {
                 "top": "grass_center",
                 "north": "grass_center",
-                "south": "roof1_corner",
-                "west": "roof1_edge",
-                "east": "grass_center"
+                "west": "roof1_edge"
             }
         },
+        {
+            "position": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center",
+                "north": "grass_center",
+                "west": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 1,
+                "y": 1,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 2,
+                "y": 1,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 3,
+                "y": 1,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "north": "dirt_center"
+            }
+        },
+        {
+            "position": {
+                "x": 0,
+                "y": 2,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center",
+                "west": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 1,
+                "y": 2,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 2,
+                "y": 2,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 3,
+                "y": 2,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "north": "dirt_center",
+                "south": "roof1_corner",
+                "west": "grass_center"
+            }
+        },
+
         {
             "position": {
                 "x": 3,
@@ -81,6 +178,36 @@
         },
         {
             "position": {
+                "x": 0,
+                "y": 4,
+                "z": 1
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center",
+                "north": "dirt_center",
+                "south": "dirt_center",
+                "west": "grass_center",
+                "east": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 1,
+                "y": 4,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center",
+                "north": "dirt_center",
+                "south": "dirt_center",
+                "west": "grass_center",
+                "east": "grass_center"
+            }
+        },
+        {
+            "position": {
                 "x": 3,
                 "y": 3,
                 "z": 0
@@ -94,7 +221,36 @@
                 "east": "grass_center"
             }
         },
-
+        {
+            "position": {
+                "x": 2,
+                "y": 4,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "dirt_center",
+                "north": "dirt_center",
+                "south": "dirt_center",
+                "west": "grass_center",
+                "east": "dirt_center"
+            }
+        },
+        {
+            "position": {
+                "x": 3,
+                "y": 4,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "dirt_center",
+                "north": "dirt_center",
+                "south": "dirt_center",
+                "west": "grass_center",
+                "east": "dirt_center"
+            }
+        },
         {
             "position": {
                 "x": 4,
@@ -108,36 +264,6 @@
                 "south": "dirt_center",
                 "west": "grass_center",
                 "east": "dirt_center"
-            }
-        },
-        {
-            "position": {
-                "x": 2,
-                "y": 2,
-                "z": 2
-            },
-            "collidable": true,
-            "walls": {
-                "top": "roof1_edge",
-                "north": "roof1_edge",
-                "south": "roof1_edge",
-                "west": "roof1_edge",
-                "east": "roof1_edge"
-            }
-        },
-        {
-            "position": {
-                "x": 2,
-                "y": 1,
-                "z": 2
-            },
-            "collidable": true,
-            "walls": {
-                "top": "roof1_edge",
-                "north": "roof1_edge",
-                "south": "roof1_edge",
-                "west": "roof1_edge",
-                "east": "roof1_edge"
             }
         }
     ]

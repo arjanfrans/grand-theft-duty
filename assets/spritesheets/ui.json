@@ -7,7 +7,7 @@
 	"frames": [
 		{
 			"filename": "mp44.png",
-			"frame": {"x":0,"y":0,"w":192,"h":64},
+			"frame": {"x":2,"y":2,"w":192,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":64},
@@ -15,7 +15,7 @@
 		},
 		{
 			"filename": "thompson.png",
-			"frame": {"x":0,"y":64,"w":192,"h":64},
+			"frame": {"x":2,"y":70,"w":192,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":64},
@@ -23,7 +23,7 @@
 		},
 		{
 			"filename": "ammo.png",
-			"frame": {"x":192,"y":0,"w":23,"h":128},
+			"frame": {"x":198,"y":2,"w":23,"h":128},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":23,"h":128},
@@ -31,7 +31,7 @@
 		},
 		{
 			"filename": "heart.png",
-			"frame": {"x":0,"y":128,"w":64,"h":64},
+			"frame": {"x":2,"y":138,"w":64,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},

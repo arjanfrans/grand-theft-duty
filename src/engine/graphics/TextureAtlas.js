@@ -3,7 +3,7 @@ let debug = require('debug')('game:engine/graphics/texture-atlas');
 import AssetManager from '../AssetManager';
 
 class TextureAtlas {
-    constructor (name, clone) {
+    constructor (name, clone, filter = {}) {
         this.mapping = AssetManager.getAtlasMapping(name);
 
         if (!this.mapping) {
@@ -16,8 +16,8 @@ class TextureAtlas {
             this.texture = AssetManager.getTexture(name);
         }
 
-        this.texture.magFilter = THREE.NearestFilter;
-        this.texture.minFilter = THREE.LinearMipMapLinearFilter;
+        this.setFilters();
+
         this.texture.wrapS = THREE.RepeatWrapping;
         this.texture.wrapT = THREE.RepeatWrapping;
 
@@ -49,6 +49,20 @@ class TextureAtlas {
                     height: d.h
                 }
             });
+        }
+    }
+
+    setFilters (filters = {}) {
+        if (filters.mag) {
+            this.texture.magFilter = filters.mag;
+        } else {
+            this.texture.magFilter = THREE.LinearFilter;
+        }
+
+        if (filters.min) {
+            this.texture.minFilter = filters.min;
+        } else {
+            this.texture.minFilter = THREE.LinearMipMapLinear;
         }
     }
 

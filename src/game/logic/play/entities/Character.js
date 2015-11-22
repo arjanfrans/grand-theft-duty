@@ -6,8 +6,8 @@ import WeaponFactory from '../weapons/WeaponFactory';
 const GRAVITY = -0.4;
 
 class Character extends Entity {
-    constructor (x, y, z, width, height) {
-        super(x, y, z, width, height);
+    constructor (x, y, z, width, height, depth) {
+        super(x, y, z, width, height, depth);
 
         this.maxHealth = 100;
         this.health = 100;
@@ -21,11 +21,31 @@ class Character extends Entity {
         this.addWeapon(WeaponFactory.thompson());
         this.currentWeapon = this.weapons[0];
 
+        this._isRunning = false;
+
+        this.walkingSpeed = 0.05;
+        this.runningSpeed = 0.2;
+        this.speed = this.walkingSpeed;
+
         this.options.physics = true;
         this.options.bullets = true;
         this.options.isCharacter = true;
 
         this.actions.firedBullet = false;
+    }
+
+    set isRunning (running) {
+        if (running) {
+            this._isRunning = true;
+            this.speed = this.runningSpeed;
+        } else {
+            this._isRunning = false;
+            this.speed = this.walkingSpeed;
+        }
+    }
+
+    get isRunning () {
+        return this._isRunning;
     }
 
     addWeapon (weapon) {

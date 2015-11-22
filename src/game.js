@@ -6,7 +6,7 @@ import AssetManager from './engine/AssetManager';
 
 const ASSET_CONFIG = {
     textureAtlases: [
-        'dude',
+        'soldier',
         'tiles',
         'world',
         'ui'

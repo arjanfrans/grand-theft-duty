@@ -53,7 +53,7 @@ let _createPlayView = function (state) {
 
 let _createEntities = function (state) {
     let entities = [];
-    let player = new Entities.Player(475, 475, 900, 32, 32);
+    let player = new Entities.Player(475, 475, 900, 48, 48);
 
     // Player
     entities.push(player);
@@ -62,7 +62,7 @@ let _createEntities = function (state) {
 
     state.inputs.add(playerInput);
 
-    let enemy = new Entities.Character(300, 450, 300, 32, 32);
+    let enemy = new Entities.Character(300, 450, 300, 48, 48);
 
     entities.push(enemy);
 
@@ -70,9 +70,9 @@ let _createEntities = function (state) {
 
     // Enemies
     return entities.concat([
-        new Entities.Character(350, 450, 300, 32, 32),
-        new Entities.Character(350, 350, 300, 32, 32),
-        new Entities.Character(200, 500, 300, 32, 32)
+        new Entities.Character(350, 450, 300, 48, 48),
+        new Entities.Character(350, 350, 300, 48, 48),
+        new Entities.Character(200, 500, 300, 48, 48)
     ]);
 };
 

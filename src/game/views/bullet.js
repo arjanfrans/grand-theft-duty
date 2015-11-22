@@ -1,7 +1,7 @@
 let debug = require('debug')('game:engine/views/bullet');
 
 import TextureManager from '../../engine/graphics/TextureManager';
-import DynamicTexture from '../../engine/graphics/DynamicTexture';
+import TextureFrame from '../../engine/graphics/TextureFrame';
 import View from '../../engine/views/View';
 
 class BulletView extends View {
@@ -18,10 +18,10 @@ class BulletView extends View {
 
         this.geometry = new THREE.PlaneGeometry(bullet.width, bullet.height);
 
-        this.dynamicTexture = new DynamicTexture(textureAtlas, this.geometry);
+        this.textureFrame = new TextureFrame(textureAtlas, this.geometry, 'bullet1');
 
         this.material = new THREE.MeshBasicMaterial({
-            map: this.dynamicTexture.texture,
+            map: this.textureFrame.texture,
             transparent: true
         });
 

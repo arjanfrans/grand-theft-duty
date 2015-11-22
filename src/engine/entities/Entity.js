@@ -7,7 +7,7 @@ const DEFAULT_SPEED = 0.2;
 const DEFAULT_ROTATION_SPEED = 0.3;
 
 class Entity {
-    constructor (x, y, z = 0, width = 0, height = 0) {
+    constructor (x, y, z = 0, width = 0, height = 0, depth = 0) {
         this.position = {
             x: x,
             y: y,
@@ -32,6 +32,7 @@ class Entity {
 
         this.width = width;
         this.height = height;
+        this.depth = depth;
 
         // If entity is moving backwards
         this.reverse = false;

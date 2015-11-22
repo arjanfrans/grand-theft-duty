@@ -1,4 +1,4 @@
-import DynamicTexture from './DynamicTexture';
+import TextureFrame from './TextureFrame';
 
 class Animation {
     constructor (textureAtlas, geometry, interval = 10, repeat = true, frames = [],
@@ -7,7 +7,7 @@ class Animation {
         this.geometry = geometry;
 
         // Use the first frame as a size reference
-        this.dynamicTexture = new DynamicTexture(this.textureAtlas, geometry, framePrefix + frames[0]);
+        this.textureFrame = new TextureFrame(this.textureAtlas, geometry, framePrefix + frames[0]);
 
         this.interval = interval;
         this.frames = frames;
@@ -25,7 +25,12 @@ class Animation {
     _updateTexture () {
         let currentFrame = this.framePrefix + this.frames[this.currentFrameIndex];
 
-        this.dynamicTexture.frame = currentFrame;
+        this.textureFrame.frame = currentFrame;
+    }
+
+    reset () {
+        this.currentFrameIndex = 0;
+        this.currentDisplayTime = 0;
     }
 
     update (delta) {

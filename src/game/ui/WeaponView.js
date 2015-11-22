@@ -2,7 +2,7 @@ let debug = require('debug')('game:game/ui/WeaponView');
 
 import View from '../../engine/views/View';
 import TextureManager from '../../engine/graphics/TextureManager';
-import DynamicTexture from '../../engine/graphics/DynamicTexture';
+import TextureFrame from '../../engine/graphics/TextureFrame';
 
 class WeaponView extends View {
     constructor () {
@@ -15,10 +15,10 @@ class WeaponView extends View {
         let textureAtlas = TextureManager.getAtlas('ui', true);
 
         this.geometry = new THREE.PlaneGeometry(196, 64);
-        this.dynamicTexture = new DynamicTexture(textureAtlas, this.geometry);
+        this.textureFrame = new TextureFrame(textureAtlas, this.geometry);
 
         this.material = new THREE.MeshBasicMaterial({
-            map: this.dynamicTexture.texture,
+            map: this.textureFrame.texture,
             transparent: true
         });
 
@@ -34,7 +34,7 @@ class WeaponView extends View {
             }
 
             this._weapon = weapon;
-            this.dynamicTexture.frame = weapon;
+            this.textureFrame.frame = weapon;
         } else if (weapon === null) {
             if (this.mesh.visible) {
                 this.mesh.visible = false;

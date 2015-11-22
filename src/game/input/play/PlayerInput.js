@@ -27,8 +27,14 @@ class PlayerInput {
             this.player.stopTurning();
         }
 
-        if (Keyboard.isDown(Keyboard.CTRL)) {
+        if (!this.player.isRunning && Keyboard.isDown(Keyboard.CTRL)) {
             this.player.fireBullet();
+        }
+
+        if (Keyboard.isDown(Keyboard.SHIFT)) {
+            this.player.isRunning = true;
+        } else {
+            this.player.isRunning = false;
         }
 
         // TODO built better mechanism to detect if pressed down once

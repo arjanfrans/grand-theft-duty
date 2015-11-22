@@ -2,6 +2,7 @@ let debug = require('debug')('game:game/ui/AmmoView');
 
 import View from '../../engine/views/View';
 import TextureManager from '../../engine/graphics/TextureManager';
+import TextureFrame from '../../engine/graphics/TextureFrame';
 import TextView from '../../engine/views/TextView';
 
 class AmmoView extends View {
@@ -20,12 +21,10 @@ class AmmoView extends View {
         });
 
         let ammoSize = textureAtlas.getFrameSize('ammo');
-        let bounds = textureAtlas.getBounds('ammo');
 
         this.geometry = new THREE.PlaneGeometry(ammoSize.width, ammoSize.height);
 
-        this.geometry.faceVertexUvs[0][0] = [bounds[0], bounds[1], bounds[3]];
-        this.geometry.faceVertexUvs[0][1] = [bounds[1], bounds[2], bounds[3]];
+        this.textureFrame = new TextureFrame(textureAtlas, this.geometry, 'ammo');
 
         let ammoMesh = new THREE.Mesh(this.geometry, material);
 

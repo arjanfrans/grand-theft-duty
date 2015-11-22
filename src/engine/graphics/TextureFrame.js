@@ -1,7 +1,6 @@
-class DynamicTexture {
+class TextureFrame {
     constructor (textureAtlas, geometry, initialFrame) {
         this.textureAtlas = textureAtlas;
-        this.geometry = geometry;
         this.geometry = geometry;
 
         if (initialFrame) {
@@ -34,7 +33,6 @@ class DynamicTexture {
     }
 
     set frame (frameName) {
-        console.log(frameName);
         let offset = this.textureAtlas.getFrameOffset(frameName);
         let size = this.textureAtlas.getFrameSize(frameName);
 
@@ -47,4 +45,4 @@ class DynamicTexture {
     }
 }
 
-export default DynamicTexture;
+export default TextureFrame;

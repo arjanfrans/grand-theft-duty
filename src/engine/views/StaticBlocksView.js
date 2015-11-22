@@ -1,6 +1,6 @@
 let debug = require('debug')('game:engine/views/merged-block');
 
-import TextureAtlas from '../graphics/TextureAtlas';
+import TextureManager from '../graphics/TextureManager';
 import View from './View';
 
 let _createBlockGeometry = function (block, textureAtlas) {
@@ -89,8 +89,9 @@ let _createMergedBlockGeometry = function (blocks, textureAtlas) {
         geometry.translate(block.position.x, block.position.y, block.position.z);
 
         mergedGeometry.merge(geometry);
-        mergedGeometry.mergeVertices();
     }
+
+    mergedGeometry.mergeVertices();
 
     return mergedGeometry;
 };
@@ -114,19 +115,25 @@ class StaticBlocksView extends View {
     }
 
     init () {
-        this.textureAtlas = new TextureAtlas(this.textureAtlasName, false);
+        this.textureAtlas = TextureManager.getAtlas(this.textureAtlasName, false);
+
+        this.textureAtlas.filters = {
+            mag: THREE.NearestFilter,
+            min: THREE.LinearMipMapLinearFilter
+        };
 
         this.geometry = _createMergedBlockGeometry(this.blocks, this.textureAtlas);
 
         this.material = new THREE.MeshLambertMaterial({
             map: this.textureAtlas.texture,
-            transparent: true,
+            transparent: false,
             side: THREE.DoubleSide
         });
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.material.polygonOffset = true;
+        this.material.polygonOffsetFactor = 0.1;
 
-        this.mesh.position.set(0, 0, 0);
+        this.mesh = new THREE.Mesh(this.geometry, this.material);
 
         // Set the center of the blocks to bottom left (instead of center)
         this.mesh.translateX(this.blockWidth / 2);

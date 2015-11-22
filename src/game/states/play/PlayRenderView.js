@@ -13,7 +13,7 @@ class PlayRenderView extends RenderView {
     init () {
         super.init();
 
-        this.camera = new THREE.PerspectiveCamera(75, this.world.width / this.world.height, 1, 100000);
+        this.camera = new THREE.PerspectiveCamera(75, this.world.width / this.world.height, 100, 1000);
 
         this.camera.position.x = (this.world.width / 2) * this.world.tileWidth;
         this.camera.position.y = (this.world.height / 2) * this.world.tileHeight;

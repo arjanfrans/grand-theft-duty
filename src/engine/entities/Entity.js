@@ -90,7 +90,7 @@ class Entity {
 
         this.dead = false;
         this.reverse = false;
-        this.angle = 0;
+        this.angle = Math.PI * 2;
         this.angularVelocity = 0;
 
         // If entity is moving backwards

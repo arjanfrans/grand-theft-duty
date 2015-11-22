@@ -9,9 +9,6 @@ class Character extends Entity {
     constructor (x, y, z, width, height, depth) {
         super(x, y, z, width, height, depth);
 
-        this.maxHealth = 100;
-        this.health = 100;
-
         this.weapons = [];
         this.currentWeaponIndex = 0;
         this.currentWeapon = null;
@@ -21,17 +18,15 @@ class Character extends Entity {
         this.addWeapon(WeaponFactory.thompson());
         this.currentWeapon = this.weapons[0];
 
-        this._isRunning = false;
-
+        this.maxHealth = 100;
         this.walkingSpeed = 0.1;
         this.runningSpeed = 0.2;
-        this.speed = this.walkingSpeed;
+
+        this.reset();
 
         this.options.physics = true;
         this.options.bullets = true;
         this.options.isCharacter = true;
-
-        this.actions.firedBullet = false;
     }
 
     set isRunning (running) {
@@ -107,6 +102,10 @@ class Character extends Entity {
 
     reset () {
         super.reset();
+
+        this._isRunning = false;
+        this.speed = this.walkingSpeed;
+        this.health = 100;
 
         this.health = this.maxHealth;
         this.actions.firedBullet = false;

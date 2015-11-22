@@ -70,9 +70,9 @@ let _createEntities = function (state) {
 
     // Enemies
     return entities.concat([
-        new Entities.Character(350, 450, 300, 48, 48),
-        new Entities.Character(350, 350, 300, 48, 48),
-        new Entities.Character(200, 500, 300, 48, 48)
+        new Entities.Character(350, 450, 900, 48, 48),
+        new Entities.Character(350, 350, 900, 48, 48),
+        new Entities.Character(200, 550, 900, 48, 48)
     ]);
 };
 

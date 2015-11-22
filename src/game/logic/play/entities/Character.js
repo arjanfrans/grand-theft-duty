@@ -23,7 +23,7 @@ class Character extends Entity {
 
         this._isRunning = false;
 
-        this.walkingSpeed = 0.05;
+        this.walkingSpeed = 0.1;
         this.runningSpeed = 0.2;
         this.speed = this.walkingSpeed;
 
@@ -106,6 +106,8 @@ class Character extends Entity {
     }
 
     reset () {
+        super.reset();
+
         this.health = this.maxHealth;
         this.actions.firedBullet = false;
     }

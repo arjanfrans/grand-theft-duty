@@ -14,36 +14,17 @@ class Entity {
             z: z
         };
 
-        this.velocity = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-
         this.previousPosition = {
             x: x,
             y: y,
             z: z
         };
 
-        this.angularVelocity = 0;
-
-        this.angle = 0 * (Math.PI / 180);
-
         this.width = width;
         this.height = height;
         this.depth = depth;
 
-        // If entity is moving backwards
-        this.reverse = false;
-
-        this.speed = DEFAULT_SPEED;
-        this.rotationSpeed = DEFAULT_ROTATION_SPEED;
-
-        this.collidable = true;
-        this.shouldUpdate = true;
-
-        this.isMoving = false;
+        this.reset();
 
         this._body = new Polygon(new Vector(this.x, this.y), [
             new Vector(-this.halfWidth, -this.halfHeight),
@@ -51,11 +32,6 @@ class Entity {
             new Vector(this.halfWidth, this.halfHeight),
             new Vector(this.halfWidth, 0)
         ]);
-
-        this.dead = false;
-
-        // Actions can trigger things that should happen in the next update.
-        this.actions = {};
 
         this.options = {
             physics: false,
@@ -105,8 +81,47 @@ class Entity {
         this.dead = true;
     }
 
-    revive () {
+    reset () {
+        this.velocity = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+
         this.dead = false;
+        this.reverse = false;
+        this.angle = 0;
+        this.angularVelocity = 0;
+
+        // If entity is moving backwards
+        this.reverse = false;
+
+        this.speed = DEFAULT_SPEED;
+        this.rotationSpeed = DEFAULT_ROTATION_SPEED;
+
+        this.collidable = true;
+        this.shouldUpdate = true;
+
+        this.isMoving = false;
+
+        // Actions can trigger things that should happen in the next update.
+        this.actions = {};
+    }
+
+    respawn (position) {
+        this.reset();
+
+        this.position = {
+            x: position.x,
+            y: position.y,
+            z: position.z
+        };
+
+        this.previousPosition = {
+            x: position.x,
+            y: position.y,
+            z: position.z
+        };
     }
 
     /**
@@ -168,19 +183,21 @@ class Entity {
     }
 
     update (delta) {
-        this.angle += this.angularVelocity * delta;
+        if (!this.dead) {
+            this.angle += this.angularVelocity * delta;
 
-        if (this.angle < 0) {
-            this.angle = (Math.PI * 2) - this.angle;
+            if (this.angle < 0) {
+                this.angle = (Math.PI * 2) - this.angle;
+            }
+
+            this.previousPosition.x = this.position.x;
+            this.previousPosition.y = this.position.y;
+            this.previousPosition.z = this.position.z;
+
+            this.position.x += this.velocity.x * delta;
+            this.position.y += this.velocity.y * delta;
+            this.position.z += this.velocity.z * delta;
         }
-
-        this.previousPosition.x = this.position.x;
-        this.previousPosition.y = this.position.y;
-        this.previousPosition.z = this.position.z;
-
-        this.position.x += this.velocity.x * delta;
-        this.position.y += this.velocity.y * delta;
-        this.position.z += this.velocity.z * delta;
     }
 };
 

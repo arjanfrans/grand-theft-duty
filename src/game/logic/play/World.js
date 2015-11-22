@@ -15,6 +15,14 @@ class World {
     update (delta) {
         for (let entity of this.entities) {
             entity.update(delta);
+
+            if (entity.dead) {
+                if (entity.options.isPlayer) {
+                    let position = this.map.randomRespawnPosition();
+
+                    entity.respawn(position);
+                }
+            }
         }
     }
 

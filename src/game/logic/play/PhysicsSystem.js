@@ -89,6 +89,7 @@ let _detectFloorCollision = function (entity, nextEntityPosition, block) {
     if (entity.position.z <= 0) {
         entity.stopFalling();
         entity.position.z = 0;
+        entity.kill();
 
         return true;
     }

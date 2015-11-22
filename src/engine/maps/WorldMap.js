@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/maps/WorldMap');
-
 class WorldMap {
     constructor (layers, width, height, depth, tileWidth, tileHeight, tileDepth) {
         this.width = width;
@@ -35,6 +33,14 @@ class WorldMap {
         return this.depth * this.tileDepth;
     }
 
+    indexToPosition (index) {
+        return {
+            x: index.x * this.tileWidth,
+            y: index.y * this.tileHeight,
+            z: index.z * this.tileDepth
+        };
+    }
+
     positionToIndex (position) {
         let x = position.x;
         let y = position.y;
@@ -47,6 +53,13 @@ class WorldMap {
         index.z = Math.floor(z / this.tileDepth);
 
         return index;
+    }
+
+    randomRespawnPosition () {
+        let respawn = this.respawns[Math.round(Math.random() * (this.respawns.length - 1))];
+        let position = this.indexToPosition(respawn.position);
+
+        return position;
     }
 
     blockAtIndex (index) {

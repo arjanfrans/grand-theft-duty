@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/maps/MapParser');
-
 import AssetManager from '../AssetManager';
 
 import Block from './Block';
@@ -67,6 +65,12 @@ let _parseRawMap = function (rawMap) {
     let worldMap = new WorldMap(layers, mapWidth, mapHeight, mapDepth, blockWidth, blockHeight, blockDepth);
 
     worldMap.name = rawMap.name;
+    worldMap.respawns = [];
+
+    console.log(rawMap);
+    for (let respawn of rawMap.respawns) {
+        worldMap.respawns.push(respawn);
+    }
 
     return worldMap;
 };

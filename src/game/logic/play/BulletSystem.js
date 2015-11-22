@@ -38,13 +38,9 @@ class BulletSystem {
             bullet = this.bulletPool.get();
         }
 
-        bullet.revive();
         bullet.firedBy = firedBy;
         bullet.firedByWeapon = firedBy.currentWeapon;
-        bullet.position.x = firedBy.position.x;
-        bullet.position.y = firedBy.position.y;
-        bullet.position.z = firedBy.position.z;
-
+        bullet.respawn(firedBy.position);
         bullet.angle = firedBy.angle;
 
         this.activeBullets.add(bullet);

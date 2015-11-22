@@ -65,8 +65,6 @@ class PlayerView extends View {
 
         this.mesh.position.set(player.position.x, player.position.y, player.position.z);
         this.mesh.rotation.z = player.angle;
-        this.mesh.castShadow = true;
-        this.mesh.receiveShadow = true;
 
         this._initialized = true;
     }
@@ -99,6 +97,8 @@ class PlayerView extends View {
         if (this.player.dead) {
             this.mesh.visible = false;
             zOffset = 0;
+        } else if (!this.mesh.visible) {
+            this.mesh.visible = true;
         }
 
         let previous = this.player.previousPosition;

@@ -24,9 +24,6 @@ class Renderer {
         this._THREErenderer.setClearColor(0xbfd1e5);
         this._THREErenderer.setPixelRatio(window.devicePixelRatio);
         this._THREErenderer.autoClear = false;
-        this._THREErenderer.shadowMap.enabled = true;
-        this._THREErenderer.gammaInput = true;
-        this._THREErenderer.gammaOutput = true;
 
         document.getElementById(divName).appendChild(this._THREErenderer.domElement);
     }

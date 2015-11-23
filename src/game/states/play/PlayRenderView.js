@@ -8,6 +8,7 @@ class PlayRenderView extends RenderView {
 
         this.world = world;
         this.cameraFollowView = null;
+        this.clearColor = 0xcbe5ff;
     }
 
     init () {

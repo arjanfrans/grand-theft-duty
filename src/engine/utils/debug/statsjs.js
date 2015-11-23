@@ -140,7 +140,7 @@ let Stats = function () {
                 prevTime = time;
                 frames = 0;
 
-                if (typeof mem !== 'undefined') {
+                if (typeof mem !== 'undefined' && performance && performance.memory) {
                     let heapSize = performance.memory.usedJSHeapSize;
                     let heapSizeLimit = performance.memory.jsHeapSizeLimit;
 

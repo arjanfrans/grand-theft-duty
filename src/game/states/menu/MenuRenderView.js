@@ -8,6 +8,7 @@ class MenuRenderView extends RenderView {
 
         this.state = state;
         this.menu = state.menu;
+        this.clearColor = 0x002422;
     }
 
     init () {

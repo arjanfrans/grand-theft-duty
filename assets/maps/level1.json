@@ -17,6 +17,7 @@
     ],
     "blocks": [
         {
+            "type": "water",
             "position": {
                 "x": 0,
                 "y": 0,
@@ -24,9 +25,7 @@
             },
             "collidable": true,
             "walls": {
-                "top": "grass_center",
-                "north": "grass_center",
-                "west": "grass_center"
+                "top": "animation_water_0001"
             }
         },
         {

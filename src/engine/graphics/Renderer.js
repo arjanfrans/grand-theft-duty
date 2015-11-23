@@ -21,7 +21,7 @@ class Renderer {
         this._THREErenderer = new THREE.WebGLRenderer();
 
         this._THREErenderer.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        this._THREErenderer.setClearColor(0xbfd1e5);
+        this._THREErenderer.setClearColor(0x000000);
         this._THREErenderer.setPixelRatio(window.devicePixelRatio);
         this._THREErenderer.autoClear = false;
 
@@ -31,11 +31,20 @@ class Renderer {
     set views (views) {
         this._views = views;
 
+        let index = 0;
+
         for (let view of this._views) {
+            if (index === 0) {
+                // Get the clear color from the first view
+                this._THREErenderer.setClearColor(view.clearColor);
+            }
+
             view.size = {
                 width: DEFAULT_WIDTH,
                 height: DEFAULT_HEIGHT
             };
+
+            index += 1;
         }
     }
 
@@ -51,12 +60,16 @@ class Renderer {
     render () {
         this._THREErenderer.clear();
 
-        for (let [index, view] of this._views.entries()) {
+        let index = 0;
+
+        for (let view of this._views) {
             if (index > 0) {
                 this._THREErenderer.clearDepth();
             }
 
             this._THREErenderer.render(view.scene, view.camera);
+
+            index += 1;
         }
     }
 }

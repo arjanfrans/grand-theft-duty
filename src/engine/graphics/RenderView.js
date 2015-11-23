@@ -10,6 +10,7 @@ class RenderView {
 
         this._initialized = false;
 
+        this.clearColor = 0x000000;
         this.camera = null;
     }
 

@@ -1,6 +1,8 @@
 let debug = require('debug')('game:engine/views/menu/MenuItemsView');
 
 import TextView from '../../../engine/views/TextView';
+import TextureManager from '../../../engine/graphics/TextureManager';
+import TextureFrame from '../../../engine/graphics/TextureFrame';
 import View from '../../../engine/views/View';
 
 class MenuItemsView extends View {
@@ -31,6 +33,7 @@ class MenuItemsView extends View {
 
             textView.init();
             textView.mesh.position.y = startY - (distance * itemCount);
+            textView.mesh.position.x += 100;
 
             if (this.selectedItem === menuItem) {
                 textView.color = this.options.selectedTextColor;
@@ -43,6 +46,26 @@ class MenuItemsView extends View {
             this.mesh.add(textView.mesh);
             itemCount += 1;
         }
+
+        // FIXME get this hacky stuff out of here
+        let textureAtlas = TextureManager.getAtlas('ui', false);
+
+        let logoSize = textureAtlas.getFrameSize('logo');
+
+        let geometry = new THREE.PlaneGeometry(logoSize.width, logoSize.height);
+
+        let textureFrame = new TextureFrame(textureAtlas, geometry, 'logo');
+
+        let material = new THREE.MeshBasicMaterial({
+            map: textureFrame.texture,
+            transparent: true
+        });
+
+        let logoMesh = new THREE.Mesh(geometry, material);
+
+        logoMesh.position.x -= 160;
+
+        this.mesh.add(logoMesh);
     }
 
     update () {

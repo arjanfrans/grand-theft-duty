@@ -1,13 +1,13 @@
 {
 	"meta": {
 		"image": "world.png",
-		"size": {"w":8,"h":16},
+		"size": {"w":16,"h":16},
 		"scale": "1"
 	},
 	"frames": [
 		{
 			"filename": "bullet1.png",
-			"frame": {"x":2,"y":2,"w":2,"h":8},
+			"frame": {"x":4,"y":4,"w":2,"h":8},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":2,"h":8},

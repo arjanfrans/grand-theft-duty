@@ -1,13 +1,13 @@
 {
 	"meta": {
 		"image": "soldier.png",
-		"size": {"w":512,"h":256},
+		"size": {"w":512,"h":512},
 		"scale": "1"
 	},
 	"frames": [
 		{
 			"filename": "soldier_weapon_run_0007.png",
-			"frame": {"x":2,"y":2,"w":48,"h":48},
+			"frame": {"x":4,"y":4,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -15,7 +15,7 @@
 		},
 		{
 			"filename": "solider_dead_0003.png",
-			"frame": {"x":2,"y":210,"w":27,"h":29},
+			"frame": {"x":4,"y":228,"w":27,"h":29},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":27,"h":29},
@@ -23,7 +23,7 @@
 		},
 		{
 			"filename": "soldier_dead_0003.png",
-			"frame": {"x":2,"y":54,"w":48,"h":48},
+			"frame": {"x":4,"y":60,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -31,7 +31,7 @@
 		},
 		{
 			"filename": "soldier_weapon_idle_0001.png",
-			"frame": {"x":54,"y":54,"w":48,"h":48},
+			"frame": {"x":60,"y":60,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -39,7 +39,7 @@
 		},
 		{
 			"filename": "soldier_weapon_run_0001.png",
-			"frame": {"x":106,"y":2,"w":48,"h":48},
+			"frame": {"x":116,"y":4,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -47,7 +47,7 @@
 		},
 		{
 			"filename": "soldier_weapon_run_0002.png",
-			"frame": {"x":106,"y":54,"w":48,"h":48},
+			"frame": {"x":116,"y":60,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -55,7 +55,7 @@
 		},
 		{
 			"filename": "soldier_weapon_run_0003.png",
-			"frame": {"x":2,"y":106,"w":48,"h":48},
+			"frame": {"x":4,"y":116,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -63,7 +63,7 @@
 		},
 		{
 			"filename": "soldier_weapon_run_0004.png",
-			"frame": {"x":54,"y":106,"w":48,"h":48},
+			"frame": {"x":60,"y":116,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -71,7 +71,7 @@
 		},
 		{
 			"filename": "soldier_weapon_run_0005.png",
-			"frame": {"x":106,"y":106,"w":48,"h":48},
+			"frame": {"x":116,"y":116,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -79,7 +79,7 @@
 		},
 		{
 			"filename": "soldier_weapon_run_0006.png",
-			"frame": {"x":158,"y":2,"w":48,"h":48},
+			"frame": {"x":172,"y":4,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -87,7 +87,7 @@
 		},
 		{
 			"filename": "soldier_dead_0001.png",
-			"frame": {"x":54,"y":2,"w":48,"h":48},
+			"frame": {"x":60,"y":4,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -95,7 +95,7 @@
 		},
 		{
 			"filename": "soldier_weapon_run_0008.png",
-			"frame": {"x":158,"y":106,"w":48,"h":48},
+			"frame": {"x":172,"y":116,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -103,7 +103,7 @@
 		},
 		{
 			"filename": "soldier_weapon_walk_0001.png",
-			"frame": {"x":2,"y":158,"w":48,"h":48},
+			"frame": {"x":4,"y":172,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -111,7 +111,7 @@
 		},
 		{
 			"filename": "soldier_weapon_walk_0002.png",
-			"frame": {"x":54,"y":158,"w":48,"h":48},
+			"frame": {"x":60,"y":172,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -119,7 +119,7 @@
 		},
 		{
 			"filename": "soldier_weapon_walk_0003.png",
-			"frame": {"x":106,"y":158,"w":48,"h":48},
+			"frame": {"x":116,"y":172,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -127,7 +127,7 @@
 		},
 		{
 			"filename": "soldier_weapon_walk_0004.png",
-			"frame": {"x":158,"y":158,"w":48,"h":48},
+			"frame": {"x":172,"y":172,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -135,7 +135,7 @@
 		},
 		{
 			"filename": "soldier_weapon_walk_0005.png",
-			"frame": {"x":210,"y":2,"w":48,"h":48},
+			"frame": {"x":228,"y":4,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -143,7 +143,7 @@
 		},
 		{
 			"filename": "soldier_weapon_walk_0006.png",
-			"frame": {"x":210,"y":54,"w":48,"h":48},
+			"frame": {"x":228,"y":60,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -151,7 +151,7 @@
 		},
 		{
 			"filename": "soldier_weapon_walk_0007.png",
-			"frame": {"x":210,"y":106,"w":48,"h":48},
+			"frame": {"x":228,"y":116,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -159,7 +159,7 @@
 		},
 		{
 			"filename": "soldier_weapon_walk_0008.png",
-			"frame": {"x":210,"y":158,"w":48,"h":48},
+			"frame": {"x":228,"y":172,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -167,7 +167,7 @@
 		},
 		{
 			"filename": "soldier_dead_0002.png",
-			"frame": {"x":158,"y":54,"w":48,"h":48},
+			"frame": {"x":172,"y":60,"w":48,"h":48},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},

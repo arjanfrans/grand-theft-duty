@@ -98,7 +98,7 @@
             },
             "collidable": true,
             "walls": {
-                "north": "dirt_center"
+                "north": "roof1_corner"
             }
         },
         {
@@ -109,7 +109,7 @@
             },
             "collidable": true,
             "walls": {
-                "top": "grass_center",
+                "top": "roof1_corner",
                 "west": "grass_center"
             }
         },

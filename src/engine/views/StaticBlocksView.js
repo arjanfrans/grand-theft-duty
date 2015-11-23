@@ -126,7 +126,7 @@ class StaticBlocksView extends View {
 
         this.material = new THREE.MeshLambertMaterial({
             map: this.textureAtlas.texture,
-            transparent: false,
+            transparent: true,
             side: THREE.DoubleSide
         });
 

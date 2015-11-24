@@ -22,6 +22,14 @@ class Character extends Entity {
         this.walkingSpeed = 0.1;
         this.runningSpeed = 0.2;
 
+        // Contains the character killed, and the count
+        this.kills = new Map();
+        this.totalKills = 0;
+
+        // Contains the characters killed by, and the count
+        this.deaths = new Map();
+        this.totalDeahts = 0;
+
         this.reset();
 
         this.options.physics = true;
@@ -83,6 +91,29 @@ class Character extends Entity {
 
         if (this.health === 0) {
             this.kill();
+
+            let deathCount = this.deaths.get(bullet.firedBy);
+
+            if (deathCount) {
+                deathCount += 1;
+            } else {
+                deathCount = 1;
+            }
+
+            this.deaths.set(bullet.firedBy, deathCount);
+
+            let killedByCount = bullet.firedBy.kills.get(this);
+
+            if (killedByCount) {
+                killedByCount += 1;
+            } else {
+                killedByCount = 1;
+            }
+
+            bullet.firedBy.kills.set(this, killedByCount);
+
+            debug('this deaths', deathCount);
+            debug('killedBy kills', killedByCount);
         }
     }
 
@@ -113,6 +144,10 @@ class Character extends Entity {
 
     update (delta) {
         super.update(delta);
+
+        if (this.position.z <= 0) {
+            this.kill();
+        }
 
         if (this.actions.firedBullet) {
             this.actions.firedBullet = false;

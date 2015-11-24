@@ -11,7 +11,7 @@ class HealthView extends View {
 
     init () {
         let material = new THREE.MeshBasicMaterial({
-            color: 0xff0000
+            color: 0xcc0000
         });
 
         this.geometry = new THREE.PlaneGeometry(200, 20);

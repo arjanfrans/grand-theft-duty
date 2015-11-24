@@ -28,11 +28,26 @@ const RUN_FRAMES = [
 
 const IDLE_FRAMES = ['idle_0001'];
 
+// FIXME better way to color stuff
+const TEAM_COLORS = {
+    american: 0x006D02,
+    german: 0xcccc00
+};
+
+// TODO rename this, this is not just the player
 class PlayerView extends View {
     constructor (player) {
         super();
 
         this.player = player;
+        this._team = player ? player.team : 'american';
+    }
+
+    set team (team) {
+        if (team !== this._team) {
+            this._team = team;
+            this.material.color.setHex(TEAM_COLORS[team]);
+        }
     }
 
     init () {
@@ -55,11 +70,11 @@ class PlayerView extends View {
         this.material = new THREE.MeshBasicMaterial({
             map: textureAtlas.texture,
             transparent: true,
-            color: 0x006D02
+            color: TEAM_COLORS[this._team]
         });
 
         // TODO make color configurable
-        this.material.color.offsetHSL(0.1, 0.9, 0.2);
+        this.material.color.offsetHSL(0.1, 0.8, 0.4);
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 

@@ -39,6 +39,9 @@ class CharactersView extends View {
                 view.player = character;
                 view.init();
 
+                // Team is set after, because it affects the material
+                view.team = character.team;
+
                 this.mesh.add(view.mesh);
 
                 this.viewPairs.set(character, view);

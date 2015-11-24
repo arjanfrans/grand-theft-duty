@@ -6,12 +6,14 @@ import WeaponFactory from '../weapons/WeaponFactory';
 const GRAVITY = -0.4;
 
 class Character extends Entity {
-    constructor (x, y, z, width, height, depth) {
+    constructor (x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth);
 
         this.weapons = [];
         this.currentWeaponIndex = 0;
         this.currentWeapon = null;
+
+        this.team = team;
 
         // TODO remove this hardcoded stuff
         this.addWeapon(WeaponFactory.mp44());
@@ -89,6 +91,7 @@ class Character extends Entity {
     hitByBullet (bullet) {
         this.health -= bullet.damage;
 
+        // TODO prevent team killing / make configurable
         if (this.health === 0) {
             this.kill();
 
@@ -145,9 +148,9 @@ class Character extends Entity {
     update (delta) {
         super.update(delta);
 
-        if (this.position.z <= 0) {
-            this.kill();
-        }
+        // if (this.position.z <= 0) {
+        //     this.kill();
+        // }
 
         if (this.actions.firedBullet) {
             this.actions.firedBullet = false;

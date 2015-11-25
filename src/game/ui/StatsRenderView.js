@@ -4,6 +4,7 @@ import RenderView from '../../engine/graphics/RenderView';
 import AmmoView from './AmmoView';
 import HealthView from './HealthView';
 import WeaponView from './WeaponView';
+import ScoreView from './ScoreView';
 
 // TODO fix duplicate code of subviews
 class StatsRenderView extends RenderView {
@@ -13,6 +14,7 @@ class StatsRenderView extends RenderView {
         this.stats = stats;
         this.ammoView = new AmmoView();
         this.healthView = new HealthView();
+        this.scoreView = new ScoreView();
     }
 
     init () {
@@ -49,6 +51,15 @@ class StatsRenderView extends RenderView {
 
         this.scene.add(this.weaponView.mesh);
 
+        this.scoreView.init();
+
+        this.scoreView.position = {
+            x: 100,
+            y: 100
+        };
+
+        this.scene.add(this.scoreView.mesh);
+
         this._initialized = true;
     }
 
@@ -68,6 +79,8 @@ class StatsRenderView extends RenderView {
             this.ammoView.ammo = null;
             this.ammoView.magazine = null;
         }
+
+        this.scoreView.updateStats(this.stats);
 
         let healthScale = this.stats.player.health / this.stats.player.maxHealth;
 

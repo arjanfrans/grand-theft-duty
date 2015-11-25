@@ -9,6 +9,9 @@ class Character extends Entity {
     constructor (x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth);
 
+        // FIXME make configurable
+        this.name = 'cpu';
+
         this.weapons = [];
         this.currentWeaponIndex = 0;
         this.currentWeapon = null;
@@ -26,11 +29,9 @@ class Character extends Entity {
 
         // Contains the character killed, and the count
         this.kills = new Map();
-        this.totalKills = 0;
 
         // Contains the characters killed by, and the count
         this.deaths = new Map();
-        this.totalDeahts = 0;
 
         this.reset();
 
@@ -120,6 +121,26 @@ class Character extends Entity {
         }
     }
 
+    get totalKills () {
+        let total = 0;
+
+        for (let kill of this.kills.values()) {
+            total += kill;
+        }
+
+        return total;
+    }
+
+    get totalDeaths () {
+        let total = 0;
+
+        for (let death of this.deaths.values()) {
+            total += death;
+        }
+
+        return total;
+    }
+
     stopFalling () {
         this.velocity.z = 0;
     }
@@ -148,9 +169,9 @@ class Character extends Entity {
     update (delta) {
         super.update(delta);
 
-        // if (this.position.z <= 0) {
-        //     this.kill();
-        // }
+        if (this.position.z <= 0) {
+            this.kill();
+        }
 
         if (this.actions.firedBullet) {
             this.actions.firedBullet = false;

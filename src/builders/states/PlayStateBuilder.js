@@ -10,6 +10,7 @@ import BulletSystem from '../../game/logic/play/BulletSystem';
 import BulletSystemView from '../../game/views/bullet-system';
 
 import PlayerInput from '../../game/input/play/PlayerInput';
+import UiInput from '../../game/input/play/UiInput';
 import ComputerInput from '../../game/input/play/ComputerInput';
 import PlayerView from '../../game/views/player';
 
@@ -82,6 +83,8 @@ let PlayStateBuilder = {
         let map = MapParser.parse('level1');
         let world = new World(map);
 
+        world.teams = ['german', 'american'];
+
         let state = new PlayState(engine, world);
 
         // Physics
@@ -105,7 +108,13 @@ let PlayStateBuilder = {
         let stats = new Stats(state);
         let statsView = new StatsRenderView(stats);
 
+        state.stats = stats;
+
         state.addView(statsView);
+
+        let uiInput = new UiInput(stats);
+
+        state.inputs.add(uiInput);
 
         return state;
     }

@@ -4,13 +4,17 @@ import Keyboard from '../../../engine/input/Keyboard';
 import Gamepad from '../../../engine/input/Gamepad';
 
 class PlayerInput {
-    constructor (player) {
+    constructor (player, stats) {
         this.player = player;
 
         this.previousKeys = {};
     }
 
     update (delta) {
+        if (Keyboard.isDown(Keyboard.TAB)) {
+
+        }
+
         if (Keyboard.isDown(Keyboard.UP) || Gamepad.isStickDown(0, 'left', 'up')) {
             this.player.move('up');
         } else if (Keyboard.isDown(Keyboard.DOWN) || Gamepad.isStickDown(0, 'left', 'down')) {

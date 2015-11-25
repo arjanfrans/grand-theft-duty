@@ -10,6 +10,7 @@ class World {
         this.characters = new Set();
         this.enemies = new Set();
         this.player = null;
+        this.teams = [];
     }
 
     update (delta) {

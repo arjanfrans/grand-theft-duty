@@ -20,6 +20,7 @@ class PlayState extends State {
         this.world = world;
         this.physicsSystem = null;
         this.bulletSystem = null;
+        this.states = null;
     }
 
     init () {

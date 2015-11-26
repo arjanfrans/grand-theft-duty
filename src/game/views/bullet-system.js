@@ -29,7 +29,11 @@ class BulletSystemView extends View {
 
         // Clear previously killed bullets
         for (let deadBullet of this.bulletSystem.deadBullets) {
-            this.bulletViewPairs.get(deadBullet).update(delta);
+            let bulletView = this.bulletViewPairs.get(deadBullet);
+
+            if (bulletView) {
+                bulletView.update(delta);
+            }
 
             this.bulletSystem.deadBullets.delete(deadBullet);
         }

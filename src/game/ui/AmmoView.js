@@ -31,7 +31,7 @@ class AmmoView extends View {
         ammoMesh.scale.set(0.5, 0.5, 1);
 
         this.magazineText = new TextView('0', {
-            color: 0x004d00
+            color: 0xffffcc
         });
 
         this.magazineText.init();
@@ -46,7 +46,7 @@ class AmmoView extends View {
         this.mesh.add(this.magazineText.mesh);
 
         this.ammoText = new TextView('0', {
-            color: 0x009900
+            color: 0xffff99
         });
 
         this.ammoText.init();

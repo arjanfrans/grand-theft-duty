@@ -71,19 +71,20 @@ let _createEntities = function (state) {
     entities.push(enemy);
 
     state.inputs.add(new ComputerInput(enemy));
+    state.inputs.add(new ComputerInput(enemy));
 
     // Enemies
     return entities.concat([
         new Entities.Character(350, 450, 900, 48, 48, 1, 'german'),
         new Entities.Character(350, 350, 900, 48, 48, 1, 'german'),
-        new Entities.Character(200, 550, 900, 48, 48, 1, 'german')
+        new Entities.Character(150, 550, 900, 48, 48, 1, 'german')
     ]);
 };
 
 let PlayStateBuilder = {
     create (engine) {
         // World
-        let map = MapParser.parse('level1');
+        let map = MapParser.parse('level2');
         let world = new World(map);
 
         world.teams = ['german', 'american'];

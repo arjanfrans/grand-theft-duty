@@ -70,6 +70,8 @@ let _createEntities = function (state) {
 
     entities.push(enemy);
 
+    enemy.currentWeapon.ammo = 999;
+
     state.inputs.add(new ComputerInput(enemy));
     state.inputs.add(new ComputerInput(enemy));
 

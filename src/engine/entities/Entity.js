@@ -24,6 +24,9 @@ class Entity {
         this.height = height;
         this.depth = depth;
 
+        this.speed = DEFAULT_SPEED;
+        this.rotationSpeed = DEFAULT_ROTATION_SPEED;
+
         this.reset();
 
         this._body = new Polygon(new Vector(this.x, this.y), [
@@ -95,9 +98,6 @@ class Entity {
 
         // If entity is moving backwards
         this.reverse = false;
-
-        this.speed = DEFAULT_SPEED;
-        this.rotationSpeed = DEFAULT_ROTATION_SPEED;
 
         this.collidable = true;
         this.shouldUpdate = true;

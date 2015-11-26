@@ -10,6 +10,7 @@ class Bullet extends Entity {
         this.firedBy = null;
         this.firedByWeapon = null;
         this.speed = 0.4;
+
         this.maxDistance = 500;
         this.traveledDistance = 0;
     }

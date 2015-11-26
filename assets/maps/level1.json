@@ -1,8 +1,8 @@
 {
     "name": "level 1",
-    "width": 5,
-    "height": 5,
-    "depth": 5,
+    "width": 10,
+    "height": 10,
+    "depth": 10,
     "blockWidth": 100,
     "blockHeight": 100,
     "blockDepth": 100,
@@ -29,6 +29,7 @@
             }
         },
         {
+            "type": "water",
             "position": {
                 "x": 1,
                 "y": 0,
@@ -36,12 +37,11 @@
             },
             "collidable": true,
             "walls": {
-                "top": "grass_center",
-                "north": "grass_center",
-                "west": "grass_center"
+                "top": "animation_water_0001"
             }
         },
         {
+            "type": "water",
             "position": {
                 "x": 2,
                 "y": 0,
@@ -49,11 +49,34 @@
             },
             "collidable": true,
             "walls": {
-                "top": "grass_center",
-                "north": "grass_center",
-                "west": "roof1_edge"
+                "top": "animation_water_0001"
             }
         },
+        {
+            "type": "water",
+            "position": {
+                "x": 3,
+                "y": 0,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "animation_water_0001"
+            }
+        },
+        {
+            "type": "water",
+            "position": {
+                "x": 4,
+                "y": 0,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "animation_water_0001"
+            }
+        },
+
         {
             "position": {
                 "x": 0,
@@ -68,10 +91,11 @@
             }
         },
         {
+            "type": "wall",
             "position": {
                 "x": 1,
                 "y": 1,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -82,7 +106,7 @@
             "position": {
                 "x": 2,
                 "y": 1,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -93,7 +117,7 @@
             "position": {
                 "x": 3,
                 "y": 1,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -104,7 +128,7 @@
             "position": {
                 "x": 0,
                 "y": 2,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -116,7 +140,7 @@
             "position": {
                 "x": 1,
                 "y": 2,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -138,7 +162,7 @@
             "position": {
                 "x": 3,
                 "y": 2,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -152,7 +176,7 @@
             "position": {
                 "x": 3,
                 "y": 0,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -178,6 +202,21 @@
         {
             "position": {
                 "x": 0,
+                "y": 4,
+                "z": 2
+            },
+            "collidable": true,
+            "walls": {
+                "top": "grass_center",
+                "north": "dirt_center",
+                "south": "dirt_center",
+                "west": "grass_center",
+                "east": "grass_center"
+            }
+        },
+        {
+            "position": {
+                "x": 1,
                 "y": 4,
                 "z": 1
             },
@@ -192,24 +231,9 @@
         },
         {
             "position": {
-                "x": 1,
-                "y": 4,
-                "z": 0
-            },
-            "collidable": true,
-            "walls": {
-                "top": "grass_center",
-                "north": "dirt_center",
-                "south": "dirt_center",
-                "west": "grass_center",
-                "east": "grass_center"
-            }
-        },
-        {
-            "position": {
                 "x": 3,
                 "y": 3,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -224,7 +248,7 @@
             "position": {
                 "x": 2,
                 "y": 4,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -239,7 +263,7 @@
             "position": {
                 "x": 3,
                 "y": 4,
-                "z": 0
+                "z": 1
             },
             "collidable": true,
             "walls": {
@@ -263,6 +287,66 @@
                 "south": "dirt_center",
                 "west": "grass_center",
                 "east": "dirt_center"
+            }
+        },
+        {
+           "type": "water",
+            "position": {
+                "x": 0,
+                "y": 5,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "animation_water_0001"
+            }
+        },
+        {
+            "type": "water",
+            "position": {
+                "x": 1,
+                "y": 5,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "animation_water_0001"
+            }
+        },
+        {
+            "type": "water",
+            "position": {
+                "x": 2,
+                "y": 5,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "animation_water_0001"
+            }
+        },
+        {
+            "type": "water",
+            "position": {
+                "x": 3,
+                "y": 5,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "animation_water_0001"
+            }
+        },
+        {
+            "type": "water",
+            "position": {
+                "x": 4,
+                "y": 5,
+                "z": 0
+            },
+            "collidable": true,
+            "walls": {
+                "top": "animation_water_0001"
             }
         }
     ]

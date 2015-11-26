@@ -2,12 +2,12 @@ import TextureFrame from './TextureFrame';
 
 class Animation {
     constructor (textureAtlas, geometry, interval = 10, repeat = true, frames = [],
-            framePrefix = '') {
+            framePrefix = '', fixed = false) {
         this.textureAtlas = textureAtlas;
         this.geometry = geometry;
 
         // Use the first frame as a size reference
-        this.textureFrame = new TextureFrame(this.textureAtlas, geometry, framePrefix + frames[0]);
+        this.textureFrame = new TextureFrame(this.textureAtlas, geometry, framePrefix + frames[0], fixed);
 
         this.interval = interval;
         this.frames = frames;

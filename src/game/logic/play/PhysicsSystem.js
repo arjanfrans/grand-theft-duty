@@ -85,12 +85,18 @@ let _detectWalls = function (entity, nextPosition, blocks) {
     }
 };
 
+// FIXME move this out of here, not really physics stuff
 let _detectFloorCollision = function (entity, nextEntityPosition, block) {
     if (block && block.collidable && block.walls.top) {
-        // TODO check collision right on edge
         if (nextEntityPosition.z <= block.position.z + block.depth) {
-            entity.position.z = block.position.z + block.depth;
-            entity.stopFalling();
+            if (block.type === 'water') {
+                entity.fall();
+                entity.kill();
+            } else {
+                // TODO check collision right on edge
+                entity.position.z = block.position.z + block.depth;
+                entity.stopFalling();
+            }
         }
     } else {
         entity.fall();
@@ -118,7 +124,7 @@ class PhysicsSystem {
             };
 
             if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {
-                let blocks = this.map.blocksBetweenPositions(ray.min, ray.max);
+                let blocks = this.map.blocksBetweenPositions(ray.min, ray.max, ['wall']);
 
                 // let blocks = this.map.blocksBetweenPositions({ x: 0, y: 0, z: 0}, { x: 900, y: 900, z: 0 } );
 

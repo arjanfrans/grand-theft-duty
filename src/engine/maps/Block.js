@@ -4,15 +4,15 @@ import Polygon from '../collision/Polygon';
 import Vector from '../collision/Vector';
 
 class Block {
-    constructor (position, width, height, depth, walls = {}) {
+    constructor (position, width, height, depth, options = {}) {
+        this._position = position;
         this.width = width;
         this.height = height;
         this.depth = depth;
-        this._walls = walls;
-        this._position = position;
-
-        // TODO give this as a param
-        this.collidable = true;
+        this.options = options;
+        this.type = options.type || 'wall';
+        this._walls = options.walls || {};
+        this.collidable = options.collidable || true;
 
         this._computeBodies();
     }

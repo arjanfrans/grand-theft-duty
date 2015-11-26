@@ -17,6 +17,7 @@ import PlayerView from '../../game/views/player';
 import PlayAudio from '../../game/audio/PlayAudio';
 
 import StaticBlocksView from '../../engine/views/StaticBlocksView';
+import WaterBlocksView from '../../engine/views/WaterBlocksView';
 
 import CharactersView from '../../game/views/characters';
 
@@ -33,7 +34,7 @@ let _createPlayView = function (state) {
     let playView = new PlayRenderView(world);
 
     // Static views
-    let blocksView = new StaticBlocksView(world.map.blocks, 'tiles');
+    let blocksView = new StaticBlocksView(world.map, 'tiles');
 
     playView.addStaticView(blocksView);
 
@@ -41,10 +42,12 @@ let _createPlayView = function (state) {
     let playerView = new PlayerView(world.player);
     let charactersView = new CharactersView(world.characters);
     let bulletSystemView = new BulletSystemView(state.bulletSystem);
+    let waterView = new WaterBlocksView(world.map, 'tiles');
 
     playView.addDynamicView(playerView);
     playView.addDynamicView(charactersView);
     playView.addDynamicView(bulletSystemView);
+    playView.addDynamicView(waterView);
 
     // Camera follow
     playView.cameraFollowView = playerView;

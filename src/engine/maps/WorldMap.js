@@ -11,14 +11,14 @@ class WorldMap {
         this.name = null;
     }
 
-    get blocks () {
+    blocks (types) {
         return this.blocksBetweenIndexes({
             x: 0, y: 0, z: 0
         }, {
             x: this.width - 1,
             y: this.height - 1,
             z: this.depth - 1
-        });
+        }, types);
     }
 
     get totalWidth () {
@@ -84,13 +84,13 @@ class WorldMap {
         return this.blockAtIndex(indexes);
     }
 
-    blocksAtPositions (positions) {
+    blocksAtPositions (positions, types = []) {
         let blocks = [];
 
         for (let position of positions) {
             let block = this.blockAtPosition(position);
 
-            if (block) {
+            if (block && types.indexOf(block.type) !== -1) {
                 blocks.push(block);
             }
         }
@@ -106,7 +106,7 @@ class WorldMap {
      *
      * @returns {array} All blocks within the box
      */
-    blocksBetweenIndexes (start = { x: 0, y: 0, z: 0 }, end = { x: 0, y: 0, z: 0 }) {
+    blocksBetweenIndexes (start = { x: 0, y: 0, z: 0 }, end = { x: 0, y: 0, z: 0 }, types = []) {
         let blocks = [];
 
         let min = start;
@@ -122,7 +122,7 @@ class WorldMap {
 
                                 let block = this.blockAtIndex(index);
 
-                                if (block) {
+                                if (block && types.indexOf(block.type) !== -1) {
                                     blocks.push(block);
                                 }
                             }
@@ -135,8 +135,8 @@ class WorldMap {
         return blocks;
     }
 
-    blocksBetweenPositions (start = { x: 0, y: 0, z: 0 }, end = { x: 0, y: 0, z: 0 }) {
-        return this.blocksBetweenIndexes(this.positionToIndex(start), this.positionToIndex(end));
+    blocksBetweenPositions (start = { x: 0, y: 0, z: 0 }, end = { x: 0, y: 0, z: 0 }, types) {
+        return this.blocksBetweenIndexes(this.positionToIndex(start), this.positionToIndex(end), types);
     }
 
     toString () {

@@ -10,7 +10,13 @@ let _parseBlock = function (rawBlock, blockWidth, blockHeight, blockDepth) {
         z: rawBlock.position.z * blockDepth
     };
 
-    let block = new Block(position, blockWidth, blockHeight, blockDepth, rawBlock.walls);
+    let blockOptions = {
+        walls: rawBlock.walls,
+        type: rawBlock.type,
+        collidable: rawBlock.collidable
+    };
+
+    let block = new Block(position, blockWidth, blockHeight, blockDepth, blockOptions);
 
     block.collidable = rawBlock.collidable || false;
 

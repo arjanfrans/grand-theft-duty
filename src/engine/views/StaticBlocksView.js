@@ -3,7 +3,7 @@ let debug = require('debug')('game:engine/views/merged-block');
 import TextureManager from '../graphics/TextureManager';
 import View from './View';
 
-let _createBlockGeometry = function (block, textureAtlas) {
+let _wallBlockGeometry = function (block, textureAtlas) {
     let geometries = [];
 
     if (block.walls.south) {
@@ -84,7 +84,7 @@ let _createMergedBlockGeometry = function (blocks, textureAtlas) {
     let mergedGeometry = new THREE.Geometry();
 
     for (let block of blocks) {
-        let geometry = _createBlockGeometry(block, textureAtlas);
+        let geometry = _wallBlockGeometry(block, textureAtlas);
 
         geometry.translate(block.position.x, block.position.y, block.position.z);
 
@@ -97,21 +97,16 @@ let _createMergedBlockGeometry = function (blocks, textureAtlas) {
 };
 
 class StaticBlocksView extends View {
-    constructor (blocks, textureAtlasName) {
+    constructor (map, textureAtlasName) {
         super();
 
+        this.map = map;
         this.textureAtlasName = textureAtlasName;
-        this.blocks = blocks;
+        this.blocks = map.blocks(['wall']);
 
-        if (blocks.length > 0) {
-            this.blockWidth = blocks[0].width;
-            this.blockHeight = blocks[0].height;
-            this.blockDepth = blocks[0].depth;
-        } else {
-            this.blockWidth = 0;
-            this.blockHeight = 0;
-            this.blockDepth = 0;
-        }
+        this.blockWidth = map.tileWidth;
+        this.blockHeight = map.tileHeight;
+        this.blockDepth = map.tileDepth;
     }
 
     init () {
@@ -129,9 +124,6 @@ class StaticBlocksView extends View {
             transparent: true,
             side: THREE.DoubleSide
         });
-
-        this.material.polygonOffset = true;
-        this.material.polygonOffsetFactor = 0.1;
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 

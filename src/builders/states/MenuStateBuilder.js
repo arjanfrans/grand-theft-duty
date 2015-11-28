@@ -2,7 +2,7 @@ let debug = require('debug')('game:builders/states/MenuStateBuilder');
 
 import MenuState from '../../game/states/menu/MenuState';
 import MenuRenderView from '../../game/states/menu/MenuRenderView';
-import Menu from '../../game/logic/menu/Menu';
+import Menu from '../../engine/menu/Menu';
 import MenuInput from '../../game/input/menu/MenuInput';
 
 import MenuItemsView from '../../game/views/menu/MenuItemsView';
@@ -37,7 +37,7 @@ let MenuStateBuilder = {
         menuView.addDynamicView(new MenuItemsView(menu));
 
         state.addView(menuView);
-        state.audio = new MenuAudio(menu, 'menu_effects', 'background');
+        state.audio = new MenuAudio(state, 'menu_effects', 'background');
 
         return state;
     }

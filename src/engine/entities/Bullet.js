@@ -1,6 +1,4 @@
-let debug = require('debug')('game:engine/logic/play/entities/bullet');
-
-import Entity from '../../../../engine/entities/Entity';
+import Entity from './Entity';
 
 class Bullet extends Entity {
     constructor (x, y, z, width, height) {
@@ -13,6 +11,8 @@ class Bullet extends Entity {
 
         this.maxDistance = 500;
         this.traveledDistance = 0;
+
+        this.options.isBullet = true;
     }
 
     get damage () {

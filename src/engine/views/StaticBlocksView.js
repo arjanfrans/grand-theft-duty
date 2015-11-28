@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/views/merged-block');
-
 import TextureManager from '../graphics/TextureManager';
 import View from './View';
 

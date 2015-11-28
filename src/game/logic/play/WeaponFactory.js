@@ -1,4 +1,4 @@
-import Gun from './Gun';
+import Gun from '../../../engine/weapons/Gun';
 
 let WeaponFactory = {
     mp44: function () {

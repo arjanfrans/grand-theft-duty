@@ -1,11 +1,7 @@
-let debug = require('debug')('game:engine/logic/play/entities/Character');
+import Character from './Character';
+import WeaponFactory from '../../game/logic/play/WeaponFactory';
 
-import Entity from '../../../../engine/entities/Entity';
-import WeaponFactory from '../weapons/WeaponFactory';
-
-const GRAVITY = -0.4;
-
-class Character extends Entity {
+class Soldier extends Character {
     constructor (x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth);
 
@@ -35,23 +31,7 @@ class Character extends Entity {
 
         this.reset();
 
-        this.options.physics = true;
-        this.options.bullets = true;
-        this.options.isCharacter = true;
-    }
-
-    set isRunning (running) {
-        if (running) {
-            this._isRunning = true;
-            this.speed = this.runningSpeed;
-        } else {
-            this._isRunning = false;
-            this.speed = this.walkingSpeed;
-        }
-    }
-
-    get isRunning () {
-        return this._isRunning;
+        this.options.isSoldier = true;
     }
 
     addWeapon (weapon) {
@@ -85,17 +65,11 @@ class Character extends Entity {
         }
     }
 
-    fall () {
-        this.velocity.z = GRAVITY;
-    }
-
     hitByBullet (bullet) {
-        this.health -= bullet.damage;
+        super.hitByBullet(bullet);
 
         // TODO prevent team killing / make configurable
         if (this.health === 0) {
-            this.kill();
-
             let deathCount = this.deaths.get(bullet.firedBy);
 
             if (deathCount) {
@@ -115,9 +89,6 @@ class Character extends Entity {
             }
 
             bullet.firedBy.kills.set(this, killedByCount);
-
-            debug('this deaths', deathCount);
-            debug('killedBy kills', killedByCount);
         }
     }
 
@@ -141,10 +112,6 @@ class Character extends Entity {
         return total;
     }
 
-    stopFalling () {
-        this.velocity.z = 0;
-    }
-
     fireBullet () {
         if (!this.dead && this.currentWeapon) {
             let fired = this.currentWeapon.fire();
@@ -158,20 +125,11 @@ class Character extends Entity {
     reset () {
         super.reset();
 
-        this._isRunning = false;
-        this.speed = this.walkingSpeed;
-        this.health = 100;
-
-        this.health = this.maxHealth;
         this.actions.firedBullet = false;
     }
 
     update (delta) {
         super.update(delta);
-
-        if (this.position.z <= 0) {
-            this.kill();
-        }
 
         if (this.actions.firedBullet) {
             this.actions.firedBullet = false;
@@ -183,4 +141,4 @@ class Character extends Entity {
     }
 }
 
-export default Character;
+export default Soldier;

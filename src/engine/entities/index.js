@@ -1,11 +1,11 @@
 import Bullet from './Bullet';
+import Soldier from './Soldier';
 import Character from './Character';
-import Player from './Player';
 
 let Entities = {
     Bullet: Bullet,
-    Character: Character,
-    Player: Player
+    Soldier: Soldier,
+    Character: Character
 };
 
 export default Entities;

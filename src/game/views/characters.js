@@ -1,9 +1,7 @@
-let debug = require('debug')('game:engine/views/characters');
-
 import ObjectPool from '../../engine/utils/ObjectPool';
 
 // TODO make an character view
-import PlayerView from './player';
+import PlayerView from './PlayerView';
 import View from '../../engine/views/View';
 
 class CharactersView extends View {

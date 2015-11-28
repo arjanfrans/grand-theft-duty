@@ -1,16 +1,14 @@
-let debug = require('debug')('game:engine/views/bullet-system');
-
-import BulletView from './bullet';
-import ObjectPool from '../../engine/utils/ObjectPool';
-import View from '../../engine/views/View';
+import ObjectPool from '..//utils/ObjectPool';
+import View from './View';
 
 class BulletSystemView extends View {
-    constructor (bulletSystem) {
+    constructor (bulletSystem, BulletView) {
         super();
+        this.BulletView = BulletView;
 
         this.bulletSystem = bulletSystem;
         this.bulletViewPool = new ObjectPool(() => {
-            return new BulletView(null);
+            return new this.BulletView(null);
         }, this.bulletSystem.poolSize, 10);
 
         this.bulletViewPairs = new Map();

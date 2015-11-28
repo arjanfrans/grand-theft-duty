@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/views/bullet');
-
 import TextureManager from '../../engine/graphics/TextureManager';
 import TextureFrame from '../../engine/graphics/TextureFrame';
 import View from '../../engine/views/View';

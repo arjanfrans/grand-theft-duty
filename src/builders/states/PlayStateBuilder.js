@@ -1,30 +1,26 @@
-let debug = require('debug')('game:builders/states/PlayStateBuilder');
-
 import World from '../../game/logic/play/World';
 
 import PlayState from '../../game/states/play/PlayState';
 import PlayRenderView from '../../game/states/play/PlayRenderView';
 
-import PhysicsSystem from '../../game/logic/play/PhysicsSystem';
-import BulletSystem from '../../game/logic/play/BulletSystem';
-import BulletSystemView from '../../game/views/bullet-system';
+import Systems from '../../engine/Systems';
+import Views from '../../engine/views';
 
 import PlayerInput from '../../game/input/play/PlayerInput';
 import UiInput from '../../game/input/play/UiInput';
 import ComputerInput from '../../game/input/play/ComputerInput';
-import PlayerView from '../../game/views/player';
+import Player from '../../game/logic/play/entities/Player';
+import PlayerView from '../../game/views/PlayerView';
 
 import PlayAudio from '../../game/audio/PlayAudio';
 
-import StaticBlocksView from '../../engine/views/StaticBlocksView';
-import WaterBlocksView from '../../engine/views/WaterBlocksView';
-
 import CharactersView from '../../game/views/characters';
+import BulletView from '../../game/views/BulletView';
 
 import Stats from '../../game/logic/play/Stats';
 import StatsRenderView from '../../game/ui/StatsRenderView';
 
-import Entities from '../../game/logic/play/entities';
+import Entities from '../../engine/entities';
 
 import MapParser from '../../engine/maps/MapParser';
 
@@ -34,15 +30,15 @@ let _createPlayView = function (state) {
     let playView = new PlayRenderView(world);
 
     // Static views
-    let blocksView = new StaticBlocksView(world.map, 'tiles');
+    let blocksView = new Views.StaticBlocks(world.map, 'tiles');
 
     playView.addStaticView(blocksView);
 
     // Dynamic Views
     let playerView = new PlayerView(world.player);
     let charactersView = new CharactersView(world.characters);
-    let bulletSystemView = new BulletSystemView(state.bulletSystem);
-    let waterView = new WaterBlocksView(world.map, 'tiles');
+    let bulletSystemView = new Views.BulletSystem(state.bulletSystem, BulletView);
+    let waterView = new Views.WaterBlocks(world.map, 'tiles');
 
     playView.addDynamicView(playerView);
     playView.addDynamicView(charactersView);
@@ -57,7 +53,7 @@ let _createPlayView = function (state) {
 
 let _createEntities = function (state) {
     let entities = [];
-    let player = new Entities.Player(475, 475, 900, 48, 48, 1, 'american');
+    let player = new Player(475, 475, 900, 48, 48, 1, 'american');
 
     // Player
     entities.push(player);
@@ -66,20 +62,18 @@ let _createEntities = function (state) {
 
     state.inputs.add(playerInput);
 
-    let enemy = new Entities.Character(300, 450, 300, 48, 48, 1, 'german');
+    let enemy = new Entities.Soldier(350, 450, 900, 48, 48, 1, 'german');
 
     entities.push(enemy);
 
     enemy.currentWeapon.ammo = 999;
 
     state.inputs.add(new ComputerInput(enemy));
-    state.inputs.add(new ComputerInput(enemy));
 
     // Enemies
     return entities.concat([
-        new Entities.Character(350, 450, 900, 48, 48, 1, 'german'),
-        new Entities.Character(350, 350, 900, 48, 48, 1, 'german'),
-        new Entities.Character(150, 550, 900, 48, 48, 1, 'german')
+        new Entities.Soldier(350, 650, 300, 48, 48, 1, 'german'),
+        new Entities.Soldier(550, 550, 300, 48, 48, 1, 'german')
     ]);
 };
 
@@ -94,14 +88,17 @@ let PlayStateBuilder = {
         let state = new PlayState(engine, world);
 
         // Physics
-        let physicsSystem = new PhysicsSystem(map);
+        let collisionSystem = new Systems.Collision(map, {
+            wallCollision: true,
+            floorCollision: true
+        });
 
         // Bullet system
-        let bulletSystem = new BulletSystem();
+        let bulletSystem = new Systems.Bullet(map);
 
         state.bulletSystem = bulletSystem;
-        state.physicsSystem = physicsSystem;
-        state.audio = new PlayAudio('guns', 'background');
+        state.collisionSystem = collisionSystem;
+        state.audio = new PlayAudio(state, 'guns', 'background');
 
         let entities = _createEntities(state);
 

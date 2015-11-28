@@ -40,6 +40,7 @@ class Entity {
             physics: false,
             bullets: false,
             audio: false,
+            isBullet: false,
             isPlayer: false,
             isCharacter: false
         };
@@ -51,6 +52,10 @@ class Entity {
         body.setAngle(this.angle);
 
         return body;
+    }
+
+    onWallCollision () {
+        return null;
     }
 
     get body () {

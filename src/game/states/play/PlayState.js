@@ -12,13 +12,14 @@ class PlayState extends State {
 
     /**
      * @constructor
-     * @param {object} world The game world
+     * @param {Engine} engine Instance of the game engine.
+     * @param {World} world The game world.
      */
     constructor (engine, world) {
         super('play', engine);
 
         this.world = world;
-        this.physicsSystem = null;
+        this.collisionSystem = null;
         this.bulletSystem = null;
         this.states = null;
     }
@@ -34,12 +35,12 @@ class PlayState extends State {
             this.world.characters.add(entity);
         }
 
-        if (this.physicsSystem && entity.options.physics) {
-            this.physicsSystem.addEntity(entity);
+        if (this.collisionSystem && entity.options.physics) {
+            this.collisionSystem.addEntity(entity);
         }
 
-        if (this.bulletSystem && entity.options.bullets) {
-            this.bulletSystem.addEntity(entity);
+        if (this.bulletSystem && entity.options.bullets && entity.options.isCharacter) {
+            this.bulletSystem.addCharacter(entity);
         }
 
         if (this.audio && entity.options.audio) {
@@ -60,8 +61,8 @@ class PlayState extends State {
             this.world.player = null;
         }
 
-        if (this.physicsSystem) {
-            this.physicsSystem.entities.delete(entity);
+        if (this.collisionSystem) {
+            this.collisionSystem.entities.delete(entity);
         }
 
         if (this.bulletSystem) {
@@ -104,8 +105,8 @@ class PlayState extends State {
             this.world.update(delta);
         }
 
-        if (this.physicsSystem) {
-            this.physicsSystem.update(delta);
+        if (this.collisionSystem) {
+            this.collisionSystem.update(delta);
         }
     }
 }

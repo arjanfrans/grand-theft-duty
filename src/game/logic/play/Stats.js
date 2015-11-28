@@ -17,18 +17,18 @@ class Stats {
     teamStats () {
         let teams = new Map();
 
-        for (let character of new Set([...this.characters, this.player])) {
-            let team = teams.get(character.team);
+        for (let soldier of new Set([...this.characters, this.player])) {
+            let team = teams.get(soldier.team);
 
             if (team) {
-                team.kills += character.totalKills;
-                team.deaths += character.totalDeaths;
-                team.soldiers.push(character);
+                team.kills += soldier.totalKills;
+                team.deaths += soldier.totalDeaths;
+                team.soldiers.push(soldier);
             } else {
-                teams.set(character.team, {
-                    kills: character.totalKills,
-                    deaths: character.totalDeaths,
-                    soldiers: [character]
+                teams.set(soldier.team, {
+                    kills: soldier.totalKills,
+                    deaths: soldier.totalDeaths,
+                    soldiers: [soldier]
                 });
             }
         }

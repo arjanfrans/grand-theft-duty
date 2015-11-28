@@ -1,8 +1,6 @@
-let debug = require('debug')('game:engine/logic/play/entities/Player');
+import Soldier from '../../../../engine/entities/Soldier';
 
-import Character from './Character';
-
-class Player extends Character {
+class Player extends Soldier {
     constructor (x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth, team);
 

@@ -1,13 +1,21 @@
 {
 	"meta": {
 		"image": "world.png",
-		"size": {"w":16,"h":16},
+		"size": {"w":64,"h":64},
 		"scale": "1"
 	},
 	"frames": [
 		{
+			"filename": "light1.png",
+			"frame": {"x":4,"y":4,"w":32,"h":16},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
+			"sourceSize": {"w":32,"h":16}
+		},
+		{
 			"filename": "bullet1.png",
-			"frame": {"x":4,"y":4,"w":2,"h":8},
+			"frame": {"x":4,"y":28,"w":2,"h":8},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":2,"h":8},

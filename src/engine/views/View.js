@@ -7,7 +7,7 @@ class View {
     }
 
     init () {
-        throw new TypeError('View requires init() method');
+        this._initialized = true;
     }
 
     get position () {

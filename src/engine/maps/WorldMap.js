@@ -7,6 +7,7 @@ class WorldMap {
         this.tileHeight = tileHeight;
         this.tileDepth = tileDepth;
 
+        this.lights = [];
         this.layers = layers;
         this.name = null;
     }

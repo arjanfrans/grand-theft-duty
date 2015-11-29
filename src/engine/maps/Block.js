@@ -96,6 +96,10 @@ class Block {
     get y () {
         return this._position.y;
     }
+
+    get z () {
+        return this._position.z;
+    }
 }
 
 export default Block;

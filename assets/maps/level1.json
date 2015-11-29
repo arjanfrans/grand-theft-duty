@@ -15,6 +15,15 @@
             }
         }
     ],
+    "lights": [
+        {
+            "position": {
+                "x": 450,
+                "y": 450,
+                "z": 2
+            }
+        }
+    ],
     "blocks": [
         {
             "type": "water",

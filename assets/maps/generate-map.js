@@ -82,12 +82,24 @@ blocks.push({
     type: 'wall',
     walls: {
         south: 'roof1_corner',
-        north: 'roof1_corner',
         east: 'roof1_corner',
         west: 'roof1_corner'
     },
     collidable: true
 });
+
+let lights = [
+    {
+        color: 0xff0000,
+        align: 'north',
+        texture: 'light1',
+        position: {
+            x: 6,
+            y: 5,
+            z: 2
+        }
+    }
+];
 
 let respawns = [
     {
@@ -115,6 +127,7 @@ let map = {
     blockHeight: 100,
     blockDepth: 100,
     respawns: respawns,
+    lights: lights,
     blocks: blocks
 };
 

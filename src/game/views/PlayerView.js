@@ -67,7 +67,7 @@ class PlayerView extends View {
 
         this.currentAnimation = this.animations.idle;
 
-        this.material = new THREE.MeshBasicMaterial({
+        this.material = new THREE.MeshLambertMaterial({
             map: textureAtlas.texture,
             transparent: true,
             color: TEAM_COLORS[this._team]

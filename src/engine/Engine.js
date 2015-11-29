@@ -12,7 +12,7 @@ class Engine {
         this._renderer = new Renderer();
 
         if (this.debugMode) {
-            this._renderDebug = new RenderDebug(this._renderer._THREErenderer);
+            this._renderDebug = new RenderDebug(this._renderer);
             this._renderDebug.init();
         }
     }

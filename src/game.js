@@ -44,7 +44,7 @@ module.exports = {
             engine.addState('menu', menuState);
             engine.addState('play', playState);
 
-            // engine.changeState('menu');
+            engine.changeState('menu');
 
             engine.changeState('play');
 

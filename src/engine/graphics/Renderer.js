@@ -58,6 +58,20 @@ class Renderer {
      * @returns {void}
      */
     render () {
+        let info = {
+            programs: 0,
+            memory: {
+                geometries: 0,
+                textures: 0
+            },
+            render: {
+                calls: 0,
+                vertices: 0,
+                faces: 0,
+                points: 0
+            }
+        };
+
         this._THREErenderer.clear();
 
         let index = 0;
@@ -69,8 +83,18 @@ class Renderer {
 
             this._THREErenderer.render(view.scene, view.camera);
 
+            info.programs += this._THREErenderer.info.programs.length;
+            info.memory.geometries += this._THREErenderer.info.memory.geometries;
+            info.memory.textures += this._THREErenderer.info.memory.textures;
+            info.render.calls += this._THREErenderer.info.render.calls;
+            info.render.vertices += this._THREErenderer.info.render.vertices;
+            info.render.faces += this._THREErenderer.info.render.faces;
+            info.render.points += this._THREErenderer.info.render.points;
+
             index += 1;
         }
+
+        this.info = info;
     }
 }
 

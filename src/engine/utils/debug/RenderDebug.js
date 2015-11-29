@@ -33,10 +33,7 @@ let _rendererStats = function () {
     return {
         domElement: container,
 
-        update: function (webGLRenderer) {
-            // sanity check
-            console.assert(webGLRenderer instanceof THREE.WebGLRenderer);
-
+        update: function (info) {
             // refresh only 30time per second
             if (Date.now() - lastTime < 1000 / 30) {
                 return;
@@ -47,15 +44,15 @@ let _rendererStats = function () {
             let i = 0;
 
             msTexts[i++].textContent = '== Memory =====';
-            msTexts[i++].textContent = 'Programs: ' + webGLRenderer.info.programs.length;
-            msTexts[i++].textContent = 'Geometries: ' + webGLRenderer.info.memory.geometries;
-            msTexts[i++].textContent = 'Textures: ' + webGLRenderer.info.memory.textures;
+            msTexts[i++].textContent = 'Programs: ' + info.programs;
+            msTexts[i++].textContent = 'Geometries: ' + info.memory.geometries;
+            msTexts[i++].textContent = 'Textures: ' + info.memory.textures;
 
             msTexts[i++].textContent = '== Render =====';
-            msTexts[i++].textContent = 'Calls: ' + webGLRenderer.info.render.calls;
-            msTexts[i++].textContent = 'Vertices: ' + webGLRenderer.info.render.vertices;
-            msTexts[i++].textContent = 'Faces: ' + webGLRenderer.info.render.faces;
-            msTexts[i++].textContent = 'Points: ' + webGLRenderer.info.render.points;
+            msTexts[i++].textContent = 'Calls: ' + info.render.calls;
+            msTexts[i++].textContent = 'Vertices: ' + info.render.vertices;
+            msTexts[i++].textContent = 'Faces: ' + info.render.faces;
+            msTexts[i++].textContent = 'Points: ' + info.render.points;
         }
     };
 };
@@ -93,6 +90,6 @@ export default class RenderDebug {
 
     after () {
         this.statjs.end();
-        this.rendererStats.update(this.renderer);
+        this.rendererStats.update(this.renderer.info);
     }
 }

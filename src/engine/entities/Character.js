@@ -1,4 +1,4 @@
-import Entity from './Entity';
+import MovableEntity from './MovableEntity';
 
 const GRAVITY = -0.2;
 
@@ -7,7 +7,7 @@ const GRAVITY = -0.2;
  *
  * @class
  */
-class Character extends Entity {
+class Character extends MovableEntity {
     constructor (x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth);
 

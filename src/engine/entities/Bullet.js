@@ -1,6 +1,6 @@
-import Entity from './Entity';
+import MovableEntity from './MovableEntity';
 
-class Bullet extends Entity {
+class Bullet extends MovableEntity {
     constructor (x, y, z, width, height) {
         super(x, y, z, width, height);
 

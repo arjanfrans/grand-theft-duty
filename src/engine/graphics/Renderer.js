@@ -58,9 +58,11 @@ class Renderer {
      * @returns {void}
      */
     render () {
+        this._THREErenderer.clear();
+
         let info = {
-            programs: 0,
             memory: {
+                programs: 0,
                 geometries: 0,
                 textures: 0
             },
@@ -72,8 +74,6 @@ class Renderer {
             }
         };
 
-        this._THREErenderer.clear();
-
         let index = 0;
 
         for (let view of this._views) {
@@ -83,7 +83,7 @@ class Renderer {
 
             this._THREErenderer.render(view.scene, view.camera);
 
-            info.programs += this._THREErenderer.info.programs.length;
+            info.memory.programs += this._THREErenderer.info.programs.length;
             info.memory.geometries += this._THREErenderer.info.memory.geometries;
             info.memory.textures += this._THREErenderer.info.memory.textures;
             info.render.calls += this._THREErenderer.info.render.calls;

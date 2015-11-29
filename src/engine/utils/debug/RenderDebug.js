@@ -43,16 +43,18 @@ let _rendererStats = function () {
 
             let i = 0;
 
-            msTexts[i++].textContent = '== Memory =====';
-            msTexts[i++].textContent = 'Programs: ' + info.programs;
-            msTexts[i++].textContent = 'Geometries: ' + info.memory.geometries;
-            msTexts[i++].textContent = 'Textures: ' + info.memory.textures;
+            if (info) {
+                msTexts[i++].textContent = '== Memory =====';
+                msTexts[i++].textContent = 'Programs: ' + info.memory.programs;
+                msTexts[i++].textContent = 'Geometries: ' + info.memory.geometries;
+                msTexts[i++].textContent = 'Textures: ' + info.memory.textures;
 
-            msTexts[i++].textContent = '== Render =====';
-            msTexts[i++].textContent = 'Calls: ' + info.render.calls;
-            msTexts[i++].textContent = 'Vertices: ' + info.render.vertices;
-            msTexts[i++].textContent = 'Faces: ' + info.render.faces;
-            msTexts[i++].textContent = 'Points: ' + info.render.points;
+                msTexts[i++].textContent = '== Render =====';
+                msTexts[i++].textContent = 'Calls: ' + info.render.calls;
+                msTexts[i++].textContent = 'Vertices: ' + info.render.vertices;
+                msTexts[i++].textContent = 'Faces: ' + info.render.faces;
+                msTexts[i++].textContent = 'Points: ' + info.render.points;
+            }
         }
     };
 };

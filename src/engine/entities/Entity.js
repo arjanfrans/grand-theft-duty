@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/logic/play/entities/Entity');
-
 import Polygon from '../collision/Polygon';
 import Vector from '../collision/Vector';
 
@@ -141,10 +139,6 @@ class Entity {
      * @returns {void}
      */
     move (direction) {
-        if (!direction && typeof direction !== 'string' && ['up', 'down'].includes(direction)) {
-            throw new Error('"direction" must equal "up" or "down"');
-        }
-
         let speed = this.speed;
 
         if (direction === 'up') {
@@ -168,10 +162,6 @@ class Entity {
      * @returns {void}
      */
     turn (direction) {
-        if (!direction && typeof direction !== 'string' && ['left', 'right'].includes(direction)) {
-            throw new Error('"direction" must equal "left" or "right"');
-        }
-
         let rotationSpeed = this.rotationSpeed;
 
         if (direction === 'right') {

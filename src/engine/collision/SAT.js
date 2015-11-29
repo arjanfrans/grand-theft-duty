@@ -252,7 +252,7 @@ let _pointInPolygon = function (p, poly) {
     UNIT_SQUARE.position.copy(p);
     T_RESPONSE.clear();
 
-    let result = testPolygonPolygon(UNIT_SQUARE, poly, T_RESPONSE);
+    let result = _testPolygonPolygon(UNIT_SQUARE, poly, T_RESPONSE);
 
     if (result) {
         result = T_RESPONSE.aInB;

@@ -89,6 +89,10 @@ class Entity {
         this.dead = true;
     }
 
+    get point () {
+        return new Vector(this.x, this.y);
+    }
+
     reset () {
         this.velocity = {
             x: 0,

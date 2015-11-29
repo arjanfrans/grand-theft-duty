@@ -81,9 +81,10 @@ blocks.push({
     },
     type: 'wall',
     walls: {
-        top: 'roof1_edge',
         south: 'roof1_corner',
-        north: 'roof1_corner'
+        north: 'roof1_corner',
+        east: 'roof1_corner',
+        west: 'roof1_corner'
     },
     collidable: true
 });

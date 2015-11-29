@@ -14,7 +14,7 @@ class BulletView extends View {
 
         let textureAtlas = TextureManager.getAtlas('world', false);
 
-        this.geometry = new THREE.PlaneGeometry(bullet.width, bullet.height);
+        this.geometry = new THREE.PlaneGeometry(2, 8);
 
         this.textureFrame = new TextureFrame(textureAtlas, this.geometry, 'bullet1');
 

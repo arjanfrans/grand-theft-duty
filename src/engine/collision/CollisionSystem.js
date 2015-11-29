@@ -109,12 +109,8 @@ class CollisionSystem {
 
         if (Math.abs(entity.velocity.y) > 0) {
             y -= this.rayDistance * Math.sin(angle) * reverse;
-            start.y = y;
-            end.y = entity.position.y;
         } else {
             y -= this.rayDistance * reverse;
-            start.y = entity.position.y;
-            end.y = y;
         }
 
         if (entity.velocity.y < 0) {

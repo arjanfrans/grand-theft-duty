@@ -53,7 +53,7 @@ let _createPlayView = function (state) {
 
 let _createEntities = function (state) {
     let entities = [];
-    let player = new Player(475, 475, 900, 48, 48, 1, 'american');
+    let player = new Player(350, 350, 900, 48, 48, 1, 'american');
 
     // Player
     entities.push(player);

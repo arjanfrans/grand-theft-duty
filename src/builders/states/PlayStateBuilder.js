@@ -10,12 +10,11 @@ import PlayerInput from '../../game/input/play/PlayerInput';
 import UiInput from '../../game/input/play/UiInput';
 import ComputerInput from '../../game/input/play/ComputerInput';
 import Player from '../../game/logic/play/entities/Player';
-import PlayerView from '../../game/views/PlayerView';
 
 import PlayAudio from '../../game/audio/PlayAudio';
 
-import CharactersView from '../../game/views/characters';
-import BulletView from '../../game/views/BulletView';
+import SoldierView from '../../game/views/SoldierView';
+import SoldierViewPool from '../../game/views/SoldierViewPool';
 
 import Stats from '../../game/logic/play/Stats';
 import StatsRenderView from '../../game/ui/StatsRenderView';
@@ -29,21 +28,16 @@ let _createPlayView = function (state) {
 
     let playView = new PlayRenderView(world);
 
-    // Static views
-    let blocksView = new Views.StaticBlocks(world.map, 'tiles');
-
-    playView.addStaticView(blocksView);
-
     // Dynamic Views
-    let playerView = new PlayerView(world.player);
-    let charactersView = new CharactersView(world.characters);
-    let bulletSystemView = new Views.BulletSystem(state.bulletSystem, BulletView);
-    let waterView = new Views.WaterBlocks(world.map, 'tiles');
+    let playerView = new SoldierView(world.player);
+    let charactersView = new SoldierViewPool(world.characters);
+    let bulletSystemView = new Views.BulletSystem(state.bulletSystem);
+    let worldMapView = new Views.WorldMap(world.map);
 
     playView.addDynamicView(playerView);
     playView.addDynamicView(charactersView);
     playView.addDynamicView(bulletSystemView);
-    playView.addDynamicView(waterView);
+    playView.addDynamicView(worldMapView);
 
     // Camera follow
     playView.cameraFollowView = playerView;

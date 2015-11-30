@@ -1,17 +1,16 @@
 import ObjectPool from '..//utils/ObjectPool';
 import View from './View';
+import BulletView from './BulletView';
 
 class BulletSystemView extends View {
-    constructor (bulletSystem, BulletView) {
+    constructor (bulletSystem) {
         super();
-        this.BulletView = BulletView;
-
         this.bulletSystem = bulletSystem;
         this.bulletViewPool = new ObjectPool(() => {
-            return new this.BulletView(null);
+            return new BulletView(null);
         }, this.bulletSystem.poolSize, 10);
 
-        this.bulletViewPairs = new Map();
+        this.bulletViewPairs = new WeakMap();
     }
 
     init () {

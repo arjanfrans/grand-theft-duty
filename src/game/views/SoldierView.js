@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/views/player');
-
 import TextureManager from '../../engine/graphics/TextureManager';
 import Animation from '../../engine/graphics/Animation';
 import View from '../../engine/views/View';
@@ -34,13 +32,12 @@ const TEAM_COLORS = {
     german: 0xcccc00
 };
 
-// TODO rename this, this is not just the player
-class PlayerView extends View {
-    constructor (player) {
+class SoldierView extends View {
+    constructor (soldier) {
         super();
 
-        this.player = player;
-        this._team = player ? player.team : 'american';
+        this.soldier = soldier;
+        this._team = soldier ? soldier.team : 'american';
     }
 
     set team (team) {
@@ -51,9 +48,9 @@ class PlayerView extends View {
     }
 
     init () {
-        let player = this.player;
+        let soldier = this.soldier;
 
-        this.geometry = new THREE.PlaneGeometry(player.height * 2, player.width * 2);
+        this.geometry = new THREE.PlaneGeometry(soldier.height * 2, soldier.width * 2);
 
         this.geometry.rotateZ(Math.PI);
 
@@ -78,8 +75,8 @@ class PlayerView extends View {
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-        this.mesh.position.set(player.position.x, player.position.y, player.position.z);
-        this.mesh.rotation.z = player.angle;
+        this.mesh.position.set(soldier.position.x, soldier.position.y, soldier.position.z);
+        this.mesh.rotation.z = soldier.angle;
 
         this._initialized = true;
     }
@@ -87,8 +84,8 @@ class PlayerView extends View {
     _updateAnimation () {
         let animation = this.currentAnimation;
 
-        if (this.player.isMoving) {
-            if (this.player.isRunning) {
+        if (this.soldier.isMoving) {
+            if (this.soldier.isRunning) {
                 animation = this.animations.run;
             } else {
                 animation = this.animations.walk;
@@ -107,17 +104,17 @@ class PlayerView extends View {
     }
 
     update (interpolationPercentage) {
-        let zOffset = this.player.depth;
+        let zOffset = this.soldier.depth;
 
-        if (this.player.dead) {
+        if (this.soldier.dead) {
             this.mesh.visible = false;
             zOffset = 0;
         } else if (!this.mesh.visible) {
             this.mesh.visible = true;
         }
 
-        let previous = this.player.previousPosition;
-        let current = this.player.position;
+        let previous = this.soldier.previousPosition;
+        let current = this.soldier.position;
 
         this.mesh.position.x = previous.x + (current.x - previous.x) * interpolationPercentage;
         this.mesh.position.y = previous.y + (current.y - previous.y) * interpolationPercentage;
@@ -125,10 +122,10 @@ class PlayerView extends View {
 
         this.mesh.position.z += zOffset;
 
-        this.mesh.rotation.z = this.player.angle + (90 * (Math.PI / 180));
+        this.mesh.rotation.z = this.soldier.angle + (90 * (Math.PI / 180));
 
         this._updateAnimation();
     }
 }
 
-export default PlayerView;
+export default SoldierView;

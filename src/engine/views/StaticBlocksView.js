@@ -108,13 +108,9 @@ class StaticBlocksView extends View {
     }
 
     init () {
+        super.init();
+
         this.textureAtlas = TextureManager.getAtlas(this.textureAtlasName, false);
-
-        this.textureAtlas.filters = {
-            mag: THREE.NearestFilter,
-            min: THREE.LinearMipMapLinearFilter
-        };
-
         this.geometry = _createMergedBlockGeometry(this.blocks, this.textureAtlas);
 
         this.material = new THREE.MeshLambertMaterial({
@@ -126,11 +122,7 @@ class StaticBlocksView extends View {
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
         // Set the center of the blocks to bottom left (instead of center)
-        this.mesh.translateX(this.blockWidth / 2);
-        this.mesh.translateY(this.blockHeight / 2);
-        this.mesh.translateZ(this.blockDepth / 2);
-
-        this._initialized = true;
+        this.mesh.applyMatrix(new THREE.Matrix4().makeTranslation(this.blockWidth / 2, this.blockHeight / 2, this.blockDepth / 2));
     }
 }
 

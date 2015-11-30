@@ -1,18 +1,17 @@
 import ObjectPool from '../../engine/utils/ObjectPool';
 
-// TODO make an character view
-import PlayerView from './PlayerView';
+import SoldierView from './SoldierView';
 import View from '../../engine/views/View';
 
-class CharactersView extends View {
-    constructor (characters) {
+class SoldierViewPool extends View {
+    constructor (soldiers) {
         super();
 
-        this.characters = characters;
+        this.soldiers = soldiers;
 
         this.viewPool = new ObjectPool(() => {
-            return new PlayerView(null);
-        }, this.characters.size, 10);
+            return new SoldierView(null);
+        }, this.soldiers.size, 10);
 
         this.viewPairs = new WeakMap();
     }
@@ -24,17 +23,17 @@ class CharactersView extends View {
 
     update (interpolationPercentage) {
         // Keep viewPool in sync with character pool
-        if (this.viewPool.poolSize > this.characters.length) {
-            this.viewPool.allocate(this.characters.length - this.viewPool.size);
+        if (this.viewPool.poolSize > this.soldiers.length + 1) {
+            this.viewPool.allocate(this.soldiers.length + 1 - this.viewPool.size);
         }
 
-        for (let character of this.characters) {
+        for (let character of this.soldiers) {
             let view = this.viewPairs.get(character);
 
             if (!view && !character.dead) {
                 view = this.viewPool.get();
 
-                view.player = character;
+                view.soldier = character;
                 view.init();
 
                 // Team is set after, because it affects the material
@@ -55,4 +54,4 @@ class CharactersView extends View {
     }
 }
 
-export default CharactersView;
+export default SoldierViewPool;

@@ -1,4 +1,4 @@
-import CollisionSystem from './collision/CollisionSystem';
+import CollisionSystem from './CollisionSystem';
 import BulletSystem from './BulletSystem';
 
 let Systems = {

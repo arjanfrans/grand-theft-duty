@@ -98,6 +98,15 @@ let lights = [
             y: 5,
             z: 2
         }
+    }, {
+        color: 0x00ff00,
+        align: 'north',
+        texture: 'light1',
+        position: {
+            x: 8,
+            y: 5,
+            z: 2
+        }
     }
 ];
 

@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/input/menu/MenuInput');
-
 import Keyboard from '../../../engine/input/Keyboard';
 import Gamepad from '../../../engine/input/Gamepad';
 

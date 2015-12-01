@@ -1,7 +1,5 @@
-let debug = require('debug')('game:game/ui/ScoreView');
-
 import View from '../../engine/views/View';
-import TextView from '../../engine/views/TextView';
+import Views from '../../engine/views';
 
 let _converToText = function (teams) {
     let resultText = '';
@@ -27,8 +25,6 @@ let _converToText = function (teams) {
 class ScoreView extends View {
     constructor () {
         super();
-
-        this._scoreText = '@@';
     }
 
     init () {
@@ -40,19 +36,19 @@ class ScoreView extends View {
             opacity: 0.5
         });
 
-        let backgroundGeometry = new THREE.PlaneGeometry(550, 600);
+        let backgroundGeometry = new THREE.PlaneGeometry(600, 800);
 
         this.mesh.add(new THREE.Mesh(backgroundGeometry, backgroundMaterial));
 
-        this.scoreTextView = new TextView(this._scoreText, {
+        this.scoreTextView = new Views.Text(this._scoreText, {
             color: 0xfeff80,
-            width: 500,
+            width: 600,
             align: 'left'
         });
 
         this.scoreTextView.init();
 
-        this.mesh.visible = false;
+        this.mesh.visible = true;
         this.mesh.add(this.scoreTextView.mesh);
 
         this._initialized = true;

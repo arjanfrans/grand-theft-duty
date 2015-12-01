@@ -1,9 +1,7 @@
-let debug = require('debug')('game:game/ui/AmmoView');
-
 import View from '../../engine/views/View';
 import TextureManager from '../../engine/graphics/TextureManager';
 import TextureFrame from '../../engine/graphics/TextureFrame';
-import TextView from '../../engine/views/TextView';
+import Views from '../../engine/views';
 
 class AmmoView extends View {
     constructor () {
@@ -23,14 +21,13 @@ class AmmoView extends View {
         let ammoSize = textureAtlas.getFrameSize('ammo');
 
         this.geometry = new THREE.PlaneGeometry(ammoSize.width, ammoSize.height);
-
         this.textureFrame = new TextureFrame(textureAtlas, this.geometry, 'ammo');
 
         let ammoMesh = new THREE.Mesh(this.geometry, material);
 
         ammoMesh.scale.set(0.5, 0.5, 1);
 
-        this.magazineText = new TextView('0', {
+        this.magazineText = new Views.Text('0', {
             color: 0xffffcc
         });
 
@@ -45,7 +42,7 @@ class AmmoView extends View {
 
         this.mesh.add(this.magazineText.mesh);
 
-        this.ammoText = new TextView('0', {
+        this.ammoText = new Views.Text('0', {
             color: 0xffff99
         });
 

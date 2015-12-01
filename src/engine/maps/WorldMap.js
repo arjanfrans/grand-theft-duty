@@ -1,11 +1,11 @@
 class WorldMap {
-    constructor (layers, width, height, depth, tileWidth, tileHeight, tileDepth) {
+    constructor (layers, width, height, depth, blockWidth, blockHeight, blockDepth) {
         this.width = width;
         this.height = height;
         this.depth = depth;
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
-        this.tileDepth = tileDepth;
+        this.blockWidth = blockWidth;
+        this.blockHeight = blockHeight;
+        this.blockDepth = blockDepth;
 
         this.lights = [];
         this.layers = layers;
@@ -23,22 +23,22 @@ class WorldMap {
     }
 
     get totalWidth () {
-        return this.width * this.tileWidth;
+        return this.width * this.blockWidth;
     }
 
     get totalHeight () {
-        return this.height * this.tileHeight;
+        return this.height * this.blockHeight;
     }
 
     get totalDepth () {
-        return this.depth * this.tileDepth;
+        return this.depth * this.blockDepth;
     }
 
     indexToPosition (index) {
         return {
-            x: index.x * this.tileWidth,
-            y: index.y * this.tileHeight,
-            z: index.z * this.tileDepth
+            x: index.x * this.blockWidth,
+            y: index.y * this.blockHeight,
+            z: index.z * this.blockDepth
         };
     }
 
@@ -49,9 +49,9 @@ class WorldMap {
 
         let index = {};
 
-        index.x = Math.floor(x / this.tileWidth);
-        index.y = Math.floor(y / this.tileHeight);
-        index.z = Math.floor(z / this.tileDepth);
+        index.x = Math.floor(x / this.blockWidth);
+        index.y = Math.floor(y / this.blockHeight);
+        index.z = Math.floor(z / this.blockDepth);
 
         return index;
     }
@@ -147,9 +147,9 @@ class WorldMap {
             let layerStrings = [];
 
             for (let layerRow of layer) {
-                let tiles = layerRow.map(v => v ? v.id : 0);
+                let blocks = layerRow.map(v => v ? v.id : 0);
 
-                layerStrings.push(tiles.join(', '));
+                layerStrings.push(blocks.join(', '));
             }
 
             finalString = finalString.concat(layerStrings.join('\n'));

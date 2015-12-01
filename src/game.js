@@ -46,7 +46,7 @@ module.exports = {
 
             engine.changeState('menu');
 
-            engine.changeState('play');
+            // engine.changeState('play');
 
             engine.run();
         }).catch(function (err) {

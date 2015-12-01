@@ -1,5 +1,3 @@
-let debug = require('debug')('game:game/audio/MenuAudio');
-
 import StateAudio from '../../engine/audio/StateAudio';
 
 class MenuAudio extends StateAudio {

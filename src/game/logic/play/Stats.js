@@ -8,16 +8,15 @@ class Stats {
     constructor (playState) {
         this.state = playState;
         this.world = playState.world;
-        this.player = this.state.world.player;
-        this.characters = this.state.world.characters;
-
+        this.player = this.state.player;
+        this.soldiers = this.state.soldiers;
         this.visible = false;
     }
 
     teamStats () {
         let teams = new Map();
 
-        for (let soldier of new Set([...this.characters, this.player])) {
+        for (let soldier of new Set([...this.soldiers, this.player])) {
             let team = teams.get(soldier.team);
 
             if (team) {

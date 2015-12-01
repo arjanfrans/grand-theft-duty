@@ -1,11 +1,9 @@
-let debug = require('debug')('game:engine/states/menu/MenuState');
-
 import State from '../../../engine/states/State';
 
 class MenuState extends State {
 
-    constructor (engine, menu) {
-        super('menu', engine);
+    constructor (menu) {
+        super('menu');
 
         this.menu = menu;
     }

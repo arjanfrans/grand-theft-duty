@@ -1,8 +1,6 @@
-let debug = require('debug')('game:engine/views/WaterBlocksView');
-
-import TextureManager from '../../engine/graphics/TextureManager';
-import Animation from '../../engine/graphics/Animation';
-import View from '../../engine/views/View';
+import TextureManager from '../../graphics/TextureManager';
+import Animation from '../../graphics/Animation';
+import View from '../View';
 
 const WATER_FRAMES = [
     'animation_water_0001',
@@ -65,9 +63,9 @@ class WaterBlocksView extends View {
         this._waterFrames = waterFrames;
         this.blocks = map.blocks(['water']);
 
-        this.blockWidth = map.tileWidth;
-        this.blockHeight = map.tileHeight;
-        this.blockDepth = map.tileDepth;
+        this.blockWidth = map.blockWidth;
+        this.blockHeight = map.blockHeight;
+        this.blockDepth = map.blockDepth;
     }
 
     init () {

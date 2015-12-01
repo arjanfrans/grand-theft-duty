@@ -1,6 +1,6 @@
-import TextureManager from '../graphics/TextureManager';
-import TextureFrame from '../graphics/TextureFrame';
-import View from './View';
+import TextureManager from '../../graphics/TextureManager';
+import TextureFrame from '../../graphics/TextureFrame';
+import View from '../View';
 
 class LightView extends View {
     constructor (light) {

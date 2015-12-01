@@ -92,6 +92,17 @@ class Soldier extends Character {
         }
     }
 
+    kill () {
+        super.kill();
+        let suicides = this.deaths.get(this);
+
+        if (suicides) {
+            this.deaths.set(this, suicides + 1);
+        } else {
+            this.deaths.set(this, 1);
+        }
+    }
+
     get totalKills () {
         let total = 0;
 

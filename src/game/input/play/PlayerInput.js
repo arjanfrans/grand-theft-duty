@@ -4,7 +4,7 @@ import Keyboard from '../../../engine/input/Keyboard';
 import Gamepad from '../../../engine/input/Gamepad';
 
 class PlayerInput {
-    constructor (player, stats) {
+    constructor (player) {
         this.player = player;
 
         this.previousKeys = {};

@@ -4,7 +4,6 @@ import PlayRenderView from '../../game/states/play/PlayRenderView';
 import Systems from '../../engine/Systems';
 import Views from '../../engine/views';
 
-import Match from '../../game/logic/play/Match';
 import PlayerInput from '../../game/input/play/PlayerInput';
 import UiInput from '../../game/input/play/UiInput';
 import ComputerInput from '../../game/input/play/ComputerInput';
@@ -42,45 +41,64 @@ let _createPlayView = function (state) {
     return playView;
 };
 
-let createPlayState = function (mapName, cpuCount) {
-    let map = MapParser.parse(mapName);
-    let match = new Match(['german', 'american']);
-    let state = new PlayState(match, map);
+let _createEntities = function (state) {
+    let entities = [];
+    let player = new Player(350, 350, 900, 48, 48, 1, 'american');
 
-    for (let i = 0; i < cpuCount; i++) {
-        let soldier = new Entities.Soldier(350 + (100 * i), 450, 900, 48, 48, 1, 'american');
+    // Player
+    entities.push(player);
 
-        state.inputs.add(new ComputerInput(soldier));
+    let playerInput = new PlayerInput(player);
 
-        match.addSoldier(soldier);
-    }
-
-    let player = new Player(350, 350, 400, 48, 48, 1, 'american');
-
-    state.player = player;
-
-    let playerInput = new PlayerInput(state.player);
-
-    match.addSoldier(player, 'american');
     state.inputs.add(playerInput);
 
-    let collisionSystem = new Systems.Collision(state);
-    let bulletSystem = new Systems.Bullet(state);
+    let enemy = new Entities.Soldier(350, 450, 900, 48, 48, 1, 'german');
 
-    state.bulletSystem = bulletSystem;
-    state.collisionSystem = collisionSystem;
-    state.audio = new PlayAudio(state, 'guns', 'background');
+    entities.push(enemy);
 
-    let playView = _createPlayView(state);
+    enemy.currentWeapon.ammo = 999;
 
-    state.addView(playView);
+    state.inputs.add(new ComputerInput(enemy));
 
-    return state;
+    // Enemies
+    return entities.concat([
+        new Entities.Soldier(350, 650, 300, 48, 48, 1, 'german'),
+        new Entities.Soldier(550, 550, 300, 48, 48, 1, 'german')
+    ]);
 };
+
+let createPlayState = function (mapName, cpuCount) {
+    let map = MapParser.parse(mapName);
+
+    let match = new Match(['german', 'american']);
+
+    for (let i = 0; i < cpuCount; i++) {
+        let soldier = new Entities.Soldier(350, 450, 900, 48, 48, 1);
+        match.addSoldier(new Entities.Soldier(350,)) 
+    }
+}
 
 let PlayStateBuilder = {
     create (engine) {
-        let state = createPlayState('level2', 8);
+        // World
+
+        let state = new PlayState(match, map);
+
+        let collisionSystem = new Systems.Collision(state);
+        let bulletSystem = new Systems.Bullet(state);
+
+        state.bulletSystem = bulletSystem;
+        state.collisionSystem = collisionSystem;
+        state.audio = new PlayAudio(state, 'guns', 'background');
+
+        let entities = _createEntities(state);
+
+        state.addEntities(entities);
+
+        let worldView = _createPlayView(state);
+
+        state.addView(worldView);
+
         let stats = new Stats(state);
         let statsView = new StatsRenderView(stats);
 

@@ -1,13 +1,12 @@
-let debug = require('debug')('game:engine/states/play/PlayRenderView');
-
 import RenderView from '../../../engine/graphics/RenderView';
-import LightView from '../../../engine/views/LightView';
 
 class PlayRenderView extends RenderView {
-    constructor (world) {
+    constructor (state) {
         super();
 
-        this.world = world;
+        this.state = state;
+        this.map = this.state.map;
+
         this.cameraFollowView = null;
         this.clearColor = 0x000000;
     }
@@ -15,21 +14,13 @@ class PlayRenderView extends RenderView {
     init () {
         super.init();
 
-        this.camera = new THREE.PerspectiveCamera(75, this.world.width / this.world.height, 100, 1000);
+        this.camera = new THREE.PerspectiveCamera(75, this.map.width / this.map.height, 100, 1000);
 
-        this.camera.position.x = (this.world.width / 2) * this.world.tileWidth;
-        this.camera.position.y = (this.world.height / 2) * this.world.tileHeight;
-        this.camera.position.z = this.world.tileDepth * 6;
+        this.camera.position.x = (this.map.width / 2) * this.map.blockWidth;
+        this.camera.position.y = (this.map.height / 2) * this.map.blockHeight;
+        this.camera.position.z = this.map.blockDepth * 6;
 
         let ambientLight = new THREE.AmbientLight(0x030303);
-
-        for (let light of this.world.map.lights) {
-            let lightView = new LightView(light);
-
-            lightView.init();
-
-            this.scene.add(lightView.mesh);
-        }
 
         this.scene.add(ambientLight);
 

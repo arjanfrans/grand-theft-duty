@@ -5,9 +5,10 @@ import SAT from './collision/SAT';
 import CollisionUtils from './collision/CollisionUtils';
 
 class BulletSystem {
-    constructor (map, options = {}) {
-        this.map = map;
-        this.activeBullets = new Set();
+    constructor (state, options = {}) {
+        this.state = state;
+        this.soldiers = this.state.soldiers;
+        this.map = this.state.map;
 
         this.bulletPool = new ObjectPool(() => {
             let bullet = new Bullet(0, 0, 0, 4, 10);
@@ -15,11 +16,11 @@ class BulletSystem {
             return bullet;
         }, 10, 10);
 
-        this.characters = new Set();
-        this.soldiers = new Set();
-
         // Bullets that died last turn
         this.deadBullets = new Set();
+
+        // Bullets currently flying around
+        this.activeBullets = new Set();
     }
 
     get poolSize () {
@@ -48,22 +49,6 @@ class BulletSystem {
         return bullet;
     }
 
-    addCharacter (character) {
-        if (character.options.isSoldier) {
-            this.soldiers.add(character);
-        }
-
-        this.characters.add(character);
-    }
-
-    removeCharacter (character) {
-        if (character.options.isSoldier) {
-            this.soldiers.delete(character);
-        }
-
-        this.characters.delete(character);
-    }
-
     killBullet (bullet) {
         bullet.kill();
         this.bulletPool.free(bullet());
@@ -86,14 +71,14 @@ class BulletSystem {
                 this.activeBullets.delete(bullet);
                 this.bulletPool.free(bullet);
             } else {
-                for (let character of this.characters) {
-                    if (!character.dead) {
+                for (let soldier of this.soldiers) {
+                    if (!soldier.dead) {
                         // Can't kill itself
-                        if (bullet.firedBy !== character) {
+                        if (bullet.firedBy !== soldier) {
                             // Check if on same level
-                            if ((bullet.position.z >= character.position.z) && (bullet.position.z < character.position.z + 50)) {
-                                if (SAT.pointInPolygon(bullet.point, character.body)) {
-                                    character.hitByBullet(bullet);
+                            if ((bullet.position.z >= soldier.position.z) && (bullet.position.z < soldier.position.z + 50)) {
+                                if (SAT.pointInPolygon(bullet.point, soldier.body)) {
+                                    soldier.hitByBullet(bullet);
                                     bullet.kill();
                                     this.bulletPool.free(bullet);
                                 }

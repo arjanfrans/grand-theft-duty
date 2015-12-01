@@ -27,7 +27,7 @@ let MenuStateBuilder = {
     create (engine) {
         let menu = _createMenu(engine);
 
-        let state = new MenuState(engine, menu);
+        let state = new MenuState(menu);
 
         let menuInput = new MenuInput(menu);
         let menuView = new MenuRenderView(menu);

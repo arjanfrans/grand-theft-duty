@@ -22,32 +22,32 @@ class SoldierViewPool extends View {
     }
 
     update (interpolationPercentage) {
-        // Keep viewPool in sync with character pool
+        // Keep viewPool in sync with soldier pool
         if (this.viewPool.poolSize > this.soldiers.length + 1) {
             this.viewPool.allocate(this.soldiers.length + 1 - this.viewPool.size);
         }
 
-        for (let character of this.soldiers) {
-            let view = this.viewPairs.get(character);
+        for (let soldier of this.soldiers) {
+            let view = this.viewPairs.get(soldier);
 
-            if (!view && !character.dead) {
+            if (!view && !soldier.dead) {
                 view = this.viewPool.get();
 
-                view.soldier = character;
+                view.soldier = soldier;
                 view.init();
 
                 // Team is set after, because it affects the material
-                view.team = character.team;
+                view.team = soldier.team;
 
                 this.mesh.add(view.mesh);
 
-                this.viewPairs.set(character, view);
+                this.viewPairs.set(soldier, view);
             } else if (view) {
                 view.update(interpolationPercentage);
 
-                if (character.dead && this.viewPairs.has(character)) {
+                if (soldier.dead && this.viewPairs.has(soldier)) {
                     this.viewPool.free(view);
-                    this.viewPairs.delete(character);
+                    this.viewPairs.delete(soldier);
                 }
             }
         }

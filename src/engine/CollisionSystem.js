@@ -1,13 +1,10 @@
 import CollisionUtils from './collision/CollisionUtils';
 
 class CollisionSystem {
-    constructor (map) {
-        this.entities = new Set();
-        this.map = map;
-    }
-
-    addEntity (entity) {
-        this.entities.add(entity);
+    constructor (state) {
+        this.state = state;
+        this.entities = state.soldiers;
+        this.map = this.state.map;
     }
 
     update (delta) {

@@ -1,5 +1,5 @@
-import TextureManager from '../graphics/TextureManager';
-import View from './View';
+import TextureManager from '../../graphics/TextureManager';
+import View from '../View';
 
 let _wallBlockGeometry = function (block, textureAtlas) {
     let geometries = [];
@@ -102,9 +102,9 @@ class StaticBlocksView extends View {
         this.textureAtlasName = textureAtlasName;
         this.blocks = map.blocks(['wall']);
 
-        this.blockWidth = map.tileWidth;
-        this.blockHeight = map.tileHeight;
-        this.blockDepth = map.tileDepth;
+        this.blockWidth = map.blockWidth;
+        this.blockHeight = map.blockHeight;
+        this.blockDepth = map.blockDepth;
     }
 
     init () {

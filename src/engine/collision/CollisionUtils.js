@@ -47,7 +47,7 @@ let rayPositions = function (entity, rayDistance) {
 
 let CollisionUtils = {
     wallCollision (map, entity, onCollision) {
-        let rayDistance = (map.tileWidth + map.tileHeight) / 2;
+        let rayDistance = (map.blockWidth + map.blockHeight) / 2;
         let ray = rayPositions(entity, rayDistance);
 
         if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {

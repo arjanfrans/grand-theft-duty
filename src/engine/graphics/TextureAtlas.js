@@ -16,8 +16,6 @@ class TextureAtlas {
             this.texture = AssetManager.getTexture(name);
         }
 
-        this.setFilters();
-
         this.texture.wrapS = THREE.RepeatWrapping;
         this.texture.wrapT = THREE.RepeatWrapping;
 
@@ -49,20 +47,6 @@ class TextureAtlas {
                     height: d.h
                 }
             });
-        }
-    }
-
-    setFilters (filters = {}) {
-        if (filters.mag) {
-            this.texture.magFilter = filters.mag;
-        } else {
-            this.texture.magFilter = THREE.LinearFilter;
-        }
-
-        if (filters.min) {
-            this.texture.minFilter = filters.min;
-        } else {
-            this.texture.minFilter = THREE.LinearMipMapLinear;
         }
     }
 

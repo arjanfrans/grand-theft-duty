@@ -1,6 +1,4 @@
-let debug = require('debug')('game:engine/views/menu/MenuItemsView');
-
-import TextView from '../../../engine/views/TextView';
+import Views from '../../../engine/views';
 import TextureManager from '../../../engine/graphics/TextureManager';
 import TextureFrame from '../../../engine/graphics/TextureFrame';
 import View from '../../../engine/views/View';
@@ -29,7 +27,7 @@ class MenuItemsView extends View {
         this.selectedItem = this.menu.selectedItem;
 
         for (let menuItem of this.menu.menuItemKeys) {
-            let textView = new TextView(menuItem);
+            let textView = new Views.Text(menuItem);
 
             textView.init();
             textView.mesh.position.y = startY - (distance * itemCount);
@@ -47,7 +45,7 @@ class MenuItemsView extends View {
             itemCount += 1;
         }
 
-        // FIXME get this hacky stuff out of here
+        // FIXME get this out of here
         let textureAtlas = TextureManager.getAtlas('ui', false);
 
         let logoSize = textureAtlas.getFrameSize('logo');

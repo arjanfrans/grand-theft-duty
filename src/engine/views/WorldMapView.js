@@ -1,5 +1,6 @@
-import WaterBlocksView from './WaterBlocksView';
-import StaticBlocksView from './StaticBlocksView';
+import WaterBlocksView from './world/WaterBlocksView';
+import StaticBlocksView from './world/StaticBlocksView';
+import LightView from './lights/LightView';
 import View from './View';
 
 class WorldMapView extends View {
@@ -15,6 +16,14 @@ class WorldMapView extends View {
         super.init();
 
         this.mesh = new THREE.Object3D();
+
+        for (let light of this.map.lights) {
+            let lightView = new LightView(light);
+
+            lightView.init();
+
+            this.mesh.add(lightView.mesh);
+        }
 
         this.wallsView.init();
         this.waterView.init();

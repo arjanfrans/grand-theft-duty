@@ -1,7 +1,5 @@
-let debug = require('debug')('game:engine/views/TextView');
-
-import View from './View';
-import AssetManager from '../AssetManager';
+import View from '../View';
+import AssetManager from '../../AssetManager';
 import createTextGeometry from 'three-bmfont-text';
 
 class TextView extends View {
@@ -64,6 +62,8 @@ class TextView extends View {
             align: this.align,
             font: this.font.mapping
         });
+
+        this.geometry.uvsNeedUpdate = true;
     }
 
     set text (text) {

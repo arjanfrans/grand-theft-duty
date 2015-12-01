@@ -1,7 +1,4 @@
-let debug = require('debug')('game:engine/input/play/UiInput');
-
 import Keyboard from '../../../engine/input/Keyboard';
-import Gamepad from '../../../engine/input/Gamepad';
 
 class UiInput {
     constructor (stats) {

@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/states/menu/MenuRenderView');
-
 import RenderView from '../../../engine/graphics/RenderView';
 
 class MenuRenderView extends RenderView {

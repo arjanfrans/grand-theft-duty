@@ -64,6 +64,34 @@ class Match {
         return false;
     }
 
+    sortedScores () {
+        let teams = new Map();
+
+        for (let soldier of new Set([...this.soldiers])) {
+            let team = teams.get(soldier.team);
+
+            if (team) {
+                team.kills += soldier.totalKills;
+                team.deaths += soldier.totalDeaths;
+                team.soldiers.push(soldier);
+            } else {
+                teams.set(soldier.team, {
+                    kills: soldier.totalKills,
+                    deaths: soldier.totalDeaths,
+                    soldiers: [soldier]
+                });
+            }
+        }
+
+        for (let team of teams.values()) {
+            team.soldiers.sort((a, b) => b.kills - a.kills);
+        }
+
+        return new Map([...teams.entries()].sort((teamA, teamB) => {
+            return teamB[1].kills - teamA[1].kills;
+        }));
+    }
+
     removeSoldier (soldier) {
         for (let team of this.teams) {
             if (team.has(solider)) {

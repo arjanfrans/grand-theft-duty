@@ -3,6 +3,7 @@ import PlayRenderView from '../../game/states/play/PlayRenderView';
 
 import Systems from '../../engine/Systems';
 import Views from '../../engine/views';
+import ViewContainer from '../../engine/views/ViewContainer';
 
 import Match from '../../game/logic/play/Match';
 import PlayerInput from '../../game/input/play/PlayerInput';
@@ -15,7 +16,6 @@ import PlayAudio from '../../game/audio/PlayAudio';
 import SoldierView from '../../game/views/SoldierView';
 import SoldierViewPool from '../../game/views/SoldierViewPool';
 
-import Stats from '../../game/logic/play/Stats';
 import StatsRenderView from '../../game/ui/StatsRenderView';
 
 import Entities from '../../engine/entities';
@@ -31,10 +31,15 @@ let _createPlayView = function (state) {
     let bulletSystemView = new Views.BulletSystem(state.bulletSystem);
     let worldMapView = new Views.WorldMap(state.map);
 
-    playView.addDynamicView(playerView);
-    playView.addDynamicView(soldierView);
-    playView.addDynamicView(bulletSystemView);
-    playView.addDynamicView(worldMapView);
+    let viewContainer = new ViewContainer();
+
+    viewContainer.addDynamicView(playerView);
+    viewContainer.addDynamicView(soldierView);
+    viewContainer.addDynamicView(bulletSystemView);
+    viewContainer.addDynamicView(worldMapView);
+
+    playView.addViewContainer('main', viewContainer);
+    playView.currentViewContainer = 'main';
 
     // Camera follow
     playView.cameraFollowView = playerView;
@@ -81,14 +86,11 @@ let createPlayState = function (mapName, cpuCount) {
 let PlayStateBuilder = {
     create (engine) {
         let state = createPlayState('level2', 8);
-        let stats = new Stats(state);
-        let statsView = new StatsRenderView(stats);
-
-        state.stats = stats;
+        let statsView = new StatsRenderView(state);
 
         state.addView(statsView);
 
-        let uiInput = new UiInput(stats);
+        let uiInput = new UiInput(statsView);
 
         state.inputs.add(uiInput);
 

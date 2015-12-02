@@ -8,13 +8,14 @@ import ScoreView from './ScoreView';
 
 // TODO fix duplicate code of subviews
 class StatsRenderView extends RenderView {
-    constructor (stats) {
+    constructor (state) {
         super();
 
-        this.stats = stats;
+        this.state = state;
         this.ammoView = new AmmoView();
         this.healthView = new HealthView();
         this.scoreView = new ScoreView();
+        this.showScores = false;
     }
 
     init () {
@@ -66,8 +67,8 @@ class StatsRenderView extends RenderView {
     update (delta) {
         super.update(delta);
 
-        if (this.stats.player.currentWeapon) {
-            let weapon = this.stats.player.currentWeapon;
+        if (this.state.player.currentWeapon) {
+            let weapon = this.state.player.currentWeapon;
 
             this.weaponView.weapon = weapon.name;
 
@@ -80,9 +81,9 @@ class StatsRenderView extends RenderView {
             this.ammoView.magazine = null;
         }
 
-        this.scoreView.updateStats(this.stats);
+        this.scoreView.updateStats(this.state.match, this.showScores);
 
-        let healthScale = this.stats.player.health / this.stats.player.maxHealth;
+        let healthScale = this.state.player.health / this.state.player.maxHealth;
 
         this.healthView.healthScale = healthScale;
     }

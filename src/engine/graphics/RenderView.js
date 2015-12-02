@@ -4,37 +4,35 @@ class RenderView {
     constructor () {
         this.width = 800;
         this.height = 600;
-
-        this.staticViews = new Set();
-        this.dynamicViews = new Set();
-
         this._initialized = false;
-
         this.clearColor = 0x000000;
+        this.viewContainers = new Map();
+        this._currentViewContainer = null;
+        this.currentViewContainerName = null;
         this.camera = null;
     }
 
     init () {
         this.scene = new THREE.Scene();
 
-        for (let staticView of this.staticViews) {
-            staticView.init();
-            this.scene.add(staticView.mesh);
-        }
+        for (let viewContainer of this.viewContainers.values()) {
+            viewContainer.init();
 
-        for (let view of this.dynamicViews) {
-            view.init();
-            this.scene.add(view.mesh);
+            this.scene.add(viewContainer.mesh);
+
+            if (viewContainer === this.currentViewContainer) {
+                viewContainer.visible = true;
+            } else {
+                viewContainer.visible = false;
+            }
         }
     }
 
     update (delta) {
-        if (!this._initialized) {
-            throw new Error('View not initialized.');
-        }
-
-        for (let view of this.dynamicViews) {
-            view.update(delta);
+        if (this.currentViewContainer) {
+            this.currentViewContainer.update(delta);
+        } else {
+            debug('no current ViewContainer');
         }
     }
 
@@ -48,34 +46,33 @@ class RenderView {
         }
     }
 
-    addStaticView (staticView) {
+    set currentViewContainer (name) {
+        let newViewContainer = this.viewContainers.get(name);
+
         if (this._initialized) {
-            staticView.init();
-            this.scene.add(staticView.mesh);
+            if (this._currentViewContainer) {
+                this._currentViewContainer.visible = false;
+            }
+
+            newViewContainer.visible = true;
         }
 
-        this.staticViews.add(staticView);
+        this.currentViewContainerName = name;
+        this._currentViewContainer = newViewContainer;
     }
 
-    addStaticViews (staticViews) {
-        for (let staticView of staticViews) {
-            this.addStaticView(staticView);
-        }
+    get currentViewContainer () {
+        return this._currentViewContainer;
     }
 
-    addDynamicView (dynamicView) {
+    addViewContainer (name, viewContainer) {
         if (this._initialized) {
-            dynamicView.init();
-            this.scene.add(dynamicView.mesh);
+            viewContainer.init();
+
+            this.scene.add(viewContainer.mesh);
         }
 
-        this.dynamicViews.add(dynamicView);
-    }
-
-    addDynamicViews (dynamicViews) {
-        for (let dynamicView of dynamicViews) {
-            this.addDynamicView(dynamicView);
-        }
+        this.viewContainers.set(name, viewContainer);
     }
 }
 

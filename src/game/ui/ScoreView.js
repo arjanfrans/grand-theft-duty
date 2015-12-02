@@ -57,17 +57,17 @@ class ScoreView extends View {
         this._initialized = true;
     }
 
-    updateStats (stats) {
+    updateStats (match, showScores) {
         if (!this.bufferFill) {
             this.scoreTextView.text = '1'.repeat(1000);
             this.bufferFill = true;
         } else {
-            if (stats.visible) {
+            if (showScores) {
                 if (!this.mesh.visible) {
                     this.mesh.visible = true;
                 }
 
-                let newScores = _converToText(stats.teamStats());
+                let newScores = _converToText(match.sortedScores());
 
                 // Scores have changed
                 this.scoreTextView.text = newScores;

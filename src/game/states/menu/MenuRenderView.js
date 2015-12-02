@@ -5,7 +5,7 @@ class MenuRenderView extends RenderView {
         super();
 
         this.state = state;
-        this.menu = state.menu;
+        this.menu = state.menus;
         this.clearColor = 0x002422;
     }
 
@@ -24,6 +24,10 @@ class MenuRenderView extends RenderView {
 
     update (delta) {
         super.update(delta);
+
+        if (this.currentViewContainerName !== this.state.currentMenuName) {
+            this.currentViewContainer = this.state.currentMenuName;
+        }
     }
 }
 

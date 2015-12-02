@@ -11,10 +11,6 @@ class PlayerInput {
     }
 
     update (delta) {
-        if (Keyboard.isDown(Keyboard.TAB)) {
-
-        }
-
         if (Keyboard.isDown(Keyboard.UP) || Gamepad.isStickDown(0, 'left', 'up')) {
             this.player.move('up');
         } else if (Keyboard.isDown(Keyboard.DOWN) || Gamepad.isStickDown(0, 'left', 'down')) {

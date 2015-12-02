@@ -1,6 +1,5 @@
 import Views from '../../../engine/views';
-import TextureManager from '../../../engine/graphics/TextureManager';
-import TextureFrame from '../../../engine/graphics/TextureFrame';
+import LogoView from './LogoView';
 import View from '../../../engine/views/View';
 
 class MenuItemsView extends View {
@@ -15,9 +14,13 @@ class MenuItemsView extends View {
         this.viewMenuItemPairs = new Map();
         this.selectedItem = null;
         this.selectedView = null;
+
+        this.logoView = new LogoView('logo', 'ui');
     }
 
     init () {
+        super.init();
+
         this.mesh = new THREE.Object3D();
 
         let distance = 100;
@@ -27,7 +30,9 @@ class MenuItemsView extends View {
         this.selectedItem = this.menu.selectedItem;
 
         for (let menuItem of this.menu.menuItemKeys) {
-            let textView = new Views.Text(menuItem);
+            let textView = new Views.Text(menuItem, {
+                width: 300
+            });
 
             textView.init();
             textView.mesh.position.y = startY - (distance * itemCount);
@@ -44,26 +49,6 @@ class MenuItemsView extends View {
             this.mesh.add(textView.mesh);
             itemCount += 1;
         }
-
-        // FIXME get this out of here
-        let textureAtlas = TextureManager.getAtlas('ui', false);
-
-        let logoSize = textureAtlas.getFrameSize('logo');
-
-        let geometry = new THREE.PlaneGeometry(logoSize.width, logoSize.height);
-
-        let textureFrame = new TextureFrame(textureAtlas, geometry, 'logo');
-
-        let material = new THREE.MeshBasicMaterial({
-            map: textureFrame.texture,
-            transparent: true
-        });
-
-        let logoMesh = new THREE.Mesh(geometry, material);
-
-        logoMesh.position.x -= 160;
-
-        this.mesh.add(logoMesh);
     }
 
     update () {

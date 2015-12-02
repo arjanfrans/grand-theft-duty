@@ -37,7 +37,7 @@ npm start
 
 ## Development tools
 * [BMFont](http://www.angelcode.com/products/bmfont/): generate bitmap fonts.
-* [spritesheet-js (fork)](https://github.com/krzysztof-o/spritesheet.js): generate spritesheets.
+* [spritesheet-js (fork)](https://github.com/arjanfrans/spritesheet.js): generate spritesheets.
 Requires `imagemagick` to be installed.
 * [audiosprite](https://github.com/tonistiigi/audiosprite): generate audiosprites for howler.js.
 Requires `ffmpeg` to be installed.

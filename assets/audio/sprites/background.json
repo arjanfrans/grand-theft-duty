@@ -3,9 +3,9 @@
     "background.ogg"
   ],
   "sprite": {
-    "russia": [
+    "null": [
       0,
-      230703.3106575964
+      0
     ]
   }
 }

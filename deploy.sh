@@ -6,6 +6,7 @@ mkdir -p dist
 rm -rf ./dist/assets
 cp -r ./assets ./dist
 cp index.html dist/
+cp favicon.ico dist/
 
 echo "grand-theft-duty.arjanfrans.com" > dist/CNAME;
 

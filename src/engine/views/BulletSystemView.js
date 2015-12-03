@@ -15,7 +15,8 @@ class BulletSystemView extends View {
 
     init () {
         this.mesh = new THREE.Object3D();
-        this._initialized = true;
+
+        super.init();
     }
 
     update (delta) {

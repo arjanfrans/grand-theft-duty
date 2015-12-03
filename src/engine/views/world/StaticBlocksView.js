@@ -108,8 +108,6 @@ class StaticBlocksView extends View {
     }
 
     init () {
-        super.init();
-
         this.textureAtlas = TextureManager.getAtlas(this.textureAtlasName, false);
         this.geometry = _createMergedBlockGeometry(this.blocks, this.textureAtlas);
 
@@ -123,6 +121,8 @@ class StaticBlocksView extends View {
 
         // Set the center of the blocks to bottom left (instead of center)
         this.mesh.applyMatrix(new THREE.Matrix4().makeTranslation(this.blockWidth / 2, this.blockHeight / 2, this.blockDepth / 2));
+
+        super.init();
     }
 }
 

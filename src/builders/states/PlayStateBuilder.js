@@ -22,6 +22,11 @@ import Entities from '../../engine/entities';
 
 import MapParser from '../../engine/maps/MapParser';
 
+import AmmoView from '../../game/ui/AmmoView';
+import HealthView from '../../game/ui/HealthView';
+import WeaponView from '../../game/ui/WeaponView';
+import ScoreView from '../../game/ui/ScoreView';
+
 let _createPlayView = function (state) {
     let playView = new PlayRenderView(state);
 
@@ -45,6 +50,25 @@ let _createPlayView = function (state) {
     playView.cameraFollowView = playerView;
 
     return playView;
+};
+
+let _createUiView = function (state) {
+    let uiView = new StatsRenderView(state);
+    let uiViewContainer = new ViewContainer();
+
+    let scoreView = new ScoreView(state);
+    let weaponView = new WeaponView(state);
+    let ammoView = new AmmoView(state);
+    let healthView = new HealthView(state);
+
+    uiViewContainer.addDynamicView(scoreView, { x: 100, y: 100, z: 0});
+    uiViewContainer.addDynamicView(weaponView, { x: 250, y: 540, z: 0});
+    uiViewContainer.addDynamicView(ammoView, { x: 10, y: 540, z: 0});
+    uiViewContainer.addDynamicView(healthView, { x: 600, y: 540, z: 0});
+    uiView.addViewContainer('main', uiViewContainer);
+    uiView.currentViewContainer = 'main';
+
+    return uiView;
 };
 
 let createPlayState = function (mapName, cpuCount) {
@@ -77,8 +101,14 @@ let createPlayState = function (mapName, cpuCount) {
     state.audio = new PlayAudio(state, 'guns', 'background');
 
     let playView = _createPlayView(state);
+    let uiView = _createUiView(state);
 
     state.addView(playView);
+    state.addView(uiView);
+
+    let uiInput = new UiInput(state);
+
+    state.inputs.add(uiInput);
 
     return state;
 };
@@ -86,13 +116,6 @@ let createPlayState = function (mapName, cpuCount) {
 let PlayStateBuilder = {
     create (engine) {
         let state = createPlayState('level2', 8);
-        let statsView = new StatsRenderView(state);
-
-        state.addView(statsView);
-
-        let uiInput = new UiInput(statsView);
-
-        state.inputs.add(uiInput);
 
         return state;
     }

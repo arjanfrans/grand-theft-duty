@@ -15,13 +15,16 @@ class RenderView {
     init () {
         this.scene = new THREE.Scene();
 
-        for (let viewContainer of this.viewContainers.values()) {
+        for (let [name, viewContainer] of this.viewContainers.entries()) {
             viewContainer.init();
+            viewContainer.width = this.width;
+            viewContainer.height = this.height;
 
             this.scene.add(viewContainer.mesh);
 
-            if (viewContainer === this.currentViewContainer) {
+            if (name === this.currentViewContainerName) {
                 viewContainer.visible = true;
+                this._currentViewContainer = viewContainer;
             } else {
                 viewContainer.visible = false;
             }
@@ -29,10 +32,10 @@ class RenderView {
     }
 
     update (delta) {
-        if (this.currentViewContainer) {
-            this.currentViewContainer.update(delta);
+        if (this._currentViewContainer) {
+            this._currentViewContainer.update(delta);
         } else {
-            debug('no current ViewContainer');
+            console.warn('no current ViewContainer');
         }
     }
 
@@ -43,6 +46,13 @@ class RenderView {
         if (this.camera) {
             this.camera.aspect = this.width / this.height;
             this.camera.updateProjectionMatrix();
+        }
+
+        if (this._initialized) {
+            for (let viewContainer of this.viewContainers.values()) {
+                viewContainer.width = this.width;
+                viewContainer.height = this.height;
+            }
         }
     }
 
@@ -68,10 +78,11 @@ class RenderView {
     addViewContainer (name, viewContainer) {
         if (this._initialized) {
             viewContainer.init();
+            viewContainer.width = this.width;
+            viewContainer.height = this.height;
 
             this.scene.add(viewContainer.mesh);
         }
-
         this.viewContainers.set(name, viewContainer);
     }
 }

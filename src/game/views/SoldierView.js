@@ -78,7 +78,7 @@ class SoldierView extends View {
         this.mesh.position.set(soldier.position.x, soldier.position.y, soldier.position.z);
         this.mesh.rotation.z = soldier.angle;
 
-        this._initialized = true;
+        super.init();
     }
 
     _updateAnimation () {

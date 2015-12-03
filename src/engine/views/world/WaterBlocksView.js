@@ -69,8 +69,6 @@ class WaterBlocksView extends View {
     }
 
     init () {
-        super.init();
-
         // Do not clone, since all water animates in sync
         this.textureAtlas = TextureManager.getAtlas(this._textureAtlasName, true);
 
@@ -89,6 +87,8 @@ class WaterBlocksView extends View {
 
         // Set the center of the blocks to bottom left (instead of center)
         this.mesh.applyMatrix(new THREE.Matrix4().makeTranslation(this.blockWidth / 2, this.blockHeight / 2, this.blockDepth / 2));
+
+        super.init();
     }
 
     update (interpolationPercentage) {

@@ -5,9 +5,10 @@ import TextureManager from '../../engine/graphics/TextureManager';
 import TextureFrame from '../../engine/graphics/TextureFrame';
 
 class WeaponView extends View {
-    constructor () {
+    constructor (state) {
         super();
 
+        this.player = state.player;
         this._weapon = null;
     }
 
@@ -24,7 +25,7 @@ class WeaponView extends View {
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-        this._initialized = true;
+        super.init();
     }
 
     set weapon (weapon) {
@@ -43,7 +44,13 @@ class WeaponView extends View {
     }
 
     update (delta) {
-        super.update(delta);
+        if (this.player.currentWeapon) {
+            let weapon = this.player.currentWeapon;
+
+            this.weapon = weapon.name;
+        } else {
+            this.weapon = null;
+        }
     }
 }
 

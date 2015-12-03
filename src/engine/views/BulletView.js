@@ -28,7 +28,7 @@ class BulletView extends View {
         this.mesh.position.set(bullet.position.x, bullet.position.y, bullet.position.z);
         this.mesh.rotation.z = bullet.angle + (90 * (Math.PI / 180));
 
-        this._initialized = true;
+        super.init();
     }
 
     update (interpolationPercentage) {

@@ -3,9 +3,10 @@ let debug = require('debug')('game:game/ui/HealthView');
 import View from '../../engine/views/View';
 
 class HealthView extends View {
-    constructor () {
+    constructor (state) {
         super();
 
+        this.player = state.player;
         this._healthScale = 1;
     }
 
@@ -21,7 +22,7 @@ class HealthView extends View {
 
         this.mesh = new THREE.Mesh(this.geometry, material);
 
-        this._initialized = true;
+        super.init();
     }
 
     set healthScale (value) {
@@ -44,7 +45,7 @@ class HealthView extends View {
     }
 
     update (delta) {
-        super.update(delta);
+        this.healthScale = this.player.health / this.player.maxHealth;
     }
 }
 

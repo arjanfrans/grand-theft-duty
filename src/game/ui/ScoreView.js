@@ -23,8 +23,11 @@ let _converToText = function (teams) {
 };
 
 class ScoreView extends View {
-    constructor () {
+    constructor (state) {
         super();
+
+        this.state = state;
+        this.match = state.match;
 
         // FIXME atm three.js doesn't allow growing of buffers, so prefix it
         this.bufferFill = false;
@@ -54,20 +57,20 @@ class ScoreView extends View {
         this.mesh.visible = true;
         this.mesh.add(this.scoreTextView.mesh);
 
-        this._initialized = true;
+        super.init();
     }
 
-    updateStats (match, showScores) {
+    update () {
         if (!this.bufferFill) {
             this.scoreTextView.text = '1'.repeat(1000);
             this.bufferFill = true;
         } else {
-            if (showScores) {
+            if (this.state.showScores) {
                 if (!this.mesh.visible) {
                     this.mesh.visible = true;
                 }
 
-                let newScores = _converToText(match.sortedScores());
+                let newScores = _converToText(this.match.sortedScores());
 
                 // Scores have changed
                 this.scoreTextView.text = newScores;

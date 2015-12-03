@@ -19,8 +19,6 @@ class MenuItemsView extends View {
     }
 
     init () {
-        super.init();
-
         this.mesh = new THREE.Object3D();
 
         let distance = 100;
@@ -49,6 +47,8 @@ class MenuItemsView extends View {
             this.mesh.add(textView.mesh);
             itemCount += 1;
         }
+
+        super.init();
     }
 
     update () {

@@ -6,18 +6,14 @@ class MenuRenderView extends RenderView {
 
         this.state = state;
         this.menu = state.menus;
-        this.clearColor = 0x002422;
+        this.clearColor = 0x000000;
     }
 
     init () {
         super.init();
 
-        this.camera = new THREE.OrthographicCamera(-this.width / 2, this.width / 2,
-            this.height / 2, -this.height / 2, 0, 1);
-
-        let ambientLight = new THREE.AmbientLight(0xccccff);
-
-        this.scene.add(ambientLight);
+        this.camera = new THREE.OrthographicCamera(0, this.width,
+            this.height, 0, 0, 1);
 
         this._initialized = true;
     }

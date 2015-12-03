@@ -9,7 +9,6 @@ class LightView extends View {
     }
 
     init () {
-        super.init();
         this.mesh = new THREE.Object3D();
 
         let textureAtlas = TextureManager.getAtlas('world', true);
@@ -49,6 +48,8 @@ class LightView extends View {
         this.mesh.translateX(100 / 2);
         this.mesh.translateY(100 / 2);
         this.mesh.translateZ(100);
+
+        super.init();
     }
 }
 

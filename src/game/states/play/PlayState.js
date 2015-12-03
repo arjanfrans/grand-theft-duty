@@ -18,6 +18,9 @@ class PlayState extends State {
         this.player = null;
         this.map = map;
         this.match = match;
+
+        // FIXME get this out of here
+        this.showScores = false;
     }
 
     init () {

@@ -13,8 +13,6 @@ class WorldMapView extends View {
     }
 
     init () {
-        super.init();
-
         this.mesh = new THREE.Object3D();
 
         for (let light of this.map.lights) {
@@ -30,6 +28,8 @@ class WorldMapView extends View {
 
         this.mesh.add(this.wallsView.mesh);
         this.mesh.add(this.waterView.mesh);
+
+        super.init();
     }
 
     update () {

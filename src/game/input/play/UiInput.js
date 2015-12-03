@@ -1,17 +1,17 @@
 import Keyboard from '../../../engine/input/Keyboard';
 
 class UiInput {
-    constructor (uiView) {
-        this.uiView = uiView;
+    constructor (state) {
+        this.state = state;
 
         this.previousKeys = {};
     }
 
     update (delta) {
         if (Keyboard.isDown(Keyboard.E)) {
-            this.uiView.showScores = true;
+            this.state.showScores = true;
         } else {
-            this.uiView.showScores = false;
+            this.state.showScores = false;
         }
 
         // TODO gamepad input

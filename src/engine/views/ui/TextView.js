@@ -16,8 +16,6 @@ class TextView extends View {
     }
 
     init () {
-        super.init();
-
         this.geometry = createTextGeometry({
             text: this._text,
             width: this.width,
@@ -37,6 +35,8 @@ class TextView extends View {
 
         this.mesh.rotation.y = 180 * (Math.PI / 180);
         this.mesh.rotation.z = 180 * (Math.PI / 180);
+
+        super.init();
     }
 
     get color () {

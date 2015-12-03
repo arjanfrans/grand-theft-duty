@@ -3,10 +3,21 @@ let debug = require('debug')('game:engine/views/view');
 class View {
     constructor () {
         this.mesh = null;
+        this.initialPosition = null;
         this._initialized = false;
     }
 
     init () {
+        if (this.initialPosition) {
+            if (!this.mesh) {
+                throw new Error('No mesh initialized!');
+            }
+
+            this.mesh.position.x = this.initialPosition.x;
+            this.mesh.position.y = this.initialPosition.y;
+            this.mesh.position.z = this.initialPosition.z;
+        }
+
         this._initialized = true;
     }
 
@@ -14,17 +25,25 @@ class View {
         return this.mesh.position;
     }
 
-    set position (position = { x: 0, y: 0, z: 0}) {
-        if (position.x) {
-            this.mesh.position.x = position.x;
-        }
+    set position ({ x, y, z }) {
+        if (this.mesh && this.initialized) {
+            if (x) {
+                this.mesh.position.x = x;
+            }
 
-        if (position.y) {
-            this.mesh.position.y = position.y;
-        }
+            if (y) {
+                this.mesh.position.y = y;
+            }
 
-        if (position.z) {
-            this.mesh.position.z = position.z;
+            if (z) {
+                this.mesh.position.z = z;
+            }
+        } else {
+            this.initialPosition = {
+                x: x,
+                y: y,
+                z: z
+            };
         }
     }
 }

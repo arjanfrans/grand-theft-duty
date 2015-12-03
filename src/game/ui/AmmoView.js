@@ -4,8 +4,10 @@ import TextureFrame from '../../engine/graphics/TextureFrame';
 import Views from '../../engine/views';
 
 class AmmoView extends View {
-    constructor () {
+    constructor (state) {
         super();
+
+        this.player = state.player;
     }
 
     init () {
@@ -55,10 +57,14 @@ class AmmoView extends View {
             y: -this.ammoText.height
         };
 
+        ammoMesh.position.x = 20;
+        this.magazineText.position.x = 40;
+        this.ammoText.position.x = 100;
+
         this.mesh.add(this.ammoText.mesh);
         this.mesh.add(ammoMesh);
 
-        this._initialized = true;
+        super.init();
     }
 
     set ammo (ammo) {
@@ -76,7 +82,15 @@ class AmmoView extends View {
     }
 
     update (delta) {
-        super.update(delta);
+        if (this.player.currentWeapon) {
+            let weapon = this.player.currentWeapon;
+
+            this.ammo = weapon.ammo;
+            this.magazine = weapon.magazine;
+        } else {
+            this.ammo = null;
+            this.magazine = null;
+        }
     }
 }
 

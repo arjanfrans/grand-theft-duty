@@ -11,8 +11,6 @@ class LogoView extends View {
     }
 
     init () {
-        super.init();
-
         let textureAtlas = TextureManager.getAtlas(this.textureAtlasName, true);
         let logoSize = textureAtlas.getFrameSize(this.textureName);
 
@@ -25,7 +23,8 @@ class LogoView extends View {
         });
 
         this.mesh = new THREE.Mesh(this.geometry, material);
-        this.mesh.position.x -= 150;
+
+        super.init();
     }
 };
 

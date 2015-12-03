@@ -3,6 +3,7 @@ let debug = require('debug')('game:builders/states/MenuStateBuilder');
 import MenuState from '../../game/states/menu/MenuState';
 import MenuRenderView from '../../game/states/menu/MenuRenderView';
 import ViewContainer from '../../engine/views/ViewContainer';
+import BackgroundView from '../../engine/views/BackgroundView';
 import Menu from '../../engine/menu/Menu';
 import MenuInput from '../../game/input/menu/MenuInput';
 
@@ -44,19 +45,29 @@ let _createMenus = function (engine, state) {
 
     let mainMenuViewContainer = new ViewContainer();
 
-    mainMenuViewContainer.addDynamicView(new MenuItemsView(mainMenu));
-    mainMenuViewContainer.addStaticView(new LogoView('logo', 'ui'));
+    mainMenuViewContainer.addDynamicView(new MenuItemsView(mainMenu), { x: 500, y: 100, z: 0 });
+    mainMenuViewContainer.addStaticView(new LogoView('logo', 'ui'), { x: 300, y: 300, z: 0 });
+
+    let background1 = new BackgroundView('normandy', 'ui');
+
+    background1.lightness = 0.5;
+
+    mainMenuViewContainer.backgroundView = background1;
 
     let optionsMenuViewContainer = new ViewContainer();
 
-    optionsMenuViewContainer.addDynamicView(new MenuItemsView(optionsMenu));
-    optionsMenuViewContainer.addStaticView(new LogoView('iwo_jima', 'ui'));
+    optionsMenuViewContainer.addDynamicView(new MenuItemsView(optionsMenu), { x: 500, y: 100, z: 0 });
+
+    let background2 = new BackgroundView('iwo_jima', 'ui');
+
+    background2.lightness = 0.5;
+    optionsMenuViewContainer.backgroundView = background2;
 
     menuView.addViewContainer('main', mainMenuViewContainer);
     menuView.addViewContainer('options', optionsMenuViewContainer);
+    menuView.currentViewContainer = 'main';
 
     state.addView(menuView);
-    state.currentViewContainer = 'main';
 };
 
 let MenuStateBuilder = {

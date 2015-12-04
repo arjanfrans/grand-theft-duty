@@ -26,107 +26,118 @@
 
 // The amount of time (in milliseconds) to simulate each time update()
 // runs. See `MainLoop.setSimulationTimestep()` for details.
-let simulationTimestep = 1000 / 60,
+let simulationTimestep = 1000 / 60;
 
     // The cumulative amount of in-app time that hasn't been simulated yet.
     // See the comments inside animate() for details.
-    frameDelta = 0,
+let frameDelta = 0;
 
-    // The timestamp in milliseconds of the last time the main loop was run.
-    // Used to compute the time elapsed between frames.
-    lastFrameTimeMs = 0,
+/**
+ * The timestamp in milliseconds of the last time the main loop was run.
+ * Used to compute the time elapsed between frames.
+ */
+let lastFrameTimeMs = 0;
 
-    // An exponential moving average of the frames per second.
-    fps = 60,
+/**
+ * An exponential moving average of the frames per second.
+ */
+let fps = 60;
 
-    // The timestamp (in milliseconds) of the last time the `fps` moving
-    // average was updated.
-    lastFpsUpdate = 0,
+/**
+ * The timestamp (in milliseconds) of the last time the `fps` moving average was updated.
+ */
+let lastFpsUpdate = 0;
 
-    // The number of frames delivered in the current second.
-    framesThisSecond = 0,
+/**
+ * The number of frames delivered in the current second.
+ */
+let framesThisSecond = 0;
 
-    // The number of times update() is called in a given frame. This is only
-    // relevant inside of animate(), but a reference is held externally so that
-    // this variable is not marked for garbage collection every time the main
-    // loop runs.
-    numUpdateSteps = 0,
+// The number of times update() is called in a given frame. This is only
+// relevant inside of animate(), but a reference is held externally so that
+// this variable is not marked for garbage collection every time the main
+// loop runs.
+let numUpdateSteps = 0;
 
-    // The minimum amount of time in milliseconds that must pass since the last
-    // frame was executed before another frame can be executed. The
-    // multiplicative inverse caps the FPS (the default of zero means there is
-    // no cap).
-    minFrameDelay = 0,
+// The minimum amount of time in milliseconds that must pass since the last
+// frame was executed before another frame can be executed. The
+// multiplicative inverse caps the FPS (the default of zero means there is
+// no cap).
+let minFrameDelay = 0;
 
-    // Whether the main loop is running.
-    running = false,
+/*
+ * Whether the main loop is running.
+ */
+let running = false;
 
-    // `true` if `MainLoop.start()` has been called and the most recent time it
-    // was called has not been followed by a call to `MainLoop.stop()`. This is
-    // different than `running` because there is a delay of a few milliseconds
-    // after `MainLoop.start()` is called before the application is considered
-    // "running." This delay is due to waiting for the next frame.
-    started = false,
+// `true` if `MainLoop.start()` has been called and the most recent time it
+// was called has not been followed by a call to `MainLoop.stop()`. This is
+// different than `running` because there is a delay of a few milliseconds
+// after `MainLoop.start()` is called before the application is considered
+// "running." This delay is due to waiting for the next frame.
+let started = false;
 
-    // Whether the simulation has fallen too far behind real time.
-    // Specifically, `panic` will be set to `true` if too many updates occur in
-    // one frame. This is only relevant inside of animate(), but a reference is
-    // held externally so that this variable is not marked for garbage
-    // collection every time the main loop runs.
-    panic = false,
+// Whether the simulation has fallen too far behind real time.
+// Specifically, `panic` will be set to `true` if too many updates occur in
+// one frame. This is only relevant inside of animate(), but a reference is
+// held externally so that this variable is not marked for garbage
+// collection every time the main loop runs.
+let panic = false;
 
-    // The function that runs the main loop. The unprefixed version of
-    // `window.requestAnimationFrame()` is available in all modern browsers
-    // now, but node.js doesn't have it, so fall back to timers. The polyfill
-    // is adapted from the MIT-licensed
-    // https://github.com/underscorediscovery/realtime-multiplayer-in-html5
-    requestAnimationFrame = window.requestAnimationFrame || (function() {
-        let lastTimestamp = Date.now(),
-            now,
-            timeout;
-        return function(callback) {
-            now = Date.now();
-            // The next frame should run no sooner than the simulation allows,
-            // but as soon as possible if the current frame has already taken
-            // more time to run than is simulated in one timestep.
-            timeout = Math.max(0, simulationTimestep - (now - lastTimestamp));
-            lastTimestamp = now + timeout;
-            return setTimeout(function() {
-                callback(now + timeout);
-            }, timeout);
-        };
-    })(),
+// The function that runs the main loop. The unprefixed version of
+// `window.requestAnimationFrame()` is available in all modern browsers
+// now, but node.js doesn't have it, so fall back to timers. The polyfill
+// is adapted from the MIT-licensed
+// https://github.com/underscorediscovery/realtime-multiplayer-in-html5
+let requestAnimationFrame = window.requestAnimationFrame || (function () {
+    let lastTimestamp = Date.now();
 
-    // The function that stops the main loop. The unprefixed version of
-    // `window.cancelAnimationFrame()` is available in all modern browsers now,
-    // but node.js doesn't have it, so fall back to timers.
-    cancelAnimationFrame = window.cancelAnimationFrame || clearTimeout,
+    return function (callback) {
+        let now = Date.now();
 
-    // In all major browsers, replacing non-specified functions with NOOPs
-    // seems to be as fast or slightly faster than using conditions to only
-    // call the functions if they are specified. This is probably due to empty
-    // functions being optimized away. http://jsperf.com/noop-vs-condition
-    NOOP = function () {},
+        // The next frame should run no sooner than the simulation allows,
+        // but as soon as possible if the current frame has already taken
+        // more time to run than is simulated in one timestep.
+        let timeout = Math.max(0, simulationTimestep - (now - lastTimestamp));
 
-    // A function that runs at the beginning of the main loop.
-    // See `MainLoop.setBegin()` for details.
-    begin = NOOP,
+        lastTimestamp = now + timeout;
 
-    // A function that runs updates (i.e. AI and physics).
-    // See `MainLoop.setUpdate()` for details.
-    update = NOOP,
+        return setTimeout(function () {
+            callback(now + timeout);
+        }, timeout);
+    };
+})();
 
-    // A function that draws things on the screen.
-    // See `MainLoop.setDraw()` for details.
-    draw = NOOP,
+// The function that stops the main loop. The unprefixed version of
+// `window.cancelAnimationFrame()` is available in all modern browsers now,
+// but node.js doesn't have it, so fall back to timers.
+let cancelAnimationFrame = window.cancelAnimationFrame || clearTimeout;
 
-    // A function that runs at the end of the main loop.
-    // See `MainLoop.setEnd()` for details.
-    end = NOOP,
+// In all major browsers, replacing non-specified functions with NOOPs
+// seems to be as fast or slightly faster than using conditions to only
+// call the functions if they are specified. This is probably due to empty
+// functions being optimized away. http://jsperf.com/noop-vs-condition
+let NOOP = function () {};
 
-    // The ID of the currently executing frame. Used to cancel frames when
-    // stopping the loop.
-    rafHandle;
+// A function that runs at the beginning of the main loop.
+// See `MainLoop.setBegin()` for details.
+let begin = NOOP;
+
+// A function that runs updates (i.e. AI and physics).
+// See `MainLoop.setUpdate()` for details.
+let update = NOOP;
+
+// A function that draws things on the screen.
+// See `MainLoop.setDraw()` for details.
+let draw = NOOP;
+
+// A function that runs at the end of the main loop.
+// See `MainLoop.setEnd()` for details.
+let end = NOOP;
+
+// The ID of the currently executing frame. Used to cancel frames when
+// stopping the loop.
+let rafHandle = null;
 
 /**
  * Manages the main loop that runs updates and rendering.
@@ -155,6 +166,7 @@ let simulationTimestep = 1000 / 60,
  * @class MainLoop
  */
 let MainLoop = {
+
     /**
      * Gets how many milliseconds should be simulated by every run of update().
      *
@@ -164,7 +176,7 @@ let MainLoop = {
      *   The number of milliseconds that should be simulated by every run of
      *   {@link #setUpdate update}().
      */
-    getSimulationTimestep: function() {
+    getSimulationTimestep: function () {
         return simulationTimestep;
     },
 
@@ -210,8 +222,9 @@ let MainLoop = {
      *   The number of milliseconds that should be simulated by every run of
      *   {@link #setUpdate update}().
      */
-    setSimulationTimestep: function(timestep) {
+    setSimulationTimestep: function (timestep) {
         simulationTimestep = timestep;
+
         return this;
     },
 
@@ -221,7 +234,7 @@ let MainLoop = {
      * @return {Number}
      *   The exponential moving average of the frames per second.
      */
-    getFPS: function() {
+    getFPS: function () {
         return fps;
     },
 
@@ -236,7 +249,7 @@ let MainLoop = {
      * @return {Number}
      *   The maximum number of frames per second allowed.
      */
-    getMaxAllowedFPS: function() {
+    getMaxAllowedFPS: function () {
         return 1000 / minFrameDelay;
     },
 
@@ -255,14 +268,14 @@ let MainLoop = {
      *
      * @chainable
      */
-    setMaxAllowedFPS: function(fps) {
+    setMaxAllowedFPS: function (fps) {
         if (typeof fps === 'undefined') {
             fps = Infinity;
         }
+
         if (fps === 0) {
             this.stop();
-        }
-        else {
+        } else {
             // Dividing by Infinity returns zero.
             minFrameDelay = 1000 / fps;
         }
@@ -290,9 +303,11 @@ let MainLoop = {
      *   been simulated, but is being discarded as a result of calling this
      *   function.
      */
-    resetFrameDelta: function() {
+    resetFrameDelta: function () {
         let oldFrameDelta = frameDelta;
+
         frameDelta = 0;
+
         return oldFrameDelta;
     },
 
@@ -326,7 +341,7 @@ let MainLoop = {
      *   The total elapsed time that has not yet been simulated, in
      *   milliseconds.
      */
-    setBegin: function(fun) {
+    setBegin: function (fun) {
         begin = fun || begin;
         return this;
     },
@@ -382,7 +397,7 @@ let MainLoop = {
      *   updates. The timestep is the same as that returned by
      *   `MainLoop.getSimulationTimestep()`.
      */
-    setUpdate: function(fun) {
+    setUpdate: function (fun) {
         update = fun || update;
         return this;
     },
@@ -421,7 +436,7 @@ let MainLoop = {
      *   by the amount of time that will be simulated the next time update()
      *   runs. Useful for interpolating frames.
      */
-    setDraw: function(fun) {
+    setDraw: function (fun) {
         draw = fun || draw;
         return this;
     },
@@ -475,7 +490,7 @@ let MainLoop = {
      *   after a panic caused by a spiral of death, the same steps can be taken
      *   that are suggested above if the FPS drops too low.
      */
-    setEnd: function(fun) {
+    setEnd: function (fun) {
         end = fun || end;
         return this;
     },
@@ -497,7 +512,7 @@ let MainLoop = {
      *
      * See also `MainLoop.stop()`.
      */
-    start: function() {
+    start: function () {
         if (!started) {
             // Since the application doesn't start running immediately, track
             // whether this function was called and use that to keep it from
@@ -509,7 +524,7 @@ let MainLoop = {
             // initial state before any updates occur. Instead, we run one
             // frame where all we do is draw, and then start the main loop with
             // the next frame.
-            rafHandle = requestAnimationFrame(function(timestamp) {
+            rafHandle = requestAnimationFrame(function (timestamp) {
                 // Render the initial state before any updates occur.
                 draw(1);
 
@@ -543,10 +558,11 @@ let MainLoop = {
      *
      * See also `MainLoop.start()` and `MainLoop.isRunning()`.
      */
-    stop: function() {
+    stop: function () {
         running = false;
         started = false;
         cancelAnimationFrame(rafHandle);
+
         return this;
     },
 
@@ -558,9 +574,9 @@ let MainLoop = {
      * @return {Boolean}
      *   Whether the main loop is currently running.
      */
-    isRunning: function() {
+    isRunning: function () {
         return running;
-    },
+    }
 };
 
 /**
@@ -578,12 +594,13 @@ let MainLoop = {
  *
  * @ignore
  */
-function animate(timestamp) {
+function animate (timestamp) {
     // Throttle the frame rate (if minFrameDelay is set to a non-zero value by
     // `MainLoop.setMaxAllowedFPS()`).
     if (timestamp < lastFrameTimeMs + minFrameDelay) {
         // Run the loop again the next time the browser is ready to render.
         rafHandle = requestAnimationFrame(animate);
+
         return;
     }
 
@@ -612,6 +629,7 @@ function animate(timestamp) {
         lastFpsUpdate = timestamp;
         framesThisSecond = 0;
     }
+
     framesThisSecond++;
 
     /*

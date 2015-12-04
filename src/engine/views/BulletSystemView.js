@@ -1,6 +1,7 @@
 import ObjectPool from '..//utils/ObjectPool';
 import View from './View';
 import BulletView from './BulletView';
+import Config from '../../config';
 
 class BulletSystemView extends View {
     constructor (bulletSystem) {
@@ -8,7 +9,7 @@ class BulletSystemView extends View {
         this.bulletSystem = bulletSystem;
         this.bulletViewPool = new ObjectPool(() => {
             return new BulletView(null);
-        }, this.bulletSystem.poolSize, 10);
+        }, this.bulletSystem.poolSize, 10, Config.poolLimits.bulletViewPool);
 
         this.bulletViewPairs = new WeakMap();
     }

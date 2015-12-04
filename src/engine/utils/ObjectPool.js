@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/object-pool');
-
 // https://github.com/kchapelier/migl-pool/blob/master/src/pool.js
 class ObjectPool {
     /**
@@ -7,16 +5,14 @@ class ObjectPool {
      * @param {function} factoryFunction Function that creates the object to pool.
      * @param {number} firstAllocationNumber Initial amount of objects to allocate.
      * @param {number} allocationNumber Number to increase the pool by when it is full.
+     * @param {number} allocationLimit Size limit of the pool.
      */
-    constructor (factoryFunction, firstAllocationNumber, allocationNumber, allocationLimit = 100) {
+    constructor (factoryFunction, firstAllocationNumber, allocationNumber, allocationLimit) {
         this.factoryFunction = factoryFunction;
         this.totalInstances = 0;
         this.allocationLimit = allocationLimit;
-
         this.allocationNumber = allocationNumber;
-
         this.availableInstances = [];
-
         this.allocate(firstAllocationNumber);
     }
 
@@ -38,7 +34,7 @@ class ObjectPool {
                 this.availableInstances.push(this.factoryFunction());
             }
         } else {
-            debug('allocation limit reached');
+            throw new Error('ObjectPool allocation limit reached.');
         }
 
         return this;

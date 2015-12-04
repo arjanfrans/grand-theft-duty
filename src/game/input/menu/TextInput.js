@@ -9,3 +9,5 @@ class TextInput {
 
     }
 };
+
+export default TextInput;

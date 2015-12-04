@@ -3,6 +3,7 @@ import Bullet from './entities/Bullet';
 
 import SAT from './collision/SAT';
 import CollisionUtils from './collision/CollisionUtils';
+import Config from '../config';
 
 class BulletSystem {
     constructor (state, options = {}) {
@@ -14,7 +15,7 @@ class BulletSystem {
             let bullet = new Bullet(0, 0, 0, 4, 10);
 
             return bullet;
-        }, 10, 10);
+        }, 10, 10, Config.poolLimits.bulletPool);
 
         // Bullets that died last turn
         this.deadBullets = new Set();
@@ -35,7 +36,6 @@ class BulletSystem {
             let firstBullet = this.activeBullets.values().next().value;
 
             this.bulletPool.free(firstBullet);
-
             bullet = this.bulletPool.get();
         }
 
@@ -43,7 +43,6 @@ class BulletSystem {
         bullet.firedByWeapon = firedBy.currentWeapon;
         bullet.respawn(firedBy.position);
         bullet.angle = firedBy.angle;
-
         this.activeBullets.add(bullet);
 
         return bullet;
@@ -63,7 +62,6 @@ class BulletSystem {
 
         for (let bullet of this.activeBullets) {
             bullet.update(delta);
-
             CollisionUtils.wallCollision(this.map, bullet, () => bullet.kill());
 
             if (bullet.dead) {

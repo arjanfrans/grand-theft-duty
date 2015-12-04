@@ -32,7 +32,7 @@ class Bullet extends Entity {
             this.dead = true;
             this.traveledDistance = 0;
         } else {
-            this.move('up');
+            this.moveUp();
         }
     }
 }

@@ -115,7 +115,7 @@ let createPlayState = function (mapName, cpuCount) {
 
 let PlayStateBuilder = {
     create (engine) {
-        let state = createPlayState('level2', 8);
+        let state = createPlayState('level2', 7);
 
         return state;
     }

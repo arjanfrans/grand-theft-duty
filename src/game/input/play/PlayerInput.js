@@ -1,62 +1,52 @@
-let debug = require('debug')('game:engine/input/play/PlayerInput');
-
 import Keyboard from '../../../engine/input/Keyboard';
 import Gamepad from '../../../engine/input/Gamepad';
+import HumanInput from '../../../engine/input/HumanInput';
 
-class PlayerInput {
+class PlayerInput extends HumanInput {
     constructor (player) {
-        this.player = player;
+        super();
 
-        this.previousKeys = {};
+        this.player = player;
     }
 
     update (delta) {
-        if (Keyboard.isDown(Keyboard.UP) || Gamepad.isStickDown(0, 'left', 'up')) {
-            this.player.move('up');
-        } else if (Keyboard.isDown(Keyboard.DOWN) || Gamepad.isStickDown(0, 'left', 'down')) {
-            this.player.move('down');
+        if (Keyboard.isDown(Keyboard.UP) || Gamepad.isStickDown(this.gamepadIndex, 'left', 'up')) {
+            this.player.moveUp();
+        } else if (Keyboard.isDown(Keyboard.DOWN) || Gamepad.isStickDown(this.gamepadIndex, 'left', 'down')) {
+            this.player.moveDown();
         } else {
             this.player.stopMoving();
         }
 
-        if (Keyboard.isDown(Keyboard.RIGHT) || Gamepad.isStickDown(0, 'right', 'right')) {
-            this.player.turn('right');
-        } else if (Keyboard.isDown(Keyboard.LEFT) || Gamepad.isStickDown(0, 'right', 'left')) {
-            this.player.turn('left');
+        if (Keyboard.isDown(Keyboard.RIGHT) || Gamepad.isStickDown(this.gamepadIndex, 'right', 'right')) {
+            this.player.turnRight();
+        } else if (Keyboard.isDown(Keyboard.LEFT) || Gamepad.isStickDown(this.gamepadIndex, 'right', 'left')) {
+            this.player.turnLeft();
         } else {
             this.player.stopTurning();
         }
 
-        if (!this.player.isRunning && Keyboard.isDown(Keyboard.CTRL)) {
+        if (!this.player.isRunning && (Keyboard.isDown(Keyboard.CTRL) ||
+                Gamepad.isDown(this.gamepadIndex, 'rightTrigger'))) {
             this.player.fireBullet();
         }
 
-        if (Keyboard.isDown(Keyboard.SHIFT)) {
+        if (Keyboard.isDown(Keyboard.SHIFT) || Gamepad.isDown(this.gamepadIndex, 'actionSouth')) {
             this.player.isRunning = true;
         } else {
             this.player.isRunning = false;
         }
 
-        // TODO built better mechanism to detect if pressed down once
-        if (!this.previousKeys.R && Keyboard.isDown(Keyboard.R)) {
-            this.previousKeys.R = true;
+        if (this.keyboardDownOnce(Keyboard.R) || this.gamepadButtonDownOnce('actionWest')) {
             this.player.reload();
-        } else if (this.previousKeys.R && !Keyboard.isDown(Keyboard.R)) {
-            this.previousKeys.R = false;
         }
 
-        if (!this.previousKeys.X && Keyboard.isDown(Keyboard.X)) {
-            this.previousKeys.X = true;
+        if (this.keyboardDownOnce(Keyboard.X) || this.gamepadButtonDownOnce('actionNorth')) {
             this.player.scrollWeapons('down');
-        } else if (this.previousKeys.X && !Keyboard.isDown(Keyboard.X)) {
-            this.previousKeys.X = false;
         }
 
-        if (!this.previousKeys.Z && Keyboard.isDown(Keyboard.Z)) {
-            this.previousKeys.Z = true;
+        if (this.keyboardDownOnce(Keyboard.Z) || this.gamepadButtonDownOnce('actionEast')) {
             this.player.scrollWeapons('up');
-        } else if (this.previousKeys.Z && !Keyboard.isDown(Keyboard.Z)) {
-            this.previousKeys.Z = false;
         }
     }
 }

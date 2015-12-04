@@ -131,44 +131,26 @@ class Entity {
         };
     }
 
-    /**
-     * Move the entity in direction "up" or "down".
-     *
-     * @param {string} direction "up" or "down"
-     *
-     * @returns {void}
-     */
-    move (direction) {
-        let speed = this.speed;
-
-        if (direction === 'up') {
-            this.reverse = false;
-            speed = -this.speed;
-        } else {
-            this.reverse = true;
-            speed = this.speed;
-        }
-
+    moveUp () {
+        this.reverse = false;
         this.isMoving = true;
-        this.velocity.x = speed * Math.cos(this.angle);
-        this.velocity.y = speed * Math.sin(this.angle);
-    };
+        this.velocity.x = -this.speed * Math.cos(this.angle);
+        this.velocity.y = -this.speed * Math.sin(this.angle);
+    }
 
-    /**
-     * Turn an entity to the "left" or "right".
-     *
-     * @param {string} direction "left" or "right"
-     *
-     * @returns {void}
-     */
-    turn (direction) {
-        let rotationSpeed = this.rotationSpeed;
+    moveDown () {
+        this.reverse = true;
+        this.isMoving = true;
+        this.velocity.x = this.speed * Math.cos(this.angle);
+        this.velocity.y = this.speed * Math.sin(this.angle);
+    }
 
-        if (direction === 'right') {
-            rotationSpeed = -this.rotationSpeed;
-        }
+    turnLeft () {
+        this.angularVelocity = this.rotationSpeed * (Math.PI / 180);
+    }
 
-        this.angularVelocity = rotationSpeed * (Math.PI / 180);
+    turnRight () {
+        this.angularVelocity = -this.rotationSpeed * (Math.PI / 180);
     }
 
     stopMoving () {

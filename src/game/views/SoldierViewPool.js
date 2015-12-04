@@ -2,6 +2,7 @@ import ObjectPool from '../../engine/utils/ObjectPool';
 
 import SoldierView from './SoldierView';
 import View from '../../engine/views/View';
+import Config from '../../config';
 
 class SoldierViewPool extends View {
     constructor (soldiers) {
@@ -11,7 +12,7 @@ class SoldierViewPool extends View {
 
         this.viewPool = new ObjectPool(() => {
             return new SoldierView(null);
-        }, this.soldiers.size, 10);
+        }, this.soldiers.size, 10, Config.poolLimits.soldierViewPool);
 
         this.viewPairs = new WeakMap();
     }

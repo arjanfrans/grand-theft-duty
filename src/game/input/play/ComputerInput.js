@@ -9,15 +9,17 @@ class ComputerInput {
         }
 
         if (Math.random() > 0.8) {
-            this.soldier.move('up');
+            this.soldier.moveUp();
         }
 
-        if (Math.random() > 0.9) {
+        if (Math.random() > 0.7) {
             if (Math.random() > 0.5) {
-                this.soldier.turn('right');
+                this.soldier.turnRight();
             } else {
-                this.soldier.turn('left');
+                this.soldier.turnLeft();
             }
+        } else {
+            this.soldier.stopTurning();
         }
 
         if (this.soldier.currentWeapon) {

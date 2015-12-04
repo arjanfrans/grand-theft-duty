@@ -1,20 +1,19 @@
 import Keyboard from '../../../engine/input/Keyboard';
+import HumanInput from '../../../engine/input/HumanInput';
 
-class UiInput {
+class UiInput extends HumanInput {
     constructor (state) {
-        this.state = state;
+        super();
 
-        this.previousKeys = {};
+        this.state = state;
     }
 
     update (delta) {
-        if (Keyboard.isDown(Keyboard.E)) {
+        if (Keyboard.isDown(Keyboard.E) || this.gamepadButtonDownOnce('leftBumper')) {
             this.state.showScores = true;
         } else {
             this.state.showScores = false;
         }
-
-        // TODO gamepad input
     }
 }
 

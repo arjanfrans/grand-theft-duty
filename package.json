@@ -12,7 +12,7 @@
     "test": "mocha ./test/*",
     "cover": "istanbul cover _mocha -- -R spec ./test/*",
     "ci": "npm run clean && npm run lint && npm run build:production && npm run cover",
-    "clean": "rm -r build",
+    "clean": "rm -rf dist",
     "lint": "eslint ./src/*",
     "start": "webpack-dev-server --colors --devtool source-map",
     "deploy": "./deploy.sh",

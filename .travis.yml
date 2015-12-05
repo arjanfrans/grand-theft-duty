@@ -1,0 +1,13 @@
+language: node_js
+
+node_js:
+    - "4.2"
+    - "stable"
+
+cache:
+    directories:
+        - node_modules
+
+script: "npm run ci"
+
+after_script: "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"

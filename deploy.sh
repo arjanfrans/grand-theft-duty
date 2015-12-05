@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -o errexit #abort if any command fails
 
-npm run build
+npm run build:production
 mkdir -p dist
 rm -rf ./dist/assets
 cp -r ./assets ./dist

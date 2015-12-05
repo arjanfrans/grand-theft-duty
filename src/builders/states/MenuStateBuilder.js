@@ -5,6 +5,7 @@ import MenuRenderView from '../../game/states/menu/MenuRenderView';
 import ViewContainer from '../../engine/views/ViewContainer';
 import BackgroundView from '../../engine/views/BackgroundView';
 import Menu from '../../engine/menu/Menu';
+import MenuItem from '../../engine/menu/MenuItem';
 import MenuInput from '../../game/input/menu/MenuInput';
 
 import MenuItemsView from '../../game/views/menu/MenuItemsView';
@@ -15,27 +16,27 @@ import MenuAudio from '../../game/audio/MenuAudio';
 let _createMenus = function (engine, state) {
     let mainMenu = new Menu();
 
-    mainMenu.addMenuItem('Create game', function () {
+    mainMenu.addMenuItem(new MenuItem('createGame', 'Create game', function () {
         engine.changeState('play');
-    });
+    }));
 
-    mainMenu.addMenuItem('Options', function () {
+    mainMenu.addMenuItem(new MenuItem('options', 'Options', function () {
         state.currentMenu = 'options';
-    });
+    }));
 
-    mainMenu.addMenuItem('Exit', function () {
+    mainMenu.addMenuItem(new MenuItem('help', 'Help', function () {
         debug('not implemented');
-    });
+    }));
 
     let optionsMenu = new Menu();
 
-    optionsMenu.addMenuItem('Name', function () {
-        debug('not implemented');
-    });
+    optionsMenu.addMenuItem(new MenuItem('name', 'Name', function () {
+        // state.currentOptionsEdit = 'name';
+    }));
 
-    optionsMenu.addMenuItem('- back', function () {
+    optionsMenu.addMenuItem(new MenuItem('back', '- back', function () {
         state.currentMenu = 'main';
-    });
+    }));
 
     state.addMenu('main', mainMenu);
     state.addMenu('options', optionsMenu);

@@ -8,6 +8,10 @@ class MenuState extends State {
         this.menus = new Map();
         this._currentMenu = null;
         this.currentMenuName = null;
+        this.options = new Map([
+            ['name', 'Unknown Soldier']
+        ]);
+        this.currentOptionsEdit = null;
     }
 
     addMenu (name, menu) {

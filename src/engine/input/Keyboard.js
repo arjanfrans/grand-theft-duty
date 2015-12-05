@@ -1,16 +1,6 @@
 let debug = require('debug')('game:engine/input/utils/Keyboard');
 
-let keys = {
-    CTRL: 17,
-    SPACE: 32,
-    ENTER: 13,
-    SHIFT: 16,
-    ESC: 27,
-    TAB: 9,
-    LEFT: 37,
-    UP: 38,
-    RIGHT: 39,
-    DOWN: 40,
+let letterKeys = {
     A: 65,
     B: 66,
     C: 67,
@@ -39,28 +29,71 @@ let keys = {
     Z: 90
 };
 
+let keys = {
+    BACKSPACE: 8,
+    CTRL: 17,
+    SPACE: 32,
+    ENTER: 13,
+    SHIFT: 16,
+    ESC: 27,
+    TAB: 9,
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40
+};
+
+for (let key of Object.keys(letterKeys)) {
+    keys[key] = letterKeys[key];
+}
+
 let codes = {};
 
 let Keyboard = {
     _pressed: {},
+    lastPressed: null,
 
-    isDown: function (keyCode) {
+    isDown (keyCode) {
         return this._pressed[keyCode];
     },
 
-    onKeydown: function (event) {
+    onKeydown (event) {
+        this.lastPressed = event.keyCode;
         this._pressed[event.keyCode] = true;
     },
 
-    onKeyup: function (event) {
+    onKeyup (event) {
         this._pressed[event.keyCode] = false;
     },
 
-    keyByCode: function (code) {
+    keyByCode (code) {
         return codes[code];
     },
 
-    keys: keys
+    get pressedCodes () {
+        return this._pressed;
+    },
+
+    get pressedKeys () {
+        let pressed = [];
+
+        for (let code of this._pressed) {
+            pressed.push(this.keyByCode(code));
+        }
+
+        return pressed;
+    },
+
+    keys: keys,
+    get letterKeyCodes () {
+        let letterCodes = [];
+
+        for (let code of letterKeys) {
+            letterCodes.push(code);
+        }
+
+        return letterCodes;
+    }
 };
 
 for (let key of Object.keys(keys)) {

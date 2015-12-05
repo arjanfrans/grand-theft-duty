@@ -1,20 +1,17 @@
-let debug = require('debug')('game:engine/logic/menu/Menu');
-
 class Menu {
     constructor () {
         this.menuItems = new Map();
         this.menuItemKeys = [];
-
         this.selectedItemIndex = 0;
     }
 
-    addMenuItem (menuItem, action) {
-        this.menuItemKeys.push(menuItem);
-        this.menuItems.set(menuItem, action);
+    addMenuItem (menuItem) {
+        this.menuItemKeys.push(menuItem.name);
+        this.menuItems.set(menuItem.name, menuItem);
     }
 
     get selectedItem () {
-        return this.menuItemKeys[this.selectedItemIndex];
+        return this.menuItems.get(this.menuItemKeys[this.selectedItemIndex]);
     }
 
     moveUp () {
@@ -23,8 +20,6 @@ class Menu {
         } else {
             this.selectedItemIndex = 0;
         }
-
-        debug('current item', this.selectedItem);
     }
 
     moveDown () {
@@ -33,16 +28,10 @@ class Menu {
         } else {
             this.selectedItemIndex = this.menuItemKeys.length - 1;
         }
-
-        debug('current item', this.selectedItem);
     }
 
     selectCurrentItem () {
-        debug('selecting current item', this.selectedItem);
-
-        let action = this.menuItems.get(this.selectedItem);
-
-        action();
+        this.selectedItem.action();
     }
 }
 

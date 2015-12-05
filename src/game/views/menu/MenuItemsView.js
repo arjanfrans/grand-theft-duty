@@ -27,8 +27,8 @@ class MenuItemsView extends View {
 
         this.selectedItem = this.menu.selectedItem;
 
-        for (let menuItem of this.menu.menuItemKeys) {
-            let textView = new Views.Text(menuItem, {
+        for (let menuItem of this.menu.menuItems.values()) {
+            let textView = new Views.Text(menuItem.text, {
                 width: 300
             });
 

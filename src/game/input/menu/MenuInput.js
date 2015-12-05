@@ -10,15 +10,29 @@ class MenuInput extends HumanInput {
     }
 
     update () {
+        let state = this.state;
+
         if (this.keyboardDownOnce(Keyboard.UP) || Gamepad.isStickDown(0, 'left', 'up')) {
-            this.state.currentMenu.moveUp();
+            state.currentMenu.moveUp();
         } else if (this.keyboardDownOnce(Keyboard.DOWN) || Gamepad.isStickDown(0, 'left', 'down')) {
-            this.state.currentMenu.moveDown();
+            state.currentMenu.moveDown();
         }
 
         if (this.keyboardDownOnce(Keyboard.ENTER) || this.keyboardDownOnce(Keyboard.SPACE) ||
                 this.gamepadButtonDownOnce('actionSouth')) {
-            this.state.currentMenu.selectCurrentItem();
+            state.currentMenu.selectCurrentItem();
+        }
+
+        if (state.currentOptionsEdit) {
+            let option = state.options.get(state.currentOptionsEdit);
+
+            if (this.keyboardDownOnce(Keyboard.ENTER)) {
+                console.info('to be implemented');
+            }
+
+            if (Keyboard.letterKeys.indexOf(Keyboard.lastPressed) !== -1) {
+                this.state.options.set(state.currentOptionsEdit, option + Keyboard.keyByCode(Keyboard.lastPressed));
+            }
         }
     }
 }

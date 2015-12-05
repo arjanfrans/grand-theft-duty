@@ -9,11 +9,15 @@
     "three-bmfont-text": "^1.2.0"
   },
   "scripts": {
+    "test": "mocha ./test/*",
+    "cover": "istanbul cover _mocha -- -R spec ./test/*",
+    "ci": "npm run clean && npm run lint && npm run build:production && npm run cover",
     "clean": "rm -r build",
     "lint": "eslint ./src/*",
     "start": "webpack-dev-server --colors --devtool source-map",
     "deploy": "./deploy.sh",
-    "build": "webpack --optimize-minimize"
+    "build:production": "webpack --optimize-minimize",
+    "build:development": "webpack"
   },
   "repository": {
     "type": "git",
@@ -34,7 +38,10 @@
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.1.18",
     "convert-bmfont": "^1.0.2",
+    "coveralls": "^2.11.4",
     "eslint": "^1.10.3",
+    "istanbul": "^0.4.1",
+    "mocha": "^2.3.4",
     "pre-commit": "^1.1.2",
     "spritesheet-js": "git+https://github.com/arjanfrans/spritesheet.js.git",
     "webpack": "^1.12.9",

@@ -1,5 +1,11 @@
 # Grand Theft Duty
 
+[![Build Status](https://travis-ci.org/arjanfrans/grand-theft-duty.svg)](https://travis-ci.org/arjanfrans/grand-theft-duty)
+[![Dependency Status](https://david-dm.org/arjanfrans/grand-theft-duty.svg)](https://david-dm.org/arjanfrans/grand-theft-duty)
+[![devDependency Status](https://david-dm.org/arjanfrans/grand-theft-duty/dev-status.svg)](https://david-dm.org/arjanfrans/grand-theft-duty#info=devDependencies)
+[![Coverage Status](https://coveralls.io/repos/arjanfrans/grand-theft-duty/badge.svg?branch=master&service=github)](https://coveralls.io/github/arjanfrans/grand-theft-duty?branch=master)
+[![Gratipay](https://img.shields.io/gratipay/arjanfrans.svg)](https://gratipay.com/~arjanfrans)
+
 A top-down shooter inspired by the classic Grand Theft Auto games and Call of Duty.
 Grand Theft Duty combines elements of both games.
 

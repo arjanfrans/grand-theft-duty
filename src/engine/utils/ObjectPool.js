@@ -34,7 +34,7 @@ class ObjectPool {
                 this.availableInstances.push(this.factoryFunction());
             }
         } else {
-            throw new Error('ObjectPool allocation limit reached.');
+            throw new Error('ObjectPool allocation limit reached');
         }
 
         return this;

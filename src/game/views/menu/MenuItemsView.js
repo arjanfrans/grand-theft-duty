@@ -16,6 +16,7 @@ class MenuItemsView extends View {
         this.selectedView = null;
 
         this.logoView = new LogoView('logo', 'ui');
+        this.bufferFill = 0;
     }
 
     init () {
@@ -28,7 +29,7 @@ class MenuItemsView extends View {
         this.selectedItem = this.menu.selectedItem;
 
         for (let menuItem of this.menu.menuItems.values()) {
-            let textView = new Views.Text(menuItem.text, {
+            let textView = new Views.Text('1'.repeat(100), {
                 width: 300
             });
 
@@ -52,17 +53,42 @@ class MenuItemsView extends View {
     }
 
     update () {
-        // Selected item changed
-        if (this.selectedItem !== this.menu.selectedItem) {
-            let previousItem = this.selectedItem;
+        if (this.bufferFill < 2) {
+            console.log(this.menu);
+            // FIXME workaround for buffer growing
+            for (let [item, view] of this.viewMenuItemPairs.entries()) {
+                if (this.bufferFill < 1) {
+                    view.text = '1'.repeat(100);
+                } else {
+                    view.text = item.text;
+                }
+            }
+            this.bufferFill += 1;
+        } else if (this.bufferFill >= 2) {
+            // Selected item changed
+            if (this.selectedItem !== this.menu.selectedItem) {
+                let previousItem = this.selectedItem;
 
-            this.selectedItem = this.menu.selectedItem;
+                this.selectedItem = this.menu.selectedItem;
 
-            let currentView = this.viewMenuItemPairs.get(this.selectedItem);
-            let previousView = this.viewMenuItemPairs.get(previousItem);
+                let currentView = this.viewMenuItemPairs.get(this.selectedItem);
+                let previousView = this.viewMenuItemPairs.get(previousItem);
 
-            previousView.color = this.options.textColor;
-            currentView.color = this.options.selectedTextColor;
+                currentView.text = this.selectedItem.text;
+
+                previousView.color = this.options.textColor;
+                currentView.color = this.options.selectedTextColor;
+            }
+
+            if (this.menu.selectedItem.editable && this.menu.selectedItem.isEditing) {
+                let currentView = this.viewMenuItemPairs.get(this.selectedItem);
+
+                currentView.text = this.selectedItem.text + '-';
+            } else {
+                let currentView = this.viewMenuItemPairs.get(this.selectedItem);
+
+                currentView.text = this.selectedItem.text;
+            }
         }
     }
 }

@@ -58,7 +58,7 @@ let _createMenus = function (engine, state) {
 
     let optionsMenuViewContainer = new ViewContainer();
 
-    optionsMenuViewContainer.addDynamicView(new MenuItemsView(optionsMenu), { x: 500, y: 100, z: 0 });
+    optionsMenuViewContainer.addDynamicView(new MenuItemsView(optionsMenu), { x: 300, y: 100, z: 0 });
 
     let background2 = new BackgroundView('iwo_jima', 'ui');
 

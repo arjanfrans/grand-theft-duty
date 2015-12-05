@@ -18,15 +18,24 @@ class MenuInput extends HumanInput {
             state.currentMenu.moveDown();
         }
 
-        if (state.currentOptionsEdit && state.currentMenu.selectedItem.editable) {
+        let selectedItem = state.currentMenu.selectedItem;
+
+        if (selectedItem.editable) {
             let option = state.options.get(state.currentOptionsEdit);
 
             if (this.keyboardDownOnce(Keyboard.ENTER)) {
-                console.log('to be implemented');
+                selectedItem.isEditing = !selectedItem.isEditing;
             }
 
-            if (Keyboard.letterKeyCodes.indexOf(Keyboard.lastPressed) !== -1) {
-                this.state.options.set(state.currentOptionsEdit, option + Keyboard.keyByCode(Keyboard.lastPressed));
+        }
+
+        if (selectedItem.isEditing) {
+            if (this.keyboardDownOnce(Keyboard.BACKSPACE)) {
+                selectedItem.value = selectedItem.value.slice(0, -1);
+            } else if (Keyboard.letterKeyCodes.indexOf(Keyboard.lastPressed) !== -1) {
+                if (this.keyboardDownOnce(Keyboard[Keyboard.keyByCode(Keyboard.lastPressed)])) {
+                    selectedItem.value = selectedItem.value + Keyboard.keyByCode(Keyboard.lastPressed);
+                }
             }
         }
 

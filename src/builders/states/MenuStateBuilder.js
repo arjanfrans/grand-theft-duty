@@ -6,6 +6,7 @@ import ViewContainer from '../../engine/views/ViewContainer';
 import BackgroundView from '../../engine/views/BackgroundView';
 import Menu from '../../engine/menu/Menu';
 import MenuItem from '../../engine/menu/MenuItem';
+import MenuInputItem from '../../engine/menu/MenuInputItem';
 import MenuInput from '../../game/input/menu/MenuInput';
 
 import MenuItemsView from '../../game/views/menu/MenuItemsView';
@@ -30,8 +31,8 @@ let _createMenus = function (engine, state) {
 
     let optionsMenu = new Menu();
 
-    optionsMenu.addMenuItem(new MenuItem('name', 'Name', function () {
-        // state.currentOptionsEdit = 'name';
+    optionsMenu.addMenuItem(new MenuInputItem('name', 'Name', 'Unknown Soldier', function () {
+        state.currentOptionsEdit = 'name';
     }));
 
     optionsMenu.addMenuItem(new MenuItem('back', '- back', function () {

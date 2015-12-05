@@ -1,7 +1,7 @@
 {
   "name": "grand-theft-duty",
   "version": "0.0.5",
-  "description": "Inspired by GTA2 and Call of Duty 2",
+  "description": "Top down WW2 shooter",
   "dependencies": {
     "debug": "^2.2.0",
     "howler": "^2.0.0-beta4",
@@ -14,19 +14,22 @@
     "ci": "npm run clean && npm run lint && npm run build:production && npm run cover",
     "clean": "rm -rf dist",
     "lint": "eslint ./src/*",
-    "start": "webpack-dev-server --colors --devtool source-map",
-    "deploy": "./deploy.sh",
-    "build:production": "webpack --optimize-minimize",
-    "build:development": "webpack"
+    "start": "node ./buildsystem/generateIndex.js && webpack-dev-server --config ./buildsystem/webpack.config.js --colors --devtool source-map",
+    "deploy": "./buildsystem/deploy.sh",
+    "build:production": "node ./buildsystem/generateIndex.js && webpack --config ./buildsystem/webpack.config.js  --optimize-minimize",
+    "build:development": "node ./buildsystem/generateIndex.js && webpack --config ./buildsystem/webpack.config.js "
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/arjanfrans/grand-theft-duty"
   },
   "keywords": [
-    "THREE.js",
+    "three.js",
     "game",
-    "grand theft duty"
+    "grand theft duty",
+    "top down shooter",
+    "call of duty",
+    "grand theft auto"
   ],
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
@@ -42,6 +45,7 @@
     "eslint": "^1.10.3",
     "istanbul": "^0.4.1",
     "mocha": "^2.3.4",
+    "nunjucks": "^2.2.0",
     "pre-commit": "^1.1.2",
     "spritesheet-js": "git+https://github.com/arjanfrans/spritesheet.js.git",
     "webpack": "^1.12.9",

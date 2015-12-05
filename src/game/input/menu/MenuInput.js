@@ -18,21 +18,21 @@ class MenuInput extends HumanInput {
             state.currentMenu.moveDown();
         }
 
-        if (this.keyboardDownOnce(Keyboard.ENTER) || this.keyboardDownOnce(Keyboard.SPACE) ||
-                this.gamepadButtonDownOnce('actionSouth')) {
-            state.currentMenu.selectCurrentItem();
-        }
-
-        if (state.currentOptionsEdit) {
+        if (state.currentOptionsEdit && state.currentMenu.selectedItem.editable) {
             let option = state.options.get(state.currentOptionsEdit);
 
             if (this.keyboardDownOnce(Keyboard.ENTER)) {
-                console.info('to be implemented');
+                console.log('to be implemented');
             }
 
-            if (Keyboard.letterKeys.indexOf(Keyboard.lastPressed) !== -1) {
+            if (Keyboard.letterKeyCodes.indexOf(Keyboard.lastPressed) !== -1) {
                 this.state.options.set(state.currentOptionsEdit, option + Keyboard.keyByCode(Keyboard.lastPressed));
             }
+        }
+
+        if (this.keyboardDownOnce(Keyboard.ENTER) || this.keyboardDownOnce(Keyboard.SPACE) ||
+                this.gamepadButtonDownOnce('actionSouth')) {
+            state.currentMenu.selectCurrentItem();
         }
     }
 }

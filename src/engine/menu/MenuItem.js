@@ -3,6 +3,7 @@ class MenuItem {
         this.name = name;
         this.text = text;
         this.action = action;
+        this.editable = false;
     }
 }
 

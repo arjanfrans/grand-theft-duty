@@ -88,8 +88,8 @@ let Keyboard = {
     get letterKeyCodes () {
         let letterCodes = [];
 
-        for (let code of letterKeys) {
-            letterCodes.push(code);
+        for (let key of Object.keys(letterKeys)) {
+            letterCodes.push(letterKeys[key]);
         }
 
         return letterCodes;

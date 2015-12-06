@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "mocha --compilers js:babel-register",
-    "cover": "babel-node ./node_modules/.bin/babel-istanbul cover _mocha",
+    "cover": "babel-node ./node_modules/.bin/babel-istanbul --include-all-sources cover --root src _mocha",
     "ci": "npm run clean && npm run lint && npm run build:production && npm run cover",
     "clean": "rm -rf dist",
     "lint": "eslint ./src/*",

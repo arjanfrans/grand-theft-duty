@@ -11,6 +11,7 @@ class MenuState extends State {
         this.options = new Map([
             ['name', 'Unknown Soldier']
         ]);
+        this.gamePlaying = false;
         this.currentOptionsEdit = null;
     }
 

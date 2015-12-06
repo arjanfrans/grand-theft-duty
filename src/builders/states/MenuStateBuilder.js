@@ -17,9 +17,12 @@ import MenuAudio from '../../game/audio/MenuAudio';
 let _createMenus = function (engine, state) {
     let mainMenu = new Menu();
 
-    mainMenu.addMenuItem(new MenuItem('createGame', 'Create game', function () {
+    mainMenu.addMenuItem(new MenuItem('createGame', 'Create game', function (menuItem) {
         engine.changeState('play');
         engine.states.get('play').player.name = state.options.get('name');
+        engine.states.get('play').resume();
+        state.gamePlaying = true;
+        menuItem.text = 'Continue game';
     }));
 
     mainMenu.addMenuItem(new MenuItem('options', 'Options', function () {

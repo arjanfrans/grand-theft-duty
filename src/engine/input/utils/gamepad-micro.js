@@ -318,9 +318,6 @@ GamepadMicro.prototype._tick = function () {
         } else if (window.webkitRequestAnimationFrame) {
             window.webkitRequestAnimationFrame(tickFunc);
         }
-
-        // Note lack of setTimeout since all the browsers that support
-        // Gamepad API are already supporting requestAnimationFrame().
     }
 };
 
@@ -334,4 +331,4 @@ let _gamepadSupported = function () {
         !!navigator.webkitGamepads;
 };
 
-module.exports = GamepadMicro;
+export default GamepadMicro;

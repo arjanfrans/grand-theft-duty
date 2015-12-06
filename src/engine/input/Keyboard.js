@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/input/utils/Keyboard');
-
 let letterKeys = {
     A: 65,
     B: 66,

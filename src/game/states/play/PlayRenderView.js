@@ -35,6 +35,10 @@ class PlayRenderView extends RenderView {
     }
 
     update (delta) {
+        if (this.state.paused) {
+            return;
+        }
+
         super.update(delta);
 
         if (this.cameraFollowView) {

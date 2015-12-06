@@ -21,6 +21,8 @@ class PlayState extends State {
 
         // FIXME get this out of here
         this.showScores = false;
+        this.paused = false;
+        this.onPause = null;
     }
 
     init () {
@@ -29,6 +31,18 @@ class PlayState extends State {
 
     get soldiers () {
         return this.match.soldiers;
+    }
+
+    pause () {
+        if (this.onPause) {
+            this.onPause();
+        }
+
+        this.paused = true;
+    }
+
+    resume () {
+        this.paused = false;
     }
 
     /**
@@ -40,6 +54,10 @@ class PlayState extends State {
      */
     update (delta) {
         super.updateInputs(delta);
+
+        if (this.paused) {
+            return;
+        }
 
         super.updateAudio(delta);
 

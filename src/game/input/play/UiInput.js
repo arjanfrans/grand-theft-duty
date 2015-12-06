@@ -14,6 +14,14 @@ class UiInput extends HumanInput {
         } else {
             this.state.showScores = false;
         }
+
+        if (this.keyboardDownOnce(Keyboard.ESC)) {
+            if (this.state.paused) {
+                this.state.resume();
+            } else {
+                this.state.pause();
+            }
+        }
     }
 }
 

@@ -8,7 +8,7 @@ class MenuItem {
 
     action () {
         if (this.onAction) {
-            this.onAction();
+            this.onAction(this);
         }
     }
 }

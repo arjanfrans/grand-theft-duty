@@ -71,10 +71,14 @@ let _createUiView = function (state) {
     return uiView;
 };
 
-let createPlayState = function (mapName, cpuCount) {
+let createPlayState = function (engine, mapName, cpuCount) {
     let map = MapParser.parse(mapName);
     let match = new Match(['german', 'american']);
     let state = new PlayState(match, map);
+
+    state.onPause = function () {
+        engine.changeState('menu');
+    };
 
     for (let i = 0; i < cpuCount; i++) {
         let soldier = new Entities.Soldier(350 + (100 * i), 450, 900, 48, 48, 1, 'american');
@@ -115,7 +119,7 @@ let createPlayState = function (mapName, cpuCount) {
 
 let PlayStateBuilder = {
     create (engine) {
-        let state = createPlayState('level2', 7);
+        let state = createPlayState(engine, 'level2', 7);
 
         return state;
     }

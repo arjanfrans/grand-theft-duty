@@ -1,9 +1,15 @@
 class MenuItem {
-    constructor (name, text, action) {
+    constructor (name, text, onAction = null) {
         this.name = name;
         this.text = text;
-        this.action = action;
+        this.onAction = onAction;
         this.editable = false;
+    }
+
+    action () {
+        if (this.onAction) {
+            this.onAction();
+        }
     }
 }
 

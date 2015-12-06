@@ -20,16 +20,7 @@ class MenuInput extends HumanInput {
 
         let selectedItem = state.currentMenu.selectedItem;
 
-        if (selectedItem.editable) {
-            let option = state.options.get(state.currentOptionsEdit);
-
-            if (this.keyboardDownOnce(Keyboard.ENTER)) {
-                selectedItem.isEditing = !selectedItem.isEditing;
-            }
-
-        }
-
-        if (selectedItem.isEditing) {
+        if (selectedItem.editable && selectedItem.isEditing) {
             if (this.keyboardDownOnce(Keyboard.BACKSPACE)) {
                 selectedItem.value = selectedItem.value.slice(0, -1);
             } else if (Keyboard.letterKeyCodes.indexOf(Keyboard.lastPressed) !== -1) {

@@ -18,6 +18,10 @@ class MenuState extends State {
         this.menus.set(name, menu);
     }
 
+    changeOption (optionName, value) {
+        this.options.set(optionName, value);
+    }
+
     set currentMenu (name) {
         this._currentMenu = this.menus.get(name);
         this.currentMenuName = name;

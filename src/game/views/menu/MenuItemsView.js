@@ -54,7 +54,6 @@ class MenuItemsView extends View {
 
     update () {
         if (this.bufferFill < 2) {
-            console.log(this.menu);
             // FIXME workaround for buffer growing
             for (let [item, view] of this.viewMenuItemPairs.entries()) {
                 if (this.bufferFill < 1) {

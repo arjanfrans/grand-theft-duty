@@ -19,6 +19,7 @@ let _createMenus = function (engine, state) {
 
     mainMenu.addMenuItem(new MenuItem('createGame', 'Create game', function () {
         engine.changeState('play');
+        engine.states.get('play').player.name = state.options.get('name');
     }));
 
     mainMenu.addMenuItem(new MenuItem('options', 'Options', function () {
@@ -31,8 +32,8 @@ let _createMenus = function (engine, state) {
 
     let optionsMenu = new Menu();
 
-    optionsMenu.addMenuItem(new MenuInputItem('name', 'Name', 'Unknown Soldier', function () {
-        state.currentOptionsEdit = 'name';
+    optionsMenu.addMenuItem(new MenuInputItem('name', 'Name', 'Unknown Soldier', function (value) {
+        state.changeOption('name', value);
     }));
 
     optionsMenu.addMenuItem(new MenuItem('back', '- back', function () {

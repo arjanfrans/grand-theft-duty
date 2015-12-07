@@ -26,7 +26,6 @@ const RUN_FRAMES = [
 
 const IDLE_FRAMES = ['idle_0001'];
 
-// FIXME better way to color stuff
 const TEAM_COLORS = {
     american: 0x006D02,
     german: 0xcccc00
@@ -70,7 +69,6 @@ class SoldierView extends View {
             color: TEAM_COLORS[this._team]
         });
 
-        // TODO make color configurable
         this.material.color.offsetHSL(0.1, 0.8, 0.4);
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);

@@ -33,6 +33,7 @@
             "callback-return": 2,
             "constructor-super": 2,
             "curly": [2, "multi-line"],
+            "no-warning-comments": [1, { "terms": ["TODO", "FIXME"], "location": "anywhere" }],
             "dot-location": [2, "property"],
             "eol-last": 2,
             "eqeqeq": [2, "allow-null"],

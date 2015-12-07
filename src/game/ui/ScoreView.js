@@ -28,9 +28,6 @@ class ScoreView extends View {
 
         this.state = state;
         this.match = state.match;
-
-        // FIXME atm three.js doesn't allow growing of buffers, so prefix it
-        this.bufferFill = false;
     }
 
     init () {
@@ -54,30 +51,25 @@ class ScoreView extends View {
 
         this.scoreTextView.init();
 
-        this.mesh.visible = true;
+        this.mesh.visible = false;
         this.mesh.add(this.scoreTextView.mesh);
 
         super.init();
     }
 
     update () {
-        if (!this.bufferFill) {
-            this.scoreTextView.text = '1'.repeat(1000);
-            this.bufferFill = true;
+        if (this.state.showScores) {
+            if (!this.mesh.visible) {
+                this.mesh.visible = true;
+            }
+
+            let newScores = _converToText(this.match.sortedScores());
+
+            // Scores have changed
+            this.scoreTextView.text = newScores;
         } else {
-            if (this.state.showScores) {
-                if (!this.mesh.visible) {
-                    this.mesh.visible = true;
-                }
-
-                let newScores = _converToText(this.match.sortedScores());
-
-                // Scores have changed
-                this.scoreTextView.text = newScores;
-            } else {
-                if (this.mesh.visible) {
-                    this.mesh.visible = false;
-                }
+            if (this.mesh.visible) {
+                this.mesh.visible = false;
             }
         }
     }

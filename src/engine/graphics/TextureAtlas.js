@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/graphics/texture-atlas');
-
 import AssetManager from '../AssetManager';
 
 class TextureAtlas {

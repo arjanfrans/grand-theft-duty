@@ -40,7 +40,7 @@
             "generator-star-spacing": [2, { "before": true, "after": true }],
             "handle-callback-err": [2, "^(err|error)$" ],
             "init-declarations": [2, "always"],
-            "indent": [2, 4, { "SwitchCase": 2 }],
+            "indent": [2, 4, { "SwitchCase": 1 }],
             "valid-jsdoc": [1, {
                 "requireReturn": true,
                 "requireParamDescription": true,

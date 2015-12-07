@@ -1,23 +1,64 @@
-'use strict';
+import Config from './config';
+import SocketServer from 'socket.io';
+import Server from './Server';
+import Errors from './Errors';
+import Commands from './commands';
 
-let SocketServer = require('socket.io');
+const io = new SocketServer();
+const DEFAULT_ROOM = 'main';
 
-let io = new SocketServer();
+io.listen(Config.port);
 
-io.listen(8888);
+let errorResponse = function (socketId, error) {
+    io.to(socketId).emit('data', {
+        error: error
+    });
+};
+
+let updateHandler = function (command, params) {
+    let responseData = {};
+
+    switch (command) {
+        case 'UPDATE_POSITION': {
+            let player = Server.updateClient(socketId, params.position);
+
+            responseData.params = {
+                command: 'UPDATE_POSITION',
+                player: player
+            };
+
+            break;
+        }
+    }
+
+    io.to(DEFAULT_ROOM, responseData);
+};
 
 io.on('connection', (socket) => {
     console.log('socket connected', socket.id);
 
     socket.on('register', (data) => {
-        console.log('client registered', data);
+        if (!data.name) {
+            errorResponse(socket.id, Errors.NO_NAME);
+        } else {
+            socket.join(DEFAULT_ROOM);
+
+            let player = Server.register(socket.id, DEFAULT_ROOM, data.name);
+
+            io.to(DEFAULT_ROOM).emit('data', {
+                command: Commands.Client.PLAYER_JOINED,
+                params: {
+                    player: player
+                }
+            });
+        }
     });
 
     socket.on('update', (data) => {
-        try {
-            console.log(JSON.parse(data));
-        } catch (err) {
-            throw err;
+        if (clientExists) {
+            updateHandler(data.command, data.params);
+        } else {
+            errorResponse(socketId, Errors.NOT_REGISTERED);
         }
     });
 

@@ -18,20 +18,23 @@ let errorResponse = function (socketId, error) {
 let updateHandler = function (command, params) {
     let responseData = {};
 
+    console.log('updatehandler', command, params);
     switch (command) {
-        case 'UPDATE_POSITION': {
-            let player = Server.updateClient(socketId, params.position);
+        case 'UPDATE_PLAYERS': {
+            let players = Server.players();
 
             responseData.params = {
-                command: 'UPDATE_POSITION',
-                player: player
+                command: 'UPDATE_PLAYERS',
+                params: {
+                    players: players
+                }
             };
 
             break;
         }
     }
 
-    io.to(DEFAULT_ROOM, responseData);
+    io.to(DEFAULT_ROOM).emit('data', responseData);
 };
 
 io.on('connection', (socket) => {
@@ -55,10 +58,10 @@ io.on('connection', (socket) => {
     });
 
     socket.on('update', (data) => {
-        if (clientExists) {
+        if (Server.clientExists(socket.id)) {
             updateHandler(data.command, data.params);
         } else {
-            errorResponse(socketId, Errors.NOT_REGISTERED);
+            errorResponse(socket.id, Errors.NOT_REGISTERED);
         }
     });
 

@@ -13,8 +13,19 @@ let Server = {
         };
 
         clients.set(socketId, player);
+        console.log('registering player', player.name, player.position);
 
         return player;
+    },
+
+    players () {
+        let result = {};
+
+        for (let [name, player] of clients.entries()) {
+            result[name] = player;
+        }
+
+        return result;
     },
 
     updateClient (socketId, position) {
@@ -26,7 +37,7 @@ let Server = {
             z: position.z
         };
 
-        return client;
+        console.log('updating client', cient);
     },
 
     clientExists (socketId) {

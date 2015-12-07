@@ -15,6 +15,7 @@ class PlayState extends State {
 
         this.collisionSystem = null;
         this.bulletSystem = null;
+        this.network = null;
         this.player = null;
         this.map = map;
         this.match = match;
@@ -54,6 +55,10 @@ class PlayState extends State {
      */
     update (delta) {
         super.updateInputs(delta);
+
+        if (this.network) {
+            this.network.update();
+        }
 
         if (this.paused) {
             return;

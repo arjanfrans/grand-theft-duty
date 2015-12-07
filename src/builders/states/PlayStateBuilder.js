@@ -27,6 +27,8 @@ import HealthView from '../../game/ui/HealthView';
 import WeaponView from '../../game/ui/WeaponView';
 import ScoreView from '../../game/ui/ScoreView';
 
+import Network from '../../engine/Network';
+
 let _createPlayView = function (state) {
     let playView = new PlayRenderView(state);
 
@@ -69,6 +71,47 @@ let _createUiView = function (state) {
     uiView.currentViewContainer = 'main';
 
     return uiView;
+};
+
+let createMultiplayerState = function (engine, mapName, cpuCount) {
+    let map = MapParser.parse(mapName);
+    let match = new Match(['german', 'american']);
+    let state = new PlayState(match, map);
+
+    let player = new Player(350, 350, 400, 48, 48, 1, 'american');
+
+    state.player = player;
+
+    let playerInput = new PlayerInput(state.player);
+
+    match.addSoldier(player, 'american');
+    state.inputs.add(playerInput);
+
+    let network = new Network(state);
+
+    network.init();
+    state.network = network;
+
+    network.register(player.name + Math.random());
+
+    let collisionSystem = new Systems.Collision(state);
+    let bulletSystem = new Systems.Bullet(state);
+
+    state.bulletSystem = bulletSystem;
+    state.collisionSystem = collisionSystem;
+    state.audio = new PlayAudio(state, 'guns', 'background');
+
+    let playView = _createPlayView(state);
+    let uiView = _createUiView(state);
+
+    state.addView(playView);
+    state.addView(uiView);
+
+    let uiInput = new UiInput(state);
+
+    state.inputs.add(uiInput);
+
+    return state;
 };
 
 let createPlayState = function (engine, mapName, cpuCount) {
@@ -119,7 +162,8 @@ let createPlayState = function (engine, mapName, cpuCount) {
 
 let PlayStateBuilder = {
     create (engine) {
-        let state = createPlayState(engine, 'level2', 7);
+        let state = createMultiplayerState(engine, 'level2', 7);
+        // let state = createPlayState(engine, 'level2', 7);
 
         return state;
     }

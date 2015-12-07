@@ -19,8 +19,14 @@ let _createMenus = function (engine, state) {
 
     mainMenu.addMenuItem(new MenuItem('createGame', 'Create game', function (menuItem) {
         engine.changeState('play');
-        engine.states.get('play').player.name = state.options.get('name');
-        engine.states.get('play').resume();
+        let playState = engine.states.get('play');
+
+        playState.player.name = state.options.get('name');
+
+        playState.network.player = playState.player;
+        playState.network.register(state.options.get('name'));
+
+        playState.resume();
         state.gamePlaying = true;
         menuItem.text = 'Continue game';
     }));

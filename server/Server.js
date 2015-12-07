@@ -21,8 +21,8 @@ let Server = {
     players () {
         let result = {};
 
-        for (let [name, player] of clients.entries()) {
-            result[name] = player;
+        for (let player of clients.values()) {
+            result[player.name] = player;
         }
 
         return result;
@@ -36,12 +36,14 @@ let Server = {
             y: position.y,
             z: position.z
         };
-
-        console.log('updating client', cient);
     },
 
     clientExists (socketId) {
         return clients.has(socketId);
+    },
+
+    removeClient (socketId) {
+        clients.delete(socketId);
     }
 };
 

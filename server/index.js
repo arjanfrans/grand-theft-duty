@@ -18,12 +18,11 @@ let errorResponse = function (socketId, error) {
 let updateHandler = function (command, params) {
     let responseData = {};
 
-    console.log('updatehandler', command, params);
     switch (command) {
         case 'UPDATE_PLAYERS': {
             let players = Server.players();
 
-            responseData.params = {
+            responseData = {
                 command: 'UPDATE_PLAYERS',
                 params: {
                     players: players
@@ -39,6 +38,12 @@ let updateHandler = function (command, params) {
 
 io.on('connection', (socket) => {
     console.log('socket connected', socket.id);
+
+    socket.on('disconnect', () => {
+        console.log('disconnecting', socket.id);
+
+        Server.removeClient(socket.id);
+    });
 
     socket.on('register', (data) => {
         if (!data.name) {

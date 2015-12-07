@@ -92,8 +92,6 @@ let createMultiplayerState = function (engine, mapName, cpuCount) {
     network.init();
     state.network = network;
 
-    network.register(player.name + Math.random());
-
     let collisionSystem = new Systems.Collision(state);
     let bulletSystem = new Systems.Bullet(state);
 

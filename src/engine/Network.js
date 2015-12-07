@@ -5,36 +5,45 @@ import Soldier from './entities/Soldier';
 class Network {
     constructor (state) {
         this.state = state;
-        this.player = state.player;
         this.match = state.match;
         this.clients = new Map();
         this.socket = null;
+        this._player = null;
+    }
+
+    set player (player) {
+        this._player = player;
+        this.clients.set(player.name, player);
     }
 
     init () {
         this.socket = SocketClient(Config.server);
 
         this.socket.on('data', (data) => {
-            console.log('sdds', data);
             switch (data.command) {
                 case 'UPDATE_PLAYERS': {
-                    for (let playerName of data.params.players) {
+                    console.log(Array.from(this.clients.keys()));
+                    for (let playerName of Object.keys(data.params.players)) {
                         let player = data.params.players[playerName];
+                        let soldier = this.clients.get(playerName);
 
-                        let soldier = clients.get(playerName);
                         let position = player.position;
 
-                        if (soldier) {
-                            soldier.position.x = position.x;
-                            soldier.position.y = position.y;
-                            soldier.position.z = position.z;
-                            console.log('update soldier');
-                        } else {
-                            soldier = new Soldier(position.x, position.y, position.z, 48, 48, 1, 'american');
+                        if (soldier !== this._player) {
+                            if (soldier) {
+                                soldier.position.x = position.x;
+                                soldier.position.y = position.y;
+                                soldier.position.z = position.z;
+                                console.log('update soldier');
+                            } else {
+                                soldier = new Soldier(position.x, position.y, position.z, 48, 48, 1, 'american');
 
-                            console.log('new soldier');
+                                soldier.name = player.name;
+                                console.log('new soldier');
 
-                            this.match.addSoldier(soldier, soldier.team);
+                                this.match.addSoldier(soldier, soldier.team);
+                                this.clients.set(soldier.name, soldier);
+                            }
                         }
                     }
                 }
@@ -49,18 +58,20 @@ class Network {
     }
 
     update () {
-        let position = this.player.position;
+        if (this._player) {
+            let position = this._player.position;
 
-        this.socket.emit('update', {
-            command: 'UPDATE_POSITION',
-            params: {
-                position: {
-                    x: position.x,
-                    y: position.y,
-                    z: position.z
+            this.socket.emit('update', {
+                command: 'UPDATE_PLAYERS',
+                params: {
+                    position: {
+                        x: position.x,
+                        y: position.y,
+                        z: position.z
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }
 

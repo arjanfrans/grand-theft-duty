@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/collision/box');
-
 import Vector from './Vector';
 import Polygon from './Polygon';
 

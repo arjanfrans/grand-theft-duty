@@ -1,15 +1,4 @@
-let debug = require('debug')('game:engine/AssetManager');
-
-// import * as Howler from 'howler';
-let Howler = require('howler');
-
-const ATLAS_DIRECTORY = '../../assets/spritesheets/';
-const MAPS_DIRECTORY = '../../assets/maps/';
-const FONTS_DIRECTORY = '../../assets/fonts/';
-const AUDIO_SPRITE_DIRECTORY = '../../assets/audio/sprites/';
-
-let _textureLoader = new THREE.TextureLoader();
-let _xhrLoader = new THREE.XHRLoader();
+import Howler from 'howler';
 
 let _assets = {
     atlases: new Map(),
@@ -22,7 +11,6 @@ let _assets = {
 let _loadHowlerAudio = function (name, spriteJson) {
     return new Promise((resolve, reject) => {
         spriteJson.onload = function () {
-            debug('audio sprite loaded', spriteJson);
             return resolve();
         };
 
@@ -42,15 +30,15 @@ let _loadHowlerAudio = function (name, spriteJson) {
     });
 };
 
-let _loadAudioSprite = function (name) {
-    return _loadJson(AUDIO_SPRITE_DIRECTORY + name + '.json').then(function (spriteJson) {
+let _loadAudioSprite = function (audioSpritePath, name) {
+    return _loadJson(audioSpritePath + name + '.json').then(function (spriteJson) {
         // FIXME change "urls" to "src" to work with Howler 2
         spriteJson.src = spriteJson.urls;
 
         let fullSources = [];
 
         for (let src of spriteJson.src) {
-            fullSources.push(AUDIO_SPRITE_DIRECTORY + src);
+            fullSources.push(audioSpritePath + src);
         }
 
         spriteJson.src = fullSources;
@@ -59,17 +47,17 @@ let _loadAudioSprite = function (name) {
     });
 };
 
-let _loadFont = function (name) {
+let _loadFont = function (fontsPath, name) {
     let font = {
         mapping: null,
         texture: null
     };
 
-    return _loadJson(FONTS_DIRECTORY + name + '.json').then((fontJson) => {
+    return _loadJson(fontsPath + name + '.json').then((fontJson) => {
         font.mapping = fontJson;
 
         // TODO only supports 1 font page for now
-        return _loadTexture(name, FONTS_DIRECTORY + fontJson.pages[0]);
+        return _loadTexture(name, fontsPath + fontJson.pages[0]);
     }).then(() => {
         font.texture = _assets.textures.get(name);
 
@@ -113,39 +101,46 @@ let _loadJson = function (url) {
     });
 };
 
-let _loadAtlas = function (name) {
-    return _loadJson(ATLAS_DIRECTORY + name + '.json').then(function (atlas) {
+let _loadAtlas = function (atlasesPath, name) {
+    return _loadJson(atlasesPath + name + '.json').then(function (atlas) {
         return atlas;
     }).then(function (atlas) {
         _assets.atlases.set(name, atlas);
-        return _loadTexture(name, ATLAS_DIRECTORY + atlas.meta.image);
+        return _loadTexture(name, atlasesPath + atlas.meta.image);
     });
 };
 
-let _loadMap = function (name) {
-    return _loadJson(MAPS_DIRECTORY + name + '.json').then(function (atlas) {
+let _loadMap = function (mapsPath, name) {
+    return _loadJson(mapsPath + name + '.json').then(function (atlas) {
         _assets.maps.set(name, atlas);
     });
 };
 
+let _textureLoader = null;
+let _xhrLoader = null;
+
 let AssetLoader = {
     init: function (assetConfig) {
+        _textureLoader = new THREE.TextureLoader();
+        _xhrLoader = new THREE.XHRLoader();
+
         let assetsToLoad = [];
+        let paths = assetConfig.paths;
 
         for (let atlasName of assetConfig.textureAtlases) {
-            assetsToLoad.push(_loadAtlas(atlasName));
+            assetsToLoad.push(_loadAtlas(paths.atlases + '/', atlasName));
         }
 
         for (let mapName of assetConfig.maps) {
-            assetsToLoad.push(_loadMap(mapName));
+            assetsToLoad.push(_loadMap(paths.maps + '/', mapName));
         }
 
         for (let fontName of assetConfig.fonts) {
-            assetsToLoad.push(_loadFont(fontName));
+            assetsToLoad.push(_loadFont(paths.fonts + '/', fontName));
         }
 
         for (let audioSpriteName of assetConfig.audio) {
-            assetsToLoad.push(_loadAudioSprite(audioSpriteName));
+            assetsToLoad.push(_loadAudioSprite(paths.audio + '/', audioSpriteName));
         }
 
         return Promise.all(assetsToLoad);

@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/graphics/renderer');
-
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
 

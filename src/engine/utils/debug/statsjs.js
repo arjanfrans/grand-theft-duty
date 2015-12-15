@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/debug/statsjs');
-
 /**
  * View that shows FPS, memory usage and render time.
  *
@@ -162,4 +160,4 @@ let Stats = function () {
     };
 };
 
-module.exports = Stats;
+export default Stats;

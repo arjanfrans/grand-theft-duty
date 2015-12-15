@@ -1,11 +1,6 @@
-'use strict';
-
-let path = require('path');
-let webpack = require('webpack');
-
 module.exports = {
     devtool: 'source-map',
-    entry: './src/index.js',
+    entry: './src/client/index.js',
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js'

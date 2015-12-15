@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/engine');
-
 import RenderDebug from './utils/debug/RenderDebug';
 import Renderer from './graphics/Renderer';
 import MainLoop from './utils/mainloop';
@@ -42,7 +40,7 @@ class Engine {
         if (this.currentState.views.size > 0) {
             this._renderer.views = this.currentState.views;
         } else {
-            debug('currentState has no View');
+            console.warn('currentState has no View');
         }
     }
 

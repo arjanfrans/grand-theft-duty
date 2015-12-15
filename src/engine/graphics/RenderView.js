@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/graphics/render-view');
-
 class RenderView {
     constructor () {
         this.width = 800;

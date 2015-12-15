@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/collision/circle');
-
 import Vector from './Vector';
 import Box from './Box';
 

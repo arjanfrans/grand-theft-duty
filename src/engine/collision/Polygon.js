@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/collision/polygon');
-
 import Vector from './Vector';
 
 let _boxToPolygon = function (position, width, height) {

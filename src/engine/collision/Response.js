@@ -1,5 +1,3 @@
-let debug = require('debug')('game:engine/collision/response');
-
 import Vector from './Vector';
 
 // ## Response

@@ -1,6 +1,4 @@
-let debug = require('debug')('game:engine/debug/render-debug');
-
-let DebugStats = require('./statsjs');
+import DebugStats from './statsjs';
 
 let _rendererStats = function () {
     let container = document.createElement('div');

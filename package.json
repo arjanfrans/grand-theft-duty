@@ -17,10 +17,10 @@
     "ci": "npm run clean && npm run lint && npm run build:production && npm run cover",
     "clean": "rm -rf dist",
     "lint": "eslint ./src/*",
-    "start": "node ./buildsystem/generateIndex.js && webpack-dev-server --config ./buildsystem/webpack.config.js --colors --devtool source-map",
+    "start": "node ./buildsystem/generateIndex.js && webpack-dev-server --colors --devtool source-map",
     "deploy": "./buildsystem/deploy.sh",
-    "build:production": "node ./buildsystem/generateIndex.js && webpack --config ./buildsystem/webpack.config.js  --optimize-minimize",
-    "build:development": "node ./buildsystem/generateIndex.js && webpack --config ./buildsystem/webpack.config.js "
+    "build:production": "node ./buildsystem/generateIndex.js && webpack --optimize-minimize",
+    "build:development": "node ./buildsystem/generateIndex.js && webpack"
   },
   "repository": {
     "type": "git",

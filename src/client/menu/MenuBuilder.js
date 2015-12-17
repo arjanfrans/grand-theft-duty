@@ -62,7 +62,7 @@ let MenuBuilder = {
     },
 
     _createMenuItems () {
-        this.menu.addMenuItem(new MenuItem('createGame', 'Create game', (menuItem) => {
+        this.menu.addMenuItem(new MenuItem('createGame', 'Singleplayer', (menuItem) => {
             let playState = this.engine.states.get('play');
 
             if (!playState) {
@@ -81,6 +81,10 @@ let MenuBuilder = {
             playState.resume();
 
             this.engine.changeState('play');
+        }));
+
+        this.menu.addMenuItem(new MenuItem('createMultiplayerGame', 'Multiplayer', (menuItem) => {
+            console.log('not implemented');
         }));
 
         this.menu.addMenuItem(new MenuItem('options', 'Options', () => {
@@ -103,7 +107,7 @@ let MenuBuilder = {
         let viewContainer = new ViewContainer();
         let background1 = new BackgroundView('normandy', 'ui');
 
-        viewContainer.addDynamicView(new MenuItemsView(this.menu), { x: 500, y: 100, z: 0 });
+        viewContainer.addDynamicView(new MenuItemsView(this.menu), { x: 500, y: 200, z: 0 });
         viewContainer.addStaticView(new LogoView('logo', 'ui'), { x: 300, y: 300, z: 0 });
 
         background1.lightness = 0.5;

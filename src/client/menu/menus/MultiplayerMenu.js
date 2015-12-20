@@ -14,6 +14,10 @@ let Multiplayer = {
             menuState.changeOption('server', value);
         }));
 
+        menu.addMenuItem(new MenuItem('connect', 'Connect', function () {
+            // TODO go to lobby state
+        }));
+
         menu.addMenuItem(new MenuItem('back', '- back', function () {
             menuState.currentMenu = 'main';
         }));

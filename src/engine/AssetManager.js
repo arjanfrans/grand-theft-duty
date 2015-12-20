@@ -50,19 +50,24 @@ let _loadAudioSprite = function (audioSpritePath, name) {
 let _loadFont = function (fontsPath, name) {
     let font = {
         mapping: null,
-        texture: null
+        pages: [],
+        textures: []
     };
 
     return _loadJson(fontsPath + name + '.json').then((fontJson) => {
         font.mapping = fontJson;
 
         let pageTextures = fontJson.pages.map((pageName) => {
-            return _loadTexture(name, fontsPath + pageName);
+            font.pages.push(pageName);
+
+            return _loadTexture(pageName, fontsPath + pageName);
         });
 
         return Promise.all(pageTextures);
     }).then(() => {
-        font.texture = _assets.textures.get(name);
+        for (let page of font.pages) {
+            font.textures.push(_assets.textures.get(page));
+        }
 
         _assets.fonts.set(name, font);
     });

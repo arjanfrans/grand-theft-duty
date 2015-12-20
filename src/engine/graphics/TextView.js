@@ -20,14 +20,12 @@ class TextView extends View {
             text: this._text,
             width: this.width,
             align: this.align,
-            font: this.font.mapping
+            font: this.font.mapping,
+            multipage: true
         });
 
-        this.texture = this.font.texture;
-
         this.material = new THREE.MeshBasicMaterial({
-            map: this.texture,
-            multipage: true,
+            map: this.font.textures[0],
             transparent: true,
             color: this._color
         });

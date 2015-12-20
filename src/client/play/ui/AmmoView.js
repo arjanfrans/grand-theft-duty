@@ -56,7 +56,7 @@ class AmmoView extends View {
 
         ammoMesh.position.x = 20;
         this.magazineText.position.x = 40;
-        this.ammoText.position.x = 100;
+        this.ammoText.position.x = 120;
 
         this.mesh.add(this.ammoText.mesh);
         this.mesh.add(ammoMesh);

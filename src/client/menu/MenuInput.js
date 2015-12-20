@@ -25,9 +25,9 @@ class MenuInput extends HumanInput {
         if (selectedItem.editable && selectedItem.isEditing) {
             if (this.keyboardDownOnce(Keyboard.BACKSPACE)) {
                 selectedItem.value = selectedItem.value.slice(0, -1);
-            } else if (Keyboard.letterKeyCodes.indexOf(Keyboard.lastPressed) !== -1) {
+            } else if (Keyboard.lastPressedIsChar()) {
                 if (this.keyboardDownOnce(Keyboard[Keyboard.keyByCode(Keyboard.lastPressed)])) {
-                    selectedItem.value = selectedItem.value + Keyboard.keyByCode(Keyboard.lastPressed);
+                    selectedItem.value = selectedItem.value + Keyboard.lastPressedChar();
                 }
             }
         }

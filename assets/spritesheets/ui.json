@@ -22,7 +22,7 @@
 			"sourceSize": {"w":460,"h":345}
 		},
 		{
-			"filename": "iwo_jima.png",
+			"filename": "front.png",
 			"frame": {"x":4,"y":399,"w":400,"h":300},
 			"rotated": false,
 			"trimmed": false,
@@ -30,8 +30,16 @@
 			"sourceSize": {"w":400,"h":300}
 		},
 		{
+			"filename": "iwo_jima.png",
+			"frame": {"x":412,"y":399,"w":400,"h":300},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":400,"h":300},
+			"sourceSize": {"w":400,"h":300}
+		},
+		{
 			"filename": "mp44.png",
-			"frame": {"x":412,"y":399,"w":192,"h":64},
+			"frame": {"x":4,"y":707,"w":192,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":64},
@@ -39,7 +47,7 @@
 		},
 		{
 			"filename": "thompson.png",
-			"frame": {"x":612,"y":399,"w":192,"h":64},
+			"frame": {"x":204,"y":707,"w":192,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":192,"h":64},
@@ -47,7 +55,7 @@
 		},
 		{
 			"filename": "ammo.png",
-			"frame": {"x":412,"y":471,"w":23,"h":128},
+			"frame": {"x":820,"y":399,"w":23,"h":128},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":23,"h":128},
@@ -55,7 +63,7 @@
 		},
 		{
 			"filename": "heart.png",
-			"frame": {"x":812,"y":399,"w":64,"h":64},
+			"frame": {"x":851,"y":399,"w":64,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},

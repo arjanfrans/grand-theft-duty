@@ -2,10 +2,10 @@
 fileVersion=1
 
 # font settings
-fontName=Long Shot
-fontFile=../../../../../Documents/Long_Shot.ttf
+fontName=Keep Calm Med
+fontFile=../../../../../Downloads/KeepCalm-Medium.ttf
 charSet=0
-fontSize=32
+fontSize=48
 aa=1
 scaleH=100
 useSmoothing=1
@@ -50,6 +50,6 @@ invB=0
 outlineThickness=0
 
 # selected chars
-chars=32-33,35-36,40-43,45,47-57,61,63-93,97-122
+chars=0-0,9-10,13,17-19,30-127,160-255
 
 # imported icon images

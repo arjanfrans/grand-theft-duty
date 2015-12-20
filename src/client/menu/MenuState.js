@@ -9,7 +9,8 @@ class MenuState extends State {
         this._currentMenu = null;
         this.currentMenuName = null;
         this.options = new Map([
-            ['name', 'Unknown Soldier']
+            ['name', 'Unknown Soldier'],
+            ['server', 'localhost:3000']
         ]);
         this.gamePlaying = false;
         this.currentOptionsEdit = null;
@@ -25,6 +26,11 @@ class MenuState extends State {
 
     set currentMenu (name) {
         this._currentMenu = this.menus.get(name);
+
+        if (!this._currentMenu) {
+            throw new Error('Menu "' + name + '" does not exist');
+        }
+
         this.currentMenuName = name;
     }
 

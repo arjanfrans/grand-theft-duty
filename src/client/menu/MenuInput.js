@@ -11,14 +11,16 @@ class MenuInput extends HumanInput {
 
     update () {
         let state = this.state;
-
-        if (this.keyboardDownOnce(Keyboard.UP) || Gamepad.isStickDown(0, 'left', 'up')) {
-            state.currentMenu.moveUp();
-        } else if (this.keyboardDownOnce(Keyboard.DOWN) || Gamepad.isStickDown(0, 'left', 'down')) {
-            state.currentMenu.moveDown();
-        }
-
         let selectedItem = state.currentMenu.selectedItem;
+
+        // Do not change selection while editing
+        if (!selectedItem.isEditing) {
+            if (this.keyboardDownOnce(Keyboard.UP) || Gamepad.isStickDown(0, 'left', 'up')) {
+                state.currentMenu.moveUp();
+            } else if (this.keyboardDownOnce(Keyboard.DOWN) || Gamepad.isStickDown(0, 'left', 'down')) {
+                state.currentMenu.moveDown();
+            }
+        }
 
         if (selectedItem.editable && selectedItem.isEditing) {
             if (this.keyboardDownOnce(Keyboard.BACKSPACE)) {

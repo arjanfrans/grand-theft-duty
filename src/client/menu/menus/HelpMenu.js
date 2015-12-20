@@ -1,8 +1,8 @@
-import Menu from '../../engine/menu-system/Menu';
-import MenuItem from '../../engine/menu-system/MenuItem';
-import BackgroundView from '../../engine/graphics/BackgroundView';
-import ViewContainer from '../../engine/graphics/ViewContainer';
-import MenuItemsView from './views/MenuItemsView';
+import Menu from '../../../engine/menu-system/Menu';
+import MenuItem from '../../../engine/menu-system/MenuItem';
+import BackgroundView from '../../../engine/graphics/BackgroundView';
+import ViewContainer from '../../../engine/graphics/ViewContainer';
+import MenuItemsView from '../views/MenuItemsView';
 
 let HelpMenu = {
     create (menuState) {

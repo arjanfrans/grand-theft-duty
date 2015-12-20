@@ -23,7 +23,7 @@ const ASSET_CONFIG = {
         'level2'
     ],
     fonts: [
-        'long_shot'
+        'keep_calm'
     ],
     audio: [
         'guns',

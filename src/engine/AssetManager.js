@@ -56,8 +56,11 @@ let _loadFont = function (fontsPath, name) {
     return _loadJson(fontsPath + name + '.json').then((fontJson) => {
         font.mapping = fontJson;
 
-        // TODO only supports 1 font page for now
-        return _loadTexture(name, fontsPath + fontJson.pages[0]);
+        let pageTextures = fontJson.pages.map((pageName) => {
+            return _loadTexture(name, fontsPath + pageName);
+        });
+
+        return Promise.all(pageTextures);
     }).then(() => {
         font.texture = _assets.textures.get(name);
 

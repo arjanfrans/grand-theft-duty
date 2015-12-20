@@ -6,7 +6,7 @@ class TextView extends View {
     constructor (text, options = {}) {
         super();
 
-        let fontName = options.font || 'long_shot';
+        let fontName = options.font || 'keep_calm';
 
         this._text = text;
         this.font = AssetManager.getFont(fontName);
@@ -27,6 +27,7 @@ class TextView extends View {
 
         this.material = new THREE.MeshBasicMaterial({
             map: this.texture,
+            multipage: true,
             transparent: true,
             color: this._color
         });

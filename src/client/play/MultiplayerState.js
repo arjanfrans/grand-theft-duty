@@ -1,15 +1,15 @@
 import State from '../State';
 
 /**
- * State of playing the game.
+ * State of a multiplayer the game.
  *
  * @class
  * @extends State
  */
-class PlayState extends State {
+class MultiplayerState extends State {
 
     constructor (match, map) {
-        super('play');
+        super('multiplayer');
 
         this.collisionSystem = null;
         this.bulletSystem = null;
@@ -19,8 +19,6 @@ class PlayState extends State {
 
         // FIXME get this out of here
         this.showScores = false;
-        this.paused = false;
-        this.onPause = null;
     }
 
     init () {
@@ -29,18 +27,6 @@ class PlayState extends State {
 
     get soldiers () {
         return this.match.soldiers;
-    }
-
-    pause () {
-        if (this.onPause) {
-            this.onPause();
-        }
-
-        this.paused = true;
-    }
-
-    resume () {
-        this.paused = false;
     }
 
     /**
@@ -53,16 +39,14 @@ class PlayState extends State {
     update (delta) {
         super.updateInputs(delta);
 
-        if (this.paused) {
-            return;
-        }
-
         super.updateAudio(delta);
 
         // Relies on previous turn
         if (this.bulletSystem) {
             this.bulletSystem.update(delta);
         }
+
+        // TODO network updates
 
         for (let soldier of this.soldiers) {
             soldier.update(delta);
@@ -82,4 +66,4 @@ class PlayState extends State {
     }
 }
 
-export default PlayState;
+export default MultiplayerState;

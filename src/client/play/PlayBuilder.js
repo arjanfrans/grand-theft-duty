@@ -15,6 +15,9 @@ import Soldier from '../../core/entities/Soldier';
 import CollisionSystem from '../../core/CollisionSystem';
 import BulletSystem from '../../core/BulletSystem';
 
+import NetworkManager from '../multiplayer/NetworkManager';
+import MultiplayerState from './MultiplayerState';
+
 /**
  * Create CPU soldiers.
  *
@@ -88,6 +91,20 @@ let PlayBuilder = {
         createViews(playState);
 
         return playState;
+    },
+
+    createMultiplayer (engine, options) {
+        let network = new NetworkManager();
+
+        network.connect('http://' + options.url);
+
+        return network.waitForReady().then((serverState) => {
+            // TODO create local state based on serverState
+            // let multiplayerState = new MultiplayerState();
+            //
+            // return multiplayerState;
+            return null;
+        });
     }
 };
 

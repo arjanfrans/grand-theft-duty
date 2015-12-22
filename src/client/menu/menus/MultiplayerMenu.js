@@ -4,6 +4,7 @@ import MenuInputItem from '../../../engine/menu-system/MenuInputItem';
 import BackgroundView from '../../../engine/graphics/BackgroundView';
 import ViewContainer from '../../../engine/graphics/ViewContainer';
 import MenuItemsView from '../views/MenuItemsView';
+import PlayBuilder from '../../play/PlayBuilder';
 
 let Multiplayer = {
     create (engine, menuState) {
@@ -15,7 +16,22 @@ let Multiplayer = {
         }));
 
         menu.addMenuItem(new MenuItem('connect', 'Connect', function () {
-            // TODO go to lobby state
+            // Do not allow navigation in the menu while loading
+            menu.freeze = true;
+
+            let options = {
+                url: menuState.options.get('server')
+            };
+
+            PlayBuilder.createMultiplayer(engine, options).then((multiplayerState) => {
+                menu.freeze = false;
+                engine.addState('multiplayer', lobbyState);
+
+                engine.changeState('multiplayer');
+            }).catch((err) => {
+                console.error('Error creating multiplayer game');
+                console.error(err);
+            });
         }));
 
         menu.addMenuItem(new MenuItem('back', '- back', function () {

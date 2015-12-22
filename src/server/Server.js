@@ -1,50 +1,38 @@
-let clients = new Map();
+import SocketServer from 'socket.io';
+import ServerEngine from '../engine/ServerEngine';
+import ServerStateBuilder from './ServerStateBuilder';
 
-let Server = {
+const io = new SocketServer();
+const DEFAULT_ROOM = 'main';
 
-    register (socketId, room, name) {
-        let player = {
-            name: name,
-            position: {
-                x: 400,
-                y: 400,
-                z: 400
-            }
-        };
-
-        clients.set(socketId, player);
-        console.log('registering player', player.name, player.position);
-
-        return player;
-    },
-
-    players () {
-        let result = {};
-
-        for (let player of clients.values()) {
-            result[player.name] = player;
-        }
-
-        return result;
-    },
-
-    updateClient (socketId, position) {
-        let client = clients.get(socketId);
-
-        client.position = {
-            x: position.x,
-            y: position.y,
-            z: position.z
-        };
-    },
-
-    clientExists (socketId) {
-        return clients.has(socketId);
-    },
-
-    removeClient (socketId) {
-        clients.delete(socketId);
-    }
+let engine = new ServerEngine();
+let options = {
+    poolLimit: 200,
+    teams: ['american', 'german'],
+    map: 'level2'
 };
 
-export default Server;
+let state = ServerStateBuilder.create(engine, options);
+
+engine.state = state;
+engine.run();
+
+io.listen(3000);
+
+io.on('connection', (socket) => {
+    console.log('socket connected', socket.id);
+
+    socket.on('disconnect', () => {
+        console.log('disconnecting', socket.id);
+    });
+
+    socket.on('register', (data) => {
+        socket.join(DEFAULT_ROOM);
+
+        io.to(DEFAULT_ROOM).emit('data', {});
+    });
+
+    socket.on('error', (error) => {
+        console.log(error);
+    });
+});

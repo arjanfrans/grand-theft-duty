@@ -99,11 +99,12 @@ let PlayBuilder = {
         network.connect('http://' + options.url);
 
         return network.waitForReady().then((serverState) => {
-            // TODO create local state based on serverState
-            // let multiplayerState = new MultiplayerState();
-            //
-            // return multiplayerState;
-            return null;
+            let multiplayerState = new MultiplayerState();
+
+            return multiplayerState;
+        }).catch((err) => {
+            console.error('Error connecting to server');
+            console.error(err);
         });
     }
 };

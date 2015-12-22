@@ -89,7 +89,7 @@ let panic = false;
 // now, but node.js doesn't have it, so fall back to timers. The polyfill
 // is adapted from the MIT-licensed
 // https://github.com/underscorediscovery/realtime-multiplayer-in-html5
-let requestAnimationFrame = window.requestAnimationFrame || (function () {
+let requestAnimationFrame = global.requestAnimationFrame || (function () {
     let lastTimestamp = Date.now();
 
     return function (callback) {
@@ -111,7 +111,7 @@ let requestAnimationFrame = window.requestAnimationFrame || (function () {
 // The function that stops the main loop. The unprefixed version of
 // `window.cancelAnimationFrame()` is available in all modern browsers now,
 // but node.js doesn't have it, so fall back to timers.
-let cancelAnimationFrame = window.cancelAnimationFrame || clearTimeout;
+let cancelAnimationFrame = global.cancelAnimationFrame || clearTimeout;
 
 // In all major browsers, replacing non-specified functions with NOOPs
 // seems to be as fast or slightly faster than using conditions to only

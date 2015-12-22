@@ -70,7 +70,7 @@ class Engine {
             if (this.currentState) {
                 this.currentState.update(delta);
             } else {
-                debug('no current State');
+                console.warn('no current State');
             }
         };
 

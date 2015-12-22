@@ -17,7 +17,7 @@ class NetworkManager {
         });
 
         this.socket.on('error', (err) => {
-            console.error('Error connecting to server');
+            console.error('Error from server');
             this.errors.push(err);
         });
 
@@ -31,6 +31,10 @@ class NetworkManager {
         return new Promise((resolve, reject) => {
             this.socket.on('ready', (serverState) => {
                 return resolve(serverState);
+            });
+
+            this.socket.on('connect_error', (err) => {
+                return reject(err);
             });
         });
     }

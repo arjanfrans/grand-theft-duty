@@ -27,6 +27,12 @@ class NetworkManager {
         });
     }
 
+    register (playerName) {
+        this.socket.emit('register', {
+            playerName: playerName
+        });
+    }
+
     waitForReady () {
         return new Promise((resolve, reject) => {
             this.socket.on('ready', (serverState) => {

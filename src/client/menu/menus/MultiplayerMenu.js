@@ -20,12 +20,14 @@ let Multiplayer = {
             menu.freeze = true;
 
             let options = {
-                url: menuState.options.get('server')
+                url: menuState.options.get('server'),
+                playerName: menuState.options.get('name'),
+                poolSize: 200
             };
 
             PlayBuilder.createMultiplayer(engine, options).then((multiplayerState) => {
                 menu.freeze = false;
-                engine.addState('multiplayer', lobbyState);
+                engine.addState('multiplayer', multiplayerState);
 
                 engine.changeState('multiplayer');
             }).catch((err) => {

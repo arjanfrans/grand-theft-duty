@@ -29,7 +29,10 @@ io.on('connection', (socket) => {
     socket.on('register', (data) => {
         socket.join(DEFAULT_ROOM);
 
-        io.to(DEFAULT_ROOM).emit('data', {});
+        socket.emit('ready', {
+            map: options.map,
+            teams: options.teams
+        });
     });
 
     socket.on('error', (error) => {

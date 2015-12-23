@@ -21,87 +21,107 @@ import MultiplayerState from './MultiplayerState';
 /**
  * Create CPU soldiers.
  *
- * @param {PlayState} playState The play playState.
+ * @param {PlayState} state The play state.
  * @param {number} count Number of CPU soldiers.
  *
  * @return {void}
  */
-function createCpuSoldiers (playState, count) {
+function createCpuSoldiers (state, count) {
     for (let i = 0; i < count; i++) {
-        let {x, y, z} = playState.map.randomRespawnPosition();
+        let {x, y, z} = state.map.randomRespawnPosition();
         let soldier = new Soldier(x, y, z, 48, 48, 1, 'american');
 
-        playState.inputs.add(new ComputerInput(soldier));
-        playState.match.addSoldier(soldier);
+        state.inputs.add(new ComputerInput(soldier));
+        state.match.addSoldier(soldier);
     }
 }
 
 /**
  * Create the player entity and add it to the play state.
  *
- * @param {PlayState} playState The play state.
+ * @param {PlayState} state The play state.
  * @param {string} name Name of the player.
  *
  * @return {void}
  */
-function createPlayer (playState, name) {
-    let {x, y, z} = playState.map.randomRespawnPosition();
+function createPlayer (state, name) {
+    let {x, y, z} = state.map.randomRespawnPosition();
     let player = new Player(x, y, z, 48, 48, 1, 'american');
     let playerInput = new PlayerInput(player);
 
-    playState.player = player;
-    playState.inputs.add(playerInput);
-    playState.match.addSoldier(player, 'american');
+    state.player = player;
+    state.inputs.add(playerInput);
+    state.match.addSoldier(player, 'american');
 }
 
 /**
  * Create the views for the play state.
  *
- * @param {PlayState} playState The play state.
+ * @param {PlayState} state The play state.
  *
  * @return {void}
  */
-function createViews (playState) {
-    playState.addView(ViewBuilder.playView(playState));
-    playState.addView(ViewBuilder.uiView(playState));
+function createViews (state) {
+    state.addView(ViewBuilder.playView(state));
+    state.addView(ViewBuilder.uiView(state));
 }
 
 let PlayBuilder = {
     createSingleplayer (engine, options) {
         let map = MapParser.parse(AssetManager.getMap(options.map));
         let match = new Match(options.teams);
-        let playState = new PlayState(match, map);
+        let state = new PlayState(match, map);
 
-        createCpuSoldiers(playState, options.cpuCount);
-        createPlayer(playState, options.playerName);
+        createCpuSoldiers(state, options.cpuCount);
+        createPlayer(state, options.playerName);
 
-        let collisionSystem = new CollisionSystem(playState);
-        let bulletSystem = new BulletSystem(playState, {
+        let collisionSystem = new CollisionSystem(state);
+        let bulletSystem = new BulletSystem(state, {
             poolLimit: options.poolLimit || 200
         });
 
-        playState.bulletSystem = bulletSystem;
-        playState.collisionSystem = collisionSystem;
-        playState.audio = new PlayAudio(playState, 'guns', 'background');
+        state.bulletSystem = bulletSystem;
+        state.collisionSystem = collisionSystem;
+        state.audio = new PlayAudio(state, 'guns', 'background');
 
-        let uiInput = new UiInput(playState);
+        let uiInput = new UiInput(state);
 
-        playState.inputs.add(uiInput);
+        state.inputs.add(uiInput);
 
-        createViews(playState);
+        createViews(state);
 
-        return playState;
+        return state;
     },
 
     createMultiplayer (engine, options) {
         let network = new NetworkManager();
 
         network.connect('http://' + options.url);
+        network.register(options.playerName);
 
         return network.waitForReady().then((serverState) => {
-            let multiplayerState = new MultiplayerState();
+            let match = new Match(serverState.teams);
+            let map = MapParser.parse(AssetManager.getMap(serverState.map));
+            let state = new MultiplayerState(match, map);
 
-            return multiplayerState;
+            createPlayer(state, options.playerName);
+
+            let collisionSystem = new CollisionSystem(state);
+            let bulletSystem = new BulletSystem(state, {
+                poolLimit: options.poolLimit || 200
+            });
+
+            state.bulletSystem = bulletSystem;
+            state.collisionSystem = collisionSystem;
+            state.audio = new PlayAudio(state, 'guns', 'background');
+
+            let uiInput = new UiInput(state);
+
+            state.inputs.add(uiInput);
+
+            createViews(state);
+
+            return state;
         }).catch((err) => {
             console.error('Error connecting to server');
             console.error(err);

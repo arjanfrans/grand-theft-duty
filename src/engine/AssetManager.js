@@ -26,7 +26,6 @@ let _loadHowlerAudio = function (name, spriteJson) {
         };
 
         _assets.audio.set(name, audio);
-        console.log(_assets);
     });
 };
 

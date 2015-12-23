@@ -33,6 +33,11 @@ class NetworkManager {
         });
     }
 
+    startListening (listener) {
+        this.socket.emit('ready', {});
+        listener(this.socket);
+    }
+
     waitForReady () {
         return new Promise((resolve, reject) => {
             this.socket.on('ready', (serverState) => {

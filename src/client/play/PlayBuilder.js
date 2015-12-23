@@ -16,6 +16,7 @@ import CollisionSystem from '../../core/CollisionSystem';
 import BulletSystem from '../../core/BulletSystem';
 
 import NetworkManager from '../multiplayer/NetworkManager';
+import NetworkEvents from '../multiplayer/NetworkEvents';
 import MultiplayerState from './MultiplayerState';
 
 /**
@@ -44,13 +45,16 @@ function createCpuSoldiers (state, count) {
  *
  * @return {void}
  */
-function createPlayer (state, name) {
+function createPlayer (state, name, dead = false) {
     let {x, y, z} = state.map.randomRespawnPosition();
     let player = new Player(x, y, z, 48, 48, 1, 'american');
     let playerInput = new PlayerInput(player);
 
     state.player = player;
     state.inputs.add(playerInput);
+
+    player.kill();
+
     state.match.addSoldier(player, 'american');
 }
 
@@ -104,7 +108,7 @@ let PlayBuilder = {
             let map = MapParser.parse(AssetManager.getMap(serverState.map));
             let state = new MultiplayerState(match, map);
 
-            createPlayer(state, options.playerName);
+            createPlayer(state, options.playerName, true);
 
             let collisionSystem = new CollisionSystem(state);
             let bulletSystem = new BulletSystem(state, {
@@ -120,6 +124,10 @@ let PlayBuilder = {
             state.inputs.add(uiInput);
 
             createViews(state);
+
+            let networkEvents = NetworkEvents.create(state);
+
+            network.startListening(networkEvents);
 
             return state;
         }).catch((err) => {

@@ -115,7 +115,6 @@ let _parseRawMap = function (rawMap) {
     worldMap.name = rawMap.name;
     worldMap.respawns = [];
 
-    console.log(rawMap);
     for (let respawn of rawMap.respawns) {
         worldMap.respawns.push(respawn);
     }

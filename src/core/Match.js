@@ -100,8 +100,8 @@ class Match {
     }
 
     removeSoldier (soldier) {
-        for (let team of this.teams) {
-            if (team.has(solider)) {
+        for (let team of this.teams.values()) {
+            if (team.has(soldier)) {
                 team.delete(soldier);
 
                 return true;

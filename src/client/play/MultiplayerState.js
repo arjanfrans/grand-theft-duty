@@ -29,6 +29,10 @@ class MultiplayerState extends State {
         return this.match.soldiers;
     }
 
+    pause () {
+        console.warn('No pausing in multiplayer');
+    }
+
     /**
      * Update the state. Logic and views are updated.
      *
@@ -47,15 +51,14 @@ class MultiplayerState extends State {
         }
 
         // TODO network updates
-
         for (let soldier of this.soldiers) {
             soldier.update(delta);
 
-            if (soldier.dead) {
-                let position = this.map.randomRespawnPosition();
-
-                soldier.respawn(position);
-            }
+            // if (soldier.dead) {
+            //     let position = this.map.randomRespawnPosition();
+            //
+            //     soldier.respawn(position);
+            // }
         }
 
         this.match.update(delta);

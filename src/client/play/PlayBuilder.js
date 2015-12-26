@@ -17,6 +17,7 @@ import BulletSystem from '../../core/BulletSystem';
 
 import NetworkManager from '../multiplayer/NetworkManager';
 import NetworkEvents from '../multiplayer/NetworkEvents';
+import NetworkEmitter from '../multiplayer/NetworkEmitter';
 import MultiplayerState from './MultiplayerState';
 
 /**
@@ -98,12 +99,12 @@ let PlayBuilder = {
     },
 
     createMultiplayer (engine, options) {
-        let network = new NetworkManager();
+        let networkManager = new NetworkManager();
 
-        network.connect('http://' + options.url);
-        network.register(options.playerName);
+        networkManager.connect('http://' + options.url);
+        networkManager.register(options.playerName);
 
-        return network.waitForReady().then((serverState) => {
+        return networkManager.waitForReady().then((serverState) => {
             let match = new Match(serverState.teams);
             let map = MapParser.parse(AssetManager.getMap(serverState.map));
             let state = new MultiplayerState(match, map);
@@ -125,9 +126,10 @@ let PlayBuilder = {
 
             createViews(state);
 
-            let networkEvents = NetworkEvents.create(state);
+            networkManager.startListening();
 
-            network.startListening(networkEvents);
+            state.networkSystem = new NetworkSystem(state, networkManager);
+            state.networkSystem.listen();
 
             return state;
         }).catch((err) => {

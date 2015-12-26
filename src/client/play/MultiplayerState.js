@@ -13,6 +13,7 @@ class MultiplayerState extends State {
 
         this.collisionSystem = null;
         this.bulletSystem = null;
+        this.networkSystem = null;
         this.player = null;
         this.map = map;
         this.match = match;
@@ -50,7 +51,9 @@ class MultiplayerState extends State {
             this.bulletSystem.update(delta);
         }
 
-        // TODO network updates
+        // Network updates
+        this.network.update(delta);
+
         for (let soldier of this.soldiers) {
             soldier.update(delta);
 
@@ -61,6 +64,7 @@ class MultiplayerState extends State {
             // }
         }
 
+        this.playe.update(delta);
         this.match.update(delta);
 
         if (this.collisionSystem) {

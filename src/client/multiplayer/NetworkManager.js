@@ -5,6 +5,17 @@ class NetworkManager {
         this.socket = null;
         this.errors = [];
         this.connected = false;
+
+        this.netLatency = 0.001;
+        this.netPing = 0.001;
+        this.previousNetPing = 0.001;
+        this.netOffset = 100;
+        this.localTime = 0.01;
+        this.serverTime = 0.01;
+
+        // Recent server updates to interpolate across.
+        // This is the buffer that is the driving factor for our networking.
+        this.server_updates = [];
     }
 
     connect (url) {
@@ -27,15 +38,18 @@ class NetworkManager {
         });
     }
 
+    emit (command, data) {
+        this.socket.emit(command, data);
+    }
+
     register (playerName) {
         this.socket.emit('register', {
             playerName: playerName
         });
     }
 
-    startListening (listener) {
+    startListening () {
         this.socket.emit('ready', {});
-        listener(this.socket);
     }
 
     waitForReady () {

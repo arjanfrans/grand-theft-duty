@@ -1,5 +1,5 @@
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'cheap-eval-source-map',
     entry: './src/client/index.js',
     output: {
         path: __dirname + '/dist',

@@ -12,7 +12,7 @@ class ServerEngine {
             }
         };
 
-        let loop = MainLoop.setUpdate(update);
+        let loop = MainLoop.create().setUpdate(update);
 
         loop.start();
     }

@@ -25,9 +25,9 @@ class Box {
      * @return {Polygon} A new Polygon that represents this box.
      */
     toPolygon () {
-        let pos = this.position;
-        let w = this.width;
-        let h = this.height;
+        const pos = this.position;
+        const w = this.width;
+        const h = this.height;
 
         return new Polygon(new Vector(pos.x, pos.y), [
             new Vector(), new Vector(w, 0),

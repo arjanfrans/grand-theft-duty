@@ -26,11 +26,11 @@ class Circle {
      * @return {Polygon} The AABB
      */
     getAABB () {
-        let r = this.radius;
-        let corner = this.position.clone().sub(new Vector(r, r));
+        const r = this.radius;
+        const corner = this.position.clone().sub(new Vector(r, r));
 
         return new Box(corner, r * 2, r * 2).toPolygon();
-    };
+    }
 }
 
 export default Circle;

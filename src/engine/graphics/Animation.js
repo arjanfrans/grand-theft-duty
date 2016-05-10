@@ -52,6 +52,6 @@ class Animation {
     get currentFrame () {
         return this.frames[this.currentFrameIndex];
     }
-};
+}
 
 export default Animation;

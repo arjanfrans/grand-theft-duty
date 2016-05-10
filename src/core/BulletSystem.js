@@ -85,6 +85,6 @@ class BulletSystem {
             }
         }
     }
-};
+}
 
 export default BulletSystem;

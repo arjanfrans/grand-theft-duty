@@ -34,7 +34,7 @@ class Response {
         this.overlap = Number.MAX_VALUE;
 
         return this;
-    };
+    }
 }
 
 export default Response;

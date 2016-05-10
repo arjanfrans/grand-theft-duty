@@ -272,7 +272,7 @@ GamepadMicro.prototype._poll = function () {
                         // Gamepad Timestamps are HighResTimeStamps relative when gamepad was connected
                         gamepadTimestamp: currentRawGamepad.timestamp,
                         browserTimestamp: now
-                    } ;
+                    };
                 }
             }
         }

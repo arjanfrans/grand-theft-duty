@@ -57,7 +57,7 @@ let Stats = function () {
         let children = container.children;
 
         for (let i = 0; i < children.length; i++) {
-            children[ i ].style.display = i === value ? 'block' : 'none';
+            children[i].style.display = i === value ? 'block' : 'none';
         }
 
         modes = [value];

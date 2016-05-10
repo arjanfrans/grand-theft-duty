@@ -25,6 +25,6 @@ class LogoView extends View {
 
         super.init();
     }
-};
+}
 
 export default LogoView;

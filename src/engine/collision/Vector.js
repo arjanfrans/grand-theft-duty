@@ -38,7 +38,7 @@ class Vector {
         this.y = -x;
 
         return this;
-    };
+    }
 
     /**
      * Rotate this vector (counter-clockwise) by the specified angle (in radians).
@@ -53,7 +53,7 @@ class Vector {
         this.x = x * Math.sin(angle) + y * Math.cos(angle);
 
         return this;
-    };
+    }
 
     /**
      * Reverse this vector.
@@ -65,7 +65,7 @@ class Vector {
         this.y = -this.y;
 
         return this;
-    };
+    }
 
     /**
      * Normalize this vector.  (make it have length of `1`)
@@ -93,7 +93,7 @@ class Vector {
         this.y += other.y;
 
         return this;
-    };
+    }
 
     /**
      * Subtract another vector from this one.
@@ -105,7 +105,7 @@ class Vector {
         this.y -= other.y;
 
         return this;
-    };
+    }
 
     /**
      * Scale this vector. An independant scaling factor can be provided
@@ -121,7 +121,7 @@ class Vector {
         this.y *= y || x;
 
         return this;
-    };
+    }
 
     /**
      * Project this vector on to another vector.
@@ -136,7 +136,7 @@ class Vector {
         this.y = amt * other.y;
 
         return this;
-    };
+    }
 
     /**
      * Project this vector onto a vector of unit length. This is slightly more efficient
@@ -152,7 +152,7 @@ class Vector {
         this.y = amt * other.y;
 
         return this;
-    };
+    }
 
     /**
      * Reflect this vector on an arbitrary axis.
@@ -169,7 +169,7 @@ class Vector {
         this.y -= y;
 
         return this;
-    };
+    }
 
     /**
      * Reflect this vector on an arbitrary axis (represented by a unit vector). This is
@@ -187,7 +187,7 @@ class Vector {
         this.y -= y;
 
         return this;
-    };
+    }
 
     /**
      * Get the dot product of this vector and another.
@@ -197,7 +197,7 @@ class Vector {
      */
     dot (other) {
         return this.x * other.x + this.y * other.y;
-    };
+    }
 
     /**
      * Get the squared length of this vector.
@@ -205,7 +205,7 @@ class Vector {
      */
     len2 () {
         return this.dot(this);
-    };
+    }
 
     /**
      * Get the length of this vector.
@@ -213,7 +213,7 @@ class Vector {
      */
     len () {
         return Math.sqrt(this.len2());
-    };
+    }
 }
 
 export default Vector;

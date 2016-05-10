@@ -53,7 +53,7 @@ class BackgroundView extends View {
     }
 
     set width (width) {
-        let scale = width / this._width ;
+        let scale = width / this._width;
 
         this.mesh.scale.x = scale;
         this.mesh.position.x = width / 2;
@@ -65,6 +65,6 @@ class BackgroundView extends View {
         this.mesh.scale.y = scale;
         this.mesh.position.y = height / 2;
     }
-};
+}
 
 export default BackgroundView;

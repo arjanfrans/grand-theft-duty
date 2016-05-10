@@ -86,7 +86,7 @@ class Engine {
             }
         };
 
-        let loop = MainLoop.setUpdate(update).setDraw(render).setBegin(before).setEnd(after);
+        let loop = MainLoop.create().setUpdate(update).setDraw(render).setBegin(before).setEnd(after);
 
         loop.start();
     }

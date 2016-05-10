@@ -15,11 +15,6 @@ import Soldier from '../../core/entities/Soldier';
 import CollisionSystem from '../../core/CollisionSystem';
 import BulletSystem from '../../core/BulletSystem';
 
-import NetworkManager from '../multiplayer/NetworkManager';
-import NetworkEvents from '../multiplayer/NetworkEvents';
-import NetworkEmitter from '../multiplayer/NetworkEmitter';
-import MultiplayerState from './MultiplayerState';
-
 /**
  * Create CPU soldiers.
  *
@@ -30,8 +25,8 @@ import MultiplayerState from './MultiplayerState';
  */
 function createCpuSoldiers (state, count) {
     for (let i = 0; i < count; i++) {
-        let {x, y, z} = state.map.randomRespawnPosition();
-        let soldier = new Soldier(x, y, z, 48, 48, 1, 'american');
+        const { x, y, z } = state.map.randomRespawnPosition();
+        const soldier = new Soldier(x, y, z, 48, 48, 1, 'american');
 
         state.inputs.add(new ComputerInput(soldier));
         state.match.addSoldier(soldier);
@@ -47,9 +42,9 @@ function createCpuSoldiers (state, count) {
  * @return {void}
  */
 function createPlayer (state, name, dead = false) {
-    let {x, y, z} = state.map.randomRespawnPosition();
-    let player = new Player(x, y, z, 48, 48, 1, 'american');
-    let playerInput = new PlayerInput(player);
+    const { x, y, z } = state.map.randomRespawnPosition();
+    const player = new Player(x, y, z, 48, 48, 1, 'american');
+    const playerInput = new PlayerInput(player);
 
     state.player = player;
     state.inputs.add(playerInput);
@@ -71,17 +66,17 @@ function createViews (state) {
     state.addView(ViewBuilder.uiView(state));
 }
 
-let PlayBuilder = {
+const PlayBuilder = {
     createSingleplayer (engine, options) {
-        let map = MapParser.parse(AssetManager.getMap(options.map));
-        let match = new Match(options.teams);
-        let state = new PlayState(match, map);
+        const map = MapParser.parse(AssetManager.getMap(options.map));
+        const match = new Match(options.teams);
+        const state = new PlayState(match, map);
 
         createCpuSoldiers(state, options.cpuCount);
         createPlayer(state, options.playerName);
 
-        let collisionSystem = new CollisionSystem(state);
-        let bulletSystem = new BulletSystem(state, {
+        const collisionSystem = new CollisionSystem(state);
+        const bulletSystem = new BulletSystem(state, {
             poolLimit: options.poolLimit || 200
         });
 
@@ -89,7 +84,7 @@ let PlayBuilder = {
         state.collisionSystem = collisionSystem;
         state.audio = new PlayAudio(state, 'guns', 'background');
 
-        let uiInput = new UiInput(state);
+        const uiInput = new UiInput(state);
 
         state.inputs.add(uiInput);
 
@@ -99,43 +94,22 @@ let PlayBuilder = {
     },
 
     createMultiplayer (engine, options) {
-        let networkManager = new NetworkManager();
-
-        networkManager.connect('http://' + options.url);
-        networkManager.register(options.playerName);
-
-        return networkManager.waitForReady().then((serverState) => {
-            let match = new Match(serverState.teams);
-            let map = MapParser.parse(AssetManager.getMap(serverState.map));
-            let state = new MultiplayerState(match, map);
-
-            createPlayer(state, options.playerName, true);
-
-            let collisionSystem = new CollisionSystem(state);
-            let bulletSystem = new BulletSystem(state, {
-                poolLimit: options.poolLimit || 200
-            });
-
-            state.bulletSystem = bulletSystem;
-            state.collisionSystem = collisionSystem;
-            state.audio = new PlayAudio(state, 'guns', 'background');
-
-            let uiInput = new UiInput(state);
-
-            state.inputs.add(uiInput);
-
-            createViews(state);
-
-            networkManager.startListening();
-
-            state.networkSystem = new NetworkSystem(state, networkManager);
-            state.networkSystem.listen();
-
-            return state;
-        }).catch((err) => {
-            console.error('Error connecting to server');
-            console.error(err);
-        });
+        // const networkManager = new NetworkManager();
+        //
+        // networkManager.connect('http://' + options.url);
+        // networkManager.register(options.playerName);
+        //
+        // return networkManager.waitForReady().then((serverState) => {
+        //     let match = new Match(serverState.teams);
+        //     let map = MapParser.parse(AssetManager.getMap(serverState.map));
+        //
+        //     // TODO
+        //
+        //     return state;
+        // }).catch((err) => {
+        //     console.error('Error connecting to server');
+        //     console.error(err);
+        // });
     }
 };
 

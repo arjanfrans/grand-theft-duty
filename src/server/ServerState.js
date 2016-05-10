@@ -1,53 +1,49 @@
-import Soldier from '../core/entities/Soldier';
+'use strict';
 
 class ServerState {
     constructor (match, map) {
-        this.collisionSystem = null;
-        this.bulletSystem = null;
-        this.map = map;
         this.match = match;
+        this.map = map;
+        this.collisionSystem = null;
+        this.bullerSystem = null;
     }
 
     get soldiers () {
         return this.match.soldiers;
     }
 
-    addSoldier (name) {
-        let { x, y, z } = this.map.randomRespawnPosition();
-        let soldier = new Soldier(x, y, z, 48, 48, 1);
-
-        soldier.name = name;
-
-        this.match.addSoldier(soldier);
-
-        return soldier;
-    }
-
     update (delta) {
-        // TODO listen for new client messages
-
-        // Relies on previous turn
-        if (this.bulletSystem) {
-            this.bulletSystem.update(delta);
-        }
+        // TODO bullets
+        // if (this.bulletSystem) {
+            // this.bulletSystem.update(delta);
+        // }
 
         for (let soldier of this.soldiers) {
             soldier.update(delta);
-
-            if (soldier.dead) {
-                // TODO remove this from the clientside state
-                let position = this.map.randomRespawnPosition();
-
-                soldier.respawn(position);
-            }
+            //
+            // if (soldier.dead) {
+            //     let position = this.map.randomRespawnPosition();
+            //
+            //     soldier.respawn(position);
+            // }
         }
 
-        this.match.update(delta);
-
+        // for (const player of this.players) {
+        //     player.old_state.pos = Vector.copy(player.pos);
+        //
+        //     const newDir = processInput(player, delta);
+        //
+        //     player.pos = Vector.add(player.old_state.pos, newDir);
+        //
+        //     player.inputs = [];
+        //
+        //     this._collisionHandler.process(player);
+        // }
+        //
         if (this.collisionSystem) {
             this.collisionSystem.update(delta);
         }
     }
 }
 
-export default ServerState;
+module.exports = ServerState;

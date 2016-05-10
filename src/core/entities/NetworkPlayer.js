@@ -11,36 +11,57 @@ class Network extends Soldier {
         this.options.audio = true;
 
         this.inputs = [];
-        this.lastInputIndex = 0;
-    }
-
-    stopTurning () {
-        super.stopTurning();
-        this.inputs.push('stopTurning');
-    }
-
-    turnRight () {
-        super.turnRight();
-        this.inputs.push('turnRight');
-    }
-
-    trunLeft () {
-        super.turnLeft();
-        this.inputs.push('turnLeft');
-    }
-
-    moveUp () {
-        super.moveUp();
-        this.inputs.push('moveUp');
-    }
-
-    moveDown () {
-        super.moveDown();
-        this.inputs.push('moveDown');
+        this.lastInputSeq = 0;
+        this.lastInputTime = 0;
     }
 
     update (delta) {
+        for (const inputData of this.inputs) {
+            if (inputData.seq > this.lastInputSeq) {
+                const inputs = inputData.inputs;
+
+                for (const input of inputs) {
+                    switch (input) {
+                        case 'turnLeft': {
+                            this.turnLeft();
+                            break;
+                        }
+                        case 'turnRight': {
+                            this.turnRight();
+                            break;
+                        }
+                        case 'moveUp': {
+                            this.moveUp();
+                            break;
+                        }
+                        case 'moveDown': {
+                            this.moveDown();
+                            break;
+                        }
+                        case 'stopMoving': {
+                            this.stopMoving();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (this.inputs.length > 0) {
+            this.lastInputTime = this.inputs[this.inputs.length - 1].time;
+            this.lastInputSeq = this.inputs[this.inputs.length - 1].seq;
+        }
+
         super.update(delta);
+    }
+
+    toJSON () {
+        return {
+            team: this.team,
+            name: this.name,
+            position: this.position,
+            lastInputSeq: this.lastInputSeq
+        };
     }
 }
 

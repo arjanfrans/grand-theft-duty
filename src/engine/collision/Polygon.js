@@ -1,11 +1,11 @@
 import Vector from './Vector';
 
-let _boxToPolygon = function (position, width, height) {
+function boxToPolygon (position, width, height) {
     return new Polygon(new Vector(position.x, position.y), [
         new Vector(), new Vector(width, 0),
         new Vector(width, height), new Vector(0, height)
     ]);
-};
+}
 
 // ## Polygon
 //
@@ -48,12 +48,12 @@ class Polygon {
      */
     setVertices (vertices) {
         // Only re-allocate if this is a new polygon or the number of vertices has changed.
-        let lengthChanged = !this.vertices || this.vertices.length !== vertices.length;
+        const lengthChanged = !this.vertices || this.vertices.length !== vertices.length;
 
         if (lengthChanged) {
-            let computedVertices = this.computedVertices = [];
-            let edges = this.edges = [];
-            let normals = this.normals = [];
+            const computedVertices = this.computedVertices = [];
+            const edges = this.edges = [];
+            const normals = this.normals = [];
 
             // Allocate the vector arrays for the calculated properties
             for (let i = 0; i < vertices.length; i++) {
@@ -101,8 +101,8 @@ class Polygon {
      * @return {Polygon} This for chaining.
      */
     rotate (angle) {
-        let vertices = this.vertices;
-        let len = vertices.length;
+        const vertices = this.vertices;
+        const len = vertices.length;
 
         for (let i = 0; i < len; i++) {
             vertices[i].rotate(angle);
@@ -127,8 +127,8 @@ class Polygon {
      * @return {Polygon} This for chaining.
      */
     translate (x, y) {
-        let vertices = this.vertices;
-        let len = vertices.length;
+        const vertices = this.vertices;
+        const len = vertices.length;
 
         for (let i = 0; i < len; i++) {
             vertices[i].x += x;
@@ -148,26 +148,26 @@ class Polygon {
     _compute () {
         // Calculated vertices - this is what is used for underlying collisions and takes into account
         // the angle/offset set on the polygon.
-        let computedVertices = this.computedVertices;
+        const computedVertices = this.computedVertices;
 
         // The edges here are the direction of the `n`th edge of the polygon, relative to
         // the `n`th vertex. If you want to draw a given edge from the edge value, you must
         // first translate to the position of the starting vertex.
-        let edges = this.edges;
+        const edges = this.edges;
 
         // The normals here are the direction of the normal for the `n`th edge of the polygon, relative
         // to the position of the `n`th vertex. If you want to draw an edge normal, you must first
         // translate to the position of the starting vertex.
-        let normals = this.normals;
+        const normals = this.normals;
 
         // Copy the original vertices array and apply the offset/angle
-        let vertices = this.vertices;
-        let offset = this.offset;
-        let angle = this.angle;
-        let len = vertices.length;
+        const vertices = this.vertices;
+        const offset = this.offset;
+        const angle = this.angle;
+        const len = vertices.length;
 
         for (let i = 0; i < len; i++) {
-            let computedVertex = computedVertices[i].copy(vertices[i]);
+            const computedVertex = computedVertices[i].copy(vertices[i]);
 
             computedVertex.x += offset.x;
             computedVertex.y += offset.y;
@@ -179,9 +179,9 @@ class Polygon {
 
         // Calculate the edges/normals
         for (let i = 0; i < len; i++) {
-            let p1 = computedVertices[i];
-            let p2 = i < len - 1 ? computedVertices[i + 1] : computedVertices[0];
-            let e = edges[i].copy(p2).sub(p1);
+            const p1 = computedVertices[i];
+            const p2 = i < len - 1 ? computedVertices[i + 1] : computedVertices[0];
+            const e = edges[i].copy(p2).sub(p1);
 
             normals[i].copy(e).perp().normalize();
         }
@@ -198,15 +198,15 @@ class Polygon {
      * @return {Polygon} The AABB
      */
     getAABB () {
-        let vertices = this.computedVertices;
-        let len = vertices.length;
+        const vertices = this.computedVertices;
+        const len = vertices.length;
         let xMin = vertices[0].x;
         let yMin = vertices[0].y;
         let xMax = vertices[0].x;
         let yMax = vertices[0].y;
 
         for (let i = 1; i < len; i++) {
-            let vertex = vertices[i];
+            const vertex = vertices[i];
 
             if (vertex.x < xMin) {
                 xMin = vertex.x;
@@ -221,7 +221,7 @@ class Polygon {
             }
         }
 
-        return _boxToPolygon(this.position.clone().add(new Vector(xMin, yMin)), xMax - xMin, yMax - yMin);
+        return boxToPolygon(this.position.clone().add(new Vector(xMin, yMin)), xMax - xMin, yMax - yMin);
     }
 }
 

@@ -31,7 +31,7 @@ let _waterGeometry = function (block, textureAtlas) {
 
     for (let geometry of geometries) {
         blockGeometry.merge(geometry);
-    };
+    }
 
     return blockGeometry;
 };

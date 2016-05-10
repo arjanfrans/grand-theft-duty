@@ -19,7 +19,7 @@ function soldierStatsByTeam (stat) {
             }
         }
     }
-};
+}
 
 class Match {
     constructor (teams) {

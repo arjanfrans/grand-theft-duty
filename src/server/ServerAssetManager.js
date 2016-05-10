@@ -1,5 +1,7 @@
-import path from 'path';
-import fs from 'fs';
+'use strict';
+
+const path = require('path');
+const fs = require('fs');
 
 const ASSET_PATH = path.resolve(__dirname, '../../assets/');
 const ASSET_CONFIG = {
@@ -12,13 +14,13 @@ const ASSET_CONFIG = {
     ]
 };
 
-let maps = new Map();
+const maps = new Map();
 
-let ServerAssetManager = {
+const ServerAssetManager = {
     init (assetConfig = ASSET_CONFIG) {
-        for (let mapName of assetConfig.maps) {
+        for (const mapName of assetConfig.maps) {
             try {
-                let map = JSON.parse(fs.readFileSync(assetConfig.paths.maps + mapName + '.json'));
+                const map = JSON.parse(fs.readFileSync(assetConfig.paths.maps + mapName + '.json'));
 
                 maps.set(mapName, map);
             } catch (err) {
@@ -32,4 +34,4 @@ let ServerAssetManager = {
     }
 };
 
-export default ServerAssetManager;
+module.exports = ServerAssetManager;

@@ -22,10 +22,10 @@ let ViewBuilder = {
         let ammoView = new AmmoView(playState);
         let healthView = new HealthView(playState);
 
-        uiViewContainer.addDynamicView(scoreView, { x: 100, y: 100, z: 0});
-        uiViewContainer.addDynamicView(weaponView, { x: 280, y: 540, z: 0});
-        uiViewContainer.addDynamicView(ammoView, { x: 10, y: 540, z: 0});
-        uiViewContainer.addDynamicView(healthView, { x: 600, y: 540, z: 0});
+        uiViewContainer.addDynamicView(scoreView, { x: 100, y: 100, z: 0 });
+        uiViewContainer.addDynamicView(weaponView, { x: 280, y: 540, z: 0 });
+        uiViewContainer.addDynamicView(ammoView, { x: 10, y: 540, z: 0 });
+        uiViewContainer.addDynamicView(healthView, { x: 600, y: 540, z: 0 });
         uiView.addViewContainer('main', uiViewContainer);
         uiView.currentViewContainer = 'main';
 

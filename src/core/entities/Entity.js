@@ -180,6 +180,6 @@ class Entity {
             this.position.z += this.velocity.z * delta;
         }
     }
-};
+}
 
 export default Entity;

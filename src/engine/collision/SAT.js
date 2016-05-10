@@ -506,7 +506,7 @@ let _testPolygonPolygon = function (a, b, response) {
     }
 
     // If any of the edge normals of B is a separating axis, no intersection.
-    for (let i = 0;i < bLen; i++) {
+    for (let i = 0; i < bLen; i++) {
         if (_isSeparatingAxis(a.position, b.position, aPoints, bPoints, b.normals[i], response)) {
             return false;
         }

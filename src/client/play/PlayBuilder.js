@@ -15,6 +15,11 @@ import Soldier from '../../core/entities/Soldier';
 import CollisionSystem from '../../core/CollisionSystem';
 import BulletSystem from '../../core/BulletSystem';
 
+import SocketClient from 'socket.io-client';
+import Network from './network';
+import NetworkState from './NetworkState';
+import NetworkInput from './input/NetworkInput';
+
 /**
  * Create CPU soldiers.
  *
@@ -94,22 +99,52 @@ const PlayBuilder = {
     },
 
     createMultiplayer (engine, options) {
-        // const networkManager = new NetworkManager();
-        //
-        // networkManager.connect('http://' + options.url);
-        // networkManager.register(options.playerName);
-        //
-        // return networkManager.waitForReady().then((serverState) => {
-        //     let match = new Match(serverState.teams);
-        //     let map = MapParser.parse(AssetManager.getMap(serverState.map));
-        //
-        //     // TODO
-        //
-        //     return state;
-        // }).catch((err) => {
-        //     console.error('Error connecting to server');
-        //     console.error(err);
-        // });
+        return new Promise((resolve, reject) => {
+            const socket = new SocketClient(options.url);
+
+            socket.on('onRegister', (data) => {
+                const match = new Match(data.teams);
+                const map = MapParser.parse(AssetManager.getMap(data.map));
+
+                const state = new NetworkState(match, map);
+                const network = Network(state, socket);
+
+                const collisionSystem = new CollisionSystem(state);
+                const bulletSystem = new BulletSystem(state, {
+                    poolLimit: options.poolLimit || 200
+                });
+
+                state.bulletSystem = bulletSystem;
+                state.collisionSystem = collisionSystem;
+
+                state.network = network;
+                state.audio = new PlayAudio(state, 'guns', 'background');
+
+                const { x, y, z } = data.ownPlayer.position;
+                const player = new Player(x, y, z, 48, 48, 1, 'american');
+
+                const playerInput = new NetworkInput(player, state);
+
+                state.inputs.add(playerInput);
+                state.player = player;
+
+                state.addPlayer(player, 'american');
+
+                const uiInput = new UiInput(state);
+
+                state.inputs.add(uiInput);
+
+                createViews(state);
+
+                resolve(state);
+            });
+
+            socket.on('error', (err) => {
+                reject(err);
+            });
+
+            socket.emit('register', { name: options.playerName });
+        });
     }
 };
 

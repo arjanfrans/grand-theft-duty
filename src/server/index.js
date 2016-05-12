@@ -13,7 +13,7 @@ const CollisionSystem = require('../core/CollisionSystem').default;
 const Match = require('../core/Match').default;
 const ServerState = require('./ServerState');
 const Game = require('./Game');
-const NetworkPlayer = require('../core/entities/NetworkPlayer');
+const NetworkPlayer = require('../core/entities/NetworkPlayer').default;
 
 const PORT = 3000;
 const MAP = 'level2';
@@ -58,10 +58,12 @@ function isNameTaken (name, clients) {
     });
 }
 
-function listenToClient (client, game) {
+function listenToClient (client, game, clients) {
     const { x, y, z } = game.state.map.randomRespawnPosition();
 
     const player = new NetworkPlayer(x, y, z, 48, 48, 1, 'american');
+
+    player.id = client.id;
 
     game.addPlayer(player);
     game.network.addClientPlayer(client, player);
@@ -75,6 +77,12 @@ function listenToClient (client, game) {
             return game.network.getPlayerByClient(client) !== player;
         }).map(player => player.toJSON())
     });
+
+    for (const otherClient of clients.values()) {
+        if (otherClient !== client) {
+            otherClient.emit('playerJoined', player.toJSON());
+        }
+    }
 
     client.on('clientPing', (data) => {
         client.emit(data);
@@ -97,7 +105,7 @@ function start () {
         log('client connected', { socketId: socket.id });
 
         socket.on('register', (data) => {
-            if (isNameTaken(data.name)) {
+            if (isNameTaken(data.name, clients)) {
                 socket.emit('serverError', {
                     name: 'NameAlreadyInUseError'
                 });
@@ -108,9 +116,17 @@ function start () {
 
                 log('client registered', client.toJSON());
 
-                listenToClient(client, game);
+                listenToClient(client, game, clients);
 
                 client.on('disconnect', () => {
+                    const player = game.network.getPlayerByClient((client));
+
+                    for (const otherClient of clients.values()) {
+                        if (otherClient !== client) {
+                            otherClient.emit('playerLeft', player.toJSON());
+                        }
+                    }
+
                     clients.delete(socket);
                     game.network.removeClientPlayer(client);
                     game.removePlayer(game.network.getPlayerByClient(client));

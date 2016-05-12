@@ -48,9 +48,9 @@ class State {
         }
     }
 
-    render (delta) {
+    render (interpolation) {
         for (let view of this.views.values()) {
-            view.update(delta);
+            view.update(interpolation);
         }
     }
 

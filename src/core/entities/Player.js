@@ -6,6 +6,7 @@ class Player extends Soldier {
 
         // FIXME make configurable
         this.name = 'player';
+        this.id = null;
 
         this.options.isPlayer = true;
         this.options.audio = true;

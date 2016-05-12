@@ -6,10 +6,10 @@ import ViewContainer from '../../../engine/graphics/ViewContainer';
 import MenuItemsView from '../views/MenuItemsView';
 import PlayBuilder from '../../play/PlayBuilder';
 
-let Multiplayer = {
+const Multiplayer = {
     create (engine, menuState) {
-        let menu = new Menu();
-        let viewContainer = new ViewContainer();
+        const menu = new Menu();
+        const viewContainer = new ViewContainer();
 
         menu.addMenuItem(new MenuInputItem('server', 'Server', 'localhost:3000', function (value) {
             menuState.changeOption('server', value);
@@ -19,7 +19,7 @@ let Multiplayer = {
             // Do not allow navigation in the menu while loading
             menu.freeze = true;
 
-            let options = {
+            const options = {
                 url: menuState.options.get('server'),
                 playerName: menuState.options.get('name'),
                 poolSize: 200
@@ -42,7 +42,7 @@ let Multiplayer = {
 
         viewContainer.addDynamicView(new MenuItemsView(menu), { x: 300, y: 100, z: 0 });
 
-        let background = new BackgroundView('front', 'ui');
+        const background = new BackgroundView('front', 'ui');
 
         background.lightness = 0.8;
 

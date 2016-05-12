@@ -34,17 +34,20 @@ let ViewBuilder = {
 
     playView (playState) {
         let playView = new PlayRenderView(playState);
+        let worldMapView = new WorldMapView(playState.map);
+        let viewContainer = new ViewContainer();
 
         let playerView = new SoldierView(playState.player);
         let soldierView = new SoldierViewPool(playState.soldiers);
-        let bulletSystemView = new BulletSystemView(playState.bulletSystem);
-        let worldMapView = new WorldMapView(playState.map);
 
-        let viewContainer = new ViewContainer();
+        if (playState.bulletSystem) {
+            const bulletSystemView = new BulletSystemView(playState.bulletSystem);
+
+            viewContainer.addDynamicView(bulletSystemView);
+        }
 
         viewContainer.addDynamicView(playerView);
         viewContainer.addDynamicView(soldierView);
-        viewContainer.addDynamicView(bulletSystemView);
         viewContainer.addDynamicView(worldMapView);
 
         playView.addViewContainer('main', viewContainer);

@@ -6,6 +6,7 @@ class Network extends Soldier {
 
         // FIXME make configurable
         this.name = 'player';
+        this.id = null;
 
         this.options.isPlayer = true;
         this.options.audio = true;
@@ -57,6 +58,7 @@ class Network extends Soldier {
 
     toJSON () {
         return {
+            id: this.id,
             team: this.team,
             name: this.name,
             position: this.position,

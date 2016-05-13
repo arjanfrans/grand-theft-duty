@@ -19,6 +19,8 @@ function clientPrediction (state) {
             state.player.inputs.splice(0, clearInputs);
 
             state.player.position = latestServerData.ownPlayer.position;
+            state.player.angle = latestServerData.ownPlayer.angle;
+
             state.player.lastInputSeq = lastInputSeqIndex;
         }
     }

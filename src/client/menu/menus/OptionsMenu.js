@@ -10,7 +10,7 @@ let OptionsMenu = {
         let menu = new Menu();
         let viewContainer = new ViewContainer();
 
-        menu.addMenuItem(new MenuInputItem('name', 'Name', 'Unknown Soldier', function (value) {
+        menu.addMenuItem(new MenuInputItem('name', 'Name', ('U' + Math.random() * 1000000).replace('.', ''), function (value) {
             menuState.changeOption('name', value);
         }));
 

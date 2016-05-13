@@ -12,6 +12,10 @@ class ServerState {
         return this.match.soldiers;
     }
 
+    get players () {
+        return this.match.soldiers;
+    }
+
     update (delta) {
         // TODO bullets
         // if (this.bulletSystem) {
@@ -19,13 +23,19 @@ class ServerState {
         // }
 
         for (let soldier of this.soldiers) {
+            soldier.processInput();
+
+            if (this.collisionSystem) {
+                this.collisionSystem.update(soldier, delta);
+            }
+
             soldier.update(delta);
-            //
-            // if (soldier.dead) {
-            //     let position = this.map.randomRespawnPosition();
-            //
-            //     soldier.respawn(position);
-            // }
+
+            if (soldier.dead) {
+                let position = this.map.randomRespawnPosition();
+
+                soldier.respawn(position);
+            }
         }
 
         // for (const player of this.players) {
@@ -40,9 +50,7 @@ class ServerState {
         //     this._collisionHandler.process(player);
         // }
         //
-        if (this.collisionSystem) {
-            this.collisionSystem.update(delta);
-        }
+
     }
 }
 

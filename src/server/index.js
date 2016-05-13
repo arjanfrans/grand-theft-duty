@@ -1,4 +1,5 @@
 'use strict';
+require('source-map-support').install();
 require('babel-register');
 
 const http = require('http');
@@ -47,6 +48,8 @@ function createGame (options) {
 
     const game = new Game(state, ENGINE_OPTIONS);
 
+    game.run();
+
     log('game created');
 
     return game;
@@ -89,7 +92,7 @@ function listenToClient (client, game, clients) {
     });
 
     client.on('input', (data) => {
-        game.network.receiveClientInput(client, data.input, data.time, data.seq);
+        game.network.receiveClientInput(client, data.inputs, data.time, data.seq);
     });
 
     debug('listening to client', client.id);

@@ -17,6 +17,7 @@ class Character extends Entity {
 
         this.reset();
 
+        this.gravity = GRAVITY;
         this.options.physics = true;
         this.options.bullets = true;
         this.options.isCharacter = true;

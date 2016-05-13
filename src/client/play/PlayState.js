@@ -67,6 +67,10 @@ class PlayState extends State {
         for (let soldier of this.soldiers) {
             soldier.update(delta);
 
+            if (this.collisionSystem) {
+                this.collisionSystem.update(soldier, delta);
+            }
+
             if (soldier.dead) {
                 let position = this.map.randomRespawnPosition();
 
@@ -75,10 +79,6 @@ class PlayState extends State {
         }
 
         this.match.update(delta);
-
-        if (this.collisionSystem) {
-            this.collisionSystem.update(delta);
-        }
     }
 }
 

@@ -9,7 +9,7 @@ class MenuState extends State {
         this._currentMenu = null;
         this.currentMenuName = null;
         this.options = new Map([
-            ['name', 'Unknown Soldier'],
+            ['name', 'U'+Math.random()*10000],
             ['server', 'localhost:3000']
         ]);
         this.gamePlaying = false;

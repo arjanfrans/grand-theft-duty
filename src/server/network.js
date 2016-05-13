@@ -17,12 +17,12 @@ function network () {
     }
 
     function sendUpdates (state, serverTime) {
-        for (const player of state.soldiers) {
+        for (const player of state.players.values()) {
             if (playerClients.has(player)) {
                 const updates = {
                     serverTime: serverTime,
                     ownPlayer: player.toJSON(),
-                    players: Array.from(state.soldiers.values()).filter(p => {
+                    players: Array.from(state.players.values()).filter(p => {
                         return p !== player;
                     })
                 };

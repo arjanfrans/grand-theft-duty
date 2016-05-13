@@ -19,6 +19,7 @@ import SocketClient from 'socket.io-client';
 import Network from './network';
 import NetworkState from './NetworkState';
 import NetworkInput from './input/NetworkInput';
+import NetworkPlayer from '../../core/entities/NetworkPlayer';
 
 /**
  * Create CPU soldiers.
@@ -121,7 +122,18 @@ const PlayBuilder = {
                 state.audio = new PlayAudio(state, 'guns', 'background');
 
                 const { x, y, z } = data.ownPlayer.position;
-                const player = new Player(x, y, z, 48, 48, 1, 'american');
+                const player = new NetworkPlayer(x, y, z, 48, 48, 1, data.ownPlayer.team);
+
+                player.id = data.ownPlayer.id;
+
+                for (const playerData of data.players) {
+                    const { x, y, z } = playerData.position;
+                    const otherPlayer = new NetworkPlayer(x, y, z, 48, 48, 1, playerData.team);
+
+                    otherPlayer.id = playerData.id;
+
+                    state.addPlayer(otherPlayer, playerData.team);
+                }
 
                 const playerInput = new NetworkInput(player, state);
 
@@ -135,6 +147,8 @@ const PlayBuilder = {
                 state.inputs.add(uiInput);
 
                 createViews(state);
+
+                network.listen();
 
                 resolve(state);
             });

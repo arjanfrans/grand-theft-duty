@@ -11,13 +11,18 @@ let rayPositions = function (entity, rayDistance) {
     let start = {};
     let end = {};
 
-    if (Math.abs(entity.velocity.x) > 0) {
+    const direction = {
+        x: entity.position.x - entity.previousPosition.x,
+        y: entity.position.y - entity.previousPosition.y
+    };
+
+    if (Math.abs(direction.x) > 0) {
         x -= rayDistance * Math.cos(angle) * reverse;
     } else {
         x -= rayDistance * reverse;
     }
 
-    if (entity.velocity.x < 0) {
+    if (direction.x < 0) {
         start.x = x;
         end.x = entity.position.x;
     } else {
@@ -25,13 +30,13 @@ let rayPositions = function (entity, rayDistance) {
         end.x = x;
     }
 
-    if (Math.abs(entity.velocity.y) > 0) {
+    if (Math.abs(direction.y) > 0) {
         y -= rayDistance * Math.sin(angle) * reverse;
     } else {
         y -= rayDistance * reverse;
     }
 
-    if (entity.velocity.y < 0) {
+    if (direction.y < 0) {
         start.y = y;
         end.y = entity.position.y;
     } else {
@@ -45,20 +50,20 @@ let rayPositions = function (entity, rayDistance) {
     return { min: start, max: end };
 };
 
-let CollisionUtils = {
+const CollisionUtils = {
     wallCollision (map, entity, onCollision) {
-        let rayDistance = (map.blockWidth + map.blockHeight) / 2;
-        let ray = rayPositions(entity, rayDistance);
+        const rayDistance = (map.blockWidth + map.blockHeight) / 2;
+        const ray = rayPositions(entity, rayDistance);
 
         if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {
-            let blocks = map.blocksBetweenPositions(ray.min, ray.max, ['wall']);
+            const blocks = map.blocksBetweenPositions(ray.min, ray.max, ['wall']);
 
-            for (let block of blocks) {
+            for (const block of blocks) {
                 if (block.collidable) {
-                    let polygons = block.bodies;
+                    const polygons = block.bodies;
 
-                    for (let polygon of polygons) {
-                        let response = new Response();
+                    for (const polygon of polygons) {
+                        const response = new Response();
 
                         if (SAT.testPolygonPolygon(entity.body, polygon, response)) {
                             onCollision(response);
@@ -76,15 +81,25 @@ let CollisionUtils = {
             z: entity.position.z + (entity.velocity.z * delta)
         };
 
-        let floorBlockIndex = map.positionToIndex(entity.position);
+        if (entity.movement) {
+            nextEntityPosition = {
+                x: entity.position.x + (entity.movement.x * delta),
+                y: entity.position.y + (entity.movement.y * delta),
+                z: entity.position.z + (entity.movement.z * delta)
+            };
+        }
+
+        const floorBlockIndex = map.positionToIndex(entity.previousPosition);
 
         floorBlockIndex.z -= 1;
 
-        let block = map.blockAtIndex(floorBlockIndex);
+        const block = map.blockAtIndex(floorBlockIndex);
 
         if (block && block.collidable && block.walls.top) {
             if (nextEntityPosition.z <= block.position.z + block.depth) {
                 onCollision(block);
+            } else {
+                entity.fall();
             }
         } else {
             entity.fall();

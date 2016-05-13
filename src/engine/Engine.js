@@ -2,6 +2,14 @@ import RenderDebug from './utils/debug/RenderDebug';
 import Renderer from './graphics/Renderer';
 import MainLoop from './utils/mainloop';
 
+const OPTIONS = {
+    networkOffset: 100,
+    networkBufferSize: 2,
+    simulationTimestemp: 1000 / 66,
+    timerFrequency: 1000 / 250,
+    pingTimeout: 1000
+};
+
 class Engine {
     constructor (options = { debugMode: false }) {
         this.debugMode = options.debugMode;
@@ -61,12 +69,12 @@ class Engine {
      * @returns {void}
      */
     run () {
-        let render = (interpolationPercentage) => {
+        const render = (interpolationPercentage) => {
             this.currentState.render(interpolationPercentage);
             this._renderer.render(interpolationPercentage);
         };
 
-        let update = (delta) => {
+        const update = (delta) => {
             if (this.currentState) {
                 this.currentState.update(delta);
             } else {
@@ -74,19 +82,22 @@ class Engine {
             }
         };
 
-        let before = () => {
+        const before = () => {
             if (this.debugMode) {
                 this._renderDebug.before();
             }
         };
 
-        let after = () => {
+        const after = () => {
             if (this.debugMode) {
                 this._renderDebug.after();
             }
         };
 
-        let loop = MainLoop.create().setUpdate(update).setDraw(render).setBegin(before).setEnd(after);
+        const loop = MainLoop.create().setUpdate(update).setDraw(render);
+
+        loop.setSimulationTimestep(OPTIONS.simulationTimestemp);
+        loop.setBegin(before).setEnd(after);
 
         loop.start();
     }

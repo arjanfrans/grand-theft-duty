@@ -1,11 +1,14 @@
 import State from '../State';
 import Vector from '../../engine/utils/vector';
 import clientPrediction from './network/client-prediction';
+import MainLoop from '../../engine/utils/mainloop';
 
 const OPTIONS = {
     networkOffset: 100,
     networkBufferSize: 2,
-    simulationTimestemp: 66 / 1000
+    simulationTimestemp: 1000 / 66,
+    timerFrequency: 1000 / 250,
+    pingTimeout: 1000
 };
 
 function lerp3d (previous, target, interpolation) {
@@ -36,14 +39,30 @@ class NetworkState extends State {
         this.clientTime = 0;
         this.serverTime = 0;
         this.serverUpdates = [];
+        this.inputSeq = 0;
         this.network = null;
+
+        this._timer = MainLoop.create().setSimulationTimestep(OPTIONS.timerFrequency);
+        this._timer.setUpdate((delta => {
+            this.localTime += delta / 1000;
+        }));
     }
 
     init () {
         super.init();
+        this._timer.start();
+
+        // Ping the server
+        setInterval(() => {
+            this.network.ping();
+        }, OPTIONS.pingTimeout || 1000);
     }
 
     get soldiers () {
+        return this.match.soldiers;
+    }
+
+    get players () {
         return this.match.soldiers;
     }
 
@@ -86,7 +105,7 @@ class NetworkState extends State {
         }
     }
 
-    _processNetworkUpdates (interpolation) {
+    _processNetworkUpdates () {
         if (this.serverUpdates.length === 0) {
             return;
         }
@@ -104,7 +123,7 @@ class NetworkState extends State {
 
                 break;
             }
-        };
+        }
 
         if (!target) {
             target = this.serverUpdates[0];
@@ -117,7 +136,7 @@ class NetworkState extends State {
             const difference = target.serverTime - this.clientTime;
             const maxDifference = target.serverTime - previous.serverTime;
 
-            let timePoint = fixedNumber / maxDifference;
+            let timePoint = difference / maxDifference;
 
             if (Number.isNaN(timePoint) || Math.abs(timePoint) === Number.POSITIVE_INFINITY) {
                 timePoint = 0;
@@ -129,11 +148,12 @@ class NetworkState extends State {
                 const playerData = latestServerUpdate.players[i];
 
                 if (target.players[i] && previous.players[i]) {
-                    const ghosts = this.getGhosts(playerData.id);
                     const player = this.getPlayerById(playerData.id);
 
                     if (player) {
+                        player.previousPosition = lerp3d(previous.players[i].position, target.players[i].position, timePoint);
                         player.position = lerp3d(previous.players[i].position, target.players[i].position, timePoint);
+                        player.angle = target.players[i].angle;
                     }
                 }
             }
@@ -141,6 +161,9 @@ class NetworkState extends State {
     }
 
     render (interpolation) {
+        if (this.serverUpdates.length > 0) {
+            this._processNetworkUpdates();
+        }
 
         super.render(interpolation);
     }
@@ -155,21 +178,23 @@ class NetworkState extends State {
             this.bulletSystem.update(delta);
         }
 
-        for (let soldier of this.soldiers) {
-            soldier.update(delta);
-
-            if (soldier.dead) {
-                let position = this.map.randomRespawnPosition();
-
-                soldier.respawn(position);
-            }
-        }
-
-        this.match.update(delta);
+        // for (let soldier of this.soldiers) {
+        this.player.processInput();
 
         if (this.collisionSystem) {
-            this.collisionSystem.update(delta);
+            this.collisionSystem.update(this.player, delta);
         }
+
+        this.player.update(delta);
+
+            // if (soldier.dead) {
+            //     let position = this.map.randomRespawnPosition();
+            //
+            //     soldier.respawn(position);
+            // }
+        // }
+
+        this.match.update(delta);
     }
 }
 

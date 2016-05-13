@@ -1,3 +1,5 @@
+import NetworkPlayer from '../../../core/entities/NetworkPlayer';
+
 function network (state, socket) {
     let previousPing = 0;
     let netPing = 0;
@@ -16,7 +18,12 @@ function network (state, socket) {
     function listen () {
         socket.on('serverPing', receivePing);
 
-        socket.on('playerJoined', (player) => {
+        socket.on('playerJoined', (playerData) => {
+            const { x, y, z } = playerData.position;
+            const player = new NetworkPlayer(x, y, z, 48, 48, 1, playerData.team);
+
+            player.id = playerData.id;
+
             state.addPlayer(player, player.team);
         });
 
@@ -24,7 +31,9 @@ function network (state, socket) {
             state.removePlayerById(player.id);
         });
 
-        socket.on('onServerUpdate', state.onServerUpdate);
+        socket.on('onServerUpdate', (data) => {
+            state.onServerUpdate(data);
+        });
 
         socket.on('error', (err) => {
             console.error('network error', err);

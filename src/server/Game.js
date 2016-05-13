@@ -10,10 +10,11 @@ class Game {
         this.localTime = 0;
 
         this._networkLoop = MainLoop.create();
-        this._networkLoop.setSimulationTimestep(options.networkTimestemp);
+        console.log(options)
+        this._networkLoop.setSimulationTimestep(options.networkTimestep);
         this._networkLoop.setUpdate(() => {
             if (this.network) {
-                this.network.sendUpdates(this);
+                this.network.sendUpdates(this.state, this.localTime);
             }
         });
 

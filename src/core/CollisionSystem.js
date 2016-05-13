@@ -7,23 +7,21 @@ class CollisionSystem {
         this.map = this.state.map;
     }
 
-    update (delta) {
-        for (let entity of this.entities) {
-            CollisionUtils.wallCollision(this.map, entity, (response) => {
-                entity.position.x -= response.overlapV.x;
-                entity.position.y -= response.overlapV.y;
-            });
+    update (entity, delta) {
+        CollisionUtils.wallCollision(this.map, entity, (response) => {
+            entity.position.x -= response.overlapV.x;
+            entity.position.y -= response.overlapV.y;
+        });
 
-            CollisionUtils.floorCollision(this.map, entity, delta, (block) => {
-                if (block.type === 'water') {
-                    entity.fall();
-                    entity.kill();
-                } else {
-                    entity.position.z = block.position.z + block.depth;
-                    entity.stopFalling();
-                }
-            });
-        }
+        CollisionUtils.floorCollision(this.map, entity, delta, (block) => {
+            if (block.type === 'water') {
+                entity.fall();
+                entity.kill();
+            } else {
+                entity.position.z = block.position.z + block.depth;
+                entity.stopFalling();
+            }
+        });
     }
 }
 

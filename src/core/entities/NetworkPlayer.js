@@ -1,6 +1,6 @@
 import Soldier from './Soldier';
 
-class Network extends Soldier {
+class NetworkPlayer extends Soldier {
     constructor (x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth, team);
 
@@ -32,14 +32,12 @@ class Network extends Soldier {
 
     moveUp () {
         this.reverse = false;
-        this.isMoving = true;
         this.movement.x += -this.speed * Math.cos(this.angle);
         this.movement.y += -this.speed * Math.sin(this.angle);
     }
 
     moveDown () {
         this.reverse = true;
-        this.isMoving = true;
         this.movement.x += this.speed * Math.cos(this.angle);
         this.movement.y += this.speed * Math.sin(this.angle);
     }
@@ -75,6 +73,20 @@ class Network extends Soldier {
                             this.moveDown();
                             break;
                         }
+                        case 'startRunning': {
+                            if (!this.reverse) {
+                                this.isRunning = true;
+                            }
+                            break;
+                        }
+                        case 'stopRunning': {
+                            this.isRunning = false;
+                            break;
+                        }
+                        case 'fireBullet': {
+                            this.fireBullet();
+                            break;
+                        }
                     }
                 }
             }
@@ -105,6 +117,21 @@ class Network extends Soldier {
             this.position.z += this.movement.z * delta;
         }
 
+        if (this.movement.x === 0 || this.movement.y === 0) {
+            this.isMoving = false;
+            this.isRunning = false;
+        } else {
+            this.isMoving = true;
+        }
+
+        if (this.currentWeapon) {
+            if (!this.currentWeapon.justFired && !this.currentWeapon.canFire) {
+                this.actions.firedBullet = false;
+            }
+
+            this.currentWeapon.update(delta);
+        }
+
         this.movement = {
             x: 0,
             y: 0,
@@ -120,9 +147,14 @@ class Network extends Soldier {
             name: this.name,
             position: this.position,
             angle: this.angle,
-            lastInputSeq: this.lastInputSeq
+            lastInputSeq: this.lastInputSeq,
+            isMoving: this.isMoving,
+            reverse: this.reverse,
+            isRunning: this.isRunning,
+            dead: this.dead,
+            actions: this.actions
         };
     }
 }
 
-export default Network;
+export default NetworkPlayer;

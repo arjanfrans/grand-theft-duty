@@ -38,7 +38,9 @@ let ViewBuilder = {
         let viewContainer = new ViewContainer();
 
         let playerView = new SoldierView(playState.player);
-        let soldierView = new SoldierViewPool(playState.soldiers);
+        let soldierView = new SoldierViewPool(playState.soldiers, {
+            ignore: playState.player
+        });
 
         if (playState.bulletSystem) {
             const bulletSystemView = new BulletSystemView(playState.bulletSystem);

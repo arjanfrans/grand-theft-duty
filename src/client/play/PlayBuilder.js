@@ -119,7 +119,6 @@ const PlayBuilder = {
                 state.collisionSystem = collisionSystem;
 
                 state.network = network;
-                state.audio = new PlayAudio(state, 'guns', 'background');
 
                 const { x, y, z } = data.ownPlayer.position;
                 const player = new NetworkPlayer(x, y, z, 48, 48, 1, data.ownPlayer.team);
@@ -140,11 +139,12 @@ const PlayBuilder = {
                 state.inputs.add(playerInput);
                 state.player = player;
 
-                state.addPlayer(player, 'american');
+                state.addPlayer(player, data.ownPlayer.team);
 
                 const uiInput = new UiInput(state);
 
                 state.inputs.add(uiInput);
+                state.audio = new PlayAudio(state, 'guns', 'background');
 
                 createViews(state);
 

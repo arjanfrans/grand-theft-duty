@@ -20,6 +20,10 @@ function clientPrediction (state) {
 
             state.player.position = latestServerData.ownPlayer.position;
             state.player.angle = latestServerData.ownPlayer.angle;
+            state.player.reverse = latestServerData.ownPlayer.reverse;
+            state.player.isMoving = latestServerData.ownPlayer.isMoving;
+            state.player.isRunning = latestServerData.ownPlayer.isRunning;
+            state.player.dead = latestServerData.ownPlayer.dead;
 
             state.player.lastInputSeq = lastInputSeqIndex;
         }

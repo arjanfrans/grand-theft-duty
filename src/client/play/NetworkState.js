@@ -82,6 +82,8 @@ class NetworkState extends State {
         const player = this.getPlayerById(playerId);
 
         if (player) {
+            player.isRemoved = true; // trigger remove from view
+
             this.match.removeSoldier(player);
         }
     }
@@ -153,7 +155,13 @@ class NetworkState extends State {
                     if (player) {
                         player.previousPosition = lerp3d(previous.players[i].position, target.players[i].position, timePoint);
                         player.position = lerp3d(previous.players[i].position, target.players[i].position, timePoint);
+
                         player.angle = target.players[i].angle;
+                        player.reverse = target.players[i].reverse;
+                        player.isMoving = target.players[i].isMoving;
+                        player.isRunning = target.players[i].isRunning;
+                        player.dead = target.players[i].dead;
+                        player.actions.firedBullet = target.players[i].actions.firedBullet;
                     }
                 }
             }
@@ -179,20 +187,15 @@ class NetworkState extends State {
         }
 
         // for (let soldier of this.soldiers) {
-        this.player.processInput();
+        if (!this.player.dead) {
+            this.player.processInput();
 
-        if (this.collisionSystem) {
-            this.collisionSystem.update(this.player, delta);
+            if (this.collisionSystem) {
+                this.collisionSystem.update(this.player, delta);
+            }
+
+            this.player.update(delta);
         }
-
-        this.player.update(delta);
-
-            // if (soldier.dead) {
-            //     let position = this.map.randomRespawnPosition();
-            //
-            //     soldier.respawn(position);
-            // }
-        // }
 
         this.match.update(delta);
     }

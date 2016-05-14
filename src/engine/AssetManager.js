@@ -79,7 +79,7 @@ let _loadTexture = function (name, url) {
 
             return resolve();
         }, function (progress) {
-            console.log((progress.loaded / progress.total * 100) + '% loaded');
+            // console.log((progress.loaded / progress.total * 100) + '% loaded');
         }, function (err) {
             return reject(err);
         });
@@ -91,7 +91,7 @@ let _loadXhr = function (url) {
         _xhrLoader.load(url, function (response) {
             return resolve(response);
         }, function (progress) {
-            console.log((progress.loaded / progress.total * 100) + '% loaded');
+            // console.log((progress.loaded / progress.total * 100) + '% loaded');
         }, function (err) {
             return reject(err);
         });

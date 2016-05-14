@@ -131,8 +131,8 @@ function start () {
                     }
 
                     clients.delete(socket);
-                    game.network.removeClientPlayer(client);
                     game.removePlayer(game.network.getPlayerByClient(client));
+                    game.network.removeClientPlayer(client);
 
                     log('client disconnected', client.toJSON());
                 });

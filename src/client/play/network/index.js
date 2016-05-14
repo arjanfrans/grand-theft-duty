@@ -24,7 +24,7 @@ function network (state, socket) {
 
             player.id = playerData.id;
 
-            state.addPlayer(player, player.team);
+            state.addPlayer(player, playerData.team);
         });
 
         socket.on('playerLeft', (player) => {

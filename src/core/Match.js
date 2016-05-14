@@ -100,15 +100,13 @@ class Match {
     }
 
     removeSoldier (soldier) {
-        for (let team of this.teams.values()) {
+        for (const team of this.teams.values()) {
             if (team.has(soldier)) {
                 team.delete(soldier);
-
-                return true;
             }
         }
 
-        return false;
+        this.soldiers.delete(soldier);
     }
 
     killsByTeam () {
@@ -117,6 +115,10 @@ class Match {
 
     deathsByTeam () {
         return soldierStatsByTeam('deaths');
+    }
+
+    deadSoldiers () {
+        return Array.from(this.soldiers).filter(soldier => soldier.dead);
     }
 
     start () {

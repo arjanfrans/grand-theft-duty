@@ -13,16 +13,16 @@ export default class Gun {
 
         this._reloadingTime = 0;
         this._firedTime = 0;
-        this._canFire = true;
+        this.canFire = true;
 
         this.isReloading = false;
         this.fired = false;
     }
 
     fire () {
-        if (!this.isReloading && this._canFire && this.magazine > 0) {
+        if (!this.isReloading && this.canFire && this.magazine > 0) {
             this.fired = true;
-            this._canFire = false;
+            this.canFire = false;
             this.magazine -= 1;
 
             return true;
@@ -31,13 +31,17 @@ export default class Gun {
         }
     }
 
+    get justFired () {
+        return this._firedTime === 0;
+    }
+
     reload () {
         if (!this.isReloading) {
             this.isReloading = true;
 
             let refill = this.maxMagazine - this.magazine;
 
-            let newAmmo = this.ammo - refill;
+            const newAmmo = this.ammo - refill;
 
             if (newAmmo < 0) {
                 refill = this.ammo;
@@ -67,12 +71,12 @@ export default class Gun {
                 this._reloadingTime = 0;
                 this.isReloading = false;
             }
-        } else if (!this._canFire) {
+        } else if (!this.canFire) {
             this._firedTime += delta;
 
             if (this._firedTime > this.fireRate) {
                 this._firedTime = 0;
-                this._canFire = true;
+                this.canFire = true;
             }
         }
     }

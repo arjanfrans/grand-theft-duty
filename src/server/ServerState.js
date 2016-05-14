@@ -18,9 +18,9 @@ class ServerState {
 
     update (delta) {
         // TODO bullets
-        // if (this.bulletSystem) {
-            // this.bulletSystem.update(delta);
-        // }
+        if (this.bulletSystem) {
+            this.bulletSystem.update(delta);
+        }
 
         for (let soldier of this.soldiers) {
             soldier.processInput();
@@ -37,20 +37,6 @@ class ServerState {
                 soldier.respawn(position);
             }
         }
-
-        // for (const player of this.players) {
-        //     player.old_state.pos = Vector.copy(player.pos);
-        //
-        //     const newDir = processInput(player, delta);
-        //
-        //     player.pos = Vector.add(player.old_state.pos, newDir);
-        //
-        //     player.inputs = [];
-        //
-        //     this._collisionHandler.process(player);
-        // }
-        //
-
     }
 }
 

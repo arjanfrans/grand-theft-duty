@@ -10,7 +10,6 @@ class Game {
         this.localTime = 0;
 
         this._networkLoop = MainLoop.create();
-        console.log(options)
         this._networkLoop.setSimulationTimestep(options.networkTimestep);
         this._networkLoop.setUpdate(() => {
             if (this.network) {

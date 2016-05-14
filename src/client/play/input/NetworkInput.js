@@ -15,39 +15,28 @@ class NetworkInput extends HumanInput {
         const inputs = [];
 
         if (Keyboard.isDown(Keyboard.UP) || Gamepad.isStickDown(this.gamepadIndex, 'left', 'up')) {
-            // this.player.moveUp();
             inputs.push('moveUp');
         } else if (Keyboard.isDown(Keyboard.DOWN) || Gamepad.isStickDown(this.gamepadIndex, 'left', 'down')) {
-            // this.player.moveDown();
             inputs.push('moveDown');
-        } else {
-            this.player.stopMoving();
-            // inputs.push('stopMoving');
         }
 
         if (Keyboard.isDown(Keyboard.RIGHT) || Gamepad.isStickDown(this.gamepadIndex, 'right', 'right')) {
-            // this.player.turnRight();
             inputs.push('turnRight');
         } else if (Keyboard.isDown(Keyboard.LEFT) || Gamepad.isStickDown(this.gamepadIndex, 'right', 'left')) {
-            // this.player.turnLeft();
             inputs.push('turnLeft');
-        } else {
-            // this.player.stopTurning();
-            // inputs.push('stopTurning');
         }
 
         if (!this.player.isRunning && (Keyboard.isDown(Keyboard.CTRL) ||
                 Gamepad.isDown(this.gamepadIndex, 'rightTrigger'))) {
-            // this.player.fireBullet();
             inputs.push('fireBullet');
         }
 
         if (Keyboard.isDown(Keyboard.SHIFT) || Gamepad.isDown(this.gamepadIndex, 'actionSouth')) {
             // this.player.isRunning = true;
-            // inputs.push('startRunning');
+            inputs.push('startRunning');
         } else {
             // this.player.isRunning = false;
-            // inputs.push('stopRunning');
+            inputs.push('stopRunning');
         }
 
         if (this.keyboardDownOnce(Keyboard.R) || this.gamepadButtonDownOnce('actionWest')) {

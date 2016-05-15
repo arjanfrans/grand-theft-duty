@@ -28,20 +28,19 @@ class NetworkInput extends HumanInput {
 
         if (!this.player.isRunning && (Keyboard.isDown(Keyboard.CTRL) ||
                 Gamepad.isDown(this.gamepadIndex, 'rightTrigger'))) {
-            inputs.push('fireBullet');
+            inputs.push('startFireing');
+        } else if (!this.previousInputs.includes('stopFireing')) {
+            inputs.push('stopFireing');
         }
 
         if (Keyboard.isDown(Keyboard.SHIFT) || Gamepad.isDown(this.gamepadIndex, 'actionSouth')) {
-            // this.player.isRunning = true;
             inputs.push('startRunning');
-        } else {
-            // this.player.isRunning = false;
+        } else if (!this.previousInputs.includes('stopRunning')) {
             inputs.push('stopRunning');
         }
 
         if (this.keyboardDownOnce(Keyboard.R) || this.gamepadButtonDownOnce('actionWest')) {
-            // this.player.reload();
-            // inputs.push('reload');
+            inputs.push('reload');
         }
 
         if (this.keyboardDownOnce(Keyboard.X) || this.gamepadButtonDownOnce('actionNorth')) {
@@ -53,6 +52,8 @@ class NetworkInput extends HumanInput {
             // this.player.scrollWeapons('up');
             // inputs.push('scrollWeaponUp');
         }
+
+        this.previousInputs = inputs.slice(0);
 
         if (this.state && this.state.network) {
             if (inputs.length > 0) {

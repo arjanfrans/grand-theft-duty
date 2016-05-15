@@ -80,6 +80,13 @@ export default class Gun {
             }
         }
     }
+
+    toJSON () {
+        return {
+            ammo: this.ammo,
+            magazine: this.magazine
+        };
+    }
 }
 
 export default Gun;

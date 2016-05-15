@@ -22,6 +22,12 @@ class NetworkPlayer extends Soldier {
         };
     }
 
+    reset () {
+        super.reset();
+        this.isFireing = false;
+        this.isReloading = false;
+    }
+
     fall () {
         this.movement.z -= Math.abs(this.gravity);
     }
@@ -50,6 +56,11 @@ class NetworkPlayer extends Soldier {
         this.movement.angular += -this.rotationSpeed * (Math.PI / 180);
     }
 
+    get canFire () {
+        return this.currentWeapon ? this.currentWeapon.canFire &&
+            this.currentWeapon.magazine !== 0 && !this.currentWeapon.isReloading : false;
+    }
+
     processInput (delta) {
         for (const inputData of this.inputs) {
             if (inputData.seq > this.lastInputSeq) {
@@ -66,7 +77,7 @@ class NetworkPlayer extends Soldier {
                             break;
                         }
                         case 'moveUp': {
-                            this.moveUp()
+                            this.moveUp();
                             break;
                         }
                         case 'moveDown': {
@@ -83,9 +94,17 @@ class NetworkPlayer extends Soldier {
                             this.isRunning = false;
                             break;
                         }
-                        case 'fireBullet': {
-                            this.fireBullet();
+                        case 'startFireing': {
+                            this.isFireing = true;
                             break;
+                        }
+                        case 'stopFireing': {
+                            this.isFireing = false;
+                            break;
+                        }
+                        case 'reload': {
+                            this.reload();
+                            this.isReloading = true;
                         }
                     }
                 }
@@ -124,12 +143,8 @@ class NetworkPlayer extends Soldier {
             this.isMoving = true;
         }
 
-        if (this.currentWeapon) {
-            if (!this.currentWeapon.justFired && !this.currentWeapon.canFire) {
-                this.actions.firedBullet = false;
-            }
-
-            this.currentWeapon.update(delta);
+        if (this.currentWeapon && !this.currentWeapon.isReloading) {
+            this.isReloading = false;
         }
 
         this.movement = {
@@ -152,7 +167,9 @@ class NetworkPlayer extends Soldier {
             reverse: this.reverse,
             isRunning: this.isRunning,
             dead: this.dead,
-            actions: this.actions
+            isFireing: this.isFireing,
+            isReloading: this.currentWeapon ? this.currentWeapon.isReloading : false,
+            weapons: this.weapons.map(weapon => weapon.toJSON())
         };
     }
 }

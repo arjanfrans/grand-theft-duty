@@ -24,6 +24,12 @@ function clientPrediction (state) {
             state.player.isMoving = latestServerData.ownPlayer.isMoving;
             state.player.isRunning = latestServerData.ownPlayer.isRunning;
             state.player.dead = latestServerData.ownPlayer.dead;
+            state.player.isFireing = latestServerData.ownPlayer.isFireing;
+
+            if (state.player.isReloading) {
+                state.player.reload();
+                state.player.isReloading = false;
+            }
 
             state.player.lastInputSeq = lastInputSeqIndex;
         }

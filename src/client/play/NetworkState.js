@@ -161,7 +161,16 @@ class NetworkState extends State {
                         player.isMoving = target.players[i].isMoving;
                         player.isRunning = target.players[i].isRunning;
                         player.dead = target.players[i].dead;
-                        player.actions.firedBullet = target.players[i].actions.firedBullet;
+                        player.isFireing = target.players[i].isFireing;
+
+                        if (target.players[i].isReloading) {
+                            player.reload();
+                        }
+
+                        for (let j = 0; j < target.players[i].weapons.length; j++) {
+                            player.weapons[j].ammo = target.players[i].weapons[j].ammo;
+                            player.weapons[j].magazine = target.players[i].weapons[j].magazine;
+                        }
                     }
                 }
             }

@@ -53,8 +53,13 @@ class BulletSystem {
 
     update (delta) {
         for (let soldier of this.soldiers) {
-            if (soldier.actions.firedBullet) {
+            if (soldier.isFireing && soldier.canFire && !soldier.isReloading) {
+                soldier.fireBullet();
                 this._fireBullet(soldier);
+            }
+
+            if (soldier.currentWeapon) {
+                soldier.currentWeapon.update(delta);
             }
         }
 

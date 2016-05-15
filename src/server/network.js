@@ -28,6 +28,10 @@ function network () {
                 };
 
                 playerClients.get(player).emit('onServerUpdate', updates);
+
+                if (player.isReloading) {
+                    player.isReloading = false;
+                }
             }
         }
     }

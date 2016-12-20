@@ -64,11 +64,11 @@ class PlayState extends State {
             this.bulletSystem.update(delta);
         }
 
-        for (let soldier of this.soldiers) {
+        for (const soldier of this.soldiers) {
             soldier.update(delta);
 
             if (soldier.dead) {
-                let position = this.map.randomRespawnPosition();
+                const position = this.map.randomRespawnPosition();
 
                 soldier.respawn(position);
             }

@@ -1,3 +1,4 @@
+import { AmbientLight, PerspectiveCamera, SpotLight } from 'three';
 import RenderView from '../../../engine/graphics/RenderView';
 
 class PlayRenderView extends RenderView {
@@ -14,17 +15,17 @@ class PlayRenderView extends RenderView {
     init () {
         super.init();
 
-        this.camera = new THREE.PerspectiveCamera(75, this.map.width / this.map.height, 100, 1000);
+        this.camera = new PerspectiveCamera(75, this.map.width / this.map.height, 100, 1000);
 
         this.camera.position.x = (this.map.width / 2) * this.map.blockWidth;
         this.camera.position.y = (this.map.height / 2) * this.map.blockHeight;
         this.camera.position.z = this.map.blockDepth * 6;
 
-        let ambientLight = new THREE.AmbientLight(0x030303);
+        const ambientLight = new AmbientLight(0x030303);
 
         this.scene.add(ambientLight);
 
-        this.cameraFollowLight = new THREE.SpotLight(0xfffffff, 2, 800);
+        this.cameraFollowLight = new SpotLight(0xfffffff, 2, 800);
         this.cameraFollowLight.angle = 135 * (Math.PI / 180);
         this.cameraFollowLight.exponent = 10;
         this.cameraFollowLight.target = this.cameraFollowView.mesh;

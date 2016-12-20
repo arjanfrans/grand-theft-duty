@@ -1,15 +1,16 @@
-import { View, TextView } from '../../../engine/graphics';
+import { Mesh, MeshLambertMaterial, Object3D, PlaneGeometry } from 'three';
+import { TextView, View } from '../../../engine/graphics';
 
-let _converToText = function (teams) {
+function converToText (teams) {
     let resultText = '';
 
-    for (let [teamName, teamData] of teams.entries()) {
+    for (const [teamName, teamData] of teams.entries()) {
         resultText += `${teamName} - k: ${teamData.kills} - d: ${teamData.deaths} \n`;
 
-        let soldierText = [];
+        const soldierText = [];
 
-        for (let soldier of teamData.soldiers) {
-            let text = `${soldier.name} - k: ${soldier.totalKills} - d: ${soldier.totalDeaths}`;
+        for (const soldier of teamData.soldiers) {
+            const text = `${soldier.name} - k: ${soldier.totalKills} - d: ${soldier.totalDeaths}`;
 
             soldierText.push(text);
         }
@@ -19,7 +20,7 @@ let _converToText = function (teams) {
     }
 
     return resultText;
-};
+}
 
 class ScoreView extends View {
     constructor (state) {
@@ -30,17 +31,17 @@ class ScoreView extends View {
     }
 
     init () {
-        this.mesh = new THREE.Object3D();
+        this.mesh = new Object3D();
 
-        let backgroundMaterial = new THREE.MeshLambertMaterial({
+        const backgroundMaterial = new MeshLambertMaterial({
             color: 0x00000,
             transparent: true,
             opacity: 0.5
         });
 
-        let backgroundGeometry = new THREE.PlaneGeometry(600, 800);
+        const backgroundGeometry = new PlaneGeometry(600, 800);
 
-        this.mesh.add(new THREE.Mesh(backgroundGeometry, backgroundMaterial));
+        this.mesh.add(new Mesh(backgroundGeometry, backgroundMaterial));
 
         this.scoreTextView = new TextView(this._scoreText, {
             color: 0xfeff80,
@@ -62,14 +63,12 @@ class ScoreView extends View {
                 this.mesh.visible = true;
             }
 
-            let newScores = _converToText(this.match.sortedScores());
+            const newScores = converToText(this.match.sortedScores());
 
             // Scores have changed
             this.scoreTextView.text = newScores;
-        } else {
-            if (this.mesh.visible) {
-                this.mesh.visible = false;
-            }
+        } else if (this.mesh.visible) {
+            this.mesh.visible = false;
         }
     }
 }

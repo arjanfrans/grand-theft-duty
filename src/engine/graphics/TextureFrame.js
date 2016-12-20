@@ -1,3 +1,5 @@
+import { Vector2 } from 'three';
+
 class TextureFrame {
     constructor (textureAtlas, geometry, initialFrame, fixed = false) {
         this.textureAtlas = textureAtlas;
@@ -8,7 +10,7 @@ class TextureFrame {
             this.frame = initialFrame;
 
             if (fixed) {
-                let size = this.textureAtlas.getFrameSize(initialFrame);
+                const size = this.textureAtlas.getFrameSize(initialFrame);
 
                 this._changeSize(size.width, size.height);
             }
@@ -22,16 +24,16 @@ class TextureFrame {
     _changeSize (width, height) {
         this.width = width;
         this.height = height;
-        let aw = this.textureAtlas.width;
-        let ah = this.textureAtlas.height;
+        const aw = this.textureAtlas.width;
+        const ah = this.textureAtlas.height;
 
         if (this.geometry) {
             // TODO make this more efficient (no new instances necessary)
-            let bounds = [
-                new THREE.Vector2(0, ah / ah), // lower left
-                new THREE.Vector2(0, (ah - height) / ah), // upper left
-                new THREE.Vector2(width / aw, (ah - height) / ah), // upper right
-                new THREE.Vector2(width / aw, ah / ah) // lower right
+            const bounds = [
+                new Vector2(0, ah / ah), // lower left
+                new Vector2(0, (ah - height) / ah), // upper left
+                new Vector2(width / aw, (ah - height) / ah), // upper right
+                new Vector2(width / aw, ah / ah) // lower right
             ];
 
             // If a geometry is merged, for example multiple planes
@@ -45,8 +47,8 @@ class TextureFrame {
     }
 
     set frame (frameName) {
-        let offset = this.textureAtlas.getFrameOffset(frameName);
-        let size = this.textureAtlas.getFrameSize(frameName);
+        const offset = this.textureAtlas.getFrameOffset(frameName);
+        const size = this.textureAtlas.getFrameSize(frameName);
 
         // Size changed
         if (!this.fixed) {

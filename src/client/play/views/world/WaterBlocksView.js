@@ -1,4 +1,5 @@
 import { Animation, TextureManager, View } from '../../../../engine/graphics';
+import { Geometry, Matrix4, Mesh, MeshLambertMaterial, PlaneGeometry } from 'three';
 
 const WATER_FRAMES = [
     'animation_water_0001',
@@ -12,13 +13,13 @@ const WATER_FRAMES = [
     'animation_water_0009'
 ];
 
-let _waterGeometry = function (block, textureAtlas) {
-    let geometries = [];
+function waterGeometry (block, textureAtlas) {
+    const geometries = [];
 
     if (block.walls.top) {
-        let top = textureAtlas.getBounds(block.walls.top);
+        const top = textureAtlas.getBounds(block.walls.top);
 
-        let topGeometry = new THREE.PlaneGeometry(block.width, block.height);
+        const topGeometry = new PlaneGeometry(block.width, block.height);
 
         topGeometry.faceVertexUvs[0][0] = [top[0], top[1], top[3]];
         topGeometry.faceVertexUvs[0][1] = [top[1], top[2], top[3]];
@@ -27,20 +28,20 @@ let _waterGeometry = function (block, textureAtlas) {
         geometries.push(topGeometry);
     }
 
-    let blockGeometry = new THREE.Geometry();
+    const blockGeometry = new Geometry();
 
-    for (let geometry of geometries) {
+    for (const geometry of geometries) {
         blockGeometry.merge(geometry);
     }
 
     return blockGeometry;
-};
+}
 
-let _createMergedBlockGeometry = function (blocks, textureAtlas) {
-    let mergedGeometry = new THREE.Geometry();
+function createMergedBlockGeometry (blocks, textureAtlas) {
+    const mergedGeometry = new Geometry();
 
-    for (let block of blocks) {
-        let geometry = _waterGeometry(block, textureAtlas);
+    for (const block of blocks) {
+        const geometry = waterGeometry(block, textureAtlas);
 
         geometry.translate(block.position.x, block.position.y, block.position.z);
 
@@ -50,7 +51,7 @@ let _createMergedBlockGeometry = function (blocks, textureAtlas) {
     mergedGeometry.mergeVertices();
 
     return mergedGeometry;
-};
+}
 
 class WaterBlocksView extends View {
     constructor (map, textureAtlasName, waterFrames = WATER_FRAMES) {
@@ -70,26 +71,26 @@ class WaterBlocksView extends View {
         // Do not clone, since all water animates in sync
         this.textureAtlas = TextureManager.getAtlas(this._textureAtlasName, true);
 
-        this.geometry = _createMergedBlockGeometry(this.blocks, this.textureAtlas);
+        this.geometry = createMergedBlockGeometry(this.blocks, this.textureAtlas);
 
         this.animation = new Animation(this.textureAtlas, this.geometry, 9, true, this._waterFrames, '', true);
         this.animation.textureFrame.width = 100;
         this.animation.textureFrame.height = 100;
 
-        this.material = new THREE.MeshLambertMaterial({
+        this.material = new MeshLambertMaterial({
             map: this.textureAtlas.texture,
             transparent: false
         });
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh = new Mesh(this.geometry, this.material);
 
         // Set the center of the blocks to bottom left (instead of center)
-        this.mesh.applyMatrix(new THREE.Matrix4().makeTranslation(this.blockWidth / 2, this.blockHeight / 2, this.blockDepth / 2));
+        this.mesh.applyMatrix(new Matrix4().makeTranslation(this.blockWidth / 2, this.blockHeight / 2, this.blockDepth / 2));
 
         super.init();
     }
 
-    update (interpolationPercentage) {
+    update () {
         this.animation.update();
     }
 }

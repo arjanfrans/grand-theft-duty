@@ -45,7 +45,7 @@ class Entity {
     }
 
     get rotatedBody () {
-        let body = this._body;
+        const body = this._body;
 
         body.setAngle(this.angle);
 

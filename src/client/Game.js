@@ -32,7 +32,7 @@ const ASSET_CONFIG = {
     ]
 };
 
-let Game = {
+const Game = {
 
     /**
      * Load assets and start the game.
@@ -41,11 +41,11 @@ let Game = {
      */
     start () {
         AssetManager.init(ASSET_CONFIG).then(function () {
-            let engine = new Engine({
+            const engine = new Engine({
                 debugMode: true
             });
 
-            let menuState = MenuBuilder.create(engine);
+            const menuState = MenuBuilder.create(engine);
 
             engine.addState('menu', menuState);
 

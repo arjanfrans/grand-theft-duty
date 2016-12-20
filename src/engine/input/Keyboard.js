@@ -1,4 +1,4 @@
-let specialKeys = {
+const specialKeys = {
     ';': 186,
     '=': 187,
     ',': 188,
@@ -12,11 +12,11 @@ let specialKeys = {
     '\'': 222
 };
 
-let specialKeysShift = {
+const specialKeysShift = {
     ':': 186,
     '+': 187,
     '<': 188,
-    '_': 189,
+    _: 189,
     '>': 190,
     '?': 191,
     '~': 192,
@@ -26,20 +26,20 @@ let specialKeysShift = {
     '"': 222
 };
 
-let numberKeys = {
-    '0': 48,
-    '1': 49,
-    '2': 50,
-    '3': 51,
-    '4': 52,
-    '5': 53,
-    '6': 54,
-    '7': 55,
-    '8': 56,
-    '9': 57
+const numberKeys = {
+    0: 48,
+    1: 49,
+    2: 50,
+    3: 51,
+    4: 52,
+    5: 53,
+    6: 54,
+    7: 55,
+    8: 56,
+    9: 57
 };
 
-let letterKeys = {
+const letterKeys = {
     A: 65,
     B: 66,
     C: 67,
@@ -68,7 +68,7 @@ let letterKeys = {
     Z: 90
 };
 
-let keys = {
+const keys = {
     BACKSPACE: 8,
     CTRL: 17,
     SPACE: 32,
@@ -82,36 +82,36 @@ let keys = {
     DOWN: 40
 };
 
-for (let key of Object.keys(specialKeys)) {
+for (const key of Object.keys(specialKeys)) {
     keys[key] = specialKeys[key];
 }
 
-for (let key of Object.keys(numberKeys)) {
+for (const key of Object.keys(numberKeys)) {
     keys[key] = numberKeys[key];
 }
 
-for (let key of Object.keys(letterKeys)) {
+for (const key of Object.keys(letterKeys)) {
     keys[key] = letterKeys[key];
 }
 
-let shiftKeys = {};
+const shiftKeys = {};
 
-for (let shiftKey of Object.keys(specialKeysShift)) {
+for (const shiftKey of Object.keys(specialKeysShift)) {
     shiftKeys[shiftKey] = specialKeysShift[shiftKey];
 }
 
-let codes = {};
-let codesShift = {};
+const codes = {};
+const codesShift = {};
 
-let Keyboard = {
+const Keyboard = {
     _pressed: {},
     shiftDown: false,
     lastPressed: null,
     lastPressedIsChar () {
-        let charKeys = Object.keys(specialKeys).concat(Object.keys(numberKeys)).concat(Object.keys(letterKeys));
-        let charCodes = [];
+        const charKeys = Object.keys(specialKeys).concat(Object.keys(numberKeys)).concat(Object.keys(letterKeys));
+        const charCodes = [];
 
-        for (let charKey of charKeys) {
+        for (const charKey of charKeys) {
             charCodes.push(keys[charKey]);
         }
 
@@ -157,9 +157,9 @@ let Keyboard = {
     },
 
     get pressedKeys () {
-        let pressed = [];
+        const pressed = [];
 
-        for (let code of this._pressed) {
+        for (const code of this._pressed) {
             pressed.push(this.keyByCode(code));
         }
 
@@ -168,9 +168,9 @@ let Keyboard = {
 
     keys: keys,
     get letterKeyCodes () {
-        let letterCodes = [];
+        const letterCodes = [];
 
-        for (let key of Object.keys(letterKeys)) {
+        for (const key of Object.keys(letterKeys)) {
             letterCodes.push(letterKeys[key]);
         }
 
@@ -178,15 +178,15 @@ let Keyboard = {
     }
 };
 
-for (let key of Object.keys(keys)) {
-    let code = keys[key];
+for (const key of Object.keys(keys)) {
+    const code = keys[key];
 
     codes[code] = key;
     Keyboard[key] = code;
 }
 
-for (let shiftKey of Object.keys(shiftKeys)) {
-    let code = shiftKeys[shiftKey];
+for (const shiftKey of Object.keys(shiftKeys)) {
+    const code = shiftKeys[shiftKey];
 
     codesShift[code] = shiftKey;
     Keyboard[shiftKey] = code;

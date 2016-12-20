@@ -1,12 +1,13 @@
 import View from './View';
 import AssetManager from '../AssetManager';
+import { BufferGeometry, Mesh, MeshBasicMaterial } from 'three';
 import createTextGeometry from 'three-bmfont-text';
 
 class TextView extends View {
     constructor (text, options = {}) {
         super();
 
-        let fontName = options.font || 'keep_calm';
+        const fontName = options.font || 'keep_calm';
 
         this._text = text;
         this.font = AssetManager.getFont(fontName);
@@ -24,13 +25,13 @@ class TextView extends View {
             multipage: true
         });
 
-        this.material = new THREE.MeshBasicMaterial({
+        this.material = new MeshBasicMaterial({
             map: this.font.textures[0],
             transparent: true,
             color: this._color
         });
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh = new Mesh(this.geometry, this.material);
 
         this.mesh.rotation.y = 180 * (Math.PI / 180);
         this.mesh.rotation.z = 180 * (Math.PI / 180);

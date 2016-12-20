@@ -1,3 +1,4 @@
+import { Object3D } from 'three';
 import ObjectPool from '../../../engine/ObjectPool';
 import View from '../../../engine/graphics/View';
 import BulletView from './BulletView';
@@ -14,7 +15,7 @@ class BulletSystemView extends View {
     }
 
     init () {
-        this.mesh = new THREE.Object3D();
+        this.mesh = new Object3D();
 
         super.init();
     }
@@ -26,8 +27,8 @@ class BulletSystemView extends View {
         }
 
         // Clear previously killed bullets
-        for (let deadBullet of this.bulletSystem.deadBullets) {
-            let bulletView = this.bulletViewPairs.get(deadBullet);
+        for (const deadBullet of this.bulletSystem.deadBullets) {
+            const bulletView = this.bulletViewPairs.get(deadBullet);
 
             if (bulletView) {
                 bulletView.update(delta);
@@ -36,7 +37,7 @@ class BulletSystemView extends View {
             this.bulletSystem.deadBullets.delete(deadBullet);
         }
 
-        for (let bullet of this.bulletSystem.activeBullets) {
+        for (const bullet of this.bulletSystem.activeBullets) {
             let bulletView = this.bulletViewPairs.get(bullet);
 
             if (!bulletView) {

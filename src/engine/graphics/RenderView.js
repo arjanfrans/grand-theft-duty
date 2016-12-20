@@ -1,3 +1,5 @@
+import { Scene } from 'three';
+
 class RenderView {
     constructor () {
         this.width = 800;
@@ -11,7 +13,7 @@ class RenderView {
     }
 
     init () {
-        this.scene = new THREE.Scene();
+        this.scene = new Scene();
 
         for (let [name, viewContainer] of this.viewContainers.entries()) {
             viewContainer.init();
@@ -47,7 +49,7 @@ class RenderView {
         }
 
         if (this._initialized) {
-            for (let viewContainer of this.viewContainers.values()) {
+            for (const viewContainer of this.viewContainers.values()) {
                 viewContainer.width = this.width;
                 viewContainer.height = this.height;
             }
@@ -55,7 +57,7 @@ class RenderView {
     }
 
     set currentViewContainer (name) {
-        let newViewContainer = this.viewContainers.get(name);
+        const newViewContainer = this.viewContainers.get(name);
 
         if (this._initialized) {
             if (this._currentViewContainer) {

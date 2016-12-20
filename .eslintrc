@@ -1,0 +1,7 @@
+{
+    "extends": "@arjanfrans/eslint-config-arjanfrans",
+    "globals": {
+        "THREE": true
+    }
+}
+

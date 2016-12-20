@@ -32,7 +32,7 @@ class Vector {
      * @return {Vector} This for chaining.
      */
     perp () {
-        let x = this.x;
+        const x = this.x;
 
         this.x = this.y;
         this.y = -x;
@@ -46,8 +46,8 @@ class Vector {
      * @return {Vector} This for chaining.
      */
     rotate (angle) {
-        let x = this.x;
-        let y = this.y;
+        const x = this.x;
+        const y = this.y;
 
         this.x = x * Math.cos(angle) - y * Math.sin(angle);
         this.x = x * Math.sin(angle) + y * Math.cos(angle);
@@ -73,7 +73,7 @@ class Vector {
      * @return {Vector} This for chaining.
      */
     normalize () {
-        let d = this.len();
+        const d = this.len();
 
         if (d > 0) {
             this.x = this.x / d;
@@ -130,7 +130,7 @@ class Vector {
      * @return {Vector} This for chaining.
      */
     project (other) {
-        let amt = this.dot(other) / other.len2();
+        const amt = this.dot(other) / other.len2();
 
         this.x = amt * other.x;
         this.y = amt * other.y;
@@ -146,7 +146,7 @@ class Vector {
      * @return {Vector} This for chaining.
      */
     projectN (other) {
-        let amt = this.dot(other);
+        const amt = this.dot(other);
 
         this.x = amt * other.x;
         this.y = amt * other.y;
@@ -161,8 +161,8 @@ class Vector {
      * @return {Vector} This for chaining.
      */
     reflect (axis) {
-        let x = this.x;
-        let y = this.y;
+        const x = this.x;
+        const y = this.y;
 
         this.project(axis).scale(2);
         this.x -= x;
@@ -179,8 +179,8 @@ class Vector {
      * @return {Vector} This for chaining.
      */
     reflectN (axis) {
-        let x = this.x;
-        let y = this.y;
+        const x = this.x;
+        const y = this.y;
 
         this.projectN(axis).scale(2);
         this.x -= x;

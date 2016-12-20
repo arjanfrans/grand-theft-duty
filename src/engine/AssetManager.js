@@ -1,6 +1,7 @@
 import Howler from 'howler';
+import { FileLoader, TextureLoader } from 'three';
 
-let _assets = {
+const _assets = {
     atlases: new Map(),
     textures: new Map(),
     maps: new Map(),
@@ -8,7 +9,7 @@ let _assets = {
     audio: new Map()
 };
 
-let _loadHowlerAudio = function (name, spriteJson) {
+const _loadHowlerAudio = function (name, spriteJson) {
     return new Promise((resolve, reject) => {
         spriteJson.onload = function () {
             return resolve();
@@ -18,9 +19,9 @@ let _loadHowlerAudio = function (name, spriteJson) {
             return reject(err);
         };
 
-        let sound = new Howler.Howl(spriteJson);
+        const sound = new Howler.Howl(spriteJson);
 
-        let audio = {
+        const audio = {
             mapping: spriteJson,
             sound: sound
         };
@@ -29,14 +30,14 @@ let _loadHowlerAudio = function (name, spriteJson) {
     });
 };
 
-let _loadAudioSprite = function (audioSpritePath, name) {
+const _loadAudioSprite = function (audioSpritePath, name) {
     return _loadJson(audioSpritePath + name + '.json').then(function (spriteJson) {
         // FIXME change "urls" to "src" to work with Howler 2
         spriteJson.src = spriteJson.urls;
 
-        let fullSources = [];
+        const fullSources = [];
 
-        for (let src of spriteJson.src) {
+        for (const src of spriteJson.src) {
             fullSources.push(audioSpritePath + src);
         }
 
@@ -46,8 +47,8 @@ let _loadAudioSprite = function (audioSpritePath, name) {
     });
 };
 
-let _loadFont = function (fontsPath, name) {
-    let font = {
+const _loadFont = function (fontsPath, name) {
+    const font = {
         mapping: null,
         pages: [],
         textures: []
@@ -56,7 +57,7 @@ let _loadFont = function (fontsPath, name) {
     return _loadJson(fontsPath + name + '.json').then((fontJson) => {
         font.mapping = fontJson;
 
-        let pageTextures = fontJson.pages.map((pageName) => {
+        const pageTextures = fontJson.pages.map((pageName) => {
             font.pages.push(pageName);
 
             return _loadTexture(pageName, fontsPath + pageName);
@@ -64,7 +65,7 @@ let _loadFont = function (fontsPath, name) {
 
         return Promise.all(pageTextures);
     }).then(() => {
-        for (let page of font.pages) {
+        for (const page of font.pages) {
             font.textures.push(_assets.textures.get(page));
         }
 
@@ -72,7 +73,7 @@ let _loadFont = function (fontsPath, name) {
     });
 };
 
-let _loadTexture = function (name, url) {
+const _loadTexture = function (name, url) {
     return new Promise(function (resolve, reject) {
         _textureLoader.load(url, function (texture) {
             _assets.textures.set(name, texture);
@@ -86,9 +87,9 @@ let _loadTexture = function (name, url) {
     });
 };
 
-let _loadXhr = function (url) {
+const _loadXhr = function (url) {
     return new Promise(function (resolve, reject) {
-        _xhrLoader.load(url, function (response) {
+        fileLoader.load(url, function (response) {
             return resolve(response);
         }, function (progress) {
             console.log((progress.loaded / progress.total * 100) + '% loaded');
@@ -98,7 +99,7 @@ let _loadXhr = function (url) {
     });
 };
 
-let _loadJson = function (url) {
+const _loadJson = function (url) {
     return _loadXhr(url).then(function (response) {
         try {
             return JSON.parse(response);
@@ -108,45 +109,46 @@ let _loadJson = function (url) {
     });
 };
 
-let _loadAtlas = function (atlasesPath, name) {
+const _loadAtlas = function (atlasesPath, name) {
     return _loadJson(atlasesPath + name + '.json').then(function (atlas) {
         return atlas;
     }).then(function (atlas) {
         _assets.atlases.set(name, atlas);
+
         return _loadTexture(name, atlasesPath + atlas.meta.image);
     });
 };
 
-let _loadMap = function (mapsPath, name) {
+const _loadMap = function (mapsPath, name) {
     return _loadJson(mapsPath + name + '.json').then(function (atlas) {
         _assets.maps.set(name, atlas);
     });
 };
 
 let _textureLoader = null;
-let _xhrLoader = null;
+let fileLoader = null;
 
-let AssetLoader = {
+const AssetLoader = {
     init: function (assetConfig) {
-        _textureLoader = new THREE.TextureLoader();
-        _xhrLoader = new THREE.XHRLoader();
+        _textureLoader = new TextureLoader();
+        fileLoader = new FileLoader();
 
-        let assetsToLoad = [];
-        let paths = assetConfig.paths;
+        const assetsToLoad = [];
+        const paths = assetConfig.paths;
 
-        for (let atlasName of assetConfig.textureAtlases) {
+        for (const atlasName of assetConfig.textureAtlases) {
             assetsToLoad.push(_loadAtlas(paths.atlases + '/', atlasName));
         }
 
-        for (let mapName of assetConfig.maps) {
+        for (const mapName of assetConfig.maps) {
             assetsToLoad.push(_loadMap(paths.maps + '/', mapName));
         }
 
-        for (let fontName of assetConfig.fonts) {
+        for (const fontName of assetConfig.fonts) {
             assetsToLoad.push(_loadFont(paths.fonts + '/', fontName));
         }
 
-        for (let audioSpriteName of assetConfig.audio) {
+        for (const audioSpriteName of assetConfig.audio) {
             assetsToLoad.push(_loadAudioSprite(paths.audio + '/', audioSpriteName));
         }
 
@@ -154,7 +156,7 @@ let AssetLoader = {
     },
 
     getTexture (name) {
-        let texture = _assets.textures.get(name);
+        const texture = _assets.textures.get(name);
 
         if (!texture) {
             throw new Error('Texture does not exist: ' + name);
@@ -164,8 +166,8 @@ let AssetLoader = {
     },
 
     cloneTexture (name) {
-        let texture = this.getTexture(name);
-        let clone = texture.clone();
+        const texture = this.getTexture(name);
+        const clone = texture.clone();
 
         clone.needsUpdate = true;
 
@@ -173,7 +175,7 @@ let AssetLoader = {
     },
 
     getMap (name) {
-        let map = _assets.maps.get(name);
+        const map = _assets.maps.get(name);
 
         if (!map) {
             throw new Error('Map does not exist: ' + name);
@@ -183,7 +185,7 @@ let AssetLoader = {
     },
 
     getAtlasMapping (name) {
-        let mapping = _assets.atlases.get(name);
+        const mapping = _assets.atlases.get(name);
 
         if (!mapping) {
             throw new Error('Atlas mapping does not exist: ' + name);
@@ -193,7 +195,7 @@ let AssetLoader = {
     },
 
     getFont (name) {
-        let font = _assets.fonts.get(name);
+        const font = _assets.fonts.get(name);
 
         if (!font) {
             throw new Error('Font does not exist: ' + name);
@@ -203,7 +205,7 @@ let AssetLoader = {
     },
 
     getAudioSprite (name) {
-        let audioSprite = _assets.audio.get(name);
+        const audioSprite = _assets.audio.get(name);
 
         if (!audioSprite) {
             throw new Error('Audio sprite does not exist: ' + name);

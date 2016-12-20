@@ -46,7 +46,7 @@ class Block {
             ];
         }
 
-        let bodies = [];
+        const bodies = [];
 
         if (this._walls.west) {
             bodies.push(new Polygon(new Vector(this.x, this.y), [

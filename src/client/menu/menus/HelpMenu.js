@@ -4,10 +4,10 @@ import BackgroundView from '../../../engine/graphics/BackgroundView';
 import ViewContainer from '../../../engine/graphics/ViewContainer';
 import MenuItemsView from '../views/MenuItemsView';
 
-let HelpMenu = {
+const HelpMenu = {
     create (menuState) {
-        let menu = new Menu();
-        let viewContainer = new ViewContainer();
+        const menu = new Menu();
+        const viewContainer = new ViewContainer();
 
         menu.addMenuItem(new MenuItem('back', '- back', function () {
             menuState.currentMenu = 'main';
@@ -15,7 +15,7 @@ let HelpMenu = {
 
         viewContainer.addDynamicView(new MenuItemsView(menu), { x: 300, y: 100, z: 0 });
 
-        let background = new BackgroundView('iwo_jima', 'ui');
+        const background = new BackgroundView('iwo_jima', 'ui');
 
         background.lightness = 0.5;
 

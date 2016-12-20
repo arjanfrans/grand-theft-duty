@@ -1,3 +1,4 @@
+import { RepeatWrapping, Vector2 } from 'three';
 import AssetManager from '../AssetManager';
 
 class TextureAtlas {
@@ -14,23 +15,23 @@ class TextureAtlas {
             this.texture = AssetManager.getTexture(name);
         }
 
-        this.texture.wrapS = THREE.RepeatWrapping;
-        this.texture.wrapT = THREE.RepeatWrapping;
+        this.texture.wrapS = RepeatWrapping;
+        this.texture.wrapT = RepeatWrapping;
 
         this.width = this.mapping.meta.size.w;
         this.height = this.mapping.meta.size.h;
 
         this.frames = new Map();
 
-        for (let frame of this.mapping.frames) {
-            let d = frame.frame;
+        for (const frame of this.mapping.frames) {
+            const d = frame.frame;
 
             // Origin image is y-inverted compared to what THREE wants
-            let bounds = [
-                new THREE.Vector2(d.x / this.width, (this.height - (d.y)) / this.height), // lower left
-                new THREE.Vector2(d.x / this.width, (this.height - (d.y + d.h)) / this.height), // upper left
-                new THREE.Vector2((d.x + d.w) / this.width, (this.height - (d.y + d.h)) / this.height), // upper right
-                new THREE.Vector2((d.x + d.w) / this.width, (this.height - (d.y)) / this.height) // lower right
+            const bounds = [
+                new Vector2(d.x / this.width, (this.height - (d.y)) / this.height), // lower left
+                new Vector2(d.x / this.width, (this.height - (d.y + d.h)) / this.height), // upper left
+                new Vector2((d.x + d.w) / this.width, (this.height - (d.y + d.h)) / this.height), // upper right
+                new Vector2((d.x + d.w) / this.width, (this.height - (d.y)) / this.height) // lower right
             ];
 
             this.frames.set(frame.filename, {
@@ -49,9 +50,9 @@ class TextureAtlas {
     }
 
     getFrameOffset (name) {
-        let d = this.frames.get(name + '.png').framePosition;
+        const d = this.frames.get(name + '.png').framePosition;
 
-        return new THREE.Vector2(d.x / this.width, (this.height - d.y) / this.height);
+        return new Vector2(d.x / this.width, (this.height - d.y) / this.height);
     }
 
     getFrameSize (name) {

@@ -91,16 +91,16 @@ function create () {
     // now, but node.js doesn't have it, so fall back to timers. The polyfill
     // is adapted from the MIT-licensed
     // https://github.com/underscorediscovery/realtime-multiplayer-in-html5
-    let requestAnimationFrame = global.requestAnimationFrame || (function () {
+    const requestAnimationFrame = global.requestAnimationFrame || (function () {
         let lastTimestamp = Date.now();
 
         return function (callback) {
-            let now = Date.now();
+            const now = Date.now();
 
             // The next frame should run no sooner than the simulation allows,
             // but as soon as possible if the current frame has already taken
             // more time to run than is simulated in one timestep.
-            let timeout = Math.max(0, simulationTimestep - (now - lastTimestamp));
+            const timeout = Math.max(0, simulationTimestep - (now - lastTimestamp));
 
             lastTimestamp = now + timeout;
 
@@ -108,18 +108,18 @@ function create () {
                 callback(now + timeout);
             }, timeout);
         };
-    })();
+    }());
 
     // The function that stops the main loop. The unprefixed version of
     // `window.cancelAnimationFrame()` is available in all modern browsers now,
     // but node.js doesn't have it, so fall back to timers.
-    let cancelAnimationFrame = global.cancelAnimationFrame || clearTimeout;
+    const cancelAnimationFrame = global.cancelAnimationFrame || clearTimeout;
 
     // In all major browsers, replacing non-specified functions with NOOPs
     // seems to be as fast or slightly faster than using conditions to only
     // call the functions if they are specified. This is probably due to empty
     // functions being optimized away. http://jsperf.com/noop-vs-condition
-    let NOOP = function () {};
+    const NOOP = function () {};
 
     // A function that runs at the beginning of the main loop.
     // See `MainLoop.setBegin()` for details.
@@ -167,7 +167,7 @@ function create () {
     *
     * @class MainLoop
     */
-    let MainLoop = {
+    const MainLoop = {
 
         /**
         * Gets how many milliseconds should be simulated by every run of update().
@@ -307,7 +307,7 @@ function create () {
         *   function.
         */
         resetFrameDelta: function () {
-            let oldFrameDelta = frameDelta;
+            const oldFrameDelta = frameDelta;
 
             frameDelta = 0;
 
@@ -346,6 +346,7 @@ function create () {
         */
         setBegin: function (fun) {
             begin = fun || begin;
+
             return this;
         },
 

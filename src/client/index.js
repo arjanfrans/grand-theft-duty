@@ -1,8 +1,11 @@
-import three from 'three/three.js';
+import { BufferAttribute, BufferGeometry, Sphere } from 'three';
 
-// three.js must be set up as a global
-global.THREE = three;
+global.THREE = {
+    BufferGeometry,
+    BufferAttribute,
+    Sphere
+};
 
-let Game = require('./Game');
+const Game = require('./Game');
 
 Game.start();

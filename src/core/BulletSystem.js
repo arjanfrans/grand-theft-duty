@@ -10,7 +10,7 @@ class BulletSystem {
         this.map = this.state.map;
 
         this.bulletPool = new ObjectPool(() => {
-            let bullet = new Bullet(0, 0, 0, 4, 10);
+            const bullet = new Bullet(0, 0, 0, 4, 10);
 
             return bullet;
         }, 10, 10, options.poolLimit || 200);
@@ -31,7 +31,7 @@ class BulletSystem {
 
         // If the pool is full, reused the first item.
         if (!bullet) {
-            let firstBullet = this.activeBullets.values().next().value;
+            const firstBullet = this.activeBullets.values().next().value;
 
             this.bulletPool.free(firstBullet);
             bullet = this.bulletPool.get();
@@ -52,13 +52,13 @@ class BulletSystem {
     }
 
     update (delta) {
-        for (let soldier of this.soldiers) {
+        for (const soldier of this.soldiers) {
             if (soldier.actions.firedBullet) {
                 this._fireBullet(soldier);
             }
         }
 
-        for (let bullet of this.activeBullets) {
+        for (const bullet of this.activeBullets) {
             bullet.update(delta);
             CollisionUtils.wallCollision(this.map, bullet, () => bullet.kill());
 
@@ -67,7 +67,7 @@ class BulletSystem {
                 this.activeBullets.delete(bullet);
                 this.bulletPool.free(bullet);
             } else {
-                for (let soldier of this.soldiers) {
+                for (const soldier of this.soldiers) {
                     if (!soldier.dead) {
                         // Can't kill itself
                         if (bullet.firedBy !== soldier) {

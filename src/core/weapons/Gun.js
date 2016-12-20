@@ -1,4 +1,4 @@
-export default class Gun {
+class Gun {
     constructor (name, options = {}) {
         this.name = name;
         this.maxMagazine = options.maxMagazine || 10;
@@ -37,7 +37,7 @@ export default class Gun {
 
             let refill = this.maxMagazine - this.magazine;
 
-            let newAmmo = this.ammo - refill;
+            const newAmmo = this.ammo - refill;
 
             if (newAmmo < 0) {
                 refill = this.ammo;

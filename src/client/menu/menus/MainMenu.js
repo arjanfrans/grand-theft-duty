@@ -15,7 +15,7 @@ import LogoView from '../../menu/views/LogoView';
  * @return {PlayState} The created play state.
  */
 function createPlayState (engine, options) {
-    let playOptions = Object.assign({
+    const playOptions = Object.assign({
         poolLimit: 200,
         teams: ['american', 'german'],
         cpuCount: 7,
@@ -23,7 +23,7 @@ function createPlayState (engine, options) {
         playerName: 'unknown soldier'
     }, options);
 
-    let playState = PlayBuilder.createSingleplayer(engine, playOptions);
+    const playState = PlayBuilder.createSingleplayer(engine, playOptions);
 
     engine.addState('play', playState);
 
@@ -39,7 +39,7 @@ function createPlayState (engine, options) {
  * @return {Menu} Menu instance.
  */
 function createMenu (engine, menuState) {
-    let menu = new Menu();
+    const menu = new Menu();
 
     menu.addMenuItem(new MenuItem('createGame', 'Singleplayer', (menuItem) => {
         let playState = engine.states.get('play');
@@ -85,8 +85,8 @@ function createMenu (engine, menuState) {
  * @return {ViewContainer} ViewContainer for the menu.
  */
 function createView (menu) {
-    let viewContainer = new ViewContainer();
-    let background = new BackgroundView('normandy', 'ui');
+    const viewContainer = new ViewContainer();
+    const background = new BackgroundView('normandy', 'ui');
 
     viewContainer.addDynamicView(new MenuItemsView(menu), { x: 500, y: 200, z: 0 });
     viewContainer.addStaticView(new LogoView('logo', 'ui'), { x: 300, y: 300, z: 0 });
@@ -97,10 +97,10 @@ function createView (menu) {
     return viewContainer;
 }
 
-let MainMenu = {
+const MainMenu = {
     create (engine, menuState) {
-        let menu = createMenu(engine, menuState);
-        let viewContainer = createView(menu);
+        const menu = createMenu(engine, menuState);
+        const viewContainer = createView(menu);
 
         return {
             viewContainer: viewContainer,

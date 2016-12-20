@@ -8,7 +8,7 @@ class CollisionSystem {
     }
 
     update (delta) {
-        for (let entity of this.entities) {
+        for (const entity of this.entities) {
             CollisionUtils.wallCollision(this.map, entity, (response) => {
                 entity.position.x -= response.overlapV.x;
                 entity.position.y -= response.overlapV.y;

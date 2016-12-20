@@ -1,4 +1,5 @@
-import { View, TextureManager, TextView, TextureFrame } from '../../../engine/graphics';
+import { Mesh, MeshBasicMaterial, Object3D, PlaneGeometry } from 'three';
+import { TextView, TextureFrame, TextureManager, View } from '../../../engine/graphics';
 
 class AmmoView extends View {
     constructor (state) {
@@ -8,21 +9,21 @@ class AmmoView extends View {
     }
 
     init () {
-        this.mesh = new THREE.Object3D();
+        this.mesh = new Object3D();
 
-        let textureAtlas = TextureManager.getAtlas('ui', false);
+        const textureAtlas = TextureManager.getAtlas('ui', false);
 
-        let material = new THREE.MeshBasicMaterial({
+        const material = new MeshBasicMaterial({
             map: textureAtlas.texture,
             transparent: true
         });
 
-        let ammoSize = textureAtlas.getFrameSize('ammo');
+        const ammoSize = textureAtlas.getFrameSize('ammo');
 
-        this.geometry = new THREE.PlaneGeometry(ammoSize.width, ammoSize.height);
+        this.geometry = new PlaneGeometry(ammoSize.width, ammoSize.height);
         this.textureFrame = new TextureFrame(textureAtlas, this.geometry, 'ammo');
 
-        let ammoMesh = new THREE.Mesh(this.geometry, material);
+        const ammoMesh = new Mesh(this.geometry, material);
 
         ammoMesh.scale.set(0.5, 0.5, 1);
 
@@ -80,7 +81,7 @@ class AmmoView extends View {
 
     update (delta) {
         if (this.player.currentWeapon) {
-            let weapon = this.player.currentWeapon;
+            const weapon = this.player.currentWeapon;
 
             this.ammo = weapon.ammo;
             this.magazine = weapon.magazine;

@@ -34,7 +34,7 @@ class State {
                 this.audio.init();
             }
 
-            for (let view of this.views.values()) {
+            for (const view of this.views.values()) {
                 view.init();
             }
 
@@ -43,13 +43,13 @@ class State {
     }
 
     updateInputs (delta) {
-        for (let input of this.inputs.values()) {
+        for (const input of this.inputs.values()) {
             input.update(delta);
         }
     }
 
     render (delta) {
-        for (let view of this.views.values()) {
+        for (const view of this.views.values()) {
             view.update(delta);
         }
     }

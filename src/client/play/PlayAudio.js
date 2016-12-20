@@ -8,7 +8,7 @@ class PlayAudio extends StateAudio {
     }
 
     update (delta) {
-        for (let entity of this.entities) {
+        for (const entity of this.entities) {
             if (entity === this.player && entity.actions.firedBullet) {
                 this.effects.play(entity.currentWeapon.name);
             }

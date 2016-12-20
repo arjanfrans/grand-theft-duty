@@ -10,8 +10,8 @@ class MenuInput extends HumanInput {
     }
 
     update () {
-        let state = this.state;
-        let selectedItem = state.currentMenu.selectedItem;
+        const state = this.state;
+        const selectedItem = state.currentMenu.selectedItem;
 
         // Do not change selection while editing
         if (!selectedItem.isEditing) {
@@ -27,7 +27,7 @@ class MenuInput extends HumanInput {
                 selectedItem.value = selectedItem.value.slice(0, -1);
             } else if (Keyboard.lastPressedIsChar()) {
                 if (this.keyboardDownOnce(Keyboard[Keyboard.keyByCode(Keyboard.lastPressed)])) {
-                    selectedItem.value = selectedItem.value + Keyboard.lastPressedChar();
+                    selectedItem.value += Keyboard.lastPressedChar();
                 }
             }
         }

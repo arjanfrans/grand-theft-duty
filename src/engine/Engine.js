@@ -61,12 +61,12 @@ class Engine {
      * @returns {void}
      */
     run () {
-        let render = (interpolationPercentage) => {
+        const render = (interpolationPercentage) => {
             this.currentState.render(interpolationPercentage);
             this._renderer.render(interpolationPercentage);
         };
 
-        let update = (delta) => {
+        const update = (delta) => {
             if (this.currentState) {
                 this.currentState.update(delta);
             } else {
@@ -74,19 +74,19 @@ class Engine {
             }
         };
 
-        let before = () => {
+        const before = () => {
             if (this.debugMode) {
                 this._renderDebug.before();
             }
         };
 
-        let after = () => {
+        const after = () => {
             if (this.debugMode) {
                 this._renderDebug.after();
             }
         };
 
-        let loop = MainLoop.create().setUpdate(update).setDraw(render).setBegin(before).setEnd(after);
+        const loop = MainLoop.create().setUpdate(update).setDraw(render).setBegin(before).setEnd(after);
 
         loop.start();
     }

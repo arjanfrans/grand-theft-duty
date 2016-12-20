@@ -3,16 +3,16 @@
  *
  * @returns {object} statsjs object
  */
-let Stats = function () {
-    let now = (self.performance && self.performance.now) ? self.performance.now.bind(performance) : Date.now;
+const Stats = function () {
+    const now = (self.performance && self.performance.now) ? self.performance.now.bind(performance) : Date.now;
 
     let startTime = now();
     let prevTime = startTime;
     let frames = 0;
     let modes = [0];
 
-    let createElement = function (tag, id, css) {
-        let element = document.createElement(tag);
+    const createElement = function (tag, id, css) {
+        const element = document.createElement(tag);
 
         element.id = id;
         element.style.cssText = css;
@@ -20,15 +20,15 @@ let Stats = function () {
         return element;
     };
 
-    let createPanel = function (id, fg, bg) {
-        let div = createElement('div', id, 'padding:0 0 3px 3px;text-align:left;background:' + bg);
+    const createPanel = function (id, fg, bg) {
+        const div = createElement('div', id, 'padding:0 0 3px 3px;text-align:left;background:' + bg);
 
-        let text = createElement('div', id + 'Text', 'font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:' + fg);
+        const text = createElement('div', id + 'Text', 'font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:' + fg);
 
         text.innerHTML = id.toUpperCase();
         div.appendChild(text);
 
-        let graph = createElement('div', id + 'Graph', 'width:74px;height:30px;background:' + fg);
+        const graph = createElement('div', id + 'Graph', 'width:74px;height:30px;background:' + fg);
 
         div.appendChild(graph);
 
@@ -39,8 +39,8 @@ let Stats = function () {
         return div;
     };
 
-    let setModes = function (values) {
-        let children = container.children;
+    const setModes = function (values) {
+        const children = container.children;
 
         for (let i = 0; i < children.length; i++) {
             if (values.indexOf(i) < 0) {
@@ -53,8 +53,8 @@ let Stats = function () {
         modes = values;
     };
 
-    let setMode = function (value) {
-        let children = container.children;
+    const setMode = function (value) {
+        const children = container.children;
 
         for (let i = 0; i < children.length; i++) {
             children[i].style.display = i === value ? 'block' : 'none';
@@ -63,22 +63,22 @@ let Stats = function () {
         modes = [value];
     };
 
-    let updateGraph = function (dom, value) {
-        let child = dom.appendChild(dom.firstChild);
+    const updateGraph = function (dom, value) {
+        const child = dom.appendChild(dom.firstChild);
 
         child.style.height = Math.min(30, 30 - value * 30) + 'px';
     };
 
-    let container = createElement('div', 'stats', 'width:80px;opacity:0.9;cursor:pointer');
+    const container = createElement('div', 'stats', 'width:80px;opacity:0.9;cursor:pointer');
 
     // FPS
     let fps = 0;
     let fpsMin = Number.POSITIVE_INFINITY;
     let fpsMax = 0;
 
-    let fpsDiv = createPanel('fps', '#0ff', '#002');
-    let fpsText = fpsDiv.children[0];
-    let fpsGraph = fpsDiv.children[1];
+    const fpsDiv = createPanel('fps', '#0ff', '#002');
+    const fpsText = fpsDiv.children[0];
+    const fpsGraph = fpsDiv.children[1];
 
     container.appendChild(fpsDiv);
 
@@ -87,18 +87,18 @@ let Stats = function () {
     let msMin = Number.POSITIVE_INFINITY;
     let msMax = 0;
 
-    let msDiv = createPanel('ms', '#0f0', '#020');
-    let msText = msDiv.children[0];
-    let msGraph = msDiv.children[1];
+    const msDiv = createPanel('ms', '#0f0', '#020');
+    const msText = msDiv.children[0];
+    const msGraph = msDiv.children[1];
 
     container.appendChild(msDiv);
 
     let mem = 0;
     let memMin = Number.POSITIVE_INFINITY;
     let memMax = 0;
-    let memDiv = createPanel('mb', '#f08', '#201');
-    let memText = memDiv.children[0];
-    let memGraph = memDiv.children[1];
+    const memDiv = createPanel('mb', '#f08', '#201');
+    const memText = memDiv.children[0];
+    const memGraph = memDiv.children[1];
 
     // MEM
     if (self.performance && self.performance.memory) {
@@ -116,7 +116,7 @@ let Stats = function () {
             startTime = now();
         },
         end: function () {
-            let time = now();
+            const time = now();
 
             ms = time - startTime;
             msMin = Math.min(msMin, ms);
@@ -139,8 +139,8 @@ let Stats = function () {
                 frames = 0;
 
                 if (typeof mem !== 'undefined' && performance && performance.memory) {
-                    let heapSize = performance.memory.usedJSHeapSize;
-                    let heapSizeLimit = performance.memory.jsHeapSizeLimit;
+                    const heapSize = performance.memory.usedJSHeapSize;
+                    const heapSizeLimit = performance.memory.jsHeapSizeLimit;
 
                     mem = Math.round(heapSize * 0.000000954);
                     memMin = Math.min(memMin, mem);

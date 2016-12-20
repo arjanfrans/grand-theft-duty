@@ -7,14 +7,14 @@ import HelpMenu from './menus/HelpMenu';
 import MainMenu from './menus/MainMenu';
 import MenuState from './MenuState';
 
-let MenuBuilder = {
+const MenuBuilder = {
     create (engine) {
-        let state = new MenuState();
-        let menuInput = new MenuInput(state);
+        const state = new MenuState();
+        const menuInput = new MenuInput(state);
 
         state.inputs.add(menuInput);
 
-        let subMenus = new Map([
+        const subMenus = new Map([
             ['main', MainMenu.create(engine, state)],
             ['multiplayer', MultiplayerMenu.create(engine, state)],
             ['options', OptionsMenu.create(state)],
@@ -25,7 +25,7 @@ let MenuBuilder = {
             state.addMenu(subMenuName, subMenu.menu);
         }
 
-        let menuView = new MenuRenderView(state);
+        const menuView = new MenuRenderView(state);
 
         for (let [subMenuName, subMenu] of subMenus.entries()) {
             menuView.addViewContainer(subMenuName, subMenu.viewContainer);

@@ -1,4 +1,4 @@
-import { Keyboard, HumanInput } from '../../../engine/input';
+import { HumanInput, Keyboard } from '../../../engine/input';
 
 class UiInput extends HumanInput {
     constructor (state) {

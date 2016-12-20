@@ -23,7 +23,7 @@ class Animation {
     }
 
     _updateTexture () {
-        let currentFrame = this.framePrefix + this.frames[this.currentFrameIndex];
+        const currentFrame = this.framePrefix + this.frames[this.currentFrameIndex];
 
         this.textureFrame.frame = currentFrame;
     }

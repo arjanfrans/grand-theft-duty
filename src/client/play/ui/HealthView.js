@@ -1,3 +1,4 @@
+import { Matrix4, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
 import View from '../../../engine/graphics/View';
 
 class HealthView extends View {
@@ -9,16 +10,16 @@ class HealthView extends View {
     }
 
     init () {
-        let material = new THREE.MeshBasicMaterial({
+        const material = new MeshBasicMaterial({
             color: 0xcc0000
         });
 
-        this.geometry = new THREE.PlaneGeometry(200, 20);
+        this.geometry = new PlaneGeometry(200, 20);
 
         // Change originX to left side
-        this.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(100, 0, 0));
+        this.geometry.applyMatrix(new Matrix4().makeTranslation(100, 0, 0));
 
-        this.mesh = new THREE.Mesh(this.geometry, material);
+        this.mesh = new Mesh(this.geometry, material);
 
         super.init();
     }
@@ -34,7 +35,7 @@ class HealthView extends View {
                     this.mesh.visible = true;
                 }
 
-                let oldX = this.mesh.position.x;
+                const oldX = this.mesh.position.x;
 
                 this.mesh.scale.set(value, 1, 1);
                 this.mesh.position.x = oldX;
@@ -42,7 +43,7 @@ class HealthView extends View {
         }
     }
 
-    update (delta) {
+    update () {
         this.healthScale = this.player.health / this.player.maxHealth;
     }
 }

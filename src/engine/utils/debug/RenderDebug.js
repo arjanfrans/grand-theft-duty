@@ -1,23 +1,23 @@
 import DebugStats from './statsjs';
 
-let _rendererStats = function () {
-    let container = document.createElement('div');
+const _rendererStats = function () {
+    const container = document.createElement('div');
 
     container.style.cssText = 'width:80px;opacity:0.9;cursor:pointer';
 
-    let msDiv = document.createElement('div');
+    const msDiv = document.createElement('div');
 
     msDiv.style.cssText = 'padding:0 0 3px 3px;text-align:left;background-color:#200;';
     container.appendChild(msDiv);
 
-    let msText = document.createElement('div');
+    const msText = document.createElement('div');
 
     msText.style.cssText = 'color:#f00;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px';
     msText.innerHTML = 'WebGLRenderer';
     msDiv.appendChild(msText);
 
-    let msTexts = [];
-    let nLines = 9;
+    const msTexts = [];
+    const nLines = 9;
 
     for (let i = 0; i < nLines; i++) {
         msTexts[i] = document.createElement('div');

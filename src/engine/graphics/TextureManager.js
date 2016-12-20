@@ -1,7 +1,7 @@
 import TextureAtlas from './TextureAtlas';
-let _atlases = new Map();
+const _atlases = new Map();
 
-let TextureManager = {
+const TextureManager = {
     getAtlas (name, clone) {
         if (clone) {
             return new TextureAtlas(name, clone);

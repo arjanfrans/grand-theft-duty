@@ -1,3 +1,4 @@
+import { Object3D } from 'three';
 import ObjectPool from '../../../engine/ObjectPool';
 import View from '../../../engine/graphics/View';
 import SoldierView from './SoldierView';
@@ -16,7 +17,7 @@ class SoldierViewPool extends View {
     }
 
     init () {
-        this.mesh = new THREE.Object3D();
+        this.mesh = new Object3D();
         this._initialized = true;
     }
 
@@ -26,7 +27,7 @@ class SoldierViewPool extends View {
             this.viewPool.allocate(this.soldiers.length + 1 - this.viewPool.size);
         }
 
-        for (let soldier of this.soldiers) {
+        for (const soldier of this.soldiers) {
             let view = this.viewPairs.get(soldier);
 
             if (!view && !soldier.dead) {

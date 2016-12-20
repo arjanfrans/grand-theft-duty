@@ -43,11 +43,11 @@ class WorldMap {
     }
 
     positionToIndex (position) {
-        let x = position.x;
-        let y = position.y;
-        let z = position.z;
+        const x = position.x;
+        const y = position.y;
+        const z = position.z;
 
-        let index = {};
+        const index = {};
 
         index.x = Math.floor(x / this.blockWidth);
         index.y = Math.floor(y / this.blockHeight);
@@ -57,8 +57,8 @@ class WorldMap {
     }
 
     randomRespawnPosition () {
-        let respawn = this.respawns[Math.round(Math.random() * (this.respawns.length - 1))];
-        let position = this.indexToPosition(respawn.position);
+        const respawn = this.respawns[Math.round(Math.random() * (this.respawns.length - 1))];
+        const position = this.indexToPosition(respawn.position);
 
         return position;
     }
@@ -80,16 +80,16 @@ class WorldMap {
     }
 
     blockAtPosition (position) {
-        let indexes = this.positionToIndex(position);
+        const indexes = this.positionToIndex(position);
 
         return this.blockAtIndex(indexes);
     }
 
     blocksAtPositions (positions, types = []) {
-        let blocks = [];
+        const blocks = [];
 
-        for (let position of positions) {
-            let block = this.blockAtPosition(position);
+        for (const position of positions) {
+            const block = this.blockAtPosition(position);
 
             if (block && types.indexOf(block.type) !== -1) {
                 blocks.push(block);
@@ -108,10 +108,10 @@ class WorldMap {
      * @returns {array} All blocks within the box
      */
     blocksBetweenIndexes (start = { x: 0, y: 0, z: 0 }, end = { x: 0, y: 0, z: 0 }, types = []) {
-        let blocks = [];
+        const blocks = [];
 
-        let min = start;
-        let max = end;
+        const min = start;
+        const max = end;
 
         for (let z = 0; z < this.layers.length; z++) {
             if ((z >= min.z && z <= max.z)) {
@@ -119,9 +119,9 @@ class WorldMap {
                     if ((y >= min.y && y <= max.y)) {
                         for (let x = 0; x < this.layers[z][y].length; x++) {
                             if ((x >= min.x && x <= max.x)) {
-                                let index = { x, y, z };
+                                const index = { x, y, z };
 
-                                let block = this.blockAtIndex(index);
+                                const block = this.blockAtIndex(index);
 
                                 if (block && types.indexOf(block.type) !== -1) {
                                     blocks.push(block);
@@ -143,11 +143,11 @@ class WorldMap {
     toString () {
         let finalString = '';
 
-        for (let layer of this.layers) {
-            let layerStrings = [];
+        for (const layer of this.layers) {
+            const layerStrings = [];
 
-            for (let layerRow of layer) {
-                let blocks = layerRow.map(v => v ? v.id : 0);
+            for (const layerRow of layer) {
+                const blocks = layerRow.map(v => v ? v.id : 0);
 
                 layerStrings.push(blocks.join(', '));
             }

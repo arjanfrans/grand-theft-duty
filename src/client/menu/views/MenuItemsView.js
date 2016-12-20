@@ -1,4 +1,5 @@
-import { View, TextView } from '../../../engine/graphics';
+import { Object3D } from 'three';
+import { TextView, View } from '../../../engine/graphics';
 import LogoView from './LogoView';
 
 class MenuItemsView extends View {
@@ -17,16 +18,16 @@ class MenuItemsView extends View {
     }
 
     init () {
-        this.mesh = new THREE.Object3D();
+        this.mesh = new Object3D();
 
-        let distance = 100;
-        let startY = 200;
+        const distance = 100;
+        const startY = 200;
         let itemCount = 0;
 
         this.selectedItem = this.menu.selectedItem;
 
-        for (let menuItem of this.menu.menuItems.values()) {
-            let textView = new TextView(menuItem.text, {
+        for (const menuItem of this.menu.menuItems.values()) {
+            const textView = new TextView(menuItem.text, {
                 width: 300
             });
 
@@ -52,12 +53,12 @@ class MenuItemsView extends View {
     update () {
         // Selected item changed
         if (this.selectedItem !== this.menu.selectedItem) {
-            let previousItem = this.selectedItem;
+            const previousItem = this.selectedItem;
 
             this.selectedItem = this.menu.selectedItem;
 
-            let currentView = this.viewMenuItemPairs.get(this.selectedItem);
-            let previousView = this.viewMenuItemPairs.get(previousItem);
+            const currentView = this.viewMenuItemPairs.get(this.selectedItem);
+            const previousView = this.viewMenuItemPairs.get(previousItem);
 
             currentView.text = this.selectedItem.text;
 
@@ -66,11 +67,11 @@ class MenuItemsView extends View {
         }
 
         if (this.menu.selectedItem.editable && this.menu.selectedItem.isEditing) {
-            let currentView = this.viewMenuItemPairs.get(this.selectedItem);
+            const currentView = this.viewMenuItemPairs.get(this.selectedItem);
 
             currentView.text = this.selectedItem.text + '-';
         } else {
-            let currentView = this.viewMenuItemPairs.get(this.selectedItem);
+            const currentView = this.viewMenuItemPairs.get(this.selectedItem);
 
             currentView.text = this.selectedItem.text;
         }

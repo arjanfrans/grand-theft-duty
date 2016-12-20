@@ -94,7 +94,7 @@ class Soldier extends Character {
 
     kill () {
         super.kill();
-        let suicides = this.deaths.get(this);
+        const suicides = this.deaths.get(this);
 
         if (suicides) {
             this.deaths.set(this, suicides + 1);
@@ -106,7 +106,7 @@ class Soldier extends Character {
     get totalKills () {
         let total = 0;
 
-        for (let kill of this.kills.values()) {
+        for (const kill of this.kills.values()) {
             total += kill;
         }
 
@@ -116,7 +116,7 @@ class Soldier extends Character {
     get totalDeaths () {
         let total = 0;
 
-        for (let death of this.deaths.values()) {
+        for (const death of this.deaths.values()) {
             total += death;
         }
 
@@ -125,7 +125,7 @@ class Soldier extends Character {
 
     fireBullet () {
         if (!this.dead && this.currentWeapon) {
-            let fired = this.currentWeapon.fire();
+            const fired = this.currentWeapon.fire();
 
             if (fired) {
                 this.actions.firedBullet = true;

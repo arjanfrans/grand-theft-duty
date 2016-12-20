@@ -1,3 +1,5 @@
+import { WebGLRenderer } from 'three';
+
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
 
@@ -16,7 +18,7 @@ class Renderer {
     constructor (divName = 'gameDiv') {
         this._views = null;
 
-        this._THREErenderer = new THREE.WebGLRenderer();
+        this._THREErenderer = new WebGLRenderer();
 
         this._THREErenderer.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this._THREErenderer.setClearColor(0x000000);
@@ -31,7 +33,7 @@ class Renderer {
 
         let index = 0;
 
-        for (let view of this._views) {
+        for (const view of this._views) {
             if (index === 0) {
                 // Get the clear color from the first view
                 this._THREErenderer.setClearColor(view.clearColor);
@@ -58,7 +60,7 @@ class Renderer {
     render () {
         this._THREErenderer.clear();
 
-        let info = {
+        const info = {
             memory: {
                 programs: 0,
                 geometries: 0,
@@ -74,7 +76,7 @@ class Renderer {
 
         let index = 0;
 
-        for (let view of this._views) {
+        for (const view of this._views) {
             if (index > 0) {
                 this._THREErenderer.clearDepth();
             }

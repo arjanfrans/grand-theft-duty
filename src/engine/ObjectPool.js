@@ -1,5 +1,6 @@
 // https://github.com/kchapelier/migl-pool/blob/master/src/pool.js
 class ObjectPool {
+
     /**
      * @constructor
      * @param {function} factoryFunction Function that creates the object to pool.
@@ -50,7 +51,7 @@ class ObjectPool {
             this.allocate(this.allocationNumber);
         }
 
-        let object = this.availableInstances.pop();
+        const object = this.availableInstances.pop();
 
         return object;
     }

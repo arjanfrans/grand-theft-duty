@@ -1,12 +1,13 @@
+import { DoubleSide, Geometry, Matrix4, Mesh, MeshLambertMaterial, PlaneGeometry } from 'three';
 import { TextureManager, View } from '../../../../engine/graphics';
 
-let _wallBlockGeometry = function (block, textureAtlas) {
-    let geometries = [];
+function wallBlockGeometry (block, textureAtlas) {
+    const geometries = [];
 
     if (block.walls.south) {
-        let south = textureAtlas.getBounds(block.walls.south);
+        const south = textureAtlas.getBounds(block.walls.south);
 
-        let southGeometry = new THREE.PlaneGeometry(block.width, block.height);
+        const southGeometry = new PlaneGeometry(block.width, block.height);
 
         southGeometry.faceVertexUvs[0][0] = [south[0], south[1], south[3]];
         southGeometry.faceVertexUvs[0][1] = [south[1], south[2], south[3]];
@@ -17,9 +18,9 @@ let _wallBlockGeometry = function (block, textureAtlas) {
     }
 
     if (block.walls.north) {
-        let north = textureAtlas.getBounds(block.walls.north);
+        const north = textureAtlas.getBounds(block.walls.north);
 
-        let northGeometry = new THREE.PlaneGeometry(block.width, block.height);
+        const northGeometry = new PlaneGeometry(block.width, block.height);
 
         northGeometry.faceVertexUvs[0][0] = [north[0], north[1], north[3]];
         northGeometry.faceVertexUvs[0][1] = [north[1], north[2], north[3]];
@@ -30,9 +31,9 @@ let _wallBlockGeometry = function (block, textureAtlas) {
     }
 
     if (block.walls.west) {
-        let west = textureAtlas.getBounds(block.walls.west);
+        const west = textureAtlas.getBounds(block.walls.west);
 
-        let westGeometry = new THREE.PlaneGeometry(block.width, block.height);
+        const westGeometry = new PlaneGeometry(block.width, block.height);
 
         westGeometry.faceVertexUvs[0][0] = [west[0], west[1], west[3]];
         westGeometry.faceVertexUvs[0][1] = [west[1], west[2], west[3]];
@@ -43,9 +44,9 @@ let _wallBlockGeometry = function (block, textureAtlas) {
     }
 
     if (block.walls.east) {
-        let east = textureAtlas.getBounds(block.walls.east);
+        const east = textureAtlas.getBounds(block.walls.east);
 
-        let eastGeometry = new THREE.PlaneGeometry(block.width, block.height);
+        const eastGeometry = new PlaneGeometry(block.width, block.height);
 
         eastGeometry.faceVertexUvs[0][0] = [east[0], east[1], east[3]];
         eastGeometry.faceVertexUvs[0][1] = [east[1], east[2], east[3]];
@@ -57,9 +58,9 @@ let _wallBlockGeometry = function (block, textureAtlas) {
     }
 
     if (block.walls.top) {
-        let top = textureAtlas.getBounds(block.walls.top);
+        const top = textureAtlas.getBounds(block.walls.top);
 
-        let topGeometry = new THREE.PlaneGeometry(block.width, block.height);
+        const topGeometry = new PlaneGeometry(block.width, block.height);
 
         topGeometry.faceVertexUvs[0][0] = [top[0], top[1], top[3]];
         topGeometry.faceVertexUvs[0][1] = [top[1], top[2], top[3]];
@@ -68,20 +69,20 @@ let _wallBlockGeometry = function (block, textureAtlas) {
         geometries.push(topGeometry);
     }
 
-    let blockGeometry = new THREE.Geometry();
+    const blockGeometry = new Geometry();
 
-    for (let geometry of geometries) {
+    for (const geometry of geometries) {
         blockGeometry.merge(geometry);
     }
 
     return blockGeometry;
-};
+}
 
-let _createMergedBlockGeometry = function (blocks, textureAtlas) {
-    let mergedGeometry = new THREE.Geometry();
+function createMergedBlockGeometry (blocks, textureAtlas) {
+    const mergedGeometry = new Geometry();
 
-    for (let block of blocks) {
-        let geometry = _wallBlockGeometry(block, textureAtlas);
+    for (const block of blocks) {
+        const geometry = wallBlockGeometry(block, textureAtlas);
 
         geometry.translate(block.position.x, block.position.y, block.position.z);
 
@@ -91,7 +92,7 @@ let _createMergedBlockGeometry = function (blocks, textureAtlas) {
     mergedGeometry.mergeVertices();
 
     return mergedGeometry;
-};
+}
 
 class StaticBlocksView extends View {
     constructor (map, textureAtlasName) {
@@ -108,18 +109,18 @@ class StaticBlocksView extends View {
 
     init () {
         this.textureAtlas = TextureManager.getAtlas(this.textureAtlasName, false);
-        this.geometry = _createMergedBlockGeometry(this.blocks, this.textureAtlas);
+        this.geometry = createMergedBlockGeometry(this.blocks, this.textureAtlas);
 
-        this.material = new THREE.MeshLambertMaterial({
+        this.material = new MeshLambertMaterial({
             map: this.textureAtlas.texture,
             transparent: true,
-            side: THREE.DoubleSide
+            side: DoubleSide
         });
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh = new Mesh(this.geometry, this.material);
 
         // Set the center of the blocks to bottom left (instead of center)
-        this.mesh.applyMatrix(new THREE.Matrix4().makeTranslation(this.blockWidth / 2, this.blockHeight / 2, this.blockDepth / 2));
+        this.mesh.applyMatrix(new Matrix4().makeTranslation(this.blockWidth / 2, this.blockHeight / 2, this.blockDepth / 2));
 
         super.init();
     }

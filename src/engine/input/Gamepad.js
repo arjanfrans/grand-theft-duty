@@ -1,13 +1,13 @@
 import GamepadMicro from './utils/gamepad-micro';
 
-let _gp = new GamepadMicro();
+const _gp = new GamepadMicro();
 let _gamepads = [];
 
-let Gamepad = {
+const Gamepad = {
     isDown: function (index, button) {
         if (_gamepads.length > 0) {
             // FIXME rewrite gamepad-micro
-            let gamepad = _gamepads[index + 1];
+            const gamepad = _gamepads[index + 1];
 
             if (gamepad.buttons[button] && gamepad.buttons[button].held) {
                 return true;
@@ -19,7 +19,7 @@ let Gamepad = {
     isStickDown: function (index, stick, direction) {
         if (_gamepads.length > 0) {
             // FIXME rewrite gamepad-micro
-            let gamepad = _gamepads[index + 1];
+            const gamepad = _gamepads[index + 1];
 
             if (stick === 'right' && gamepad.rightStick) {
                 if (direction === 'right') {

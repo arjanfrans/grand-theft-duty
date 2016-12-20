@@ -12,15 +12,15 @@ import SoldierView from './views/SoldierView';
 import SoldierViewPool from './views/SoldierViewPool';
 import PlayRenderView from './views/PlayRenderView';
 
-let ViewBuilder = {
+const ViewBuilder = {
     uiView (playState) {
-        let uiView = new StatsRenderView(playState);
-        let uiViewContainer = new ViewContainer();
+        const uiView = new StatsRenderView(playState);
+        const uiViewContainer = new ViewContainer();
 
-        let scoreView = new ScoreView(playState);
-        let weaponView = new WeaponView(playState);
-        let ammoView = new AmmoView(playState);
-        let healthView = new HealthView(playState);
+        const scoreView = new ScoreView(playState);
+        const weaponView = new WeaponView(playState);
+        const ammoView = new AmmoView(playState);
+        const healthView = new HealthView(playState);
 
         uiViewContainer.addDynamicView(scoreView, { x: 100, y: 100, z: 0 });
         uiViewContainer.addDynamicView(weaponView, { x: 280, y: 540, z: 0 });
@@ -33,14 +33,14 @@ let ViewBuilder = {
     },
 
     playView (playState) {
-        let playView = new PlayRenderView(playState);
+        const playView = new PlayRenderView(playState);
 
-        let playerView = new SoldierView(playState.player);
-        let soldierView = new SoldierViewPool(playState.soldiers);
-        let bulletSystemView = new BulletSystemView(playState.bulletSystem);
-        let worldMapView = new WorldMapView(playState.map);
+        const playerView = new SoldierView(playState.player);
+        const soldierView = new SoldierViewPool(playState.soldiers);
+        const bulletSystemView = new BulletSystemView(playState.bulletSystem);
+        const worldMapView = new WorldMapView(playState.map);
 
-        let viewContainer = new ViewContainer();
+        const viewContainer = new ViewContainer();
 
         viewContainer.addDynamicView(playerView);
         viewContainer.addDynamicView(soldierView);

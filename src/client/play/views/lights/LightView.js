@@ -1,4 +1,5 @@
-import { TextureManager, TextureFrame, View } from '../../../../engine/graphics';
+import { Mesh, MeshLambertMaterial, Object3D, PlaneGeometry, SpotLight } from 'three';
+import { TextureFrame, TextureManager, View } from '../../../../engine/graphics';
 
 class LightView extends View {
     constructor (light) {
@@ -7,28 +8,28 @@ class LightView extends View {
     }
 
     init () {
-        this.mesh = new THREE.Object3D();
+        this.mesh = new Object3D();
 
-        let textureAtlas = TextureManager.getAtlas('world', true);
-        let lightGeometry = new THREE.PlaneGeometry(32, 32);
+        const textureAtlas = TextureManager.getAtlas('world', true);
+        const lightGeometry = new PlaneGeometry(32, 32);
 
         this.textureFrame = new TextureFrame(textureAtlas, lightGeometry, 'light1');
 
-        let lightMaterial = new THREE.MeshLambertMaterial({
+        const lightMaterial = new MeshLambertMaterial({
             map: this.textureFrame.texture,
             transparent: true
         });
 
-        let lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
+        const lightMesh = new Mesh(lightGeometry, lightMaterial);
 
         lightMesh.position.set(this.light.sourcePosition.x, this.light.sourcePosition.y, this.light.sourcePosition.z);
         lightMesh.rotateZ(this.light.angle + (90 * (Math.PI / 180)));
 
         this.mesh.add(lightMesh);
 
-        let spotLight = new THREE.SpotLight(0xff00000, 1);
+        const spotLight = new SpotLight(0xff00000, 1);
 
-        let target = new THREE.Object3D();
+        const target = new Object3D();
 
         target.position.set(this.light.x, this.light.y, -this.light.z);
         target.rotateZ(this.light.angle + (90 * (Math.PI / 180)));

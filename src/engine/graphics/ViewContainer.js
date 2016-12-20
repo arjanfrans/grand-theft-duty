@@ -1,3 +1,5 @@
+import { Object3D } from 'three';
+
 class ViewContainer {
     constructor () {
         this.staticViews = new Set();
@@ -10,7 +12,7 @@ class ViewContainer {
     }
 
     init () {
-        this.mesh = new THREE.Object3D();
+        this.mesh = new Object3D();
 
         if (this._backgroundView) {
             this._backgroundView.init();
@@ -20,12 +22,12 @@ class ViewContainer {
             this.mesh.add(this._backgroundView.mesh);
         }
 
-        for (let staticView of this.staticViews) {
+        for (const staticView of this.staticViews) {
             staticView.init();
             this.mesh.add(staticView.mesh);
         }
 
-        for (let view of this.dynamicViews) {
+        for (const view of this.dynamicViews) {
             view.init();
             this.mesh.add(view.mesh);
         }
@@ -54,7 +56,7 @@ class ViewContainer {
             throw new Error('View not initialized.');
         }
 
-        for (let view of this.dynamicViews) {
+        for (const view of this.dynamicViews) {
             view.update(delta);
         }
     }
@@ -94,7 +96,7 @@ class ViewContainer {
     }
 
     set width (width) {
-        let scale = width / this._width;
+        const scale = width / this._width;
 
         this._width = width;
 
@@ -106,7 +108,7 @@ class ViewContainer {
     }
 
     set height (height) {
-        let scale = height / this._height;
+        const scale = height / this._height;
 
         this._height = height;
 

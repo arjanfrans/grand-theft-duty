@@ -6,13 +6,13 @@ class ServerEngine {
     }
 
     run () {
-        let update = (delta) => {
+        const update = (delta) => {
             if (this.state) {
                 this.state.update(delta);
             }
         };
 
-        let loop = MainLoop.create().setUpdate(update);
+        const loop = MainLoop.create().setUpdate(update);
 
         loop.start();
     }

@@ -6,11 +6,11 @@
  * @return {Map} Stats per team
  */
 function soldierStatsByTeam (stat) {
-    let resultsByTeam = new Map();
+    const resultsByTeam = new Map();
 
     for (let [teamName, soldiers] of this.teams.entries()) {
-        for (let soldier of soldiers) {
-            let teamResult = resultsByTeam.get(teamName);
+        for (const soldier of soldiers) {
+            const teamResult = resultsByTeam.get(teamName);
 
             if (teamResult) {
                 resultsByTeam.set(teamName, teamResult + soldier[stat]);
@@ -29,7 +29,7 @@ class Match {
         this.teamNames = [];
         this.teams = new Map();
 
-        for (let teamName of teams) {
+        for (const teamName of teams) {
             this.teamNames.push(teamName);
             this.teams.set(teamName, new Set());
         }
@@ -39,8 +39,8 @@ class Match {
         let leastTeamName = null;
         let minCount = Number.MAX_VALUE;
 
-        for (let teamName of this.teamNames) {
-            let count = this.teams.get(teamName).size;
+        for (const teamName of this.teamNames) {
+            const count = this.teams.get(teamName).size;
 
             if (count < minCount) {
                 leastTeamName = teamName;
@@ -59,7 +59,7 @@ class Match {
         // FIXME get this out of here?
         soldier.team = teamName;
 
-        let team = this.teams.get(teamName);
+        const team = this.teams.get(teamName);
 
         if (team) {
             team.add(soldier);
@@ -72,10 +72,10 @@ class Match {
     }
 
     sortedScores () {
-        let teams = new Map();
+        const teams = new Map();
 
-        for (let soldier of new Set([...this.soldiers])) {
-            let team = teams.get(soldier.team);
+        for (const soldier of new Set([...this.soldiers])) {
+            const team = teams.get(soldier.team);
 
             if (team) {
                 team.kills += soldier.totalKills;
@@ -90,7 +90,7 @@ class Match {
             }
         }
 
-        for (let team of teams.values()) {
+        for (const team of teams.values()) {
             team.soldiers.sort((a, b) => b.kills - a.kills);
         }
 
@@ -100,7 +100,7 @@ class Match {
     }
 
     removeSoldier (soldier) {
-        for (let team of this.teams.values()) {
+        for (const team of this.teams.values()) {
             if (team.has(soldier)) {
                 team.delete(soldier);
 

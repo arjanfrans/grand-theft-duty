@@ -1,4 +1,5 @@
-import { TextureManager, Animation, View } from '../../../engine/graphics';
+import { Animation, TextureManager, View } from '../../../engine/graphics';
+import { Mesh, MeshLambertMaterial, PlaneGeometry } from 'three';
 
 const WALK_FRAMES = [
     'walk_0001',
@@ -45,13 +46,13 @@ class SoldierView extends View {
     }
 
     init () {
-        let soldier = this.soldier;
+        const soldier = this.soldier;
 
-        this.geometry = new THREE.PlaneGeometry(soldier.height * 2, soldier.width * 2);
+        this.geometry = new PlaneGeometry(soldier.height * 2, soldier.width * 2);
 
         this.geometry.rotateZ(Math.PI);
 
-        let textureAtlas = TextureManager.getAtlas('soldier', true);
+        const textureAtlas = TextureManager.getAtlas('soldier', true);
 
         this.animations = {
             walk: new Animation(textureAtlas, this.geometry, 9, true, WALK_FRAMES, 'soldier_weapon_'),
@@ -61,7 +62,7 @@ class SoldierView extends View {
 
         this.currentAnimation = this.animations.idle;
 
-        this.material = new THREE.MeshLambertMaterial({
+        this.material = new MeshLambertMaterial({
             map: textureAtlas.texture,
             transparent: true,
             color: TEAM_COLORS[this._team]
@@ -69,7 +70,7 @@ class SoldierView extends View {
 
         this.material.color.offsetHSL(0.1, 0.8, 0.4);
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh = new Mesh(this.geometry, this.material);
 
         this.mesh.position.set(soldier.position.x, soldier.position.y, soldier.position.z);
         this.mesh.rotation.z = soldier.angle;
@@ -109,8 +110,8 @@ class SoldierView extends View {
             this.mesh.visible = true;
         }
 
-        let previous = this.soldier.previousPosition;
-        let current = this.soldier.position;
+        const previous = this.soldier.previousPosition;
+        const current = this.soldier.position;
 
         this.mesh.position.x = previous.x + (current.x - previous.x) * interpolationPercentage;
         this.mesh.position.y = previous.y + (current.y - previous.y) * interpolationPercentage;

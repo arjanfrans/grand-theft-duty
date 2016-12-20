@@ -2,34 +2,34 @@ import Block from './Block';
 import Light from './Light';
 import WorldMap from './WorldMap';
 
-let _parseBlock = function (rawBlock, blockWidth, blockHeight, blockDepth) {
-    let position = {
+const _parseBlock = function (rawBlock, blockWidth, blockHeight, blockDepth) {
+    const position = {
         x: rawBlock.position.x * blockWidth,
         y: rawBlock.position.y * blockHeight,
         z: rawBlock.position.z * blockDepth
     };
 
-    let blockOptions = {
+    const blockOptions = {
         walls: rawBlock.walls,
         type: rawBlock.type,
         collidable: rawBlock.collidable
     };
 
-    let block = new Block(position, blockWidth, blockHeight, blockDepth, blockOptions);
+    const block = new Block(position, blockWidth, blockHeight, blockDepth, blockOptions);
 
     block.collidable = rawBlock.collidable || false;
 
     return block;
 };
 
-let _createEmptyLayers = function (mapWidth, mapHeight, mapDepth) {
-    let layers = [];
+const _createEmptyLayers = function (mapWidth, mapHeight, mapDepth) {
+    const layers = [];
 
     for (let z = 0; z < mapDepth; z++) {
-        let layer = [];
+        const layer = [];
 
         for (let y = 0; y < mapHeight; y++) {
-            let row = [];
+            const row = [];
 
             for (let x = 0; x < mapDepth; x++) {
                 row.push(null);
@@ -44,15 +44,15 @@ let _createEmptyLayers = function (mapWidth, mapHeight, mapDepth) {
     return layers;
 };
 
-let parseLight = function (rawLight, blockWidth, blockHeight, blockDepth) {
-    let rawPosition = rawLight.position;
-    let sourcePosition = {
+const parseLight = function (rawLight, blockWidth, blockHeight, blockDepth) {
+    const rawPosition = rawLight.position;
+    const sourcePosition = {
         x: rawPosition.x * blockWidth,
         y: rawPosition.y * blockHeight,
         z: rawPosition.z * blockDepth
     };
 
-    let position = {
+    const position = {
         x: rawPosition.x * blockWidth,
         y: rawPosition.y * blockHeight,
         z: rawPosition.z * blockDepth
@@ -73,7 +73,7 @@ let parseLight = function (rawLight, blockWidth, blockHeight, blockDepth) {
         angle = 270 * (Math.PI / 180);
     }
 
-    let light = new Light(position.x, position.y, position.z, rawLight.color);
+    const light = new Light(position.x, position.y, position.z, rawLight.color);
 
     light.angle = angle;
     light.sourcePosition = sourcePosition;
@@ -81,33 +81,33 @@ let parseLight = function (rawLight, blockWidth, blockHeight, blockDepth) {
     return light;
 };
 
-let _parseRawMap = function (rawMap) {
+const _parseRawMap = function (rawMap) {
     // TODO validate map
-    let rawBlocks = rawMap.blocks;
+    const rawBlocks = rawMap.blocks;
 
-    let blockWidth = rawMap.blockWidth;
-    let blockHeight = rawMap.blockHeight;
-    let blockDepth = rawMap.blockDepth;
+    const blockWidth = rawMap.blockWidth;
+    const blockHeight = rawMap.blockHeight;
+    const blockDepth = rawMap.blockDepth;
 
-    let mapWidth = rawMap.width;
-    let mapHeight = rawMap.height;
-    let mapDepth = rawMap.depth;
+    const mapWidth = rawMap.width;
+    const mapHeight = rawMap.height;
+    const mapDepth = rawMap.depth;
 
-    let layers = _createEmptyLayers(mapWidth, mapHeight, mapDepth);
+    const layers = _createEmptyLayers(mapWidth, mapHeight, mapDepth);
 
-    for (let rawBlock of rawBlocks) {
-        let block = _parseBlock(rawBlock, blockWidth, blockHeight, blockDepth);
+    for (const rawBlock of rawBlocks) {
+        const block = _parseBlock(rawBlock, blockWidth, blockHeight, blockDepth);
 
-        let position = rawBlock.position;
+        const position = rawBlock.position;
 
         // TODO check for out of bounds
         layers[position.z][position.y][position.x] = block;
     }
 
-    let worldMap = new WorldMap(layers, mapWidth, mapHeight, mapDepth, blockWidth, blockHeight, blockDepth);
+    const worldMap = new WorldMap(layers, mapWidth, mapHeight, mapDepth, blockWidth, blockHeight, blockDepth);
 
     if (rawMap.lights) {
-        for (let rawLight of rawMap.lights) {
+        for (const rawLight of rawMap.lights) {
             worldMap.lights.push(parseLight(rawLight, blockWidth, blockHeight, blockDepth));
         }
     }
@@ -115,14 +115,14 @@ let _parseRawMap = function (rawMap) {
     worldMap.name = rawMap.name;
     worldMap.respawns = [];
 
-    for (let respawn of rawMap.respawns) {
+    for (const respawn of rawMap.respawns) {
         worldMap.respawns.push(respawn);
     }
 
     return worldMap;
 };
 
-let MapParser = {
+const MapParser = {
     parse: function (rawMap) {
         return _parseRawMap(rawMap);
     }

@@ -1,3 +1,4 @@
+import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
 import TextureManager from './TextureManager';
 import TextureFrame from './TextureFrame';
 import View from './View';
@@ -14,33 +15,33 @@ class BackgroundView extends View {
     }
 
     init () {
-        let textureAtlas = TextureManager.getAtlas(this.textureAtlasName, true);
-        let size = textureAtlas.getFrameSize(this.textureName);
+        const textureAtlas = TextureManager.getAtlas(this.textureAtlasName, true);
+        const size = textureAtlas.getFrameSize(this.textureName);
 
         this._width = size.width;
         this._height = size.height;
 
-        this.geometry = new THREE.PlaneGeometry(size.width, size.height);
+        this.geometry = new PlaneGeometry(size.width, size.height);
 
-        let textureFrame = new TextureFrame(textureAtlas, this.geometry, this.textureName);
+        const textureFrame = new TextureFrame(textureAtlas, this.geometry, this.textureName);
 
-        this.material = new THREE.MeshBasicMaterial({
+        this.material = new MeshBasicMaterial({
             map: textureFrame.texture,
             transparent: true
         });
 
-        let hsl = this.material.color.getHSL();
+        const hsl = this.material.color.getHSL();
 
         this.material.color.setHSL(hsl.h, hsl.s, this._lightness);
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh = new Mesh(this.geometry, this.material);
 
         super.init();
     }
 
     set lightness (lightness) {
         if (this._initalized) {
-            let hsl = this.material.color.getHSL();
+            const hsl = this.material.color.getHSL();
 
             this.material.color.setHSL(hsl.h, hsl.s, lightness);
         }
@@ -53,14 +54,14 @@ class BackgroundView extends View {
     }
 
     set width (width) {
-        let scale = width / this._width;
+        const scale = width / this._width;
 
         this.mesh.scale.x = scale;
         this.mesh.position.x = width / 2;
     }
 
     set height (height) {
-        let scale = height / this._height;
+        const scale = height / this._height;
 
         this.mesh.scale.y = scale;
         this.mesh.position.y = height / 2;

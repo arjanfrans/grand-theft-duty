@@ -1,4 +1,5 @@
-import { TextureManager, TextureFrame, View } from '../../../engine/graphics';
+import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
+import { TextureFrame, TextureManager, View } from '../../../engine/graphics';
 
 class WeaponView extends View {
     constructor (state) {
@@ -9,17 +10,17 @@ class WeaponView extends View {
     }
 
     init () {
-        let textureAtlas = TextureManager.getAtlas('ui', true);
+        const textureAtlas = TextureManager.getAtlas('ui', true);
 
-        this.geometry = new THREE.PlaneGeometry(196, 64);
+        this.geometry = new PlaneGeometry(196, 64);
         this.textureFrame = new TextureFrame(textureAtlas, this.geometry);
 
-        this.material = new THREE.MeshBasicMaterial({
+        this.material = new MeshBasicMaterial({
             map: this.textureFrame.texture,
             transparent: true
         });
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh = new Mesh(this.geometry, this.material);
 
         super.init();
     }
@@ -41,7 +42,7 @@ class WeaponView extends View {
 
     update (delta) {
         if (this.player.currentWeapon) {
-            let weapon = this.player.currentWeapon;
+            const weapon = this.player.currentWeapon;
 
             this.weapon = weapon.name;
         } else {

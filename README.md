@@ -1,5 +1,6 @@
 # Grand Theft Duty
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f1631b8ec2f744969c619fbf779e1481)](https://www.codacy.com/app/arjanfrans/grand-theft-duty?utm_source=github.com&utm_medium=referral&utm_content=arjanfrans/grand-theft-duty&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/arjanfrans/grand-theft-duty.svg)](https://travis-ci.org/arjanfrans/grand-theft-duty)
 [![Dependency Status](https://david-dm.org/arjanfrans/grand-theft-duty.svg)](https://david-dm.org/arjanfrans/grand-theft-duty)
 [![devDependency Status](https://david-dm.org/arjanfrans/grand-theft-duty/dev-status.svg)](https://david-dm.org/arjanfrans/grand-theft-duty#info=devDependencies)

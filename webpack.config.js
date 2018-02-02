@@ -1,20 +1,24 @@
+const path = require("path");
+
 module.exports = {
-    devtool: 'cheap-eval-source-map',
-    entry: './src/client/index.js',
+    entry: "./src/client/index.js",
+    devtool: "inline-source-map",
     output: {
-        path: __dirname + '/dist',
-        filename: 'bundle.js'
+        filename: "bundle.js",
+        path: path.resolve(__dirname, "dist"),
+    },
+    resolve: {
+        extensions: [ ".tsx", ".ts", ".js" ],
     },
     module: {
-        loaders: [
+        rules: [
             {
-                test: /.js$/,
-                loader: 'babel',
+                test: /\.tsx?$/,
                 exclude: /node_modules/,
-                query: {
-                    presets: ['es2015']
-                }
-            }
-        ]
-    }
+                use: {
+                    loader: "ts-loader",
+                },
+            },
+        ],
+    },
 };

@@ -1,9 +1,9 @@
-import State from '../State';
+import {State} from '../State';
 
 class MenuState extends State {
 
-    constructor () {
-        super('menu');
+    constructor (engine) {
+        super('menu', engine);
 
         this.menus = new Map();
         this._currentMenu = null;
@@ -15,6 +15,7 @@ class MenuState extends State {
         this.gamePlaying = false;
         this.currentOptionsEdit = null;
     }
+
 
     addMenu (name, menu) {
         this.menus.set(name, menu);

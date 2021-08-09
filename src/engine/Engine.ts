@@ -1,17 +1,30 @@
 import RenderDebug from './utils/debug/RenderDebug';
 import Renderer from './graphics/Renderer';
 import Mainloop from '@arjanfrans/mainloop';
+import {State} from "../client/State";
+import {NullState} from "./state/NullState";
+import {InputSourceInterface} from "./input/InputSourceInterface";
 
 class Engine {
-    constructor (options = { debugMode: false }) {
-        this.debugMode = options.debugMode;
-        this.states = new Map();
-        this.currentState = null;
-        this._renderer = new Renderer();
+    private readonly debugMode: boolean;
+    private states: Map<string, State> = new Map();
+    private currentState: State;
+    private readonly renderer: Renderer;
+    private renderDebug?: RenderDebug;
+    public readonly inputSources: Map<string, InputSourceInterface> = new Map()
+
+    constructor (debugMode: boolean, inputSources: { [key: string]: InputSourceInterface}) {
+        this.debugMode = debugMode;
+        this.currentState = new NullState(this);
+        this.renderer = new Renderer();
+
+        for(const [key, inputSource] of Object.entries(inputSources)) {
+            this.inputSources.set(key, inputSource);
+        }
 
         if (this.debugMode) {
-            this._renderDebug = new RenderDebug(this._renderer);
-            this._renderDebug.init();
+            this.renderDebug = new RenderDebug(this.renderer);
+            this.renderDebug.init();
         }
     }
 
@@ -35,10 +48,17 @@ class Engine {
      * @returns {void}
      */
     changeState (name) {
-        this.currentState = this.states.get(name);
+        const state = this.states.get(name);
+
+        if (!state) {
+            throw new Error(`State ${name} not found.`);
+        }
+
+        this.currentState = state;
         this.currentState.init();
+
         if (this.currentState.views.size > 0) {
-            this._renderer.views = this.currentState.views;
+            this.renderer.views = this.currentState.views;
         } else {
             console.warn('currentState has no View');
         }
@@ -61,9 +81,11 @@ class Engine {
      * @returns {void}
      */
     run () {
+        const renderDebug = this.renderDebug;
+
         const render = (interpolationPercentage) => {
             this.currentState.render(interpolationPercentage);
-            this._renderer.render(interpolationPercentage);
+            this.renderer.render(interpolationPercentage);
         };
 
         const update = (delta) => {
@@ -75,14 +97,14 @@ class Engine {
         };
 
         const before = () => {
-            if (this.debugMode) {
-                this._renderDebug.before();
+            if (renderDebug) {
+                renderDebug.before();
             }
         };
 
         const after = () => {
-            if (this.debugMode) {
-                this._renderDebug.after();
+            if (renderDebug) {
+                renderDebug.after();
             }
         };
 
@@ -90,8 +112,11 @@ class Engine {
 
         loop.setUpdate(update);
         loop.setDraw(render);
-        loop.setBegin(before);
-        loop.setEnd(after);
+
+        if (this.renderDebug) {
+            loop.setBegin(before);
+            loop.setEnd(after);
+        }
 
         loop.start();
     }

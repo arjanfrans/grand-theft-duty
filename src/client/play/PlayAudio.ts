@@ -1,8 +1,13 @@
-import StateAudio from '../StateAudio';
+import { StateAudio } from '../StateAudio';
+import PlayState from "./PlayState";
 
 class PlayAudio extends StateAudio {
-    constructor (state, effectsSpriteName, backgroundSpriteName) {
-        super(state, effectsSpriteName, backgroundSpriteName);
+    private entities: any;
+    private player: any;
+
+    constructor (state: PlayState, effectsSpriteName: string, backgroundSpriteName: string) {
+        super(effectsSpriteName, backgroundSpriteName);
+
         this.entities = state.soldiers;
         this.player = state.player;
     }

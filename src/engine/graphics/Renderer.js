@@ -57,7 +57,7 @@ class Renderer {
      *
      * @returns {void}
      */
-    render () {
+    render (interpolationPercentage) {
         this._THREErenderer.clear();
 
         const info = {

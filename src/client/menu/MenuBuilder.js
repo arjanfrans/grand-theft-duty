@@ -2,21 +2,19 @@ import MenuInput from './MenuInput';
 import MenuRenderView from './views/MenuRenderView';
 import MenuAudio from './MenuAudio';
 import OptionsMenu from './menus/OptionsMenu';
-import MultiplayerMenu from './menus/MultiplayerMenu';
 import HelpMenu from './menus/HelpMenu';
 import MainMenu from './menus/MainMenu';
 import MenuState from './MenuState';
 
 const MenuBuilder = {
     create (engine) {
-        const state = new MenuState();
-        const menuInput = new MenuInput(state);
+        const state = new MenuState(engine);
+        const menuInput = new MenuInput(engine.inputSources, state);
 
-        state.inputs.add(menuInput);
+        state.addInput(menuInput);
 
         const subMenus = new Map([
             ['main', MainMenu.create(engine, state)],
-            ['multiplayer', MultiplayerMenu.create(engine, state)],
             ['options', OptionsMenu.create(state)],
             ['help', HelpMenu.create(state)]
         ]);

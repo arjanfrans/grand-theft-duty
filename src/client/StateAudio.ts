@@ -1,8 +1,13 @@
 import AssetManager from '../engine/AssetManager';
 
-class StateAudio {
-    constructor (state, effectsSpriteName = null, backgroundSpriteName = null) {
-        this.state = state;
+export class StateAudio {
+    protected effectsSpriteName?: string;
+    protected backgroundSpriteName?: string;
+    protected effects?: any;
+    protected backgrounds?: any;
+    protected _initialized: boolean;
+
+    constructor (effectsSpriteName?: string, backgroundSpriteName?: string) {
         this.effectsSpriteName = effectsSpriteName;
         this.backgroundSpriteName = backgroundSpriteName;
 
@@ -36,5 +41,3 @@ class StateAudio {
         }
     }
 }
-
-export default StateAudio;

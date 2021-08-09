@@ -1,5 +1,10 @@
-class ComputerInput {
-    constructor (soldier) {
+import Soldier from "../../../core/entities/Soldier";
+import {StateInput} from "../../../engine/state/StateInput";
+
+export class ComputerInput implements StateInput {
+    private readonly soldier: Soldier;
+
+    constructor (soldier: Soldier) {
         this.soldier = soldier;
     }
 
@@ -29,5 +34,3 @@ class ComputerInput {
         }
     }
 }
-
-export default ComputerInput;

@@ -3,6 +3,7 @@ import AssetManager from '../engine/AssetManager';
 import path from 'path';
 
 import MenuBuilder from './menu/MenuBuilder';
+import {KeyboardInputSource} from "../engine/input/KeyboardInputSource";
 
 const ASSET_PATH = path.resolve(__dirname, '../../assets/');
 const ASSET_CONFIG = {
@@ -42,9 +43,12 @@ export class Game {
     public async start () {
         await AssetManager.init(ASSET_CONFIG);
 
-        const engine = new Engine({
-            debugMode: true
-        });
+        const engine = new Engine(
+            true,
+            {
+                keyboard: new KeyboardInputSource()
+            }
+        );
 
         const menuState = MenuBuilder.create(engine);
 

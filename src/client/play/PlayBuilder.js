@@ -1,10 +1,9 @@
 import PlayState from './PlayState';
-import { ViewBuilder } from './ViewBuilder';
+import {ViewBuilder} from './ViewBuilder';
 
 import Match from '../../core/Match';
-import PlayerInput from './input/PlayerInput';
-import UiInput from './input/UiInput';
-import ComputerInput from './input/ComputerInput';
+import {PlayerInput} from './input/PlayerInput';
+import {UiInput} from './input/UiInput';
 import Player from '../../core/entities/Player';
 
 import PlayAudio from './PlayAudio';
@@ -14,6 +13,7 @@ import AssetManager from '../../engine/AssetManager';
 import Soldier from '../../core/entities/Soldier';
 import CollisionSystem from '../../core/CollisionSystem';
 import BulletSystem from '../../core/BulletSystem';
+import {ComputerInput} from "./input/ComputerInput";
 
 /**
  * Create CPU soldiers.
@@ -28,7 +28,8 @@ function createCpuSoldiers (state, count) {
         const { x, y, z } = state.map.randomRespawnPosition();
         const soldier = new Soldier(x, y, z, 48, 48, 1, 'american');
 
-        state.inputs.add(new ComputerInput(soldier));
+        state.addInput(new ComputerInput(soldier));
+
         state.match.addSoldier(soldier);
     }
 }
@@ -39,15 +40,16 @@ function createCpuSoldiers (state, count) {
  * @param {PlayState} state The play state.
  * @param {string} name Name of the player.
  *
+ * @param dead
  * @return {void}
  */
-function createPlayer (state, name, dead = false) {
+function createPlayer (engine, state, name, dead = false) {
     const { x, y, z } = state.map.randomRespawnPosition();
     const player = new Player(x, y, z, 48, 48, 1, 'american');
-    const playerInput = new PlayerInput(player);
+    const playerInput = new PlayerInput(engine.inputSources, player);
 
     state.player = player;
-    state.inputs.add(playerInput);
+    state.addInput(playerInput);
 
     player.kill();
 
@@ -70,47 +72,26 @@ const PlayBuilder = {
     createSingleplayer (engine, options) {
         const map = MapParser.parse(AssetManager.getMap(options.map));
         const match = new Match(options.teams);
-        const state = new PlayState(match, map);
+        const state = new PlayState(engine, match, map);
 
         createCpuSoldiers(state, options.cpuCount);
-        createPlayer(state, options.playerName);
+        createPlayer(engine, state, options.playerName);
 
-        const collisionSystem = new CollisionSystem(state);
-        const bulletSystem = new BulletSystem(state, {
+        state.bulletSystem = new BulletSystem(state, {
             poolLimit: options.poolLimit || 200
         });
 
-        state.bulletSystem = bulletSystem;
-        state.collisionSystem = collisionSystem;
+        state.collisionSystem = new CollisionSystem(state);
         state.audio = new PlayAudio(state, 'guns', 'background');
 
-        const uiInput = new UiInput(state);
+        const uiInput = new UiInput(engine.inputSources, state);
 
-        state.inputs.add(uiInput);
+        state.addInput(uiInput);
 
         createViews(state);
 
         return state;
     },
-
-    createMultiplayer (engine, options) {
-        // const networkManager = new NetworkManager();
-        //
-        // networkManager.connect('http://' + options.url);
-        // networkManager.register(options.playerName);
-        //
-        // return networkManager.waitForReady().then((serverState) => {
-        //     let match = new Match(serverState.teams);
-        //     let map = MapParser.parse(AssetManager.getMap(serverState.map));
-        //
-        //     // TODO
-        //
-        //     return state;
-        // }).catch((err) => {
-        //     console.error('Error connecting to server');
-        //     console.error(err);
-        // });
-    }
 };
 
 export default PlayBuilder;

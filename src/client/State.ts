@@ -3,30 +3,34 @@
  *
  * @class
  */
-class State {
+import Engine from "../engine/Engine";
+import {StateInput} from "../engine/state/StateInput";
 
-    /**
-     * @constructor
-     *
-     * @param {string} name - name of the state.
-     * @param {Engine} engine - game engine instance.
-     */
-    constructor (name, engine) {
+export abstract class State {
+    protected readonly name: string;
+    protected readonly engine: Engine;
+    protected audio?: any;
+    protected inputs: Set<StateInput>;
+    public readonly views: Set<any>;
+    protected _initialized = false;
+
+    protected constructor (name: string, engine: Engine) {
         this.name = name;
         this.engine = engine;
         this.inputs = new Set();
         this.views = new Set();
-        this.audio = null;
-        this._initialized = false;
+        this.audio = undefined;
     }
 
-    addView (view) {
+    public addView (view: any): void {
         this.views.add(view);
     }
 
-    update () {
-        throw new TypeError('State requires update() method');
+    public addInput(input: any): void {
+        this.inputs.add(input);
     }
+
+    public abstract update(delta: number);
 
     init () {
         if (!this._initialized) {
@@ -60,5 +64,3 @@ class State {
         }
     }
 }
-
-export default State;

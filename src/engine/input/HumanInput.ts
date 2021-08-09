@@ -1,20 +1,36 @@
-import Keyboard from './Keyboard';
 import Gamepad from './Gamepad';
+import {InputSourceInterface} from "./InputSourceInterface";
+import {KeyboardInputSource} from "./KeyboardInputSource";
+import {Keyboard} from "./Keyboard";
 
-class HumanInput {
-    constructor () {
+export class HumanInput {
+    private readonly _previousKeyboardKeys: {};
+    private readonly _previousGamepadStick: {};
+    private readonly _previousGamepadButton: {};
+    public readonly gamepadIndex: number;
+    public readonly keyboard: Keyboard
+
+    constructor (inputSources: Map<string, InputSourceInterface>) {
         this._previousKeyboardKeys = {};
         this._previousGamepadStick = {};
         this._previousGamepadButton = {};
         this.gamepadIndex = 0;
+
+        const keyboardInputSource = inputSources.get('keyboard');
+
+        if (!(keyboardInputSource instanceof KeyboardInputSource)) {
+            throw new Error('Keyboard input source not found.');
+        }
+
+        this.keyboard = keyboardInputSource.keyboard;
     }
 
     keyboardDownOnce (keyCode) {
-        if (!this._previousKeyboardKeys[keyCode] && Keyboard.isDown(keyCode)) {
+        if (!this._previousKeyboardKeys[keyCode] && this.keyboard.isDown(keyCode)) {
             this._previousKeyboardKeys[keyCode] = true;
 
             return true;
-        } else if (this._previousKeyboardKeys[keyCode] && !Keyboard.isDown(keyCode)) {
+        } else if (this._previousKeyboardKeys[keyCode] && !this.keyboard.isDown(keyCode)) {
             this._previousKeyboardKeys[keyCode] = false;
         }
 
@@ -39,5 +55,3 @@ class HumanInput {
         }
     }
 }
-
-export default HumanInput;

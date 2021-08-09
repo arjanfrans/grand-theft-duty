@@ -62,10 +62,6 @@ function createMenu (engine, menuState) {
         engine.changeState('play');
     }));
 
-    menu.addMenuItem(new MenuItem('createMultiplayerGame', 'Multiplayer', (menuItem) => {
-        menuState.currentMenu = 'multiplayer';
-    }));
-
     menu.addMenuItem(new MenuItem('options', 'Options', () => {
         menuState.currentMenu = 'options';
     }));

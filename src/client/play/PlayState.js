@@ -1,4 +1,4 @@
-import State from '../State';
+import {State} from '../State';
 
 /**
  * State of playing the game.
@@ -8,8 +8,8 @@ import State from '../State';
  */
 class PlayState extends State {
 
-    constructor (match, map) {
-        super('play');
+    constructor (engine, match, map) {
+        super('play', engine);
 
         this.collisionSystem = null;
         this.bulletSystem = null;

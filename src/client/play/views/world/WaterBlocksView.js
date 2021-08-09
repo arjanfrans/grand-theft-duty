@@ -1,5 +1,5 @@
 import { Animation, TextureManager, View } from '../../../../engine/graphics';
-import { Geometry, Matrix4, Mesh, MeshLambertMaterial, PlaneGeometry } from 'three';
+import { Matrix4, Geometry, Mesh, MeshLambertMaterial, PlaneGeometry } from 'three';
 
 const WATER_FRAMES = [
     'animation_water_0001',

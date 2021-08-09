@@ -1,7 +1,7 @@
 import View from './View';
 import AssetManager from '../AssetManager';
 import { BufferGeometry, Mesh, MeshBasicMaterial } from 'three';
-import createTextGeometry from 'three-bmfont-text';
+import { TextGeometry } from '../three-bmfont-text/index';
 
 class TextView extends View {
     constructor (text, options = {}) {
@@ -17,7 +17,7 @@ class TextView extends View {
     }
 
     init () {
-        this.geometry = createTextGeometry({
+        this.geometry = new TextGeometry({
             text: this._text,
             width: this.width,
             align: this.align,

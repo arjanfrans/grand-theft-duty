@@ -32,7 +32,7 @@ const ASSET_CONFIG = {
     ]
 };
 
-const Game = {
+export const Game = {
 
     /**
      * Load assets and start the game.
@@ -57,5 +57,3 @@ const Game = {
         });
     }
 };
-
-module.exports = Game;

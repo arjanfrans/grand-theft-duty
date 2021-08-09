@@ -1,5 +1,5 @@
 import PlayState from './PlayState';
-import ViewBuilder from './ViewBuilder';
+import { ViewBuilder } from './ViewBuilder';
 
 import Match from '../../core/Match';
 import PlayerInput from './input/PlayerInput';

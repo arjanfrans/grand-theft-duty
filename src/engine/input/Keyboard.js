@@ -193,13 +193,16 @@ for (const shiftKey of Object.keys(shiftKeys)) {
 }
 
 window.addEventListener('keyup', function (event) {
-    Keyboard.onKeyup(event);
     event.preventDefault();
+    event.stopPropagation();
+    Keyboard.onKeyup(event);
 }, false);
 
 window.addEventListener('keydown', function (event) {
-    Keyboard.onKeydown(event);
+    console.log(event)
     event.preventDefault();
+    event.stopPropagation();
+    Keyboard.onKeydown(event);
 }, false);
 
 export default Keyboard;

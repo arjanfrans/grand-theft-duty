@@ -1,7 +1,7 @@
 import { AmbientLight, PerspectiveCamera, SpotLight } from 'three';
 import RenderView from '../../../engine/graphics/RenderView';
 
-class PlayRenderView extends RenderView {
+export class PlayRenderView extends RenderView {
     constructor (state) {
         super();
 
@@ -52,5 +52,3 @@ class PlayRenderView extends RenderView {
         }
     }
 }
-
-module.exports = PlayRenderView;

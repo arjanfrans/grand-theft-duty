@@ -471,7 +471,7 @@ const _testPolygonCircle = function (polygon, circle, response) {
  */
 const _testCirclePolygon = function (circle, polygon, response) {
     // Test the polygon against the circle.
-    const result = testPolygonCircle(polygon, circle, response);
+    const result = _testPolygonCircle(polygon, circle, response);
 
     if (result && response) {
         // Swap A and B in the response.

@@ -4,7 +4,7 @@
  * @returns {object} statsjs object
  */
 const Stats = function () {
-    const now = (self.performance && self.performance.now) ? self.performance.now.bind(performance) : Date.now;
+    const now = (global.performance && global.performance.now) ? global.performance.now.bind(performance) : Date.now;
 
     let startTime = now();
     let prevTime = startTime;
@@ -101,7 +101,7 @@ const Stats = function () {
     const memGraph = memDiv.children[1];
 
     // MEM
-    if (self.performance && self.performance.memory) {
+    if (global.performance && global.performance.memory) {
         container.appendChild(memDiv);
     }
 

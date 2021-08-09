@@ -1,4 +1,4 @@
-import { DoubleSide, Geometry, Matrix4, Mesh, MeshLambertMaterial, PlaneGeometry } from 'three';
+import { DoubleSide, Matrix4, Mesh, MeshLambertMaterial, Geometry, PlaneGeometry } from 'three';
 import { TextureManager, View } from '../../../../engine/graphics';
 
 function wallBlockGeometry (block, textureAtlas) {

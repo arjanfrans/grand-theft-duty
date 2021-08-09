@@ -3,23 +3,38 @@
   "version": "0.0.5",
   "description": "Top down WW2 shooter",
   "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.20.19",
+    "@types/react": "^16.14.12",
+    "@types/react-dom": "^16.9.14",
+    "@types/three": "^0.84.37",
+    "as-number": "^1.0.0",
     "debug": "^2.4.5",
     "howler": "^2.0.2",
+    "inherits": "^2.0.4",
+    "quad-indices": "^2.0.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-scripts": "3.4.3",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",
-    "three": "^0.83.0",
-    "three-bmfont-text": "^2.2.0"
+    "three": "^0.84.0",
+    "typescript": "^3.9.10",
+    "word-wrapper": "^1.0.7",
+    "xtend": "^4.0.2"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel-register",
-    "cover": "babel-node ./node_modules/.bin/babel-istanbul --include-all-sources cover --root src _mocha",
-    "ci": "npm run clean && npm run lint && npm run build:production && npm run cover",
-    "clean": "rm -rf dist",
-    "lint": "eslint ./src/*",
-    "start": "node ./buildsystem/generateIndex.js && webpack-dev-server --colors --devtool source-map",
-    "deploy": "./buildsystem/deploy.sh",
-    "build:production": "node ./buildsystem/generateIndex.js && webpack --optimize-minimize",
-    "build:development": "node ./buildsystem/generateIndex.js && webpack"
+    "start": "react-scripts start",
+    "start:production": "serve -s build",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && gh-pages -d build",
+    "cs-fix": "eslint src --ext ts,tsx",
+    "cs-format": "prettier 'src/**/*.ts' --write --tab-width 4"
   },
   "repository": {
     "type": "git",
@@ -35,30 +50,26 @@
   ],
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
-  "pre-commit": [
-    "lint"
-  ],
   "devDependencies": {
-    "@arjanfrans/eslint-config-arjanfrans": "0.0.6",
     "audiosprite": "^0.6.0",
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.21.0",
-    "babel-istanbul": "^0.12.1",
-    "babel-loader": "^6.2.10",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-register": "^6.18.0",
-    "chai": "^3.4.1",
     "convert-bmfont": "^1.0.2",
-    "coveralls": "^2.11.15",
-    "eslint": "^3.12.2",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.2.0",
-    "nodemon": "^1.11.0",
-    "nunjucks": "^3.0.0",
-    "pre-commit": "^1.2.2",
-    "source-map-support": "^0.4.6",
     "spritesheet-js": "git+https://github.com/arjanfrans/spritesheet.js.git",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "gh-pages": "^3.2.3",
+    "prettier": "^2.3.2"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

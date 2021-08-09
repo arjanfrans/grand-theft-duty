@@ -10,9 +10,9 @@ import BulletSystemView from './views/BulletSystemView';
 import WorldMapView from './views/WorldMapView';
 import SoldierView from './views/SoldierView';
 import SoldierViewPool from './views/SoldierViewPool';
-import PlayRenderView from './views/PlayRenderView';
+import {PlayRenderView} from './views/PlayRenderView';
 
-const ViewBuilder = {
+export const ViewBuilder = {
     uiView (playState) {
         const uiView = new StatsRenderView(playState);
         const uiViewContainer = new ViewContainer();
@@ -56,5 +56,3 @@ const ViewBuilder = {
         return playView;
     }
 };
-
-export default ViewBuilder;

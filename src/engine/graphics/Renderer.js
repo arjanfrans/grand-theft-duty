@@ -15,7 +15,7 @@ class Renderer {
      *
      * @param {string} [divName=gameDiv] - id of the html div to render into.
      */
-    constructor (divName = 'gameDiv') {
+    constructor (divName = 'root') {
         this._views = null;
 
         this._THREErenderer = new WebGLRenderer();

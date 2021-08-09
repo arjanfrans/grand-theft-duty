@@ -1,5 +1,5 @@
 import { Matrix4, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
-import View from '../../../engine/graphics/View';
+import {View} from '../../../engine/graphics/View';
 
 class HealthView extends View {
     constructor (state) {

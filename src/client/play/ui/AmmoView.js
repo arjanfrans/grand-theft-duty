@@ -1,5 +1,8 @@
 import { Mesh, MeshBasicMaterial, Object3D, PlaneGeometry } from 'three';
-import { TextView, TextureFrame, TextureManager, View } from '../../../engine/graphics';
+import {View} from "../../../engine/graphics/View";
+import {TextureManager} from "../../../engine/graphics/TextureManager";
+import {TextureFrame} from "../../../engine/graphics/TextureFrame";
+import {TextView} from "../../../engine/graphics/TextView";
 
 class AmmoView extends View {
     constructor (state) {

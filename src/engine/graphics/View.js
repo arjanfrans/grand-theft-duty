@@ -1,4 +1,4 @@
-class View {
+export class View {
     constructor () {
         this.mesh = null;
         this.initialPosition = null;
@@ -45,5 +45,3 @@ class View {
         }
     }
 }
-
-export default View;

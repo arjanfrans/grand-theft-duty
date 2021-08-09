@@ -1,5 +1,7 @@
-import { Animation, TextureManager, View } from '../../../engine/graphics';
 import { Mesh, MeshLambertMaterial, PlaneGeometry } from 'three';
+import {View} from "../../../engine/graphics/View";
+import {Animation} from "../../../engine/graphics/Animation";
+import {TextureManager} from "../../../engine/graphics/TextureManager";
 
 const WALK_FRAMES = [
     'walk_0001',

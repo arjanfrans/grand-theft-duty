@@ -1,6 +1,6 @@
 import { Vector2 } from 'three';
 
-class TextureFrame {
+export class TextureFrame {
     constructor (textureAtlas, geometry, initialFrame, fixed = false) {
         this.textureAtlas = textureAtlas;
         this.geometry = geometry;
@@ -60,5 +60,3 @@ class TextureFrame {
         this.texture.offset = offset;
     }
 }
-
-export default TextureFrame;

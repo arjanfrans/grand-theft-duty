@@ -1,6 +1,6 @@
 import { Object3D } from 'three';
 import ObjectPool from '../../../engine/ObjectPool';
-import View from '../../../engine/graphics/View';
+import {View} from '../../../engine/graphics/View';
 import SoldierView from './SoldierView';
 
 class SoldierViewPool extends View {

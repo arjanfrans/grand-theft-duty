@@ -1,5 +1,6 @@
 import { DoubleSide, Matrix4, Mesh, MeshLambertMaterial, Geometry, PlaneGeometry } from 'three';
-import { TextureManager, View } from '../../../../engine/graphics';
+import {View} from "../../../../engine/graphics/View";
+import {TextureManager} from "../../../../engine/graphics/TextureManager";
 
 function wallBlockGeometry (block, textureAtlas) {
     const geometries = [];

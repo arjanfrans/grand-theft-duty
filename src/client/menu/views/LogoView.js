@@ -1,5 +1,7 @@
 import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
-import { TextureFrame, TextureManager, View } from '../../../engine/graphics';
+import {TextureManager} from "../../../engine/graphics/TextureManager";
+import {TextureFrame} from "../../../engine/graphics/TextureFrame";
+import {View} from "../../../engine/graphics/View";
 
 class LogoView extends View {
     constructor (textureName, textureAtlasName) {

@@ -2,7 +2,7 @@ import { Object3D } from 'three';
 import WaterBlocksView from './world/WaterBlocksView';
 import StaticBlocksView from './world/StaticBlocksView';
 import LightView from './lights/LightView';
-import View from '../../../engine/graphics/View';
+import {View} from '../../../engine/graphics/View';
 
 class WorldMapView extends View {
     constructor (map) {

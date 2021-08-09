@@ -1,9 +1,9 @@
-import View from './View';
 import AssetManager from '../AssetManager';
 import { Mesh, MeshBasicMaterial } from 'three';
 import { TextGeometry } from '../three-bmfont-text/index';
+import {View} from "./View";
 
-class TextView extends View {
+export class TextView extends View {
     constructor (text, options = {}) {
         super();
 
@@ -76,5 +76,3 @@ class TextView extends View {
         }
     }
 }
-
-export default TextView;

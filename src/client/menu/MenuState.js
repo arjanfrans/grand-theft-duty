@@ -10,7 +10,6 @@ class MenuState extends State {
         this.currentMenuName = null;
         this.options = new Map([
             ['name', 'Unknown Soldier'],
-            ['server', 'localhost:3000']
         ]);
         this.gamePlaying = false;
         this.currentOptionsEdit = null;

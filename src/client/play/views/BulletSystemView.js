@@ -1,6 +1,6 @@
 import { Object3D } from 'three';
 import ObjectPool from '../../../engine/ObjectPool';
-import View from '../../../engine/graphics/View';
+import {View} from '../../../engine/graphics/View';
 import BulletView from './BulletView';
 
 class BulletSystemView extends View {

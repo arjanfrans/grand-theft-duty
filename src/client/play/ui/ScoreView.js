@@ -1,5 +1,6 @@
-import { Mesh, MeshLambertMaterial, Object3D, PlaneGeometry } from 'three';
-import { TextView, View } from '../../../engine/graphics';
+import {Mesh, MeshLambertMaterial, Object3D, PlaneGeometry} from 'three';
+import {TextView} from "../../../engine/graphics/TextView";
+import {View} from "../../../engine/graphics/View";
 
 function converToText (teams) {
     let resultText = '';
@@ -63,10 +64,8 @@ class ScoreView extends View {
                 this.mesh.visible = true;
             }
 
-            const newScores = converToText(this.match.sortedScores());
-
             // Scores have changed
-            this.scoreTextView.text = newScores;
+            this.scoreTextView.text = converToText(this.match.sortedScores());
         } else if (this.mesh.visible) {
             this.mesh.visible = false;
         }

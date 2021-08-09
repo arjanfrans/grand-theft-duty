@@ -1,8 +1,8 @@
 import TextureAtlas from './TextureAtlas';
 const _atlases = new Map();
 
-const TextureManager = {
-    getAtlas (name, clone) {
+export class TextureManager {
+    static getAtlas (name, clone) {
         if (clone) {
             return new TextureAtlas(name, clone);
         }
@@ -17,6 +17,4 @@ const TextureManager = {
 
         return atlas;
     }
-};
-
-export default TextureManager;
+}

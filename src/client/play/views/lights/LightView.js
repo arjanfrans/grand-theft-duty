@@ -1,5 +1,7 @@
 import { Mesh, MeshLambertMaterial, Object3D, PlaneGeometry, SpotLight } from 'three';
-import { TextureFrame, TextureManager, View } from '../../../../engine/graphics';
+import { TextureFrame } from '../../../../engine/graphics/TextureFrame';
+import {TextureManager} from "../../../../engine/graphics/TextureManager";
+import {View} from "../../../../engine/graphics/View";
 
 class LightView extends View {
     constructor (light) {

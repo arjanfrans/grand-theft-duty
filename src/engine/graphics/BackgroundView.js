@@ -1,7 +1,7 @@
 import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
-import TextureManager from './TextureManager';
-import TextureFrame from './TextureFrame';
-import View from './View';
+import {TextureManager} from './TextureManager';
+import {TextureFrame} from './TextureFrame';
+import {View} from './View';
 
 class BackgroundView extends View {
     constructor (textureName, textureAtlasName) {

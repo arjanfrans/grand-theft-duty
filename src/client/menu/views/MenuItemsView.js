@@ -1,6 +1,7 @@
 import { Object3D } from 'three';
-import { TextView, View } from '../../../engine/graphics';
 import LogoView from './LogoView';
+import {View} from "../../../engine/graphics/View";
+import {TextView} from "../../../engine/graphics/TextView";
 
 class MenuItemsView extends View {
     constructor (menu, options = {

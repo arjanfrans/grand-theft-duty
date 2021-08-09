@@ -1,5 +1,5 @@
-import RenderDebug from './utils/debug/RenderDebug';
-import Renderer from './graphics/Renderer';
+import {ThreeRenderer} from './graphics/ThreeRenderer';
+import {DebugThreeRenderer} from './graphics/DebugThreeRenderer';
 import Mainloop from '@arjanfrans/mainloop';
 import {State} from "../client/State";
 import {NullState} from "./state/NullState";
@@ -9,22 +9,21 @@ class Engine {
     private readonly debugMode: boolean;
     private states: Map<string, State> = new Map();
     private currentState: State;
-    private readonly renderer: Renderer;
-    private renderDebug?: RenderDebug;
+    private readonly renderer: ThreeRenderer;
     public readonly inputSources: Map<string, InputSourceInterface> = new Map()
 
     constructor (debugMode: boolean, inputSources: { [key: string]: InputSourceInterface}) {
         this.debugMode = debugMode;
         this.currentState = new NullState(this);
-        this.renderer = new Renderer();
 
         for(const [key, inputSource] of Object.entries(inputSources)) {
             this.inputSources.set(key, inputSource);
         }
 
         if (this.debugMode) {
-            this.renderDebug = new RenderDebug(this.renderer);
-            this.renderDebug.init();
+            this.renderer = new DebugThreeRenderer();
+        } else {
+            this.renderer = new ThreeRenderer();
         }
     }
 
@@ -81,8 +80,6 @@ class Engine {
      * @returns {void}
      */
     run () {
-        const renderDebug = this.renderDebug;
-
         const render = (interpolationPercentage) => {
             this.currentState.render(interpolationPercentage);
             this.renderer.render(interpolationPercentage);
@@ -97,15 +94,11 @@ class Engine {
         };
 
         const before = () => {
-            if (renderDebug) {
-                renderDebug.before();
-            }
+            this.renderer.preRender();
         };
 
         const after = () => {
-            if (renderDebug) {
-                renderDebug.after();
-            }
+            this.renderer.postRender();
         };
 
         const loop = new Mainloop();
@@ -113,7 +106,7 @@ class Engine {
         loop.setUpdate(update);
         loop.setDraw(render);
 
-        if (this.renderDebug) {
+        if (this.debugMode) {
             loop.setBegin(before);
             loop.setEnd(after);
         }

@@ -1,6 +1,6 @@
-import TextureFrame from './TextureFrame';
+import {TextureFrame} from './TextureFrame';
 
-class Animation {
+export class Animation {
     constructor (textureAtlas, geometry, interval = 10, repeat = true, frames = [],
             framePrefix = '', fixed = false) {
         this.textureAtlas = textureAtlas;
@@ -23,9 +23,7 @@ class Animation {
     }
 
     _updateTexture () {
-        const currentFrame = this.framePrefix + this.frames[this.currentFrameIndex];
-
-        this.textureFrame.frame = currentFrame;
+        this.textureFrame.frame = this.framePrefix + this.frames[this.currentFrameIndex];
     }
 
     reset () {
@@ -53,5 +51,3 @@ class Animation {
         return this.frames[this.currentFrameIndex];
     }
 }
-
-export default Animation;

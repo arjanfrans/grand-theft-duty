@@ -1,5 +1,7 @@
 import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
-import { TextureFrame, TextureManager, View } from '../../../engine/graphics';
+import {View} from "../../../engine/graphics/View";
+import {TextureManager} from "../../../engine/graphics/TextureManager";
+import {TextureFrame} from "../../../engine/graphics/TextureFrame";
 
 class BulletView extends View {
     constructor (bullet) {

@@ -8,6 +8,7 @@ const keys: {[key: string]: number} = {
 };
 
 export class Keyboard {
+    private readonly _previousKeyboardKeys: {[key: number]: boolean} = {};
     private _pressed: {[key: string]: boolean} = {};
     private shiftDown: boolean = false;
     public lastPressed?: number;
@@ -33,6 +34,18 @@ export class Keyboard {
             this.codesShift[code] = shiftKey;
         }
 
+    }
+
+    keyboardDownOnce (keyCode) {
+        if (!this._previousKeyboardKeys[keyCode] && this.isDown(keyCode)) {
+            this._previousKeyboardKeys[keyCode] = true;
+
+            return true;
+        } else if (this._previousKeyboardKeys[keyCode] && !this.isDown(keyCode)) {
+            this._previousKeyboardKeys[keyCode] = false;
+        }
+
+        return false;
     }
 
     lastPressedIsChar () {

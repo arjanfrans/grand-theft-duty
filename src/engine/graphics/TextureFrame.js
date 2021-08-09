@@ -36,7 +36,6 @@ class TextureFrame {
                 new Vector2(width / aw, ah / ah) // lower right
             ];
 
-            console.log(this.geometry.faces)
             // If a geometry is merged, for example multiple planes
             for (let i = 1; i < this.geometry.faceVertexUvs[0].length; i += 2) {
                 this.geometry.faceVertexUvs[0][i - 1] = [bounds[0], bounds[1], bounds[3]];

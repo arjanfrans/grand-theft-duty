@@ -4,6 +4,7 @@ import path from 'path';
 
 import MenuBuilder from './menu/MenuBuilder';
 import {KeyboardInputSource} from "../engine/input/KeyboardInputSource";
+import {GamepadInputSource} from "../engine/input/GamepadInputSource";
 
 const ASSET_PATH = path.resolve(__dirname, '../../assets/');
 const ASSET_CONFIG = {
@@ -46,7 +47,8 @@ export class Game {
         const engine = new Engine(
             true,
             {
-                keyboard: new KeyboardInputSource()
+                keyboard: new KeyboardInputSource(),
+                gamepad: new GamepadInputSource()
             }
         );
 

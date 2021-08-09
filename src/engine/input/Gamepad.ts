@@ -1,26 +1,42 @@
 import GamepadMicro from './utils/gamepad-micro';
 
-const _gp = new GamepadMicro();
-let _gamepads = [];
+export class Gamepad {
+    private readonly gp: any;
+    private gamepad: any;
+    private readonly _previousGamepadStick: {};
+    private readonly _previousGamepadButton: {};
+    public readonly gamepadIndex: number;
 
-const Gamepad = {
-    isDown: function (index, button) {
-        if (_gamepads.length > 0) {
-            // FIXME rewrite gamepad-micro
-            const gamepad = _gamepads[index + 1];
+    constructor() {
+        this._previousGamepadStick = {};
+        this._previousGamepadButton = {};
+        this.gamepadIndex = 0;
+        this.gp = new GamepadMicro();
 
-            if (gamepad.buttons[button] && gamepad.buttons[button].held) {
-                return true;
+        this.gp.onUpdate((gamepads: []) => {
+            this.gamepad = gamepads[this.gamepadIndex];
+
+            if (this.gp.gamepadsconnected) {
+
+            } else {
+
             }
+        });
 
-            return false;
+    }
+
+    isDown (button) {
+        if (this.gamepad?.buttons[button] && this.gamepad?.buttons[button].held) {
+            return true;
         }
-    },
-    isStickDown: function (index, stick, direction) {
-        if (_gamepads.length > 0) {
-            // FIXME rewrite gamepad-micro
-            const gamepad = _gamepads[index + 1];
 
+        return false;
+    }
+
+    isStickDown (stick, direction) {
+        const gamepad = this.gamepad;
+
+        if (gamepad) {
             if (stick === 'right' && gamepad.rightStick) {
                 if (direction === 'right') {
                     if (gamepad.rightStick.x > 0.5) {
@@ -66,16 +82,25 @@ const Gamepad = {
             }
         }
     }
-};
 
-_gp.onUpdate(function (gamepads) {
-    _gamepads = gamepads;
-
-    if (_gp.gamepadsConnected) {
-
-    } else {
-
+    gamepadStickDownOnce (stick, direction) {
+        if (!this._previousGamepadStick[stick + direction] &&
+            !this.isStickDown(stick, direction)) {
+            this._previousGamepadStick[stick + direction] = true;
+        } else if (this._previousGamepadStick[stick + direction] &&
+            !this.isStickDown(stick, direction)) {
+            this._previousGamepadStick[stick + direction] = false;
+        }
     }
-});
+
+    gamepadButtonDownOnce (button) {
+        if (!this._previousGamepadButton[button] && !this.isDown(button)) {
+            this._previousGamepadButton[button] = true;
+        } else if (this._previousGamepadButton[button] && !this.isDown(button)) {
+            this._previousGamepadButton[button] = false;
+        }
+    }
+}
+
 
 export default Gamepad;

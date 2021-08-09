@@ -193,15 +193,10 @@ for (const shiftKey of Object.keys(shiftKeys)) {
 }
 
 window.addEventListener('keyup', function (event) {
-    event.preventDefault();
-    event.stopPropagation();
     Keyboard.onKeyup(event);
 }, false);
 
 window.addEventListener('keydown', function (event) {
-    console.log(event)
-    event.preventDefault();
-    event.stopPropagation();
     Keyboard.onKeydown(event);
 }, false);
 

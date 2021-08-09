@@ -32,28 +32,26 @@ const ASSET_CONFIG = {
     ]
 };
 
-export const Game = {
+export class Game {
 
     /**
      * Load assets and start the game.
      *
      * @returns {void}
      */
-    start () {
-        AssetManager.init(ASSET_CONFIG).then(function () {
-            const engine = new Engine({
-                debugMode: true
-            });
+    public async start () {
+        await AssetManager.init(ASSET_CONFIG);
 
-            const menuState = MenuBuilder.create(engine);
-
-            engine.addState('menu', menuState);
-
-            engine.changeState('menu');
-
-            engine.run();
-        }).catch(function (err) {
-            throw err;
+        const engine = new Engine({
+            debugMode: true
         });
+
+        const menuState = MenuBuilder.create(engine);
+
+        engine.addState('menu', menuState);
+
+        engine.changeState('menu');
+
+        engine.run();
     }
-};
+}

@@ -1,6 +1,6 @@
 import View from './View';
 import AssetManager from '../AssetManager';
-import { BufferGeometry, Mesh, MeshBasicMaterial } from 'three';
+import { Mesh, MeshBasicMaterial } from 'three';
 import { TextGeometry } from '../three-bmfont-text/index';
 
 class TextView extends View {

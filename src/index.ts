@@ -1,3 +1,3 @@
 import { Game } from './client/Game'
 
-Game.start();
+(new Game()).start();

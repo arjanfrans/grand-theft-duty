@@ -1,6 +1,6 @@
 import RenderDebug from './utils/debug/RenderDebug';
 import Renderer from './graphics/Renderer';
-import MainLoop from './utils/mainloop';
+import Mainloop from '@arjanfrans/mainloop';
 
 class Engine {
     constructor (options = { debugMode: false }) {
@@ -86,7 +86,12 @@ class Engine {
             }
         };
 
-        const loop = MainLoop.create().setUpdate(update).setDraw(render).setBegin(before).setEnd(after);
+        const loop = new Mainloop();
+
+        loop.setUpdate(update);
+        loop.setDraw(render);
+        loop.setBegin(before);
+        loop.setEnd(after);
 
         loop.start();
     }

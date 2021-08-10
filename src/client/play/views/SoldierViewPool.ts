@@ -1,17 +1,22 @@
 import { Object3D } from 'three';
-import ObjectPool from '../../../engine/ObjectPool';
+import {ObjectPool} from '../../../engine/ObjectPool';
 import {View} from '../../../engine/graphics/View';
 import SoldierView from './SoldierView';
+import {Soldier} from "../../../core/entities/Soldier";
 
-class SoldierViewPool extends View {
-    constructor (soldiers, options = {}) {
+export class SoldierViewPool extends View {
+    private readonly soldiers: Set<Soldier>;
+    private viewPool: ObjectPool<SoldierView>;
+    private viewPairs: WeakMap<Soldier, SoldierView>;
+
+    constructor (soldiers: Set<Soldier>, poolLimit?: number) {
         super();
 
         this.soldiers = soldiers;
 
-        this.viewPool = new ObjectPool(() => {
+        this.viewPool = new ObjectPool<SoldierView>((): SoldierView => {
             return new SoldierView(null);
-        }, this.soldiers.size, 10, options.poolLimit || 200);
+        }, this.soldiers.size, 10, poolLimit || 200);
 
         this.viewPairs = new WeakMap();
     }
@@ -23,8 +28,8 @@ class SoldierViewPool extends View {
 
     update (interpolationPercentage) {
         // Keep viewPool in sync with soldier pool
-        if (this.viewPool.poolSize > this.soldiers.length + 1) {
-            this.viewPool.allocate(this.soldiers.length + 1 - this.viewPool.size);
+        if (this.viewPool.size > this.soldiers.size) {
+            this.viewPool.allocate(this.soldiers.size - this.viewPool.size);
         }
 
         for (const soldier of this.soldiers) {
@@ -53,5 +58,3 @@ class SoldierViewPool extends View {
         }
     }
 }
-
-export default SoldierViewPool;

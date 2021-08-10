@@ -1,4 +1,4 @@
-import Entity from './Entity';
+import {Entity} from './Entity';
 
 const GRAVITY = -0.2;
 

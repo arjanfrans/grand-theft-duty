@@ -1,33 +1,34 @@
 import {State} from '../State';
+import {Soldier} from "../../core/entities/Soldier";
+import CollisionSystem from "../../core/CollisionSystem";
+import {BulletSystem} from "../../core/BulletSystem";
+import Player from "../../core/entities/Player";
 
 /**
  * State of playing the game.
- *
- * @class
- * @extends State
  */
-class PlayState extends State {
+export class PlayState extends State {
+    private collisionSystem?: CollisionSystem;
+    private bulletSystem?: BulletSystem;
+    public player?: Player;
+    public map: any;
+    public match: any;
+    public showScores: boolean = false;
+    public paused: boolean = false;
+    private onPause?: () => any;
 
     constructor (engine, match, map) {
         super('play', engine);
 
-        this.collisionSystem = null;
-        this.bulletSystem = null;
-        this.player = null;
         this.map = map;
         this.match = match;
-
-        // FIXME get this out of here
-        this.showScores = false;
-        this.paused = false;
-        this.onPause = null;
     }
 
     init () {
         super.init();
     }
 
-    get soldiers () {
+    get soldiers (): Set<Soldier> {
         return this.match.soldiers;
     }
 
@@ -81,5 +82,3 @@ class PlayState extends State {
         }
     }
 }
-
-export default PlayState;

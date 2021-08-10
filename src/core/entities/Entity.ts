@@ -4,8 +4,37 @@ import Vector from '../../engine/collision/Vector';
 const DEFAULT_SPEED = 0.2;
 const DEFAULT_ROTATION_SPEED = 0.3;
 
-class Entity {
-    constructor (x, y, z = 0, width = 0, height = 0, depth = 0) {
+export class Entity {
+    public position: { x: number; y: number; z: number };
+    public previousPosition: { x: number; y: number; z: number };
+    public width: number;
+    public height: number;
+    public depth: number;
+    public speed: number;
+    public rotationSpeed: number;
+    private readonly _body: Polygon;
+    public options: {
+        isPlayer: boolean; physics: boolean; isBullet: boolean; isCharacter: boolean; audio: boolean; bullets: boolean, isSoldier: boolean
+    };
+    public angle: number = Math.PI * 2;
+    public dead: boolean = false;
+    public velocity: { x: number; y: number; z: number } = {
+        x: 0,
+        y: 0,
+        z: 0
+    };
+    public isMoving: boolean = false;
+    public reverse: boolean = false;
+    public angularVelocity: number = 0;
+    public collidable: boolean = true;
+    public shouldUpdate: boolean = true;
+    public actions: {
+        firedBullet: boolean;
+    } = {
+        firedBullet: false
+    };
+
+    constructor(x: number, y: number, z = 0, width = 0, height = 0, depth = 0) {
         this.position = {
             x: x,
             y: y,
@@ -40,11 +69,12 @@ class Entity {
             audio: false,
             isBullet: false,
             isPlayer: false,
-            isCharacter: false
+            isCharacter: false,
+            isSoldier: false
         };
     }
 
-    get rotatedBody () {
+    get rotatedBody() {
         const body = this._body;
 
         body.setAngle(this.angle);
@@ -52,46 +82,46 @@ class Entity {
         return body;
     }
 
-    onWallCollision () {
+    onWallCollision() {
         return null;
     }
 
-    get body () {
+    get body() {
         this._body.position.x = this.position.x;
         this._body.position.y = this.position.y;
 
         return this._body;
     }
 
-    get x () {
+    get x() {
         return this.position.x;
     }
 
-    get y () {
+    get y() {
         return this.position.y;
     }
 
-    get z () {
+    get z() {
         return this.position.z;
     }
 
-    get halfWidth () {
+    get halfWidth() {
         return this.width / 2;
     }
 
-    get halfHeight () {
+    get halfHeight() {
         return this.height / 2;
     }
 
-    kill () {
+    kill() {
         this.dead = true;
     }
 
-    get point () {
+    get point() {
         return new Vector(this.x, this.y);
     }
 
-    reset () {
+    reset() {
         this.velocity = {
             x: 0,
             y: 0,
@@ -112,10 +142,12 @@ class Entity {
         this.isMoving = false;
 
         // Actions can trigger things that should happen in the next update.
-        this.actions = {};
+        this.actions = {
+            firedBullet: false
+        };
     }
 
-    respawn (position) {
+    respawn(position) {
         this.reset();
 
         this.position = {
@@ -131,39 +163,39 @@ class Entity {
         };
     }
 
-    moveUp () {
+    moveUp() {
         this.reverse = false;
         this.isMoving = true;
         this.velocity.x = -this.speed * Math.cos(this.angle);
         this.velocity.y = -this.speed * Math.sin(this.angle);
     }
 
-    moveDown () {
+    moveDown() {
         this.reverse = true;
         this.isMoving = true;
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
     }
 
-    turnLeft () {
+    turnLeft() {
         this.angularVelocity = this.rotationSpeed * (Math.PI / 180);
     }
 
-    turnRight () {
+    turnRight() {
         this.angularVelocity = -this.rotationSpeed * (Math.PI / 180);
     }
 
-    stopMoving () {
+    stopMoving() {
         this.isMoving = false;
         this.velocity.x = 0;
         this.velocity.y = 0;
     }
 
-    stopTurning () {
+    stopTurning() {
         this.angularVelocity = 0;
     }
 
-    update (delta) {
+    update(delta) {
         if (!this.dead) {
             this.angle += this.angularVelocity * delta;
 
@@ -181,5 +213,3 @@ class Entity {
         }
     }
 }
-
-export default Entity;

@@ -1,5 +1,5 @@
 import { StateAudio } from '../StateAudio';
-import PlayState from "./PlayState";
+import {PlayState} from "./PlayState";
 
 class PlayAudio extends StateAudio {
     private entities: any;

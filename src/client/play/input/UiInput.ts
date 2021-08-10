@@ -1,4 +1,4 @@
-import PlayState from "../PlayState";
+import {PlayState} from "../PlayState";
 import {Keys, LetterKeys} from "../../../engine/input/Keys";
 import {StateInput} from "../../../engine/state/StateInput";
 import {InputSourceInterface} from "../../../engine/input/InputSourceInterface";

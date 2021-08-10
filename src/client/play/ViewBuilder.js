@@ -9,7 +9,7 @@ import ScoreView from './ui/ScoreView';
 import BulletSystemView from './views/BulletSystemView';
 import WorldMapView from './views/WorldMapView';
 import SoldierView from './views/SoldierView';
-import SoldierViewPool from './views/SoldierViewPool';
+import {SoldierViewPool} from './views/SoldierViewPool';
 import {PlayRenderView} from './views/PlayRenderView';
 
 export const ViewBuilder = {

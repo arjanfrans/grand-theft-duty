@@ -1,4 +1,4 @@
-import Entity from './Entity';
+import {Entity} from './Entity';
 
 class Bullet extends Entity {
     constructor (x, y, z, width, height) {

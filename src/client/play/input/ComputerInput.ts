@@ -1,4 +1,4 @@
-import Soldier from "../../../core/entities/Soldier";
+import {Soldier} from "../../../core/entities/Soldier";
 import {StateInput} from "../../../engine/state/StateInput";
 
 export class ComputerInput implements StateInput {

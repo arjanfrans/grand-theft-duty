@@ -1,4 +1,4 @@
-import PlayState from './PlayState';
+import {PlayState} from './PlayState';
 import {ViewBuilder} from './ViewBuilder';
 
 import Match from '../../core/Match';
@@ -10,9 +10,9 @@ import PlayAudio from './PlayAudio';
 import MapParser from '../../core/maps/MapParser';
 import AssetManager from '../../engine/AssetManager';
 
-import Soldier from '../../core/entities/Soldier';
+import {Soldier} from '../../core/entities/Soldier';
 import CollisionSystem from '../../core/CollisionSystem';
-import BulletSystem from '../../core/BulletSystem';
+import {BulletSystem} from '../../core/BulletSystem';
 import {ComputerInput} from "./input/ComputerInput";
 
 /**
@@ -77,9 +77,7 @@ const PlayBuilder = {
         createCpuSoldiers(state, options.cpuCount);
         createPlayer(engine, state, options.playerName);
 
-        state.bulletSystem = new BulletSystem(state, {
-            poolLimit: options.poolLimit || 200
-        });
+        state.bulletSystem = new BulletSystem(state, options.poolLimit || 200);
 
         state.collisionSystem = new CollisionSystem(state);
         state.audio = new PlayAudio(state, 'guns', 'background');

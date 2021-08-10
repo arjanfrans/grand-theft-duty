@@ -1,5 +1,5 @@
 import Bullet from './Bullet';
-import Soldier from './Soldier';
+import {Soldier} from './Soldier';
 import Character from './Character';
 
 const Entities = {

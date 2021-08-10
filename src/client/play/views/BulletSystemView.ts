@@ -1,17 +1,22 @@
 import { Object3D } from 'three';
-import ObjectPool from '../../../engine/ObjectPool';
+import {ObjectPool} from '../../../engine/ObjectPool';
 import {View} from '../../../engine/graphics/View';
 import BulletView from './BulletView';
+import {BulletSystem} from "../../../core/BulletSystem";
+import Bullet from "../../../core/entities/Bullet";
 
-class BulletSystemView extends View {
-    constructor (bulletSystem, options = {}) {
+export class BulletSystemView extends View {
+    private bulletSystem: BulletSystem;
+    private bulletViewPool: ObjectPool<BulletView>;
+    private bulletViewPairs: WeakMap<Bullet, BulletView> = new WeakMap<Bullet, BulletView>();
+
+    constructor (bulletSystem, poolLimit?: number) {
         super();
-        this.bulletSystem = bulletSystem;
-        this.bulletViewPool = new ObjectPool(() => {
-            return new BulletView(null);
-        }, this.bulletSystem.poolSize, 10, options.poolLimit || 200);
 
-        this.bulletViewPairs = new WeakMap();
+        this.bulletSystem = bulletSystem;
+        this.bulletViewPool = new ObjectPool<BulletView>((): BulletView => {
+            return new BulletView(null);
+        }, this.bulletSystem.poolSize, 10, poolLimit || 200);
     }
 
     init () {

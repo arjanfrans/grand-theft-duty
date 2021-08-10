@@ -1,6 +1,6 @@
 import {ThreeRenderer} from "./ThreeRenderer";
 import RenderDebug from "../utils/debug/RenderDebug";
-import {WebGLProgram, WebGLPrograms} from "three";
+import {WebGLProgram} from "three";
 
 export class DebugThreeRenderer extends ThreeRenderer {
     private info: {} = {};

@@ -1,33 +1,33 @@
 import Character from './Character';
 import WeaponFactory from '../weapons/WeaponFactory';
 
-class Soldier extends Character {
+export class Soldier extends Character {
+    public name: string;
+    public weapons: any[] = [];
+    public currentWeaponIndex: number = 0;
+    public currentWeapon?: any;
+    public team: any;
+    public maxHealth: number = 100;
+    public walkingSpeed: number = 0.1;
+    public runningSpeed: number = 0.2;
+
+    // Contains the character killed, and the count
+    public kills: Map<Character, number> = new Map();
+
+    // Contains the characters killed by, and the count
+    public deaths: Map<Character, number> = new Map();
+
     constructor (x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth);
 
         // FIXME make configurable
         this.name = 'cpu';
-
-        this.weapons = [];
-        this.currentWeaponIndex = 0;
-        this.currentWeapon = null;
-
         this.team = team;
 
         // TODO remove this hardcoded stuff
         this.addWeapon(WeaponFactory.mp44());
         this.addWeapon(WeaponFactory.thompson());
         this.currentWeapon = this.weapons[0];
-
-        this.maxHealth = 100;
-        this.walkingSpeed = 0.1;
-        this.runningSpeed = 0.2;
-
-        // Contains the character killed, and the count
-        this.kills = new Map();
-
-        // Contains the characters killed by, and the count
-        this.deaths = new Map();
 
         this.reset();
 
@@ -151,5 +151,3 @@ class Soldier extends Character {
         }
     }
 }
-
-export default Soldier;

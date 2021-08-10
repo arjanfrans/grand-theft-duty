@@ -1,25 +1,30 @@
-import ObjectPool from '../engine/ObjectPool';
+import {ObjectPool} from '../engine/ObjectPool';
 import Bullet from './entities/Bullet';
 import SAT from '../engine/collision/SAT';
 import CollisionUtils from './CollisionUtils';
+import {PlayState} from "../client/play/PlayState";
+import {Soldier} from "./entities/Soldier";
 
-class BulletSystem {
-    constructor (state, options = {}) {
+export class BulletSystem {
+    private state: PlayState;
+    private readonly soldiers: Set<Soldier>;
+    private readonly map: any;
+    private bulletPool: ObjectPool<Bullet>;
+
+    // Bullets that died last turn
+    public readonly deadBullets: Set<Bullet> = new Set();
+
+    // Bullets currently flying around
+    public readonly activeBullets: Set<Bullet> = new Set();
+
+    constructor (state: PlayState, poolLimit?: number) {
         this.state = state;
         this.soldiers = this.state.soldiers;
         this.map = this.state.map;
 
-        this.bulletPool = new ObjectPool(() => {
-            const bullet = new Bullet(0, 0, 0, 4, 10);
-
-            return bullet;
-        }, 10, 10, options.poolLimit || 200);
-
-        // Bullets that died last turn
-        this.deadBullets = new Set();
-
-        // Bullets currently flying around
-        this.activeBullets = new Set();
+        this.bulletPool = new ObjectPool<Bullet>((): Bullet => {
+            return new Bullet(0, 0, 0, 4, 10);
+        }, 10, 10, poolLimit || 200);
     }
 
     get poolSize () {
@@ -86,5 +91,3 @@ class BulletSystem {
         }
     }
 }
-
-export default BulletSystem;

@@ -1,4 +1,4 @@
-import Soldier from './Soldier';
+import {Soldier} from './Soldier';
 
 class Network extends Soldier {
     constructor (x, y, z, width, height, depth, team) {

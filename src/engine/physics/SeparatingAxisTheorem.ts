@@ -1,6 +1,6 @@
 import { Polygon } from "../math/Polygon";
 import { Vector2 } from "three";
-import { ObjectPool } from "../ObjectPool";
+import { ObjectPool } from "../utils/ObjectPool";
 import { Box } from "../math/Box";
 import { Circle } from "../math/Circle";
 import { VoronoiRegion } from "../math/VornoiRegion";

@@ -1,5 +1,5 @@
 import { Object3D } from "three";
-import { ObjectPool } from "../../../engine/ObjectPool";
+import { ObjectPool } from "../../../engine/utils/ObjectPool";
 import { View } from "../../../engine/graphics/View";
 import BulletView from "./BulletView";
 import { BulletSystem } from "../../../core/BulletSystem";

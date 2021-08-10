@@ -1,6 +1,6 @@
-import {State} from '../State';
+import {AbstractState} from '../AbstractState';
 
-class MenuState extends State {
+class MenuState extends AbstractState {
 
     constructor (engine) {
         super('menu', engine);

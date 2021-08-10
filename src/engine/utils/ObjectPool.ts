@@ -6,11 +6,10 @@ export class ObjectPool<T> {
     private availableInstances: T[];
 
     /**
-     * @constructor
-     * @param {function} factoryFunction Function that creates the object to pool.
-     * @param {number} firstAllocationNumber Initial amount of objects to allocate.
-     * @param {number} allocationNumber Number to increase the pool by when it is full.
-     * @param {number} allocationLimit Size limit of the pool.
+     * @param factoryFunction Function that creates the object to pool.
+     * @param firstAllocationNumber Initial amount of objects to allocate.
+     * @param allocationNumber Number to increase the pool by when it is full.
+     * @param allocationLimit Size limit of the pool.
      */
     constructor(
         factoryFunction: () => T,

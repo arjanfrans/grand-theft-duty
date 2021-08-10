@@ -36,32 +36,32 @@ export class TextGeometry extends BufferGeometry {
     this.layout = createLayout(opt)
 
     // get vec2 texcoords
-    var flipY = opt.flipY !== false
+    const flipY = opt.flipY !== false;
 
     // the desired BMFont data
-    var font = opt.font
+    const font = opt.font;
 
     // determine texture size from font file
-    var texWidth = font.common.scaleW
-    var texHeight = font.common.scaleH
+    const texWidth = font.common.scaleW;
+    const texHeight = font.common.scaleH;
 
     // get visible glyphs
-    var glyphs = this.layout.glyphs.filter(function (glyph) {
-      var bitmap = glyph.data
+    const glyphs = this.layout.glyphs.filter(function (glyph) {
+      const bitmap = glyph.data;
       return bitmap.width * bitmap.height > 0
-    })
+    });
 
     // provide visible glyphs for convenience
     this.visibleGlyphs = glyphs
 
     // get common vertex data
-    var positions = vertices.positions(glyphs)
-    var uvs = vertices.uvs(glyphs, texWidth, texHeight, flipY)
-    var indices = createIndices([], {
+    const positions = vertices.positions(glyphs);
+    const uvs = vertices.uvs(glyphs, texWidth, texHeight, flipY);
+    const indices = createIndices([], {
       clockwise: true,
       type: 'uint16',
       count: glyphs.length
-    })
+    });
 
     // update vertex data
     this.setIndex(indices)
@@ -74,7 +74,7 @@ export class TextGeometry extends BufferGeometry {
       this.removeAttribute('page')
     } else if (opt.multipage) {
       // enable multipage rendering
-      var pages = vertices.pages(glyphs)
+      const pages = vertices.pages(glyphs);
       this.addAttribute('page', new BufferAttribute(pages, 1))
     }
   }
@@ -84,8 +84,8 @@ export class TextGeometry extends BufferGeometry {
       this.boundingSphere = new Sphere()
     }
 
-    var positions = this.attributes.position.array
-    var itemSize = this.attributes.position.itemSize
+    const positions = this.attributes.position.array;
+    const itemSize = this.attributes.position.itemSize;
     if (!positions || !itemSize || positions.length < 2) {
       this.boundingSphere.radius = 0
       this.boundingSphere.center.set(0, 0, 0)
@@ -104,9 +104,9 @@ export class TextGeometry extends BufferGeometry {
       this.boundingBox = new Box3()
     }
 
-    var bbox = this.boundingBox
-    var positions = this.attributes.position.array
-    var itemSize = this.attributes.position.itemSize
+    const bbox = this.boundingBox;
+    const positions = this.attributes.position.array;
+    const itemSize = this.attributes.position.itemSize;
     if (!positions || !itemSize || positions.length < 2) {
       bbox.makeEmpty()
       return

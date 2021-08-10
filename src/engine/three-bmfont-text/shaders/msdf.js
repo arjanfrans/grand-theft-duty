@@ -2,12 +2,12 @@ import { Color, Texture } from 'three';
 
 export function createMSDFShader (opt) {
   opt = opt || {};
-  var opacity = typeof opt.opacity === 'number' ? opt.opacity : 1;
-  var alphaTest = typeof opt.alphaTest === 'number' ? opt.alphaTest : 0.0001;
-  var precision = opt.precision || 'highp';
-  var color = opt.color;
-  var map = opt.map;
-  var negate = typeof opt.negate === 'boolean' ? opt.negate : true;
+  const opacity = typeof opt.opacity === 'number' ? opt.opacity : 1;
+  const alphaTest = typeof opt.alphaTest === 'number' ? opt.alphaTest : 0.0001;
+  const precision = opt.precision || 'highp';
+  const color = opt.color;
+  const map = opt.map;
+  const negate = typeof opt.negate === 'boolean' ? opt.negate : true;
 
   // remove to satisfy r73
   delete opt.map;

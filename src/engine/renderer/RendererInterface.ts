@@ -1,4 +1,4 @@
-import { State } from "../../client/State";
+import { AbstractState } from "../../client/AbstractState";
 
 export interface RendererInterface {
     render(interpolationPercentage: number): void;
@@ -7,5 +7,5 @@ export interface RendererInterface {
 
     postRender(): void;
 
-    handleStateChange(state: State): void;
+    handleStateChange(state: AbstractState): void;
 }

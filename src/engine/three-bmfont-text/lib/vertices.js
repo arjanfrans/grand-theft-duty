@@ -1,8 +1,8 @@
 export function pages (glyphs) {
-  var pages = new Float32Array(glyphs.length * 4 * 1)
-  var i = 0
+  const pages = new Float32Array(glyphs.length * 4);
+  let i = 0;
   glyphs.forEach(function (glyph) {
-    var id = glyph.data.page || 0
+    const id = glyph.data.page || 0;
     pages[i++] = id
     pages[i++] = id
     pages[i++] = id
@@ -12,18 +12,18 @@ export function pages (glyphs) {
 }
 
 export function uvs (glyphs, texWidth, texHeight, flipY) {
-  var uvs = new Float32Array(glyphs.length * 4 * 2)
-  var i = 0
+  const uvs = new Float32Array(glyphs.length * 4 * 2);
+  let i = 0;
   glyphs.forEach(function (glyph) {
-    var bitmap = glyph.data
-    var bw = (bitmap.x + bitmap.width)
-    var bh = (bitmap.y + bitmap.height)
+    const bitmap = glyph.data;
+    const bw = (bitmap.x + bitmap.width);
+    const bh = (bitmap.y + bitmap.height);
 
     // top left position
-    var u0 = bitmap.x / texWidth
-    var v1 = bitmap.y / texHeight
-    var u1 = bw / texWidth
-    var v0 = bh / texHeight
+    const u0 = bitmap.x / texWidth;
+    let v1 = bitmap.y / texHeight;
+    const u1 = bw / texWidth;
+    let v0 = bh / texHeight;
 
     if (flipY) {
       v1 = (texHeight - bitmap.y) / texHeight
@@ -47,18 +47,18 @@ export function uvs (glyphs, texWidth, texHeight, flipY) {
 }
 
 export function positions (glyphs) {
-  var positions = new Float32Array(glyphs.length * 4 * 2)
-  var i = 0
+  const positions = new Float32Array(glyphs.length * 4 * 2);
+  let i = 0;
   glyphs.forEach(function (glyph) {
-    var bitmap = glyph.data
+    const bitmap = glyph.data;
 
     // bottom left position
-    var x = glyph.position[0] + bitmap.xoffset
-    var y = glyph.position[1] + bitmap.yoffset
+    const x = glyph.position[0] + bitmap.xoffset;
+    const y = glyph.position[1] + bitmap.yoffset;
 
     // quad size
-    var w = bitmap.width
-    var h = bitmap.height
+    const w = bitmap.width;
+    const h = bitmap.height;
 
     // BL
     positions[i++] = x

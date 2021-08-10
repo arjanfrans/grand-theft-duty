@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import ObjectPool from '../src/engine/ObjectPool';
+import {ObjectPool} from '../src/engine/utils/ObjectPool';
 
 describe('ObjectPool', function () {
     before(() => {

@@ -1,17 +1,18 @@
 import Mainloop from "@arjanfrans/mainloop";
-import { State } from "../client/State";
+import { AbstractState } from "../client/AbstractState";
 import { NullState } from "./state/NullState";
 import { InputSourceInterface } from "./input/InputSourceInterface";
 import { RendererInterface } from "./renderer/RendererInterface";
+import { EngineInterface } from "./EngineInterface";
 
 export interface EngineOptions {
     renderer: RendererInterface;
     input: { [key: string]: InputSourceInterface };
 }
 
-class Engine {
-    private states: Map<string, State> = new Map();
-    private currentState: State;
+export class Engine implements EngineInterface {
+    private states: Map<string, AbstractState> = new Map();
+    private currentState: AbstractState;
     private readonly renderer: RendererInterface;
     public readonly inputSources: Map<string, InputSourceInterface> = new Map();
 
@@ -28,7 +29,7 @@ class Engine {
      * Add a State to the engine.
      *
      * @param {string} name - Name of the state.
-     * @param {State} state - Instance of the state.
+     * @param {AbstractState} state - Instance of the state.
      *
      * @returns {void}
      */
@@ -104,5 +105,3 @@ class Engine {
         loop.start();
     }
 }
-
-export default Engine;

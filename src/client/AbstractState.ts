@@ -1,12 +1,7 @@
-/**
- * Base class for all states.
- *
- * @class
- */
-import Engine from "../engine/Engine";
+import { Engine } from "../engine/Engine";
 import { StateInput } from "../engine/state/StateInput";
 
-export abstract class State {
+export abstract class AbstractState {
     protected readonly name: string;
     protected readonly engine: Engine;
     protected audio?: any;

@@ -1,5 +1,5 @@
 import { Object3D } from "three";
-import { ObjectPool } from "../../../engine/ObjectPool";
+import { ObjectPool } from "../../../engine/utils/ObjectPool";
 import { View } from "../../../engine/graphics/View";
 import SoldierView from "./SoldierView";
 import { Soldier } from "../../../core/entities/Soldier";

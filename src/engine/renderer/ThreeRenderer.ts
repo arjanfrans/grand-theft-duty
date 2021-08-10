@@ -1,6 +1,6 @@
 import { WebGLRenderer } from "three";
 import { RendererInterface } from "./RendererInterface";
-import { State } from "../../client/State";
+import { AbstractState } from "../../client/AbstractState";
 import { ThreeRenderView } from "./render-view/ThreeRenderView";
 
 export interface ThreeRendererOptions {
@@ -54,7 +54,7 @@ export class ThreeRenderer implements RendererInterface {
         }
     }
 
-    handleStateChange(state: State): void {
+    handleStateChange(state: AbstractState): void {
         const views = state.views;
 
         if (views.size > 0) {

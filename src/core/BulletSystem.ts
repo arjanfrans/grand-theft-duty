@@ -1,4 +1,4 @@
-import { ObjectPool } from "../engine/ObjectPool";
+import { ObjectPool } from "../engine/utils/ObjectPool";
 import { Bullet } from "./entities/Bullet";
 import CollisionUtils from "./CollisionUtils";
 import { PlayState } from "../client/play/PlayState";

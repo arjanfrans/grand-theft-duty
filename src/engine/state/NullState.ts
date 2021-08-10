@@ -1,7 +1,7 @@
-import { State } from "../../client/State";
-import Engine from "../Engine";
+import { AbstractState } from "../../client/AbstractState";
+import { Engine } from "../Engine";
 
-export class NullState extends State {
+export class NullState extends AbstractState {
     constructor(engine: Engine) {
         super("null", engine);
     }

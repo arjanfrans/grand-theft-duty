@@ -1,4 +1,4 @@
-import { State } from "../State";
+import { AbstractState } from "../AbstractState";
 import { Soldier } from "../../core/entities/Soldier";
 import CollisionSystem from "../../core/CollisionSystem";
 import { BulletSystem } from "../../core/BulletSystem";
@@ -7,7 +7,7 @@ import { Player } from "../../core/entities/Player";
 /**
  * State of playing the game.
  */
-export class PlayState extends State {
+export class PlayState extends AbstractState {
     private collisionSystem?: CollisionSystem;
     private bulletSystem?: BulletSystem;
     public player?: Player;

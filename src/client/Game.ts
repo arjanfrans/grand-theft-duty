@@ -1,4 +1,4 @@
-import Engine from "../engine/Engine";
+import { Engine } from "../engine/Engine";
 import AssetManager from "../engine/AssetManager";
 import path from "path";
 

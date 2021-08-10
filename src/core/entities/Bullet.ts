@@ -1,5 +1,5 @@
-import {Entity} from './Entity';
-import {Soldier} from "./Soldier";
+import { Entity } from "./Entity";
+import { Soldier } from "./Soldier";
 
 export class Bullet extends Entity {
     public firedBy?: Soldier;
@@ -7,7 +7,7 @@ export class Bullet extends Entity {
     private maxDistance: number = 500;
     private traveledDistance: number = 0;
 
-    constructor (x, y, z, width, height) {
+    constructor(x, y, z, width, height) {
         super(x, y, z, width, height);
 
         this.dead = true;
@@ -16,7 +16,7 @@ export class Bullet extends Entity {
         this.options.isBullet = true;
     }
 
-    get damage () {
+    get damage() {
         if (this.firedByWeapon) {
             return this.firedByWeapon.damage;
         }
@@ -24,7 +24,7 @@ export class Bullet extends Entity {
         return 0;
     }
 
-    update (delta) {
+    update(delta) {
         super.update(delta);
 
         this.traveledDistance += this.speed * delta;

@@ -1,8 +1,8 @@
-import {State} from '../State';
-import {Soldier} from "../../core/entities/Soldier";
+import { State } from "../State";
+import { Soldier } from "../../core/entities/Soldier";
 import CollisionSystem from "../../core/CollisionSystem";
-import {BulletSystem} from "../../core/BulletSystem";
-import {Player} from "../../core/entities/Player";
+import { BulletSystem } from "../../core/BulletSystem";
+import { Player } from "../../core/entities/Player";
 
 /**
  * State of playing the game.
@@ -17,22 +17,22 @@ export class PlayState extends State {
     public paused: boolean = false;
     private onPause?: () => any;
 
-    constructor (engine, match, map) {
-        super('play', engine);
+    constructor(engine, match, map) {
+        super("play", engine);
 
         this.map = map;
         this.match = match;
     }
 
-    init () {
+    init() {
         super.init();
     }
 
-    get soldiers (): Set<Soldier> {
+    get soldiers(): Set<Soldier> {
         return this.match.soldiers;
     }
 
-    pause () {
+    pause() {
         if (this.onPause) {
             this.onPause();
         }
@@ -40,7 +40,7 @@ export class PlayState extends State {
         this.paused = true;
     }
 
-    resume () {
+    resume() {
         this.paused = false;
     }
 
@@ -51,7 +51,7 @@ export class PlayState extends State {
      *
      * @returns {void}
      */
-    update (delta) {
+    update(delta) {
         super.updateInputs(delta);
 
         if (this.paused) {

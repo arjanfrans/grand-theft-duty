@@ -1,5 +1,5 @@
-import {Polygon} from '../../engine/math/Polygon';
-import {Vector2} from "three";
+import { Polygon } from "../../engine/math/Polygon";
+import { Vector2 } from "three";
 
 const DEFAULT_SPEED = 0.2;
 const DEFAULT_ROTATION_SPEED = 0.3;
@@ -14,14 +14,20 @@ export class Entity {
     public rotationSpeed: number;
     private readonly _body: Polygon;
     public options: {
-        isPlayer: boolean; physics: boolean; isBullet: boolean; isCharacter: boolean; audio: boolean; bullets: boolean, isSoldier: boolean
+        isPlayer: boolean;
+        physics: boolean;
+        isBullet: boolean;
+        isCharacter: boolean;
+        audio: boolean;
+        bullets: boolean;
+        isSoldier: boolean;
     };
     public angle: number = Math.PI * 2;
     public dead: boolean = false;
     public velocity: { x: number; y: number; z: number } = {
         x: 0,
         y: 0,
-        z: 0
+        z: 0,
     };
     public isMoving: boolean = false;
     public reverse: boolean = false;
@@ -31,20 +37,20 @@ export class Entity {
     public actions: {
         firedBullet: boolean;
     } = {
-        firedBullet: false
+        firedBullet: false,
     };
 
     constructor(x: number, y: number, z = 0, width = 0, height = 0, depth = 0) {
         this.position = {
             x: x,
             y: y,
-            z: z
+            z: z,
         };
 
         this.previousPosition = {
             x: x,
             y: y,
-            z: z
+            z: z,
         };
 
         this.width = width;
@@ -60,7 +66,7 @@ export class Entity {
             new Vector2(-this.halfWidth, -this.halfHeight),
             new Vector2(-this.halfWidth, this.halfHeight),
             new Vector2(this.halfWidth, this.halfHeight),
-            new Vector2(this.halfWidth, 0)
+            new Vector2(this.halfWidth, 0),
         ]);
 
         this.options = {
@@ -70,7 +76,7 @@ export class Entity {
             isBullet: false,
             isPlayer: false,
             isCharacter: false,
-            isSoldier: false
+            isSoldier: false,
         };
     }
 
@@ -125,7 +131,7 @@ export class Entity {
         this.velocity = {
             x: 0,
             y: 0,
-            z: 0
+            z: 0,
         };
 
         this.dead = false;
@@ -143,7 +149,7 @@ export class Entity {
 
         // Actions can trigger things that should happen in the next update.
         this.actions = {
-            firedBullet: false
+            firedBullet: false,
         };
     }
 
@@ -153,13 +159,13 @@ export class Entity {
         this.position = {
             x: position.x,
             y: position.y,
-            z: position.z
+            z: position.z,
         };
 
         this.previousPosition = {
             x: position.x,
             y: position.y,
-            z: position.z
+            z: position.z,
         };
     }
 
@@ -200,7 +206,7 @@ export class Entity {
             this.angle += this.angularVelocity * delta;
 
             if (this.angle < 0) {
-                this.angle = (Math.PI * 2) - this.angle;
+                this.angle = Math.PI * 2 - this.angle;
             }
 
             this.previousPosition.x = this.position.x;

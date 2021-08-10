@@ -1,3 +1,3 @@
-import { Game } from './client/Game'
+import { Game } from "./client/Game";
 
-(new Game()).start();
+new Game().start();

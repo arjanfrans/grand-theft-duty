@@ -31,7 +31,8 @@
     "eject": "react-scripts eject",
     "deploy": "npm run build && gh-pages -d build",
     "cs-fix": "eslint src --ext ts,tsx",
-    "cs-format": "prettier 'src/**/*.ts' --write --tab-width 4"
+    "cs-format": "prettier 'src/**/*.ts' --write --tab-width 4",
+    "cs": "npm run cs-format && npm run cs-fix"
   },
   "repository": {
     "type": "git",

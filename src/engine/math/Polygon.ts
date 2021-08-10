@@ -1,5 +1,5 @@
-import {Vector2} from "three";
-import {Vector2Helper} from "./Vector2Helper";
+import { Vector2 } from "three";
+import { Vector2Helper } from "./Vector2Helper";
 
 /**
  * Represents a *convex* polygon with any number of vertices (specified in counter-clockwise order)
@@ -32,10 +32,16 @@ export class Polygon {
         this.setVertices(vertices);
     }
 
-    public static fromBox(position: Vector2, width: number, height: number): Polygon {
+    public static fromBox(
+        position: Vector2,
+        width: number,
+        height: number
+    ): Polygon {
         return new Polygon(new Vector2(position.x, position.y), [
-            new Vector2(), new Vector2(width, 0),
-            new Vector2(width, height), new Vector2(0, height)
+            new Vector2(),
+            new Vector2(width, 0),
+            new Vector2(width, height),
+            new Vector2(0, height),
         ]);
     }
 
@@ -50,7 +56,8 @@ export class Polygon {
      */
     setVertices(vertices: Vector2[]): Polygon {
         // Only re-allocate if this is a new polygon or the number of vertices has changed.
-        const lengthChanged = !this.vertices || this.vertices.length !== vertices.length;
+        const lengthChanged =
+            !this.vertices || this.vertices.length !== vertices.length;
 
         if (lengthChanged) {
             this.computedVertices = [];
@@ -176,7 +183,8 @@ export class Polygon {
         // Calculate the edges/normals
         for (let i = 0; i < len; i++) {
             const p1 = computedVertices[i];
-            const p2 = i < len - 1 ? computedVertices[i + 1] : computedVertices[0];
+            const p2 =
+                i < len - 1 ? computedVertices[i + 1] : computedVertices[0];
             const e = edges[i].copy(p2).sub(p1);
 
             Vector2Helper.perp(normals[i].copy(e)).normalize();
@@ -213,6 +221,10 @@ export class Polygon {
             }
         }
 
-        return Polygon.fromBox(this.position.clone().add(new Vector2(xMin, yMin)), xMax - xMin, yMax - yMin);
+        return Polygon.fromBox(
+            this.position.clone().add(new Vector2(xMin, yMin)),
+            xMax - xMin,
+            yMax - yMin
+        );
     }
 }

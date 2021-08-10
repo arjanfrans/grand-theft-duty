@@ -1,4 +1,4 @@
-import {Entity} from './Entity';
+import { Entity } from "./Entity";
 
 const GRAVITY = -0.2;
 
@@ -12,7 +12,7 @@ export class Character extends Entity {
     private _isRunning: boolean = false;
     public health: number = 100;
 
-    constructor (x, y, z, width, height, depth) {
+    constructor(x, y, z, width, height, depth) {
         super(x, y, z, width, height, depth);
 
         this.reset();
@@ -22,7 +22,7 @@ export class Character extends Entity {
         this.options.isCharacter = true;
     }
 
-    set isRunning (running) {
+    set isRunning(running) {
         if (running) {
             this._isRunning = true;
             this.speed = this.runningSpeed;
@@ -32,15 +32,15 @@ export class Character extends Entity {
         }
     }
 
-    get isRunning () {
+    get isRunning() {
         return this._isRunning;
     }
 
-    fall () {
+    fall() {
         this.velocity.z = GRAVITY;
     }
 
-    hitByBullet (bullet) {
+    hitByBullet(bullet) {
         this.health -= bullet.damage;
 
         if (this.health === 0) {
@@ -48,11 +48,11 @@ export class Character extends Entity {
         }
     }
 
-    stopFalling () {
+    stopFalling() {
         this.velocity.z = 0;
     }
 
-    reset () {
+    reset() {
         super.reset();
 
         this._isRunning = false;
@@ -62,7 +62,7 @@ export class Character extends Entity {
         this.health = this.maxHealth;
     }
 
-    update (delta) {
+    update(delta) {
         super.update(delta);
 
         if (this.position.z <= 0) {

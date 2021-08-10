@@ -1,7 +1,13 @@
-import {AmbientLight, Camera, OrthographicCamera, PerspectiveCamera, SpotLight} from 'three';
-import {ThreeRenderView} from '../../../engine/renderer/ThreeRenderView';
-import {PlayState} from "../PlayState";
-import {Dimension} from "../../../engine/math/Dimension";
+import {
+    AmbientLight,
+    Camera,
+    OrthographicCamera,
+    PerspectiveCamera,
+    SpotLight,
+} from "three";
+import { ThreeRenderView } from "../../../engine/renderer/render-view/ThreeRenderView";
+import { PlayState } from "../PlayState";
+import { Dimension } from "../../../engine/math/Dimension";
 
 export class PlayRenderView extends ThreeRenderView {
     public camera?: PerspectiveCamera = undefined;
@@ -10,20 +16,18 @@ export class PlayRenderView extends ThreeRenderView {
     private _cameraFollowView?: any;
     private _cameraFollowLight?: SpotLight;
 
-    constructor (state: PlayState) {
+    constructor(state: PlayState) {
         super();
 
         this.state = state;
         this.map = this.state.map;
     }
 
-    get cameraFollowView(): any
-    {
+    get cameraFollowView(): any {
         return this._cameraFollowView as any;
     }
 
-    get cameraFollowLight(): SpotLight
-    {
+    get cameraFollowLight(): SpotLight {
         return this._cameraFollowLight as SpotLight;
     }
 
@@ -33,13 +37,20 @@ export class PlayRenderView extends ThreeRenderView {
         this.init();
     }
 
-    init () {
+    init() {
         super.init();
 
-        this.camera = new PerspectiveCamera(75, this.map.width / this.map.height, 100, 1000);
+        this.camera = new PerspectiveCamera(
+            75,
+            this.map.width / this.map.height,
+            100,
+            1000
+        );
 
-        this.getCamera().position.x = (this.map.width / 2) * this.map.blockWidth;
-        this.getCamera().position.y = (this.map.height / 2) * this.map.blockHeight;
+        this.getCamera().position.x =
+            (this.map.width / 2) * this.map.blockWidth;
+        this.getCamera().position.y =
+            (this.map.height / 2) * this.map.blockHeight;
         this.getCamera().position.z = this.map.blockDepth * 6;
 
         const ambientLight = new AmbientLight(0x030303);
@@ -56,7 +67,7 @@ export class PlayRenderView extends ThreeRenderView {
         this._initialized = true;
     }
 
-    update (delta: number) {
+    update(delta: number) {
         if (this.state.paused) {
             return;
         }
@@ -67,9 +78,15 @@ export class PlayRenderView extends ThreeRenderView {
             this.getCamera().position.setX(this.cameraFollowView.position.x);
             this.getCamera().position.setY(this.cameraFollowView.position.y);
 
-            this.cameraFollowLight.position.setX(this.cameraFollowView.position.x);
-            this.cameraFollowLight.position.setY(this.cameraFollowView.position.y);
-            this.cameraFollowLight.position.setZ(this.cameraFollowView.position.z + 400);
+            this.cameraFollowLight.position.setX(
+                this.cameraFollowView.position.x
+            );
+            this.cameraFollowLight.position.setY(
+                this.cameraFollowView.position.y
+            );
+            this.cameraFollowLight.position.setZ(
+                this.cameraFollowView.position.z + 400
+            );
         }
     }
 

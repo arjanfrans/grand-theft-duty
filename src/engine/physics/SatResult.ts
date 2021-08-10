@@ -1,7 +1,7 @@
-import {Vector2} from "three";
-import {Polygon} from "../math/Polygon";
-import {Box} from "../math/Box";
-import {Circle} from "../math/Circle";
+import { Vector2 } from "three";
+import { Polygon } from "../math/Polygon";
+import { Box } from "../math/Box";
+import { Circle } from "../math/Circle";
 
 /**
  *
@@ -13,15 +13,15 @@ import {Circle} from "../math/Circle";
  *  - Whether the first object is entirely inside the second, and vice versa.
  */
 export class SatResult {
-    public a?: Polygon|Circle|Box = undefined;
-    public b?: Polygon|Circle|Box = undefined;
+    public a?: Polygon | Circle | Box = undefined;
+    public b?: Polygon | Circle | Box = undefined;
     public overlapN: Vector2 = new Vector2();
     public overlapV: Vector2 = new Vector2();
     public aInB: boolean = true;
     public bInA: boolean = true;
     public overlap: number = Number.MAX_VALUE;
 
-    constructor () {
+    constructor() {
         this.clear();
     }
 
@@ -30,7 +30,7 @@ export class SatResult {
      * you are going to reuse a single SatResult object for multiple intersection tests (recommended
      * as it will avoid allcating extra memory)
      */
-    clear (): SatResult {
+    clear(): SatResult {
         this.aInB = true;
         this.bInA = true;
         this.overlap = Number.MAX_VALUE;

@@ -1,14 +1,14 @@
-import {Soldier} from "../../../core/entities/Soldier";
-import {StateInput} from "../../../engine/state/StateInput";
+import { Soldier } from "../../../core/entities/Soldier";
+import { StateInput } from "../../../engine/state/StateInput";
 
 export class ComputerInput implements StateInput {
     private readonly soldier: Soldier;
 
-    constructor (soldier: Soldier) {
+    constructor(soldier: Soldier) {
         this.soldier = soldier;
     }
 
-    update () {
+    update() {
         if (Math.random() < 0.05) {
             this.soldier.fireBullet();
         }

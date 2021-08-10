@@ -1,12 +1,12 @@
-import {ThreeRenderer, ThreeRendererOptions} from "./ThreeRenderer";
+import { ThreeRenderer, ThreeRendererOptions } from "./ThreeRenderer";
 import RenderDebug from "../utils/debug/RenderDebug";
-import {WebGLProgram} from "three";
+import { WebGLProgram } from "three";
 
 export class DebugThreeRenderer extends ThreeRenderer {
     private info: {} = {};
     private readonly renderDebug: RenderDebug;
 
-    constructor (options: ThreeRendererOptions) {
+    constructor(options: ThreeRendererOptions) {
         super(options);
 
         this.renderDebug = new RenderDebug(this);
@@ -20,14 +20,14 @@ export class DebugThreeRenderer extends ThreeRenderer {
             memory: {
                 programs: 0,
                 geometries: 0,
-                textures: 0
+                textures: 0,
             },
             render: {
                 calls: 0,
                 vertices: 0,
                 faces: 0,
-                points: 0
-            }
+                points: 0,
+            },
         };
 
         let index = 0;
@@ -40,10 +40,12 @@ export class DebugThreeRenderer extends ThreeRenderer {
 
                 this.webglRenderer.render(view.scene, view.getCamera());
 
-                const programs: WebGLProgram[] = this.webglRenderer.info.programs as unknown as WebGLProgram[];
+                const programs: WebGLProgram[] = this.webglRenderer.info
+                    .programs as unknown as WebGLProgram[];
 
                 info.memory.programs += programs.length;
-                info.memory.geometries += this.webglRenderer.info.memory.geometries;
+                info.memory.geometries +=
+                    this.webglRenderer.info.memory.geometries;
                 info.memory.textures += this.webglRenderer.info.memory.textures;
                 info.render.calls += this.webglRenderer.info.render.calls;
                 info.render.vertices += this.webglRenderer.info.render.vertices;
@@ -52,7 +54,6 @@ export class DebugThreeRenderer extends ThreeRenderer {
 
                 index += 1;
             }
-
         }
 
         this.info = info;

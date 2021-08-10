@@ -1,6 +1,6 @@
-import {Camera, OrthographicCamera, PerspectiveCamera, Scene} from "three";
-import {RenderViewInterface} from "./RenderViewInterface";
-import {Dimension} from "../math/Dimension";
+import { Camera, OrthographicCamera, PerspectiveCamera, Scene } from "three";
+import { RenderViewInterface } from "./RenderViewInterface";
+import { Dimension } from "../../math/Dimension";
 
 export abstract class ThreeRenderView implements RenderViewInterface {
     public width: number;
@@ -12,7 +12,7 @@ export abstract class ThreeRenderView implements RenderViewInterface {
     public _currentViewContainer?: any;
     private _scene?: Scene;
 
-    protected constructor () {
+    protected constructor() {
         this.width = 0;
         this.height = 0;
 
@@ -22,9 +22,12 @@ export abstract class ThreeRenderView implements RenderViewInterface {
         this.currentViewContainer = null;
     }
 
-    public abstract getCamera(): Camera|OrthographicCamera|PerspectiveCamera;
+    public abstract getCamera():
+        | Camera
+        | OrthographicCamera
+        | PerspectiveCamera;
 
-    init () {
+    init() {
         this._scene = new Scene();
 
         for (let [name, viewContainer] of this.viewContainers.entries()) {
@@ -43,33 +46,32 @@ export abstract class ThreeRenderView implements RenderViewInterface {
         }
     }
 
-    get scene(): Scene
-    {
+    get scene(): Scene {
         const scene = this._scene;
 
         if (!scene) {
-            throw new Error('Scene is undefined');
+            throw new Error("Scene is undefined");
         }
 
         return scene;
     }
 
-    update (delta) {
+    update(delta) {
         if (this._currentViewContainer) {
             this._currentViewContainer.update(delta);
         } else {
-            console.warn('no current ViewContainer');
+            console.warn("no current ViewContainer");
         }
     }
 
-    changeSize (size: Dimension): void {
+    changeSize(size: Dimension): void {
         this.width = size.width;
         this.height = size.height;
 
         this.init();
     }
 
-    set currentViewContainer (name) {
+    set currentViewContainer(name) {
         const newViewContainer = this.viewContainers.get(name);
 
         if (this._initialized) {
@@ -84,11 +86,11 @@ export abstract class ThreeRenderView implements RenderViewInterface {
         this._currentViewContainer = newViewContainer;
     }
 
-    get currentViewContainer () {
+    get currentViewContainer() {
         return this._currentViewContainer;
     }
 
-    addViewContainer (name, viewContainer) {
+    addViewContainer(name, viewContainer) {
         if (this._initialized) {
             viewContainer.init();
             viewContainer.width = this.width;

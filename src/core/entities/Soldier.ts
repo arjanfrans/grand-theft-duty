@@ -1,5 +1,5 @@
-import {Character} from './Character';
-import WeaponFactory from '../weapons/WeaponFactory';
+import { Character } from "./Character";
+import WeaponFactory from "../weapons/WeaponFactory";
 
 export class Soldier extends Character {
     public name: string;
@@ -17,11 +17,11 @@ export class Soldier extends Character {
     // Contains the characters killed by, and the count
     public deaths: Map<Character, number> = new Map();
 
-    constructor (x, y, z, width, height, depth, team) {
+    constructor(x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth);
 
         // FIXME make configurable
-        this.name = 'cpu';
+        this.name = "cpu";
         this.team = team;
 
         // TODO remove this hardcoded stuff
@@ -34,19 +34,19 @@ export class Soldier extends Character {
         this.options.isSoldier = true;
     }
 
-    addWeapon (weapon) {
+    addWeapon(weapon) {
         // TODO increase ammo if weapon is the same
         this.weapons.push(weapon);
     }
 
-    scrollWeapons (direction) {
-        if (direction === 'up') {
+    scrollWeapons(direction) {
+        if (direction === "up") {
             if (this.currentWeaponIndex === this.weapons.length - 1) {
                 this.currentWeaponIndex = 0;
             } else {
                 this.currentWeaponIndex += 1;
             }
-        } else if (direction === 'down') {
+        } else if (direction === "down") {
             if (this.currentWeaponIndex === 0) {
                 this.currentWeaponIndex = this.weapons.length - 1;
             } else {
@@ -59,13 +59,13 @@ export class Soldier extends Character {
         this.currentWeapon = this.weapons[this.currentWeaponIndex];
     }
 
-    reload () {
+    reload() {
         if (!this.dead && this.currentWeapon) {
             this.currentWeapon.reload();
         }
     }
 
-    hitByBullet (bullet) {
+    hitByBullet(bullet) {
         super.hitByBullet(bullet);
 
         // TODO prevent team killing / make configurable
@@ -92,7 +92,7 @@ export class Soldier extends Character {
         }
     }
 
-    kill () {
+    kill() {
         super.kill();
         const suicides = this.deaths.get(this);
 
@@ -103,7 +103,7 @@ export class Soldier extends Character {
         }
     }
 
-    get totalKills () {
+    get totalKills() {
         let total = 0;
 
         for (const kill of this.kills.values()) {
@@ -113,7 +113,7 @@ export class Soldier extends Character {
         return total;
     }
 
-    get totalDeaths () {
+    get totalDeaths() {
         let total = 0;
 
         for (const death of this.deaths.values()) {
@@ -123,7 +123,7 @@ export class Soldier extends Character {
         return total;
     }
 
-    fireBullet () {
+    fireBullet() {
         if (!this.dead && this.currentWeapon) {
             const fired = this.currentWeapon.fire();
 
@@ -133,13 +133,13 @@ export class Soldier extends Character {
         }
     }
 
-    reset () {
+    reset() {
         super.reset();
 
         this.actions.firedBullet = false;
     }
 
-    update (delta) {
+    update(delta) {
         super.update(delta);
 
         if (this.actions.firedBullet) {

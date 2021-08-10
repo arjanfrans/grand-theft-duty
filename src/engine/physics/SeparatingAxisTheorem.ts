@@ -1,11 +1,11 @@
-import {Polygon} from "../math/Polygon";
-import {Vector2} from "three";
-import {ObjectPool} from "../ObjectPool";
-import {Box} from "../math/Box";
-import {Circle} from "../math/Circle";
-import {VoronoiRegion} from "../math/VornoiRegion";
-import {Vector2Helper} from "../math/Vector2Helper";
-import {SatResult} from "./SatResult";
+import { Polygon } from "../math/Polygon";
+import { Vector2 } from "three";
+import { ObjectPool } from "../ObjectPool";
+import { Box } from "../math/Box";
+import { Circle } from "../math/Circle";
+import { VoronoiRegion } from "../math/VornoiRegion";
+import { Vector2Helper } from "../math/Vector2Helper";
+import { SatResult } from "./SatResult";
 
 const POINT_POLYGON = new Box(new Vector2(), 1, 1).toPolygon();
 
@@ -17,12 +17,17 @@ const POINT_POLYGON = new Box(new Vector2(), 1, 1).toPolygon();
  */
 export class SeparatingAxisTheorem {
     private arrayPool: ObjectPool<number[]>;
-    private vectorPool: ObjectPool<Vector2>
+    private vectorPool: ObjectPool<Vector2>;
     private cachedSatResult: SatResult = new SatResult();
 
     constructor() {
         this.arrayPool = new ObjectPool<number[]>(() => [], 5, 5, 20);
-        this.vectorPool = new ObjectPool<Vector2>(() => new Vector2(), 10, 10, 40);
+        this.vectorPool = new ObjectPool<Vector2>(
+            () => new Vector2(),
+            10,
+            10,
+            40
+        );
     }
 
     /**
@@ -35,7 +40,11 @@ export class SeparatingAxisTheorem {
      *   result[0] will be the minimum value,
      *   result[1] will be the maximum value.
      */
-    private static flattenVerticesOn(vertices: Vector2[], normal: Vector2, result: number[]): void {
+    private static flattenVerticesOn(
+        vertices: Vector2[],
+        normal: Vector2,
+        result: number[]
+    ): void {
         let min = Number.MAX_VALUE;
         let max = -Number.MAX_VALUE;
         const len = vertices.length;
@@ -54,7 +63,7 @@ export class SeparatingAxisTheorem {
 
         result[0] = min;
         result[1] = max;
-    };
+    }
 
     /**
      * Check whether two convex polygons are separated by the specified
@@ -72,7 +81,14 @@ export class SeparatingAxisTheorem {
      *   and a response is passed in, information about how much overlap and
      *   the direction of the overlap will be populated.
      */
-    private isSeparatingAxis(aPos: Vector2, bPos: Vector2, aPoints: Vector2[], bPoints: Vector2[], axis: Vector2, result?: SatResult): boolean {
+    private isSeparatingAxis(
+        aPos: Vector2,
+        bPos: Vector2,
+        aPoints: Vector2[],
+        bPoints: Vector2[],
+        axis: Vector2,
+        result?: SatResult
+    ): boolean {
         const rangeA: number[] = this.arrayPool.get();
         const rangeB: number[] = this.arrayPool.get();
 
@@ -146,13 +162,12 @@ export class SeparatingAxisTheorem {
             }
         }
 
-        this.vectorPool.free(offsetV)
-        this.arrayPool.free(rangeA)
-        this.arrayPool.free(rangeB)
+        this.vectorPool.free(offsetV);
+        this.arrayPool.free(rangeA);
+        this.arrayPool.free(rangeB);
 
         return false;
     }
-
 
     /**
      * Check if a polygon and a circle collide.
@@ -162,9 +177,16 @@ export class SeparatingAxisTheorem {
      * @param response SatResult object (optional) that will be populated if they intersect.
      * @return {boolean} true if they intersect, false if they don't.
      */
-    public testPolygonInCircle(polygon: Polygon, circle: Circle, response?: SatResult): boolean {
+    public testPolygonInCircle(
+        polygon: Polygon,
+        circle: Circle,
+        response?: SatResult
+    ): boolean {
         // Get the position of the circle relative to the polygon.
-        const circlePos = this.vectorPool.get().copy(circle.position).sub(polygon.position);
+        const circlePos = this.vectorPool
+            .get()
+            .copy(circle.position)
+            .sub(polygon.position);
         const radius = circle.radius;
         const radius2 = radius * radius;
         const points = polygon.computedVertices;
@@ -180,7 +202,7 @@ export class SeparatingAxisTheorem {
             let overlapN: Vector2 | undefined = undefined;
 
             // Get the edge.
-            edge.copy((polygon.edges[i] as Vector2));
+            edge.copy(polygon.edges[i] as Vector2);
 
             // Calculate the center of the circle relative to the starting point of the edge.
             point.copy(circlePos).sub(points[i]);
@@ -201,7 +223,10 @@ export class SeparatingAxisTheorem {
                 edge.copy(polygon.edges[prev]);
 
                 // Calculate the center of the circle relative the starting point of the previous edge
-                const point2 = this.vectorPool.get().copy(circlePos).sub(points[prev]);
+                const point2 = this.vectorPool
+                    .get()
+                    .copy(circlePos)
+                    .sub(points[prev]);
 
                 region = VoronoiRegion.calculate(edge, point2);
 
@@ -288,7 +313,11 @@ export class SeparatingAxisTheorem {
 
             // If this is the smallest overlap we've seen, keep it.
             // (overlapN may be null if the circle was in the wrong Voronoi region).
-            if (overlapN && response && Math.abs(overlap) < Math.abs(response.overlap)) {
+            if (
+                overlapN &&
+                response &&
+                Math.abs(overlap) < Math.abs(response.overlap)
+            ) {
                 response.overlap = overlap;
                 response.overlapN.copy(overlapN);
             }
@@ -298,7 +327,9 @@ export class SeparatingAxisTheorem {
         if (response) {
             response.a = polygon;
             response.b = circle;
-            response.overlapV.copy(response.overlapN).multiplyScalar(response.overlap);
+            response.overlapV
+                .copy(response.overlapN)
+                .multiplyScalar(response.overlap);
         }
 
         this.vectorPool.free(circlePos);
@@ -307,7 +338,6 @@ export class SeparatingAxisTheorem {
 
         return true;
     }
-
 
     /**
      * Check if a circle and a polygon collide.
@@ -319,7 +349,11 @@ export class SeparatingAxisTheorem {
      * @param response SatResult object (optional) that will be populated if they intersect.
      * @return {boolean} true if they intersect, false if they don't.
      */
-    public testCircleInPolygon(circle: Circle, polygon: Polygon, response?: SatResult): boolean {
+    public testCircleInPolygon(
+        circle: Circle,
+        polygon: Polygon,
+        response?: SatResult
+    ): boolean {
         // Test the polygon against the circle.
         const result = this.testPolygonInCircle(polygon, circle, response);
 
@@ -337,8 +371,7 @@ export class SeparatingAxisTheorem {
         }
 
         return result;
-    };
-
+    }
 
     /**
      * Check if a point is inside a convex polygon.
@@ -352,7 +385,11 @@ export class SeparatingAxisTheorem {
 
         this.cachedSatResult.clear();
 
-        let result = this.testPolygonInPolygon(POINT_POLYGON, polygon, this.cachedSatResult);
+        let result = this.testPolygonInPolygon(
+            POINT_POLYGON,
+            polygon,
+            this.cachedSatResult
+        );
 
         if (result) {
             result = this.cachedSatResult.aInB;
@@ -369,7 +406,11 @@ export class SeparatingAxisTheorem {
      * @param result SatResult object (optional) that will be populated if they intersect.
      * @return {boolean} true if they intersect, false if they don't.
      */
-    public testPolygonInPolygon(a: Polygon, b: Polygon, result?: SatResult): boolean {
+    public testPolygonInPolygon(
+        a: Polygon,
+        b: Polygon,
+        result?: SatResult
+    ): boolean {
         const aPoints = a.computedVertices;
         const aLen = aPoints.length;
         const bPoints = b.computedVertices;
@@ -377,14 +418,32 @@ export class SeparatingAxisTheorem {
 
         // If any of the edge normals of A is a separating axis, no intersection.
         for (let i = 0; i < aLen; i++) {
-            if (this.isSeparatingAxis(a.position, b.position, aPoints, bPoints, a.normals[i], result)) {
+            if (
+                this.isSeparatingAxis(
+                    a.position,
+                    b.position,
+                    aPoints,
+                    bPoints,
+                    a.normals[i],
+                    result
+                )
+            ) {
                 return false;
             }
         }
 
         // If any of the edge normals of B is a separating axis, no intersection.
         for (let i = 0; i < bLen; i++) {
-            if (this.isSeparatingAxis(a.position, b.position, aPoints, bPoints, b.normals[i], result)) {
+            if (
+                this.isSeparatingAxis(
+                    a.position,
+                    b.position,
+                    aPoints,
+                    bPoints,
+                    b.normals[i],
+                    result
+                )
+            ) {
                 return false;
             }
         }
@@ -395,12 +454,13 @@ export class SeparatingAxisTheorem {
         if (result) {
             result.a = a;
             result.b = b;
-            result.overlapV.copy(result.overlapN).multiplyScalar(result.overlap);
+            result.overlapV
+                .copy(result.overlapN)
+                .multiplyScalar(result.overlap);
         }
 
         return true;
     }
-
 
     /**
      * Check if two circles collide.
@@ -410,10 +470,17 @@ export class SeparatingAxisTheorem {
      * @param response SatResult object (optional) that will be populated if the circles intersect.
      * @return {boolean} true if the circles intersect, false if they don't.
      */
-    public testCircleInCircle(a: Circle, b: Circle, response?: SatResult): boolean {
+    public testCircleInCircle(
+        a: Circle,
+        b: Circle,
+        response?: SatResult
+    ): boolean {
         // Check if the distance between the centers of the two
         // circles is greater than their combined radius.
-        const differenceV = this.vectorPool.get().copy(b.position).sub(a.position);
+        const differenceV = this.vectorPool
+            .get()
+            .copy(b.position)
+            .sub(a.position);
         const totalRadius = a.radius + b.radius;
         const totalRadiusSq = totalRadius * totalRadius;
         const distanceSq = differenceV.lengthSq();
@@ -433,7 +500,9 @@ export class SeparatingAxisTheorem {
             response.b = b;
             response.overlap = totalRadius - dist;
             response.overlapN.copy(differenceV.normalize());
-            response.overlapV.copy(differenceV).multiplyScalar(response.overlap);
+            response.overlapV
+                .copy(differenceV)
+                .multiplyScalar(response.overlap);
             response.aInB = a.radius <= b.radius && dist <= b.radius - a.radius;
             response.bInA = b.radius <= a.radius && dist <= a.radius - b.radius;
         }
@@ -441,7 +510,7 @@ export class SeparatingAxisTheorem {
         this.vectorPool.free(differenceV);
 
         return true;
-    };
+    }
 
     /**
      * Check if a point is inside a circle.
@@ -450,7 +519,10 @@ export class SeparatingAxisTheorem {
      * @return {boolean} true if the point is inside the circle, false if it is not.
      */
     public testPointInCircle(point: Vector2, circle: Circle): boolean {
-        const differenceV = this.vectorPool.get().copy(point).sub(circle.position);
+        const differenceV = this.vectorPool
+            .get()
+            .copy(point)
+            .sub(circle.position);
         const radiusSq = circle.radius * circle.radius;
         const distanceSq = differenceV.lengthSq();
 
@@ -458,6 +530,5 @@ export class SeparatingAxisTheorem {
 
         // If the distance between is smaller than the radius then the point is inside the circle.
         return distanceSq <= radiusSq;
-    };
-
+    }
 }

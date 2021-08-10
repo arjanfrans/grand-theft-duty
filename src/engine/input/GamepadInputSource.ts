@@ -1,12 +1,11 @@
-import {InputSourceInterface} from "./InputSourceInterface";
+import { InputSourceInterface } from "./InputSourceInterface";
 
-import Gamepad from './Gamepad';
+import Gamepad from "./Gamepad";
 
-export class GamepadInputSource implements InputSourceInterface
-{
+export class GamepadInputSource implements InputSourceInterface {
     public readonly gamepad: Gamepad;
 
-    constructor () {
+    constructor() {
         this.gamepad = new Gamepad();
     }
 }

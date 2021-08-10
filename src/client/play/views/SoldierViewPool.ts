@@ -1,32 +1,37 @@
-import { Object3D } from 'three';
-import {ObjectPool} from '../../../engine/ObjectPool';
-import {View} from '../../../engine/graphics/View';
-import SoldierView from './SoldierView';
-import {Soldier} from "../../../core/entities/Soldier";
+import { Object3D } from "three";
+import { ObjectPool } from "../../../engine/ObjectPool";
+import { View } from "../../../engine/graphics/View";
+import SoldierView from "./SoldierView";
+import { Soldier } from "../../../core/entities/Soldier";
 
 export class SoldierViewPool extends View {
     private readonly soldiers: Set<Soldier>;
     private viewPool: ObjectPool<SoldierView>;
     private viewPairs: WeakMap<Soldier, SoldierView>;
 
-    constructor (soldiers: Set<Soldier>, poolLimit?: number) {
+    constructor(soldiers: Set<Soldier>, poolLimit?: number) {
         super();
 
         this.soldiers = soldiers;
 
-        this.viewPool = new ObjectPool<SoldierView>((): SoldierView => {
-            return new SoldierView(null);
-        }, this.soldiers.size, 10, poolLimit || 200);
+        this.viewPool = new ObjectPool<SoldierView>(
+            (): SoldierView => {
+                return new SoldierView(null);
+            },
+            this.soldiers.size,
+            10,
+            poolLimit || 200
+        );
 
         this.viewPairs = new WeakMap();
     }
 
-    init () {
+    init() {
         this.mesh = new Object3D();
         this._initialized = true;
     }
 
-    update (interpolationPercentage) {
+    update(interpolationPercentage) {
         // Keep viewPool in sync with soldier pool
         if (this.viewPool.size > this.soldiers.size) {
             this.viewPool.allocate(this.soldiers.size - this.viewPool.size);

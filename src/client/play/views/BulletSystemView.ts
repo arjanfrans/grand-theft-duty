@@ -1,34 +1,44 @@
-import { Object3D } from 'three';
-import {ObjectPool} from '../../../engine/ObjectPool';
-import {View} from '../../../engine/graphics/View';
-import BulletView from './BulletView';
-import {BulletSystem} from "../../../core/BulletSystem";
-import {Bullet} from "../../../core/entities/Bullet";
+import { Object3D } from "three";
+import { ObjectPool } from "../../../engine/ObjectPool";
+import { View } from "../../../engine/graphics/View";
+import BulletView from "./BulletView";
+import { BulletSystem } from "../../../core/BulletSystem";
+import { Bullet } from "../../../core/entities/Bullet";
 
 export class BulletSystemView extends View {
     private bulletSystem: BulletSystem;
     private bulletViewPool: ObjectPool<BulletView>;
-    private bulletViewPairs: WeakMap<Bullet, BulletView> = new WeakMap<Bullet, BulletView>();
+    private bulletViewPairs: WeakMap<Bullet, BulletView> = new WeakMap<
+        Bullet,
+        BulletView
+    >();
 
-    constructor (bulletSystem, poolLimit?: number) {
+    constructor(bulletSystem, poolLimit?: number) {
         super();
 
         this.bulletSystem = bulletSystem;
-        this.bulletViewPool = new ObjectPool<BulletView>((): BulletView => {
-            return new BulletView(null);
-        }, this.bulletSystem.poolSize, 10, poolLimit || 200);
+        this.bulletViewPool = new ObjectPool<BulletView>(
+            (): BulletView => {
+                return new BulletView(null);
+            },
+            this.bulletSystem.poolSize,
+            10,
+            poolLimit || 200
+        );
     }
 
-    init () {
+    init() {
         this.mesh = new Object3D();
 
         super.init();
     }
 
-    update (delta) {
+    update(delta) {
         // Keep viewPool in sync with bullet pool
         if (this.bulletSystem.poolSize > this.bulletViewPool.size) {
-            this.bulletViewPool.allocate(this.bulletSystem.poolSize - this.bulletViewPool.size);
+            this.bulletViewPool.allocate(
+                this.bulletSystem.poolSize - this.bulletViewPool.size
+            );
         }
 
         // Clear previously killed bullets

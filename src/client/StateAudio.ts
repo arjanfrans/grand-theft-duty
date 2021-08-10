@@ -1,4 +1,4 @@
-import AssetManager from '../engine/AssetManager';
+import AssetManager from "../engine/AssetManager";
 
 export class StateAudio {
     protected effectsSpriteName?: string;
@@ -7,7 +7,7 @@ export class StateAudio {
     protected backgrounds?: any;
     protected _initialized: boolean;
 
-    constructor (effectsSpriteName?: string, backgroundSpriteName?: string) {
+    constructor(effectsSpriteName?: string, backgroundSpriteName?: string) {
         this.effectsSpriteName = effectsSpriteName;
         this.backgroundSpriteName = backgroundSpriteName;
 
@@ -17,25 +17,29 @@ export class StateAudio {
         this._initialized = false;
     }
 
-    init () {
+    init() {
         if (this.effectsSpriteName) {
-            this.effects = AssetManager.getAudioSprite(this.effectsSpriteName).sound;
+            this.effects = AssetManager.getAudioSprite(
+                this.effectsSpriteName
+            ).sound;
         }
 
         if (this.backgroundSpriteName) {
-            this.backgrounds = AssetManager.getAudioSprite(this.backgroundSpriteName).sound;
+            this.backgrounds = AssetManager.getAudioSprite(
+                this.backgroundSpriteName
+            ).sound;
         }
 
         this._initialized = true;
     }
 
-    stopEffects () {
+    stopEffects() {
         if (this.effects) {
             this.effects.stop();
         }
     }
 
-    stopBackground () {
+    stopBackground() {
         if (this.backgrounds) {
             this.backgrounds.stop();
         }

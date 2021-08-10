@@ -12,7 +12,12 @@ export class ObjectPool<T> {
      * @param {number} allocationNumber Number to increase the pool by when it is full.
      * @param {number} allocationLimit Size limit of the pool.
      */
-    constructor (factoryFunction: () => T, firstAllocationNumber: number, allocationNumber: number, allocationLimit: number) {
+    constructor(
+        factoryFunction: () => T,
+        firstAllocationNumber: number,
+        allocationNumber: number,
+        allocationLimit: number
+    ) {
         this.factoryFunction = factoryFunction;
         this.allocationLimit = allocationLimit;
         this.allocationNumber = allocationNumber;
@@ -20,7 +25,7 @@ export class ObjectPool<T> {
         this.allocate(firstAllocationNumber);
     }
 
-    get size () {
+    get size() {
         return this.totalInstances;
     }
 
@@ -28,7 +33,7 @@ export class ObjectPool<T> {
      * Instantiate a given number of elements and add them to the collection of available instances
      * @param {number} number Number of elements to allocate
      */
-    public allocate (number: number): ObjectPool<T> {
+    public allocate(number: number): ObjectPool<T> {
         if (this.totalInstances + number < this.allocationLimit) {
             this.totalInstances += number;
 
@@ -36,7 +41,7 @@ export class ObjectPool<T> {
                 this.availableInstances.push(this.factoryFunction());
             }
         } else {
-            throw new Error('ObjectPool allocation limit reached');
+            throw new Error("ObjectPool allocation limit reached");
         }
 
         return this;
@@ -45,7 +50,7 @@ export class ObjectPool<T> {
     /**
      * Retrieve an element for the collection of available instances, (re)initialize and return it.
      */
-    get (): T {
+    get(): T {
         // check if we still have enough available instances, instantiate new ones
         if (this.availableInstances.length < 1) {
             this.allocate(this.allocationNumber);
@@ -58,7 +63,7 @@ export class ObjectPool<T> {
      * Add a given element to the pool.
      * @param {Object} object Element to add to the pool
      */
-    public free (object: T): ObjectPool<T> {
+    public free(object: T): ObjectPool<T> {
         if (this.availableInstances.indexOf(object) === -1) {
             this.availableInstances.push(object);
         }
@@ -69,7 +74,7 @@ export class ObjectPool<T> {
     /**
      * Clear all references.
      */
-    public clear (): ObjectPool<T> {
+    public clear(): ObjectPool<T> {
         while (this.availableInstances.length) {
             this.availableInstances.pop();
         }

@@ -1,3 +1,1 @@
-export interface InputSourceInterface {
-
-}
+export interface InputSourceInterface {}

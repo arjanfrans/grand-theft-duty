@@ -1,5 +1,5 @@
-import {Keyboard} from "./Keyboard";
-import {InputSourceInterface} from "./InputSourceInterface";
+import { Keyboard } from "./Keyboard";
+import { InputSourceInterface } from "./InputSourceInterface";
 
 export class KeyboardInputSource implements InputSourceInterface {
     public readonly keyboard: Keyboard;
@@ -7,12 +7,20 @@ export class KeyboardInputSource implements InputSourceInterface {
     constructor() {
         this.keyboard = new Keyboard();
 
-        global.addEventListener('keyup', (event) => {
-            this.keyboard.onKeyup(event);
-        }, false);
+        global.addEventListener(
+            "keyup",
+            (event) => {
+                this.keyboard.onKeyup(event);
+            },
+            false
+        );
 
-        global.addEventListener('keydown', (event) => {
-            this.keyboard.onKeydown(event);
-        }, false);
+        global.addEventListener(
+            "keydown",
+            (event) => {
+                this.keyboard.onKeydown(event);
+            },
+            false
+        );
     }
 }

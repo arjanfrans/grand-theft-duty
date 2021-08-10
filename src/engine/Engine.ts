@@ -1,25 +1,25 @@
-import Mainloop from '@arjanfrans/mainloop';
-import {State} from "../client/State";
-import {NullState} from "./state/NullState";
-import {InputSourceInterface} from "./input/InputSourceInterface";
-import {RendererInterface} from "./renderer/RendererInterface";
+import Mainloop from "@arjanfrans/mainloop";
+import { State } from "../client/State";
+import { NullState } from "./state/NullState";
+import { InputSourceInterface } from "./input/InputSourceInterface";
+import { RendererInterface } from "./renderer/RendererInterface";
 
 export interface EngineOptions {
-    renderer: RendererInterface
-    input: { [key: string]: InputSourceInterface }
+    renderer: RendererInterface;
+    input: { [key: string]: InputSourceInterface };
 }
 
 class Engine {
     private states: Map<string, State> = new Map();
     private currentState: State;
     private readonly renderer: RendererInterface;
-    public readonly inputSources: Map<string, InputSourceInterface> = new Map()
+    public readonly inputSources: Map<string, InputSourceInterface> = new Map();
 
-    constructor (options: EngineOptions) {
+    constructor(options: EngineOptions) {
         this.currentState = new NullState(this);
         this.renderer = options.renderer;
 
-        for(const [key, inputSource] of Object.entries(options.input)) {
+        for (const [key, inputSource] of Object.entries(options.input)) {
             this.inputSources.set(key, inputSource);
         }
     }
@@ -32,7 +32,7 @@ class Engine {
      *
      * @returns {void}
      */
-    addState (name, state) {
+    addState(name, state) {
         this.states.set(name, state);
     }
 
@@ -43,7 +43,7 @@ class Engine {
      *
      * @returns {void}
      */
-    changeState (name) {
+    changeState(name) {
         const state = this.states.get(name);
 
         if (!state) {
@@ -63,7 +63,7 @@ class Engine {
      *
      * @returns {void}
      */
-    removeState (name) {
+    removeState(name) {
         this.states.delete(name);
     }
 
@@ -72,7 +72,7 @@ class Engine {
      *
      * @returns {void}
      */
-    run () {
+    run() {
         const render = (interpolationPercentage) => {
             this.currentState.render(interpolationPercentage);
             this.renderer.render(interpolationPercentage);
@@ -82,7 +82,7 @@ class Engine {
             if (this.currentState) {
                 this.currentState.update(delta);
             } else {
-                console.warn('no current State');
+                console.warn("no current State");
             }
         };
 

@@ -1,4 +1,4 @@
-import {Vector2} from "three";
+import { Vector2 } from "three";
 
 /**
  * Calculates which Voronoi region a point is on a line segment.
@@ -14,8 +14,7 @@ export class VoronoiRegion {
     public static MIDDLE_VORONOI_REGION = 0;
     public static RIGHT_VORONOI_REGION = 1;
 
-    private constructor() {
-    }
+    private constructor() {}
 
     /**
      * @param line The line segment.

@@ -1,5 +1,5 @@
-import {Polygon} from './Polygon';
-import {Vector2} from "three";
+import { Polygon } from "./Polygon";
+import { Vector2 } from "three";
 
 /**
  * Represents an axis-aligned box, with a width and height.
@@ -17,7 +17,11 @@ export class Box {
      * @param width The width of the box.
      * @param height The height of the box.
      */
-    constructor(position = new Vector2(), width: number = 0, height: number = 0) {
+    constructor(
+        position = new Vector2(),
+        width: number = 0,
+        height: number = 0
+    ) {
         this.position = position;
         this.width = width;
         this.height = height;
@@ -32,8 +36,10 @@ export class Box {
         const h = this.height;
 
         return new Polygon(new Vector2(pos.x, pos.y), [
-            new Vector2(), new Vector2(w, 0),
-            new Vector2(w, h), new Vector2(0, h)
+            new Vector2(),
+            new Vector2(w, 0),
+            new Vector2(w, h),
+            new Vector2(0, h),
         ]);
     }
 }

@@ -1,7 +1,7 @@
-import {WebGLRenderer} from 'three';
-import {RendererInterface} from "./RendererInterface";
-import {State} from "../../client/State";
-import {ThreeRenderView} from "./ThreeRenderView";
+import { WebGLRenderer } from "three";
+import { RendererInterface } from "./RendererInterface";
+import { State } from "../../client/State";
+import { ThreeRenderView } from "./render-view/ThreeRenderView";
 
 export interface ThreeRendererOptions {
     /**
@@ -17,7 +17,7 @@ export class ThreeRenderer implements RendererInterface {
     private _views?: Set<ThreeRenderView>;
     protected webglRenderer: WebGLRenderer;
 
-    constructor (private options: ThreeRendererOptions) {
+    constructor(private options: ThreeRendererOptions) {
         this.webglRenderer = new WebGLRenderer();
 
         this.webglRenderer.setSize(options.width, options.height);
@@ -25,10 +25,12 @@ export class ThreeRenderer implements RendererInterface {
         this.webglRenderer.setPixelRatio(window.devicePixelRatio);
         this.webglRenderer.autoClear = false;
 
-        (document.getElementById(options.div) as HTMLDivElement).appendChild(this.webglRenderer.domElement);
+        (document.getElementById(options.div) as HTMLDivElement).appendChild(
+            this.webglRenderer.domElement
+        );
     }
 
-    set views (views) {
+    set views(views) {
         this._views = views;
 
         if (!views) {
@@ -45,8 +47,8 @@ export class ThreeRenderer implements RendererInterface {
 
             view.changeSize({
                 width: this.options.width,
-                height: this.options.height
-            })
+                height: this.options.height,
+            });
 
             index += 1;
         }
@@ -60,20 +62,15 @@ export class ThreeRenderer implements RendererInterface {
         }
     }
 
-    get views () {
+    get views() {
         return this._views;
     }
 
-    preRender(): void
-    {
+    preRender(): void {}
 
-    }
+    postRender(): void {}
 
-    postRender(): void
-    {
-    }
-
-    render (interpolationPercentage: number): void {
+    render(interpolationPercentage: number): void {
         this.webglRenderer.clear();
 
         let index = 0;

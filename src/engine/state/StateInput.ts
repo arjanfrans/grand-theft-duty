@@ -1,4 +1,3 @@
 export interface StateInput {
-
-    update(delta: number): void
+    update(delta: number): void;
 }

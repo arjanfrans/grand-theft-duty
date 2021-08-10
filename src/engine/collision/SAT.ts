@@ -6,21 +6,22 @@
 // polygons using the Separating Axis Theorem.
 /** @preserve SAT.js - Version 0.5.0 - Copyright 2012 - 2015 - Jim Riecken <jimr@jimr.ca> - released under the MIT License. https://github.com/jriecken/sat-js */
 
-import Vector from './Vector';
-import Box from './Box';
+import {Box} from './Box';
 import Response from './Response';
+import {Vector2} from "three";
+import {perpVector} from "./Polygon";
 
 // ## Object Pools
 
-// A pool of `Vector` objects that are used in calculations to avoid
+// A pool of `Vector2` objects that are used in calculations to avoid
 // allocating memory.
 /**
- * @type {Array.<Vector>}
+ * @type {Array.<Vector2>}
  */
-const T_VECTORS = [];
+const T_VECTORS: Vector2[] = [];
 
 for (let i = 0; i < 10; i++) {
-    T_VECTORS.push(new Vector());
+    T_VECTORS.push(new Vector2());
 }
 
 // A pool of arrays of numbers used in calculations to avoid allocating
@@ -28,7 +29,7 @@ for (let i = 0; i < 10; i++) {
 /**
  * @type {Array.<Array.<number>>}
  */
-const T_ARRAYS = [];
+const T_ARRAYS: any[] = [];
 
 for (let i = 0; i < 5; i++) {
     T_ARRAYS.push([]);
@@ -44,7 +45,7 @@ const T_RESPONSE = new Response();
 /**
  * @type {Polygon}
  */
-const UNIT_SQUARE = new Box(new Vector(), 1, 1).toPolygon();
+const UNIT_SQUARE = new Box(new Vector2(), 1, 1).toPolygon();
 
 // ## Helper Functions
 
@@ -52,8 +53,8 @@ const UNIT_SQUARE = new Box(new Vector(), 1, 1).toPolygon();
  * Flattens the specified array of vertices onto a unit vector axis,
  * resulting in a one dimensional range of the minimum and
  * maximum value on that axis.
- * @param {Array.<Vector>} vertices The vertices to flatten.
- * @param {Vector} normal The unit vector axis to flatten on.
+ * @param {Array.<Vector2>} vertices The vertices to flatten.
+ * @param {Vector2} normal The unit vector axis to flatten on.
  * @param {Array.<number>} result An array.  After calling this function,
  *   result[0] will be the minimum value,
  *   result[1] will be the maximum value.
@@ -84,11 +85,11 @@ const _flattenVerticesOn = function (vertices, normal, result) {
  * Check whether two convex polygons are separated by the specified
  * axis (must be a unit vector).
  *
- * @param {Vector} aPos The position of the first polygon.
- * @param {Vector} bPos The position of the second polygon.
- * @param {Array.<Vector>} aPoints The vertices in the first polygon.
- * @param {Array.<Vector>} bPoints The vertices in the second polygon.
- * @param {Vector} axis The axis (unit sized) to test against.  The points of both polygons
+ * @param {Vector2} aPos The position of the first polygon.
+ * @param {Vector2} bPos The position of the second polygon.
+ * @param {Array.<Vector2>} aPoints The vertices in the first polygon.
+ * @param {Array.<Vector2>} bPoints The vertices in the second polygon.
+ * @param {Vector2} axis The axis (unit sized) to test against.  The points of both polygons
  *   will be projected onto this axis.
  * @param {Response=} response A Response object (optional) which will be populated
  *   if the axis is not a separating axis.
@@ -101,7 +102,7 @@ const _isSeparatingAxis = function (aPos, bPos, aPoints, bPoints, axis, response
     const rangeB = T_ARRAYS.pop();
 
     // The magnitude of the offset between the two polygons
-    const offsetV = T_VECTORS.pop().copy(bPos).sub(aPos);
+    const offsetV = (T_VECTORS.pop() as Vector2).copy(bPos).sub(aPos);
     const projectedOffset = offsetV.dot(axis);
 
     // Project the polygons onto the axis.
@@ -184,8 +185,8 @@ const _isSeparatingAxis = function (aPos, bPos, aPoints, bPoints, axis, response
 //     (-1)  [S]--------------[E]  (1)
 //            |       (0)      |
 /**
- * @param {Vector} line The line segment.
- * @param {Vector} point The point.
+ * @param {Vector2} line The line segment.
+ * @param {Vector2} point The point.
  * @return  {number} LEFT_VORONOI_REGION (-1) if it is the left region,
  *          MIDDLE_VORONOI_REGION (0) if it is the middle region,
  *          RIGHT_VORONOI_REGION (1) if it is the right region.
@@ -229,14 +230,14 @@ const RIGHT_VORONOI_REGION = 1;
 
 // Check if a point is inside a circle.
 /**
- * @param {Vector} p The point to test.
+ * @param {Vector2} p The point to test.
  * @param {Circle} c The circle to test.
  * @return {boolean} true if the point is inside the circle, false if it is not.
  */
 const _pointInCircle = function (p, c) {
-    const differenceV = T_VECTORS.pop().copy(p).sub(c.position);
+    const differenceV = (T_VECTORS.pop() as Vector2).copy(p).sub(c.position);
     const radiusSq = c.radius * c.radius;
-    const distanceSq = differenceV.len2();
+    const distanceSq = differenceV.lengthSq();
 
     T_VECTORS.push(differenceV);
 
@@ -246,7 +247,7 @@ const _pointInCircle = function (p, c) {
 
 // Check if a point is inside a convex polygon.
 /**
- * @param {Vector} p The point to test.
+ * @param {Vector2} p The point to test.
  * @param {Polygon} poly The polygon to test.
  * @return {boolean} true if the point is inside the polygon, false if it is not.
  */
@@ -274,10 +275,10 @@ const _pointInPolygon = function (p, poly) {
 const _testCircleCircle = function (a, b, response) {
     // Check if the distance between the centers of the two
     // circles is greater than their combined radius.
-    const differenceV = T_VECTORS.pop().copy(b.position).sub(a.position);
+    const differenceV = (T_VECTORS.pop() as Vector2).copy(b.position).sub(a.position);
     const totalRadius = a.radius + b.radius;
     const totalRadiusSq = totalRadius * totalRadius;
-    const distanceSq = differenceV.len2();
+    const distanceSq = differenceV.lengthSq();
 
     // If the distance is bigger than the combined radius, they don't intersect.
     if (distanceSq > totalRadiusSq) {
@@ -294,7 +295,7 @@ const _testCircleCircle = function (a, b, response) {
         response.b = b;
         response.overlap = totalRadius - dist;
         response.overlapN.copy(differenceV.normalize());
-        response.overlapV.copy(differenceV).scale(response.overlap);
+        response.overlapV.copy(differenceV).multiplyScalar(response.overlap);
         response.aInB = a.radius <= b.radius && dist <= b.radius - a.radius;
         response.bInA = b.radius <= a.radius && dist <= a.radius - b.radius;
     }
@@ -314,23 +315,23 @@ const _testCircleCircle = function (a, b, response) {
  */
 const _testPolygonCircle = function (polygon, circle, response) {
     // Get the position of the circle relative to the polygon.
-    const circlePos = T_VECTORS.pop().copy(circle.position).sub(polygon.position);
+    const circlePos = (T_VECTORS.pop() as Vector2).copy(circle.position).sub(polygon.position);
     const radius = circle.radius;
     const radius2 = radius * radius;
     const points = polygon.computedVertices;
     const len = points.length;
-    const edge = T_VECTORS.pop();
-    const point = T_VECTORS.pop();
+    const edge = T_VECTORS.pop() as Vector2;
+    const point = T_VECTORS.pop() as Vector2;
 
     // For each edge in the polygon:
     for (let i = 0; i < len; i++) {
         const next = i === len - 1 ? 0 : i + 1;
         const prev = i === 0 ? len - 1 : i - 1;
         let overlap = 0;
-        let overlapN = null;
+        let overlapN: Vector2|undefined = undefined;
 
         // Get the edge.
-        edge.copy(polygon.edges[i]);
+        edge.copy((polygon.edges[i] as Vector2));
 
         // Calculate the center of the circle relative to the starting point of the edge.
         point.copy(circlePos).sub(points[i]);
@@ -338,7 +339,7 @@ const _testPolygonCircle = function (polygon, circle, response) {
         // If the distance between the center of the circle and the point
         // is bigger than the radius, the polygon is definitely not fully in
         // the circle.
-        if (response && point.len2() > radius2) {
+        if (response && point.lengthSq() > radius2) {
             response.aInB = false;
         }
 
@@ -351,13 +352,13 @@ const _testPolygonCircle = function (polygon, circle, response) {
             edge.copy(polygon.edges[prev]);
 
             // Calculate the center of the circle relative the starting point of the previous edge
-            const point2 = T_VECTORS.pop().copy(circlePos).sub(points[prev]);
+            const point2 = (T_VECTORS.pop() as Vector2).copy(circlePos).sub(points[prev]);
 
             region = _vornoiRegion(edge, point2);
 
             if (region === RIGHT_VORONOI_REGION) {
                 // It's in the region we want.  Check if the circle intersects the point.
-                const dist = point.len();
+                const dist = point.length();
 
                 if (dist > radius) {
                     // No intersection
@@ -387,7 +388,7 @@ const _testPolygonCircle = function (polygon, circle, response) {
             region = _vornoiRegion(edge, point);
             if (region === LEFT_VORONOI_REGION) {
                 // It's in the region we want.  Check if the circle intersects the point.
-                const dist = point.len();
+                const dist = point.length();
 
                 if (dist > radius) {
                     // No intersection
@@ -408,7 +409,7 @@ const _testPolygonCircle = function (polygon, circle, response) {
         } else {
             // Need to check if the circle is intersecting the edge,
             // Change the edge into its "edge normal".
-            const normal = edge.perp().normalize();
+            const normal = perpVector(edge).normalize();
 
             // Find the perpendicular distance between the center of the
             // circle and the edge.
@@ -448,7 +449,7 @@ const _testPolygonCircle = function (polygon, circle, response) {
     if (response) {
         response.a = polygon;
         response.b = circle;
-        response.overlapV.copy(response.overlapN).scale(response.overlap);
+        response.overlapV.copy(response.overlapN).multiplyScalar(response.overlap);
     }
 
     T_VECTORS.push(circlePos);
@@ -523,13 +524,13 @@ const _testPolygonPolygon = function (a, b, response) {
     if (response) {
         response.a = a;
         response.b = b;
-        response.overlapV.copy(response.overlapN).scale(response.overlap);
+        response.overlapV.copy(response.overlapN).multiplyScalar(response.overlap);
     }
 
     return true;
 };
 
-const SAT = {
+export const SAT = {
     testPolygonPolygon: _testPolygonPolygon,
     testCirclePolygon: _testCirclePolygon,
     testPolygonCircle: _testPolygonCircle,
@@ -537,5 +538,3 @@ const SAT = {
     pointInPolygon: _pointInPolygon,
     pointInCircle: _pointInCircle
 };
-
-export default SAT;

@@ -1,4 +1,4 @@
-import SAT from '../engine/collision/SAT';
+import {SAT} from '../engine/collision/SAT';
 import Response from '../engine/collision/Response';
 
 const rayPositions = function (entity, rayDistance) {

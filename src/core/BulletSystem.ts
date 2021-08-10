@@ -1,6 +1,6 @@
 import {ObjectPool} from '../engine/ObjectPool';
 import {Bullet} from './entities/Bullet';
-import SAT from '../engine/collision/SAT';
+import {SAT} from '../engine/collision/SAT';
 import CollisionUtils from './CollisionUtils';
 import {PlayState} from "../client/play/PlayState";
 import {Soldier} from "./entities/Soldier";

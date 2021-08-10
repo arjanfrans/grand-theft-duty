@@ -1,5 +1,3 @@
-import Vector from './Vector';
-
 // ## Response
 //
 // An object representing the result of an intersection. Contains:
@@ -8,15 +6,22 @@ import Vector from './Vector';
 //    from the second one (as well as a unit vector in that direction and the magnitude
 //    of the overlap)
 //  - Whether the first object is entirely inside the second, and vice versa.
-/**
- * @constructor
- */
+import {Vector2} from "three";
+
 class Response {
+    public a?: any;
+    public b?: any;
+    public overlapN: Vector2;
+    public overlapV: Vector2;
+    public aInB: boolean = true;
+    public bInA: boolean = true;
+    public overlap?: number;
+
     constructor () {
         this.a = null;
         this.b = null;
-        this.overlapN = new Vector();
-        this.overlapV = new Vector();
+        this.overlapN = new Vector2();
+        this.overlapV = new Vector2();
 
         this.clear();
     }

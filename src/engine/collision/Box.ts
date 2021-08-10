@@ -1,5 +1,5 @@
-import Vector from './Vector';
-import Polygon from './Polygon';
+import {Polygon} from './Polygon';
+import {Vector2} from "three";
 
 // ## Box
 //
@@ -13,8 +13,12 @@ import Polygon from './Polygon';
  * @param {?number=} h The height of the box.
  * @constructor
  */
-class Box {
-    constructor (position = new Vector(), width = 0, height = 0) {
+export class Box {
+    public position: Vector2;
+    public width: number;
+    public height: number;
+
+    constructor(position = new Vector2(), width: number = 0, height: number = 0) {
         this.position = position;
         this.width = width;
         this.height = height;
@@ -22,18 +26,15 @@ class Box {
 
     /**
      * Returns a polygon whose edges are the same as this box.
-     * @return {Polygon} A new Polygon that represents this box.
      */
-    toPolygon () {
+    toPolygon(): Polygon {
         const pos = this.position;
         const w = this.width;
         const h = this.height;
 
-        return new Polygon(new Vector(pos.x, pos.y), [
-            new Vector(), new Vector(w, 0),
-            new Vector(w, h), new Vector(0, h)
+        return new Polygon(new Vector2(pos.x, pos.y), [
+            new Vector2(), new Vector2(w, 0),
+            new Vector2(w, h), new Vector2(0, h)
         ]);
     }
 }
-
-export default Box;

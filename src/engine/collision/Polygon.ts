@@ -1,10 +1,12 @@
-import Vector from './Vector';
+import {Vector2} from "three";
 
-function boxToPolygon (position, width, height) {
-    return new Polygon(new Vector(position.x, position.y), [
-        new Vector(), new Vector(width, 0),
-        new Vector(width, height), new Vector(0, height)
-    ]);
+export function perpVector(v: Vector2): Vector2 {
+    const x = v.x;
+
+    v.x = v.y;
+    v.y = -x;
+
+    return v;
 }
 
 // ## Polygon
@@ -26,13 +28,27 @@ function boxToPolygon (position, width, height) {
  *   in counter-clockwise order.
  * @constructor
  */
-class Polygon {
-    constructor (position = new Vector(), vertices = []) {
+export class Polygon {
+    public position: Vector2;
+    public angle: number = 0;
+    public offset: Vector2 = new Vector2();
+    public computedVertices: Vector2[] = [];
+    public vertices: Vector2[] = [];
+    private edges: Vector2[] = [];
+    private normals: Vector2[] = [];
+
+    constructor (position = new Vector2(), vertices: Vector2[] = []) {
         this.position = position;
-        this.angle = 0;
-        this.offset = new Vector();
 
         this.setVertices(vertices);
+    }
+
+    public static fromBox(position: Vector2, width: number, height: number): Polygon
+    {
+        return new Polygon(new Vector2(position.x, position.y), [
+            new Vector2(), new Vector2(width, 0),
+            new Vector2(width, height), new Vector2(0, height)
+        ]);
     }
 
     /**
@@ -42,24 +58,24 @@ class Polygon {
      * it will _appear_ visually that the vertices are being specified clockwise. This is just
      * because of the inversion of the Y-axis when being displayed.
      *
-     * @param {Array.<Vector>=} vertices An array of vectors representing the vertices in the polygon,
+     * @param {Array.<Vector2>=} vertices An array of vectors representing the vertices in the polygon,
      *   in counter-clockwise order.
      * @return {Polygon} This for chaining.
      */
-    setVertices (vertices) {
+    setVertices (vertices: Vector2[]) {
         // Only re-allocate if this is a new polygon or the number of vertices has changed.
         const lengthChanged = !this.vertices || this.vertices.length !== vertices.length;
 
         if (lengthChanged) {
-            const computedVertices = this.computedVertices = [];
-            const edges = this.edges = [];
-            const normals = this.normals = [];
+            this.computedVertices = [];
+            this.edges = [];
+            this.normals = [];
 
             // Allocate the vector arrays for the calculated properties
             for (let i = 0; i < vertices.length; i++) {
-                computedVertices.push(new Vector());
-                edges.push(new Vector());
-                normals.push(new Vector());
+                this.computedVertices.push(new Vector2());
+                this.edges.push(new Vector2());
+                this.normals.push(new Vector2());
             }
         }
         this.vertices = vertices;
@@ -84,7 +100,7 @@ class Polygon {
     /**
      * Set the current offset to apply to the `vertices` before applying the `angle` rotation.
      *
-     * @param {Vector} offset The new offset vector.
+     * @param {Vector2} offset The new offset vector.
      * @return {Polygon} This for chaining.
      */
     setOffset (offset) {
@@ -105,7 +121,7 @@ class Polygon {
         const len = vertices.length;
 
         for (let i = 0; i < len; i++) {
-            vertices[i].rotate(angle);
+            vertices[i].rotateAround(new Vector2(), angle);
         }
 
         this._compute();
@@ -173,7 +189,7 @@ class Polygon {
             computedVertex.y += offset.y;
 
             if (angle !== 0) {
-                computedVertex.rotate(angle);
+                computedVertex.rotateAround(new Vector2(), angle);
             }
         }
 
@@ -183,7 +199,7 @@ class Polygon {
             const p2 = i < len - 1 ? computedVertices[i + 1] : computedVertices[0];
             const e = edges[i].copy(p2).sub(p1);
 
-            normals[i].copy(e).perp().normalize();
+            perpVector(normals[i].copy(e)).normalize();
         }
 
         return this;
@@ -221,8 +237,6 @@ class Polygon {
             }
         }
 
-        return boxToPolygon(this.position.clone().add(new Vector(xMin, yMin)), xMax - xMin, yMax - yMin);
+        return Polygon.fromBox(this.position.clone().add(new Vector2(xMin, yMin)), xMax - xMin, yMax - yMin);
     }
 }
-
-export default Polygon;

@@ -1,5 +1,5 @@
-import Polygon from '../../engine/collision/Polygon';
-import Vector from '../../engine/collision/Vector';
+import {Polygon} from '../../engine/collision/Polygon';
+import {Vector2} from "three";
 
 class Block {
     constructor (position, width, height, depth, options = {}) {
@@ -37,11 +37,11 @@ class Block {
          // If fully closed block (nothing should be inside it)
         if (this._walls.top && this._walls.west && this._walls.east && this._walls.south && this._walls.north) {
             this.bodies = [
-                new Polygon(new Vector(this.x, this.y), [
-                    new Vector(0, 0),
-                    new Vector(this.width, 0),
-                    new Vector(this.width, this.height),
-                    new Vector(0, this.height)
+                new Polygon(new Vector2(this.x, this.y), [
+                    new Vector2(0, 0),
+                    new Vector2(this.width, 0),
+                    new Vector2(this.width, this.height),
+                    new Vector2(0, this.height)
                 ])
             ];
         }
@@ -49,38 +49,38 @@ class Block {
         const bodies = [];
 
         if (this._walls.west) {
-            bodies.push(new Polygon(new Vector(this.x, this.y), [
-                new Vector(0, 0),
-                new Vector(this.width, 0),
-                new Vector(this.width, 2),
-                new Vector(0, 2)
+            bodies.push(new Polygon(new Vector2(this.x, this.y), [
+                new Vector2(0, 0),
+                new Vector2(this.width, 0),
+                new Vector2(this.width, 2),
+                new Vector2(0, 2)
             ]));
         }
 
         if (this._walls.east) {
-            bodies.push(new Polygon(new Vector(this.x, this.y + this.height), [
-                new Vector(0, 0),
-                new Vector(this.width, 0),
-                new Vector(this.width, -2),
-                new Vector(0, -2)
+            bodies.push(new Polygon(new Vector2(this.x, this.y + this.height), [
+                new Vector2(0, 0),
+                new Vector2(this.width, 0),
+                new Vector2(this.width, -2),
+                new Vector2(0, -2)
             ]));
         }
 
         if (this._walls.south) {
-            bodies.push(new Polygon(new Vector(this.x + this.width, this.y), [
-                new Vector(0, 0),
-                new Vector(0, this.height),
-                new Vector(-2, this.height),
-                new Vector(-2, 0)
+            bodies.push(new Polygon(new Vector2(this.x + this.width, this.y), [
+                new Vector2(0, 0),
+                new Vector2(0, this.height),
+                new Vector2(-2, this.height),
+                new Vector2(-2, 0)
             ]));
         }
 
         if (this._walls.north) {
-            bodies.push(new Polygon(new Vector(this.x, this.y), [
-                new Vector(0, 0),
-                new Vector(0, this.height),
-                new Vector(2, this.height),
-                new Vector(2, 0)
+            bodies.push(new Polygon(new Vector2(this.x, this.y), [
+                new Vector2(0, 0),
+                new Vector2(0, this.height),
+                new Vector2(2, this.height),
+                new Vector2(2, 0)
             ]));
         }
 

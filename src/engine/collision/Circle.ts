@@ -1,5 +1,5 @@
-import Vector from './Vector';
-import Box from './Box';
+import {Vector2} from "three";
+import {Box} from "./Box";
 
 // ## Circle
 //
@@ -9,12 +9,15 @@ import Box from './Box';
 // is given, the circle will be at `(0,0)`. If no radius is provided, the circle will
 // have a radius of `0`.
 /**
- * @param {Vector=} pos A vector representing the position of the center of the circle
+ * @param {Vector2=} pos A vector representing the position of the center of the circle
  * @param {?number=} r The radius of the circle
  * @constructor
  */
-class Circle {
-    constructor (position = new Vector(), radius = 0) {
+export class Circle {
+    public position: Vector2;
+    public radius: number;
+
+    constructor (position = new Vector2(), radius: number = 0) {
         this.position = position;
         this.radius = radius;
     }
@@ -27,10 +30,8 @@ class Circle {
      */
     getAABB () {
         const r = this.radius;
-        const corner = this.position.clone().sub(new Vector(r, r));
+        const corner = this.position.clone().sub(new Vector2(r, r));
 
         return new Box(corner, r * 2, r * 2).toPolygon();
     }
 }
-
-export default Circle;

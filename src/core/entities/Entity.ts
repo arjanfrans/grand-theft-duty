@@ -1,5 +1,5 @@
-import Polygon from '../../engine/collision/Polygon';
-import Vector from '../../engine/collision/Vector';
+import {Polygon} from '../../engine/collision/Polygon';
+import {Vector2} from "three";
 
 const DEFAULT_SPEED = 0.2;
 const DEFAULT_ROTATION_SPEED = 0.3;
@@ -56,11 +56,11 @@ export class Entity {
 
         this.reset();
 
-        this._body = new Polygon(new Vector(this.x, this.y), [
-            new Vector(-this.halfWidth, -this.halfHeight),
-            new Vector(-this.halfWidth, this.halfHeight),
-            new Vector(this.halfWidth, this.halfHeight),
-            new Vector(this.halfWidth, 0)
+        this._body = new Polygon(new Vector2(this.x, this.y), [
+            new Vector2(-this.halfWidth, -this.halfHeight),
+            new Vector2(-this.halfWidth, this.halfHeight),
+            new Vector2(this.halfWidth, this.halfHeight),
+            new Vector2(this.halfWidth, 0)
         ]);
 
         this.options = {
@@ -117,8 +117,8 @@ export class Entity {
         this.dead = true;
     }
 
-    get point() {
-        return new Vector(this.x, this.y);
+    get point(): Vector2 {
+        return new Vector2(this.x, this.y);
     }
 
     reset() {

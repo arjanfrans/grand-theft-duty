@@ -1,5 +1,7 @@
-import {SAT} from '../engine/collision/SAT';
-import Response from '../engine/collision/Response';
+import {SeparatingAxisTheorem} from "../engine/physics/SeparatingAxisTheorem";
+import {SatResult} from "../engine/physics/SatResult";
+
+const sat = new SeparatingAxisTheorem();
 
 const rayPositions = function (entity, rayDistance) {
     let x = entity.position.x;
@@ -45,6 +47,8 @@ const rayPositions = function (entity, rayDistance) {
     return { min: start, max: end };
 };
 
+const cachedSatResult = new SatResult();
+
 const CollisionUtils = {
     wallCollision (map, entity, onCollision) {
         const rayDistance = (map.blockWidth + map.blockHeight) / 2;
@@ -58,10 +62,10 @@ const CollisionUtils = {
                     const polygons = block.bodies;
 
                     for (const polygon of polygons) {
-                        const response = new Response();
+                        cachedSatResult.clear();
 
-                        if (SAT.testPolygonPolygon(entity.body, polygon, response)) {
-                            onCollision(response);
+                        if (sat.testPolygonInPolygon(entity.body, polygon, cachedSatResult)) {
+                            onCollision(cachedSatResult);
                         }
                     }
                 }

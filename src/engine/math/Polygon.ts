@@ -1,32 +1,17 @@
 import {Vector2} from "three";
+import {Vector2Helper} from "./Vector2Helper";
 
-export function perpVector(v: Vector2): Vector2 {
-    const x = v.x;
-
-    v.x = v.y;
-    v.y = -x;
-
-    return v;
-}
-
-// ## Polygon
-//
-// Represents a *convex* polygon with any number of vertices (specified in counter-clockwise order)
-//
-// Note: Do _not_ manually change the `vertices`, `angle`, or `offset` properties. Use the
-// provided setters. Otherwise the calculated properties will not be updated correctly.
-//
-// `pos` can be changed directly.
-
-// Create a new polygon, passing in a position vector, and an array of vertices (represented
-// by vectors relative to the position vector). If no position is passed in, the position
-// of the polygon will be `(0,0)`.
 /**
- * @param {Vector=} pos A vector representing the origin of the polygon. (all other
- *   vertices are relative to this one)
- * @param {Array.<Vector>=} vertices An array of vectors representing the vertices in the polygon,
- *   in counter-clockwise order.
- * @constructor
+ * Represents a *convex* polygon with any number of vertices (specified in counter-clockwise order)
+ *
+ * Note: Do _not_ manually change the `vertices`, `angle`, or `offset` properties. Use the
+ * provided setters. Otherwise the calculated properties will not be updated correctly.
+ *
+ * `pos` can be changed directly.
+
+ * Create a new polygon, passing in a position vector, and an array of vertices (represented
+ * by vectors relative to the position vector). If no position is passed in, the position
+ * of the polygon will be `(0,0)`.
  */
 export class Polygon {
     public position: Vector2;
@@ -34,17 +19,20 @@ export class Polygon {
     public offset: Vector2 = new Vector2();
     public computedVertices: Vector2[] = [];
     public vertices: Vector2[] = [];
-    private edges: Vector2[] = [];
-    private normals: Vector2[] = [];
+    public edges: Vector2[] = [];
+    public normals: Vector2[] = [];
 
-    constructor (position = new Vector2(), vertices: Vector2[] = []) {
+    /**
+     * @param position A vector representing the origin of the polygon. (all other vertices are relative to this one)
+     * @param vertices An array of vectors representing the vertices in the polygon, in counter-clockwise order.
+     */
+    constructor(position = new Vector2(), vertices: Vector2[] = []) {
         this.position = position;
 
         this.setVertices(vertices);
     }
 
-    public static fromBox(position: Vector2, width: number, height: number): Polygon
-    {
+    public static fromBox(position: Vector2, width: number, height: number): Polygon {
         return new Polygon(new Vector2(position.x, position.y), [
             new Vector2(), new Vector2(width, 0),
             new Vector2(width, height), new Vector2(0, height)
@@ -58,11 +46,9 @@ export class Polygon {
      * it will _appear_ visually that the vertices are being specified clockwise. This is just
      * because of the inversion of the Y-axis when being displayed.
      *
-     * @param {Array.<Vector2>=} vertices An array of vectors representing the vertices in the polygon,
-     *   in counter-clockwise order.
-     * @return {Polygon} This for chaining.
+     * @param vertices An array of vectors representing the vertices in the polygon, in counter-clockwise order.
      */
-    setVertices (vertices: Vector2[]) {
+    setVertices(vertices: Vector2[]): Polygon {
         // Only re-allocate if this is a new polygon or the number of vertices has changed.
         const lengthChanged = !this.vertices || this.vertices.length !== vertices.length;
 
@@ -85,12 +71,9 @@ export class Polygon {
     }
 
     /**
-     * Set the current rotation angle of the polygon.
-     *
-     * @param {number} angle The current rotation angle (in radians).
-     * @return {Polygon} This for chaining.
+     * @param angle The current rotation angle (in radians).
      */
-    setAngle (angle) {
+    setAngle(angle: number): Polygon {
         this.angle = angle;
         this._compute();
 
@@ -100,10 +83,9 @@ export class Polygon {
     /**
      * Set the current offset to apply to the `vertices` before applying the `angle` rotation.
      *
-     * @param {Vector2} offset The new offset vector.
-     * @return {Polygon} This for chaining.
+     * @param offset The new offset vector.
      */
-    setOffset (offset) {
+    setOffset(offset: Vector2): Polygon {
         this.offset = offset;
         this._compute();
 
@@ -113,10 +95,10 @@ export class Polygon {
     /**
      * Rotates this polygon counter-clockwise around the origin of *its local coordinate system* (i.e. `pos`).
      * Note: This changes the **original** vertices (so any `angle` will be applied on top of this rotation).
-     * @param {number} angle The angle to rotate (in radians)
-     * @return {Polygon} This for chaining.
+     *
+     * @param angle The angle to rotate (in radians)
      */
-    rotate (angle) {
+    rotate(angle): Polygon {
         const vertices = this.vertices;
         const len = vertices.length;
 
@@ -138,11 +120,10 @@ export class Polygon {
      *
      * Note: This changes the **original** vertices (so any `offset` will be applied on top of this translation)
      *
-     * @param {number} x The horizontal amount to translate.
-     * @param {number} y The vertical amount to translate.
-     * @return {Polygon} This for chaining.
+     * @param x The horizontal amount to translate.
+     * @param y The vertical amount to translate.
      */
-    translate (x, y) {
+    translate(x: number, y: number): Polygon {
         const vertices = this.vertices;
         const len = vertices.length;
 
@@ -159,9 +140,8 @@ export class Polygon {
     /**
      * Computes the calculated collision polygon. Applies the `angle` and `offset` to the original vertices then recalculates the
      * edges and normals of the collision polygon.
-     * @return {Polygon} This for chaining.
      */
-    _compute () {
+    private _compute(): void {
         // Calculated vertices - this is what is used for underlying collisions and takes into account
         // the angle/offset set on the polygon.
         const computedVertices = this.computedVertices;
@@ -199,10 +179,8 @@ export class Polygon {
             const p2 = i < len - 1 ? computedVertices[i + 1] : computedVertices[0];
             const e = edges[i].copy(p2).sub(p1);
 
-            perpVector(normals[i].copy(e)).normalize();
+            Vector2Helper.perp(normals[i].copy(e)).normalize();
         }
-
-        return this;
     }
 
     /**
@@ -210,10 +188,8 @@ export class Polygon {
      * (translations/rotations) will be applied before constructing the AABB.
      *
      *  Note: Returns a _new_ `Polygon` each time you call this.
-     *
-     * @return {Polygon} The AABB
      */
-    getAABB () {
+    getAABB(): Polygon {
         const vertices = this.computedVertices;
         const len = vertices.length;
         let xMin = vertices[0].x;

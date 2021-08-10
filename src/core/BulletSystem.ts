@@ -1,9 +1,9 @@
 import {ObjectPool} from '../engine/ObjectPool';
 import {Bullet} from './entities/Bullet';
-import {SAT} from '../engine/collision/SAT';
 import CollisionUtils from './CollisionUtils';
 import {PlayState} from "../client/play/PlayState";
 import {Soldier} from "./entities/Soldier";
+import {SeparatingAxisTheorem} from "../engine/physics/SeparatingAxisTheorem";
 
 export class BulletSystem {
     private state: PlayState;
@@ -16,6 +16,7 @@ export class BulletSystem {
 
     // Bullets currently flying around
     public readonly activeBullets: Set<Bullet> = new Set();
+    private sat: SeparatingAxisTheorem = new SeparatingAxisTheorem();
 
     constructor (state: PlayState, poolLimit?: number) {
         this.state = state;
@@ -78,7 +79,7 @@ export class BulletSystem {
                         if (bullet.firedBy !== soldier) {
                             // Check if on same level
                             if ((bullet.position.z >= soldier.position.z) && (bullet.position.z < soldier.position.z + 50)) {
-                                if (SAT.pointInPolygon(bullet.point, soldier.body)) {
+                                if (this.sat.testPointInPolygon(bullet.point, soldier.body)) {
                                     soldier.hitByBullet(bullet);
                                     bullet.kill();
                                     this.bulletPool.free(bullet);

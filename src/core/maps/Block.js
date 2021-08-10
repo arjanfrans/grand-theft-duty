@@ -1,4 +1,4 @@
-import {Polygon} from '../../engine/collision/Polygon';
+import {Polygon} from '../../engine/math/Polygon';
 import {Vector2} from "three";
 
 class Block {

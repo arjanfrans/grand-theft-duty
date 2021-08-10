@@ -1,26 +1,31 @@
-import { WebGLRenderer } from 'three';
+import {WebGLRenderer} from 'three';
+import {RendererInterface} from "./RendererInterface";
+import {State} from "../../client/State";
+import {ThreeRenderView} from "./ThreeRenderView";
 
-const DEFAULT_WIDTH = 800;
-const DEFAULT_HEIGHT = 600;
+export interface ThreeRendererOptions {
+    /**
+     * id of the html div to render into.
+     */
+    div: string;
 
-export class ThreeRenderer {
-    private _views?: Set<any>;
+    width: number;
+    height: number;
+}
+
+export class ThreeRenderer implements RendererInterface {
+    private _views?: Set<ThreeRenderView>;
     protected webglRenderer: WebGLRenderer;
 
-    /**
-     * @constructor
-     *
-     * @param {string} [divName=gameDiv] - id of the html div to render into.
-     */
-    constructor (divName = 'root') {
+    constructor (private options: ThreeRendererOptions) {
         this.webglRenderer = new WebGLRenderer();
 
-        this.webglRenderer.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        this.webglRenderer.setSize(options.width, options.height);
         this.webglRenderer.setClearColor(0x000000);
         this.webglRenderer.setPixelRatio(window.devicePixelRatio);
         this.webglRenderer.autoClear = false;
 
-        (document.getElementById(divName) as HTMLDivElement).appendChild(this.webglRenderer.domElement);
+        (document.getElementById(options.div) as HTMLDivElement).appendChild(this.webglRenderer.domElement);
     }
 
     set views (views) {
@@ -38,12 +43,20 @@ export class ThreeRenderer {
                 this.webglRenderer.setClearColor(view.clearColor);
             }
 
-            view.size = {
-                width: DEFAULT_WIDTH,
-                height: DEFAULT_HEIGHT
-            };
+            view.changeSize({
+                width: this.options.width,
+                height: this.options.height
+            })
 
             index += 1;
+        }
+    }
+
+    handleStateChange(state: State): void {
+        const views = state.views;
+
+        if (views.size > 0) {
+            this.views = views;
         }
     }
 
@@ -60,12 +73,7 @@ export class ThreeRenderer {
     {
     }
 
-    /**
-     * Render the view
-     *
-     * @returns {void}
-     */
-    render (interpolationPercentage) {
+    render (interpolationPercentage: number): void {
         this.webglRenderer.clear();
 
         let index = 0;
@@ -81,7 +89,7 @@ export class ThreeRenderer {
                 this.webglRenderer.clearDepth();
             }
 
-            this.webglRenderer.render(view.scene, view.camera);
+            this.webglRenderer.render(view.scene, view.getCamera());
 
             index += 1;
         }

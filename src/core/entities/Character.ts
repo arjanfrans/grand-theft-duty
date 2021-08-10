@@ -3,17 +3,17 @@ import {Entity} from './Entity';
 const GRAVITY = -0.2;
 
 /**
- * Entitiess that walk, run, jump, die and get hit by bullets.
- *
- * @class
+ * Entities that walk, run, jump, die and get hit by bullets.
  */
-class Character extends Entity {
-    constructor (x, y, z, width, height, depth, team) {
-        super(x, y, z, width, height, depth);
+export class Character extends Entity {
+    public maxHealth: number = 100;
+    public walkingSpeed: number = 0.1;
+    public runningSpeed: number = 0.2;
+    private _isRunning: boolean = false;
+    public health: number = 100;
 
-        this.maxHealth = 100;
-        this.walkingSpeed = 0.1;
-        this.runningSpeed = 0.2;
+    constructor (x, y, z, width, height, depth) {
+        super(x, y, z, width, height, depth);
 
         this.reset();
 
@@ -70,5 +70,3 @@ class Character extends Entity {
         }
     }
 }
-
-export default Character;

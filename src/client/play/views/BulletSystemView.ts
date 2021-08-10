@@ -3,7 +3,7 @@ import {ObjectPool} from '../../../engine/ObjectPool';
 import {View} from '../../../engine/graphics/View';
 import BulletView from './BulletView';
 import {BulletSystem} from "../../../core/BulletSystem";
-import Bullet from "../../../core/entities/Bullet";
+import {Bullet} from "../../../core/entities/Bullet";
 
 export class BulletSystemView extends View {
     private bulletSystem: BulletSystem;

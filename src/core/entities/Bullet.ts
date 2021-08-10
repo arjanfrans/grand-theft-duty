@@ -1,16 +1,17 @@
 import {Entity} from './Entity';
+import {Soldier} from "./Soldier";
 
-class Bullet extends Entity {
+export class Bullet extends Entity {
+    public firedBy?: Soldier;
+    public firedByWeapon?: any;
+    private maxDistance: number = 500;
+    private traveledDistance: number = 0;
+
     constructor (x, y, z, width, height) {
         super(x, y, z, width, height);
 
         this.dead = true;
-        this.firedBy = null;
-        this.firedByWeapon = null;
         this.speed = 0.3;
-
-        this.maxDistance = 500;
-        this.traveledDistance = 0;
 
         this.options.isBullet = true;
     }
@@ -36,5 +37,3 @@ class Bullet extends Entity {
         }
     }
 }
-
-export default Bullet;

@@ -1,5 +1,5 @@
 import MenuInput from './MenuInput';
-import MenuRenderView from './views/MenuRenderView';
+import {MenuRenderView} from './views/MenuRenderView';
 import MenuAudio from './MenuAudio';
 import OptionsMenu from './menus/OptionsMenu';
 import HelpMenu from './menus/HelpMenu';

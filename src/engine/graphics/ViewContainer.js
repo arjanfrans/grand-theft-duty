@@ -105,6 +105,8 @@ class ViewContainer {
         }
 
         this.mesh.scale.x = scale;
+        this.mesh.updateMatrix();
+        this.mesh.updateMatrixWorld(true)
     }
 
     set height (height) {
@@ -117,6 +119,8 @@ class ViewContainer {
         }
 
         this.mesh.scale.y = scale;
+        this.mesh.updateMatrix();
+        this.mesh.updateMatrixWorld(true)
     }
 }
 

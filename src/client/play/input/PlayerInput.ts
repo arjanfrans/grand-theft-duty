@@ -1,5 +1,5 @@
 import Gamepad from '../../../engine/input/Gamepad';
-import Player from "../../../core/entities/Player";
+import {Player} from "../../../core/entities/Player";
 import {Keys, LetterKeys} from "../../../engine/input/Keys";
 import {StateInput} from "../../../engine/state/StateInput";
 import {InputSourceInterface} from "../../../engine/input/InputSourceInterface";

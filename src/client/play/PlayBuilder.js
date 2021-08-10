@@ -4,7 +4,7 @@ import {ViewBuilder} from './ViewBuilder';
 import Match from '../../core/Match';
 import {PlayerInput} from './input/PlayerInput';
 import {UiInput} from './input/UiInput';
-import Player from '../../core/entities/Player';
+import {Player} from '../../core/entities/Player';
 
 import PlayAudio from './PlayAudio';
 import MapParser from '../../core/maps/MapParser';

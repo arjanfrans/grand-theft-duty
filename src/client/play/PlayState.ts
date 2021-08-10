@@ -2,7 +2,7 @@ import {State} from '../State';
 import {Soldier} from "../../core/entities/Soldier";
 import CollisionSystem from "../../core/CollisionSystem";
 import {BulletSystem} from "../../core/BulletSystem";
-import Player from "../../core/entities/Player";
+import {Player} from "../../core/entities/Player";
 
 /**
  * State of playing the game.

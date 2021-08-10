@@ -1,4 +1,4 @@
-import Character from './Character';
+import {Character} from './Character';
 import WeaponFactory from '../weapons/WeaponFactory';
 
 export class Soldier extends Character {

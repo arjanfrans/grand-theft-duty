@@ -1,6 +1,6 @@
 import {Soldier} from './Soldier';
 
-class Player extends Soldier {
+export class Player extends Soldier {
     constructor (x, y, z, width, height, depth, team) {
         super(x, y, z, width, height, depth, team);
 
@@ -15,5 +15,3 @@ class Player extends Soldier {
         super.update(delta);
     }
 }
-
-export default Player;

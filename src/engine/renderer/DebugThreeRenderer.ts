@@ -1,4 +1,4 @@
-import {ThreeRenderer} from "./ThreeRenderer";
+import {ThreeRenderer, ThreeRendererOptions} from "./ThreeRenderer";
 import RenderDebug from "../utils/debug/RenderDebug";
 import {WebGLProgram} from "three";
 
@@ -6,8 +6,8 @@ export class DebugThreeRenderer extends ThreeRenderer {
     private info: {} = {};
     private readonly renderDebug: RenderDebug;
 
-    constructor() {
-        super();
+    constructor (options: ThreeRendererOptions) {
+        super(options);
 
         this.renderDebug = new RenderDebug(this);
         this.renderDebug.init();
@@ -38,7 +38,7 @@ export class DebugThreeRenderer extends ThreeRenderer {
                     this.webglRenderer.clearDepth();
                 }
 
-                this.webglRenderer.render(view.scene, view.camera);
+                this.webglRenderer.render(view.scene, view.getCamera());
 
                 const programs: WebGLProgram[] = this.webglRenderer.info.programs as unknown as WebGLProgram[];
 

@@ -1,26 +1,38 @@
-import { Scene } from 'three';
+import {Camera, OrthographicCamera, PerspectiveCamera, Scene} from "three";
+import {RenderViewInterface} from "./RenderViewInterface";
+import {Dimension} from "../math/Dimension";
 
-class RenderView {
-    constructor () {
-        this.width = 800;
-        this.height = 600;
+export abstract class ThreeRenderView implements RenderViewInterface {
+    public width: number;
+    public height: number;
+    protected _initialized: boolean;
+    public clearColor: number;
+    public viewContainers: Map<any, any>;
+    public currentViewContainerName?: string;
+    public _currentViewContainer?: any;
+    private _scene?: Scene;
+
+    protected constructor () {
+        this.width = 0;
+        this.height = 0;
+
         this._initialized = false;
         this.clearColor = 0x000000;
         this.viewContainers = new Map();
-        this._currentViewContainer = null;
-        this.currentViewContainerName = null;
-        this.camera = null;
+        this.currentViewContainer = null;
     }
 
+    public abstract getCamera(): Camera|OrthographicCamera|PerspectiveCamera;
+
     init () {
-        this.scene = new Scene();
+        this._scene = new Scene();
 
         for (let [name, viewContainer] of this.viewContainers.entries()) {
             viewContainer.init();
             viewContainer.width = this.width;
             viewContainer.height = this.height;
 
-            this.scene.add(viewContainer.mesh);
+            this._scene.add(viewContainer.mesh);
 
             if (name === this.currentViewContainerName) {
                 viewContainer.visible = true;
@@ -31,6 +43,17 @@ class RenderView {
         }
     }
 
+    get scene(): Scene
+    {
+        const scene = this._scene;
+
+        if (!scene) {
+            throw new Error('Scene is undefined');
+        }
+
+        return scene;
+    }
+
     update (delta) {
         if (this._currentViewContainer) {
             this._currentViewContainer.update(delta);
@@ -39,21 +62,11 @@ class RenderView {
         }
     }
 
-    set size (size) {
+    changeSize (size: Dimension): void {
         this.width = size.width;
         this.height = size.height;
 
-        if (this.camera) {
-            this.camera.aspect = this.width / this.height;
-            this.camera.updateProjectionMatrix();
-        }
-
-        if (this._initialized) {
-            for (const viewContainer of this.viewContainers.values()) {
-                viewContainer.width = this.width;
-                viewContainer.height = this.height;
-            }
-        }
+        this.init();
     }
 
     set currentViewContainer (name) {
@@ -86,5 +99,3 @@ class RenderView {
         this.viewContainers.set(name, viewContainer);
     }
 }
-
-export default RenderView;

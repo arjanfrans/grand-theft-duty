@@ -1,29 +1,26 @@
-import {ThreeRenderer} from './graphics/ThreeRenderer';
-import {DebugThreeRenderer} from './graphics/DebugThreeRenderer';
 import Mainloop from '@arjanfrans/mainloop';
 import {State} from "../client/State";
 import {NullState} from "./state/NullState";
 import {InputSourceInterface} from "./input/InputSourceInterface";
+import {RendererInterface} from "./renderer/RendererInterface";
+
+export interface EngineOptions {
+    renderer: RendererInterface
+    input: { [key: string]: InputSourceInterface }
+}
 
 class Engine {
-    private readonly debugMode: boolean;
     private states: Map<string, State> = new Map();
     private currentState: State;
-    private readonly renderer: ThreeRenderer;
+    private readonly renderer: RendererInterface;
     public readonly inputSources: Map<string, InputSourceInterface> = new Map()
 
-    constructor (debugMode: boolean, inputSources: { [key: string]: InputSourceInterface}) {
-        this.debugMode = debugMode;
+    constructor (options: EngineOptions) {
         this.currentState = new NullState(this);
+        this.renderer = options.renderer;
 
-        for(const [key, inputSource] of Object.entries(inputSources)) {
+        for(const [key, inputSource] of Object.entries(options.input)) {
             this.inputSources.set(key, inputSource);
-        }
-
-        if (this.debugMode) {
-            this.renderer = new DebugThreeRenderer();
-        } else {
-            this.renderer = new ThreeRenderer();
         }
     }
 
@@ -56,11 +53,7 @@ class Engine {
         this.currentState = state;
         this.currentState.init();
 
-        if (this.currentState.views.size > 0) {
-            this.renderer.views = this.currentState.views;
-        } else {
-            console.warn('currentState has no View');
-        }
+        this.renderer.handleStateChange(this.currentState);
     }
 
     /**
@@ -105,11 +98,8 @@ class Engine {
 
         loop.setUpdate(update);
         loop.setDraw(render);
-
-        if (this.debugMode) {
-            loop.setBegin(before);
-            loop.setEnd(after);
-        }
+        loop.setBegin(before);
+        loop.setEnd(after);
 
         loop.start();
     }

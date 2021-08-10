@@ -5,6 +5,7 @@ import path from 'path';
 import MenuBuilder from './menu/MenuBuilder';
 import {KeyboardInputSource} from "../engine/input/KeyboardInputSource";
 import {GamepadInputSource} from "../engine/input/GamepadInputSource";
+import {DebugThreeRenderer} from "../engine/renderer/DebugThreeRenderer";
 
 const ASSET_PATH = path.resolve(__dirname, '../../assets/');
 const ASSET_CONFIG = {
@@ -38,17 +39,21 @@ export class Game {
 
     /**
      * Load assets and start the game.
-     *
-     * @returns {void}
      */
-    public async start () {
+    public async start (): Promise<void> {
         await AssetManager.init(ASSET_CONFIG);
 
         const engine = new Engine(
-            true,
             {
-                keyboard: new KeyboardInputSource(),
-                gamepad: new GamepadInputSource()
+                renderer: new DebugThreeRenderer({
+                    div: 'root',
+                    width: 800,
+                    height: 600
+                }),
+                input: {
+                    keyboard: new KeyboardInputSource(),
+                    gamepad: new GamepadInputSource()
+                }
             }
         );
 

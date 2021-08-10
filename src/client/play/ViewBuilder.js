@@ -1,6 +1,6 @@
 import ViewContainer from '../../engine/graphics/ViewContainer';
 
-import StatsRenderView from './ui/StatsRenderView';
+import {StatsRenderView} from './ui/StatsRenderView';
 import AmmoView from './ui/AmmoView';
 import HealthView from './ui/HealthView';
 import WeaponView from './ui/WeaponView';
@@ -51,7 +51,7 @@ export const ViewBuilder = {
         playView.currentViewContainer = 'main';
 
         // Camera follow
-        playView.cameraFollowView = playerView;
+        playView._cameraFollowView = playerView;
 
         return playView;
     }

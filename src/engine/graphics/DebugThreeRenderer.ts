@@ -1,5 +1,6 @@
 import {ThreeRenderer} from "./ThreeRenderer";
 import RenderDebug from "../utils/debug/RenderDebug";
+import {WebGLProgram, WebGLPrograms} from "three";
 
 export class DebugThreeRenderer extends ThreeRenderer {
     private info: {} = {};
@@ -39,7 +40,9 @@ export class DebugThreeRenderer extends ThreeRenderer {
 
                 this.webglRenderer.render(view.scene, view.camera);
 
-                info.memory.programs += this.webglRenderer.info.programs;
+                const programs: WebGLProgram[] = this.webglRenderer.info.programs as unknown as WebGLProgram[];
+
+                info.memory.programs += programs.length;
                 info.memory.geometries += this.webglRenderer.info.memory.geometries;
                 info.memory.textures += this.webglRenderer.info.memory.textures;
                 info.render.calls += this.webglRenderer.info.render.calls;

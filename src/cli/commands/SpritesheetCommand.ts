@@ -1,8 +1,8 @@
-import {CommandInterface} from "../CommandInterface";
-import glob from 'glob-promise';
+import { CommandInterface } from "../CommandInterface";
+import glob from "glob-promise";
 import * as path from "path";
-import {generate} from "../../engine/tools/spritesheet";
-import {Format} from "../../engine/tools/spritesheet/Format";
+import { generate } from "../../engine/tools/spritesheet";
+import { Format } from "../../engine/tools/spritesheet/Format";
 
 export interface SpritesheetCommandOptions {
     input: string;
@@ -10,16 +10,20 @@ export interface SpritesheetCommandOptions {
     extrude: number;
 }
 
-export class SpritesheetCommand implements CommandInterface<SpritesheetCommandOptions>{
+export class SpritesheetCommand
+    implements CommandInterface<SpritesheetCommandOptions>
+{
     async execute(options: SpritesheetCommandOptions): Promise<number> {
-        const directories: string[] = await glob(path.join(options.input, '*/'))
+        const directories: string[] = await glob(
+            path.join(options.input, "*/")
+        );
 
-        console.log('Using options:')
-        console.table(options)
+        console.log("Using options:");
+        console.table(options);
 
         for (const directory of directories) {
-            const name = SpritesheetCommand.baseDirectory(directory)
-            const files = await glob(path.join(directory, '**/*.png'));
+            const name = SpritesheetCommand.baseDirectory(directory);
+            const files = await glob(path.join(directory, "**/*.png"));
 
             if (files.length > 0) {
                 await generate(files, {
@@ -28,12 +32,16 @@ export class SpritesheetCommand implements CommandInterface<SpritesheetCommandOp
                     powerOfTwo: true,
                     padding: 2,
                     extrude: options.extrude,
-                    path: options.output
-                })
+                    path: options.output,
+                });
 
-                console.log(`Spritesheet ${name} written to ${path.resolve(options.output)}/${name}.{png|json}`)
+                console.log(
+                    `Spritesheet ${name} written to ${path.resolve(
+                        options.output
+                    )}/${name}.{png|json}`
+                );
             } else {
-                console.warn(`No files found in directory ${directory}`)
+                console.warn(`No files found in directory ${directory}`);
             }
         }
 
@@ -41,6 +49,9 @@ export class SpritesheetCommand implements CommandInterface<SpritesheetCommandOp
     }
 
     private static baseDirectory(value: string): string {
-        return <string>value.split('/').filter((el) => el.trim().length > 0).pop();
+        return value
+            .split("/")
+            .filter((el) => el.trim().length > 0)
+            .pop() as string;
     }
 }

@@ -1,5 +1,4 @@
 import * as generator from './generator';
-import * as async from 'async'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -64,6 +63,7 @@ export async function generate(files, options) {
   if (!fs.existsSync(options.path) && options.path !== '') fs.mkdirSync(options.path);
 
   files = await generator.copyFiles(files);
+  await generator.trimImages(files, options);
   files = await generator.getImagesSizes(files, options);
   await generator.extrudeImages(files, options)
   options = generator.determineCanvasSize(files, options);

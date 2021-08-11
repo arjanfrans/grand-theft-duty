@@ -23,6 +23,22 @@ export async function extrudeImages(files, options) {
     }
 }
 
+export async function trimImages(files, options) {
+    if (!options.trim) {
+        return null;
+    }
+
+    for (const file of files) {
+        var scale = options.scale && (options.scale !== '100%') ? ' -resize ' + options.scale : '';
+        var fuzz = options.fuzz ? ' -fuzz ' + options.fuzz : '';
+
+        //have to add 1px transparent border because imagemagick does trimming based on border pixel's color
+        var command = 'convert' + scale + ' ' + fuzz + ' -define png:exclude-chunks=date "' + file.path + '" -bordercolor transparent -border 1 -trim "' + file.path + '"';
+
+        await exec(command);
+    }
+}
+
 export async function copyFiles(files) {
     const result = [];
 

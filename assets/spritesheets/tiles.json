@@ -6,7 +6,7 @@
 	},
 	"frames": [
 		{
-			"filename": "animation_water_0008.png",
+			"filename": "animation_water_0001.png",
 			"frame": {"x":4,"y":4,"w":64,"h":64},
 			"rotated": false,
 			"trimmed": false,
@@ -14,8 +14,8 @@
 			"sourceSize": {"w":64,"h":64}
 		},
 		{
-			"filename": "roof1_edge.png",
-			"frame": {"x":148,"y":220,"w":64,"h":64},
+			"filename": "animation_water_0002.png",
+			"frame": {"x":76,"y":4,"w":64,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -62,8 +62,8 @@
 			"sourceSize": {"w":64,"h":64}
 		},
 		{
-			"filename": "animation_water_0001.png",
-			"frame": {"x":76,"y":4,"w":64,"h":64},
+			"filename": "animation_water_0008.png",
+			"frame": {"x":76,"y":148,"w":64,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -118,8 +118,8 @@
 			"sourceSize": {"w":64,"h":64}
 		},
 		{
-			"filename": "animation_water_0002.png",
-			"frame": {"x":76,"y":148,"w":64,"h":64},
+			"filename": "roof1_edge.png",
+			"frame": {"x":148,"y":220,"w":64,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},

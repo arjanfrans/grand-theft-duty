@@ -7,7 +7,7 @@ import { VoronoiRegion } from "../math/VornoiRegion";
 import { Vector2Helper } from "../math/Vector2Helper";
 import { SatResult } from "./SatResult";
 
-const POINT_POLYGON = new Box(new Vector2(), 1, 1).toPolygon();
+const POINT_POLYGON = new Box(new Vector2(), 0.00001, 0.00001).toPolygon();
 
 /**
  * Determining intersections of circles and

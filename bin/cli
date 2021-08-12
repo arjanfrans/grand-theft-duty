@@ -1,0 +1,3 @@
+ #!/bin/sh -e
+
+ts-node --project tsconfig.cli.json src/cli/index.ts "$@"

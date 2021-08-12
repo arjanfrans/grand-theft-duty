@@ -23,9 +23,9 @@
     "xtend": "^4.0.2"
   },
   "scripts": {
-    "cli": "ts-node --project tsconfig.cli.json src/cli/index.ts",
-    "build:spritesheets": "npm run cli -- spritesheet assets/images/ public/assets/spritesheets/ -e 2",
-    "build:audiosprites": "npm run cli -- audiosprite assets/audio/ public/assets/audiosprites/ -e ogg",
+    "dev:install-requirements": "./bin/cli install-requirements -s",
+    "build:spritesheets": "./bin/cli spritesheet assets/images/ public/assets/spritesheets/ -e 2",
+    "build:audiosprites": "./bin/cli audiosprite assets/audio/ public/assets/audiosprites/ -e ogg",
     "start": "react-scripts start",
     "start:production": "serve -s build",
     "build": "react-scripts build",

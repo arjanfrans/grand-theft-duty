@@ -1,8 +1,16 @@
 import { Command } from "commander";
 import { SpritesheetCommand } from "./commands/SpritesheetCommand";
 import { AudiospriteCommand } from "./commands/AudiospriteCommand";
+import { InstallRequirementsCommand } from "./commands/InstallRequirementsCommand";
 
 const program = new Command();
+
+program
+    .command("install-requirements")
+    .option("-s --sudo", "Run as sudo", false)
+    .action(async (options) => {
+        process.exit(await new InstallRequirementsCommand().execute(options));
+    });
 
 program
     .command("spritesheet <input> <output>")

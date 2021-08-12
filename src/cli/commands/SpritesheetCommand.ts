@@ -3,8 +3,9 @@ import glob from "glob-promise";
 import * as path from "path";
 import { generate } from "../../engine/tools/spritesheet";
 import { Format } from "../../engine/tools/spritesheet/Format";
+import { StringUtil } from "../../engine/utils/StringUtil";
 
-export interface SpritesheetCommandOptions {
+interface SpritesheetCommandOptions {
     input: string;
     output: string;
     extrude: number;
@@ -22,7 +23,7 @@ export class SpritesheetCommand
         console.table(options);
 
         for (const directory of directories) {
-            const name = SpritesheetCommand.baseDirectory(directory);
+            const name = StringUtil.baseDirectory(directory);
             const files = await glob(path.join(directory, "**/*.png"));
 
             if (files.length > 0) {
@@ -46,12 +47,5 @@ export class SpritesheetCommand
         }
 
         return 0;
-    }
-
-    private static baseDirectory(value: string): string {
-        return value
-            .split("/")
-            .filter((el) => el.trim().length > 0)
-            .pop() as string;
     }
 }

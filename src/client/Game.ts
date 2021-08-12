@@ -13,7 +13,7 @@ const ASSET_CONFIG = {
         maps: ASSET_PATH + "/maps",
         atlases: ASSET_PATH + "/spritesheets",
         fonts: ASSET_PATH + "/fonts",
-        audio: ASSET_PATH + "/audio/sprites",
+        audio: ASSET_PATH + "/audiosprites",
     },
     textureAtlases: ["soldier", "tiles", "world", "ui"],
     maps: ["level1", "level2"],

@@ -13,7 +13,6 @@
     "howler": "^2.0.2",
     "inherits": "^2.0.4",
     "mustache": "^4.2.0",
-    "platform-command": "^0.0.1",
     "quad-indices": "^2.0.1",
     "react-scripts": "^4.0.3",
     "three": "^0.84.0",
@@ -26,6 +25,7 @@
   "scripts": {
     "cli": "ts-node --project tsconfig.cli.json src/cli/index.ts",
     "build:spritesheets": "npm run cli -- spritesheet assets/images/ public/assets/spritesheets/ -e 2",
+    "build:audiosprites": "npm run cli -- audiosprite assets/audio/ public/assets/audiosprites/ -e ogg",
     "start": "react-scripts start",
     "start:production": "serve -s build",
     "build": "react-scripts build",
@@ -51,11 +51,9 @@
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "audiosprite": "^0.6.0",
     "convert-bmfont": "^1.0.2",
     "gh-pages": "^3.2.3",
-    "prettier": "^2.3.2",
-    "spritesheet-js": "git+https://github.com/arjanfrans/spritesheet.js.git"
+    "prettier": "^2.3.2"
   },
   "eslintConfig": {
     "extends": "react-app"

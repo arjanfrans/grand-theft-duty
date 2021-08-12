@@ -1,8 +1,7 @@
-import * as fs from "fs";
+import * as fs from "fs/promises";
+import {createWriteStream, createReadStream} from "fs";
 import * as path from "path";
-import * as async from "async"
 import * as _ from "underscore"
-import * as glob from "glob"
 
 const defaults = {
     output: 'output',
@@ -21,82 +20,25 @@ const defaults = {
     channels: 1,
     rawparts: '',
     ignorerounding: 0,
-    logger: {
-        debug: function(){},
-        info: function(){},
-        log: function(){}
-    }
 }
 
-module.exports = function(files) {
-    let opts = {}, callback = function(){}
-
-    if (arguments.length === 2) {
-        callback = arguments[1]
-    } else if (arguments.length >= 3) {
-        opts = arguments[1]
-        callback = arguments[2]
-    }
-
+export async function AudioSprite(files, opts) {
     if (!files || !files.length) {
-        return callback(new Error('No input files specified.'))
-    } else {
-        files = _.flatten(files.map(file => glob.sync(file)));
+        throw new Error('No input files specified.');
     }
-
-    opts = _.extend({}, defaults, opts)
-
-    // make sure output directory exists
-    const outputDir = path.dirname(opts.output)
-    if (!fs.existsSync(outputDir)) {
-        require('mkdirp').sync(outputDir)
-    }
-
-    let offsetCursor = 0
-    const wavArgs = ['-ar', opts.samplerate, '-ac', opts.channels, '-f', 's16le']
-    const tempFile = mktemp('audiosprite')
-
-    console.debug('Created temporary file', { file: tempFile })
-
-    const json = {
-        resources: []
-        , spritemap: {}
-    }
-
-    spawn('ffmpeg', ['-version']).on('exit', code => {
-        if (code) {
-            callback(new Error('ffmpeg was not found on your path'))
-        }
-
-        if (opts.silence) {
-            json.spritemap.silence = {
-                start: 0
-                , end: opts.silence
-                , loop: true
-            }
-
-            if (!opts.autoplay) {
-                json.autoplay = 'silence'
-            }
-
-            appendSilence(opts.silence + opts.gap, tempFile, processFiles)
-        } else {
-            processFiles()
-        }
-    })
 
     function mktemp(prefix) {
-        var tmpdir = require('os').tmpdir() || '.';
+        const tmpdir = require('os').tmpdir() || '.';
         return path.join(tmpdir, prefix + '.' + Math.random().toString().substr(2));
     }
 
     function spawn(name, opt) {
-        console.debug('Spawn', { cmd: [name].concat(opt).join(' ') });
+        console.debug('Spawn', {cmd: [name].concat(opt).join(' ')});
         return require('child_process').spawn(name, opt);
     }
 
     function pad(num, size) {
-        var str = num.toString();
+        let str = num.toString();
 
         while (str.length < size) {
             str = '0' + str;
@@ -105,144 +47,148 @@ module.exports = function(files) {
         return str;
     }
 
-    function makeRawAudioFile(src, cb) {
-        var dest = mktemp('audiosprite')
+    async function makeRawAudioFile(src) {
+        return new Promise(async (resolve, reject) => {
+            const dest = mktemp('audiosprite')
 
-        console.debug('Start processing', { file: src })
+            console.debug('Start processing', {file: src})
 
-        fs.exists(src, function(exists) {
+            const exists = await fs.access(src) === undefined;
+
             if (exists) {
                 let code = -1
                 let signal = undefined
                 let ffmpeg = spawn('ffmpeg', ['-i', path.resolve(src)]
                     .concat(wavArgs).concat('pipe:'))
-                let streamFinished = _.after(2, function () {
+                let streamFinished = _.after(2,  () => {
                     if (code) {
-                        return cb({
+                        console.dir({
                             msg: 'File could not be added',
                             file: src,
                             retcode: code,
                             signal: signal
                         })
+
+                        return reject(new Error('File could not be addde'));
                     }
-                    cb(null, dest)
+
+                    return resolve(dest);
                 });
-                let writeStream = fs.createWriteStream(dest, {flags: 'w'})
+
+                let writeStream = createWriteStream(dest, {flags: 'w'})
+
                 ffmpeg.stdout.pipe(writeStream)
                 writeStream.on('close', streamFinished)
-                ffmpeg.on('close', function(_code, _signal) {
+
+                ffmpeg.on('close',  (_code, _signal) => {
                     code = _code
                     signal = _signal
                     streamFinished()
                 })
-            }
-            else {
-                cb({ msg: 'File does not exist', file: src })
+            } else {
+                reject(new Error(`File does not exists: ${src}`))
             }
         })
     }
 
-    function appendFile(name, src, dest, cb) {
-        var size = 0
-        var reader = fs.createReadStream(src)
-        var writer = fs.createWriteStream(dest, {
+    async function appendFile(name, src, dest) {
+        let size = 0;
+        const reader = createReadStream(src);
+        const writer = createWriteStream(dest, {
             flags: 'a'
-        })
-        reader.on('data', function(data) {
-            size += data.length
-        })
-        reader.on('close', function() {
-            var originalDuration = size / opts.samplerate / opts.channels / 2
-            console.info('File added OK', { file: src, duration: originalDuration })
-            var extraDuration = Math.max(0, opts.minlength - originalDuration)
-            var duration = originalDuration + extraDuration
-            json.spritemap[name] = {
-                start: offsetCursor
-                , end: offsetCursor + duration
-                , loop: name === opts.autoplay || opts.loop.indexOf(name) !== -1
-            }
-            offsetCursor += originalDuration
+        });
 
-            var delta = Math.ceil(duration) - duration;
+        return new Promise((resolve, reject) => {
+            reader.on('data', function (data) {
+                size += data.length
+            })
 
-            if (opts.ignorerounding)
-            {
-                console.info('Ignoring nearest second silence gap rounding');
-                extraDuration = 0;
-                delta = 0;
-            }
+            reader.on('error', (err) => {
+                reject(err);
+            })
 
-            appendSilence(extraDuration + delta + opts.gap, dest, cb)
-        })
-        reader.pipe(writer)
-    }
+            reader.on('close', async () => {
+                const originalDuration = size / opts.samplerate / opts.channels / 2;
 
-    function appendSilence(duration, dest, cb) {
-        var buffer = new Buffer(Math.round(opts.samplerate * 2 * opts.channels * duration))
-        buffer.fill(0)
-        var writeStream = fs.createWriteStream(dest, { flags: 'a' })
-        writeStream.end(buffer)
-        writeStream.on('close', function() {
-            console.info('Silence gap added', { duration: duration })
-            offsetCursor += duration
-            cb()
-        })
-    }
+                console.info('File added OK', {file: src, duration: originalDuration})
 
-    function exportFile(src, dest, ext, opt, store, cb) {
-        var outfile = dest + '.' + ext;
+                let extraDuration = Math.max(0, opts.minlength - originalDuration);
 
-        spawn('ffmpeg',['-y', '-ar', opts.samplerate, '-ac', opts.channels, '-f', 's16le', '-i', src]
-            .concat(opt).concat(outfile))
-            .on('exit', function(code, signal) {
-                if (code) {
-                    return cb({
-                        msg: 'Error exporting file',
-                        format: ext,
-                        retcode: code,
-                        signal: signal
-                    })
+                const duration = originalDuration + extraDuration;
+
+                json.spritemap[name] = {
+                    start: offsetCursor
+                    , end: offsetCursor + duration
+                    , loop: name === opts.autoplay || opts.loop.indexOf(name) !== -1
                 }
-                if (ext === 'aiff') {
-                    exportFileCaf(outfile, dest + '.caf', function(err) {
-                        if (!err && store) {
-                            json.resources.push(dest + '.caf')
-                        }
-                        fs.unlinkSync(outfile)
-                        cb()
-                    })
-                } else {
-                    console.info('Exported ' + ext + ' OK', { file: outfile })
+                offsetCursor += originalDuration
+
+                let delta = Math.ceil(duration) - duration;
+
+                if (opts.ignorerounding) {
+                    console.info('Ignoring nearest second silence gap rounding');
+                    extraDuration = 0;
+                    delta = 0;
+                }
+
+                await appendSilence(extraDuration + delta + opts.gap, dest)
+                resolve();
+            })
+
+            reader.pipe(writer)
+        });
+    }
+
+    async function appendSilence(duration, dest) {
+        return new Promise((resolve, reject) => {
+            const buffer = new Buffer(Math.round(opts.samplerate * 2 * opts.channels * duration))
+
+            buffer.fill(0)
+
+            const writeStream = createWriteStream(dest, {flags: 'a'})
+
+            writeStream.end(buffer)
+
+            writeStream.on('error', (err) => {
+                reject(err);
+            })
+
+            writeStream.on('close', () => {
+                console.info('Silence gap added', {duration: duration})
+                offsetCursor += duration
+                resolve()
+            })
+        })
+    }
+
+    async function exportFile(src, dest, ext, opt, store) {
+        const outfile = dest + '.' + ext;
+
+        return new Promise((resolve, reject) => {
+            spawn('ffmpeg', ['-y', '-ar', opts.samplerate, '-ac', opts.channels, '-f', 's16le', '-i', src]
+                .concat(opt).concat(outfile))
+                .on('exit', function (code, signal) {
+                    if (code) {
+                        return reject({
+                            msg: 'Error exporting file',
+                            format: ext,
+                            retcode: code,
+                            signal: signal
+                        })
+                    }
+
+                    console.info('Exported ' + ext + ' OK', {file: outfile})
+
                     if (store) {
                         json.resources.push(outfile)
                     }
-                    cb()
-                }
-            })
+                    resolve()
+                })
+        })
     }
 
-    function exportFileCaf(src, dest, cb) {
-        if (process.platform !== 'darwin') {
-            return cb(true)
-        }
-
-        spawn('afconvert', ['-f', 'caff', '-d', 'ima4', src, dest])
-            .on('exit', function(code, signal) {
-                if (code) {
-                    return cb({
-                        msg: 'Error exporting file',
-                        format: 'caf',
-                        retcode: code,
-                        signal: signal
-                    })
-                }
-                console.info('Exported caf OK', { file: dest })
-                return cb()
-            })
-    }
-
-    function processFiles() {
-        var formats = {
+    async function processFiles() {
+        let formats = {
             aiff: []
             , wav: []
             , ac3: ['-acodec', 'ac3', '-ab', opts.bitrate + 'k']
@@ -251,26 +197,24 @@ module.exports = function(files) {
             , m4a: ['-ab', opts.bitrate + 'k', '-strict', '-2']
             , ogg: ['-acodec', 'libvorbis', '-f', 'ogg', '-ab', opts.bitrate + 'k']
             , opus: ['-acodec', 'libopus', '-ab', opts.bitrate + 'k']
-            , webm: ['-acodec',  'libvorbis', '-f', 'webm', '-dash', '1']
+            , webm: ['-acodec', 'libvorbis', '-f', 'webm', '-dash', '1']
         };
 
         if (opts.vbr >= 0 && opts.vbr <= 9) {
             formats.mp3 = formats.mp3.concat(['-aq', opts.vbr])
-        }
-        else {
+        } else {
             formats.mp3 = formats.mp3.concat(['-ab', opts.bitrate + 'k'])
         }
 
         // change quality of webm output - https://trac.ffmpeg.org/wiki/TheoraVorbisEncodingGuide
         if (opts['vbr:vorbis'] >= 0 && opts['vbr:vorbis'] <= 10) {
             formats.webm = formats.webm.concat(['-qscale:a', opts['vbr:vorbis']])
-        }
-        else {
+        } else {
             formats.webm = formats.webm.concat(['-ab', opts.bitrate + 'k'])
         }
 
         if (opts.export.length) {
-            formats = opts.export.split(',').reduce(function(memo, val) {
+            formats = opts.export.split(',').reduce(function (memo, val) {
                 if (formats[val]) {
                     memo[val] = formats[val]
                 }
@@ -278,95 +222,125 @@ module.exports = function(files) {
             }, {})
         }
 
-        var rawparts = opts.rawparts.length ? opts.rawparts.split(',') : null
-        var i = 0
+        const rawparts = opts.rawparts.length ? opts.rawparts.split(',') : null;
+        let i = 0;
         console.info(files);
-        async.forEachSeries(files, function(file, cb) {
+        for (const file of files) {
             i++
 
-            makeRawAudioFile(file, function(err, tmp) {
-                if (err) {
-                    console.debug(err);
-                    return cb(err)
-                }
+            const tmp = await makeRawAudioFile(file);
 
-                function tempProcessed() {
-                    fs.unlinkSync(tmp)
-                    cb()
-                }
+            const name = path.basename(file).replace(/\.[a-zA-Z0-9]+$/, '');
 
-                var name = path.basename(file).replace(/\.[a-zA-Z0-9]+$/, '')
-                appendFile(name, tmp, tempFile, function(err) {
-                    if (rawparts != null ? rawparts.length : void 0) {
-                        async.forEachSeries(rawparts, function(ext, cb) {
-                            console.debug('Start export slice', { name: name, format: ext, i: i })
-                            exportFile(tmp, opts.output + '_' + pad(i, 3), ext, formats[ext]
-                                , false, cb)
-                        }, tempProcessed)
-                    } else {
-                        tempProcessed()
+            await appendFile(name, tmp, tempFile);
+
+            if (rawparts != null ? rawparts.length : void 0) {
+                for (const ext of rawparts) {
+                    console.debug('Start export slice', {name: name, format: ext, i: i})
+                    await exportFile(tmp, opts.output + '_' + pad(i, 3), ext, formats[ext]
+                        , false)
+
+                    await fs.unlink(tmp)
+                }
+            } else {
+                await fs.unlink(tmp)
+            }
+        }
+
+        for (const ext of Object.keys(formats)) {
+            console.debug('Start export', {format: ext})
+
+            await exportFile(tempFile, opts.output, ext, formats[ext], true)
+        }
+
+        if (opts.autoplay) {
+            json.autoplay = opts.autoplay
+        }
+
+        json.resources = json.resources.map(function (e) {
+            return opts.path ? path.join(opts.path, path.basename(e)) : e
+        })
+
+        let finalJson = {};
+
+        switch (opts.format) {
+
+            case 'howler':
+            case 'howler2':
+                finalJson[opts.format === 'howler' ? 'urls' : 'src'] = [].concat(json.resources)
+                finalJson.sprite = {}
+                for (let sn in json.spritemap) {
+                    let spriteInfo = json.spritemap[sn]
+                    finalJson.sprite[sn] = [spriteInfo.start * 1000, (spriteInfo.end - spriteInfo.start) * 1000]
+                    if (spriteInfo.loop) {
+                        finalJson.sprite[sn].push(true)
                     }
-                })
-            })
-        }, function(err) {
-            if (err) {
-                return callback(new Error('Error adding file ' + err.message))
+                }
+                break
+
+            case 'createjs':
+                finalJson.src = json.resources[0]
+                finalJson.data = {audioSprite: []}
+                for (let sn in json.spritemap) {
+                    let spriteInfo = json.spritemap[sn]
+                    finalJson.data.audioSprite.push({
+                        id: sn,
+                        startTime: spriteInfo.start * 1000,
+                        duration: (spriteInfo.end - spriteInfo.start) * 1000
+                    })
+                }
+                break
+
+            case 'default':
+            default:
+                finalJson = json
+                break
+        }
+
+        await fs.unlink(tempFile)
+
+        const jsonfile = opts.output + '.json'
+
+        await fs.writeFile(jsonfile, JSON.stringify(finalJson, null, 2))
+    }
+
+    opts = Object.assign({}, defaults, opts);
+
+    let offsetCursor = 0
+    const wavArgs = ['-ar', opts.samplerate, '-ac', opts.channels, '-f', 's16le']
+    const tempFile = mktemp('audiosprite')
+
+    console.debug('Created temporary file', {file: tempFile})
+
+    const json = {
+        resources: []
+        , spritemap: {}
+    }
+
+    return new Promise((resolve, reject) => {
+        spawn('ffmpeg', ['-version']).on('exit', async (code) => {
+            if (code) {
+                return reject(new Error('ffmpeg was not found on your path'));
             }
 
-            async.forEachSeries(Object.keys(formats), function(ext, cb) {
-                console.debug('Start export', { format: ext })
-                exportFile(tempFile, opts.output, ext, formats[ext], true, cb)
-            }, function(err) {
-                if (err) {
-                    return callback(new Error('Error exporting file'))
-                }
-                if (opts.autoplay) {
-                    json.autoplay = opts.autoplay
+            if (opts.silence) {
+                json.spritemap.silence = {
+                    start: 0
+                    , end: opts.silence
+                    , loop: true
                 }
 
-                json.resources = json.resources.map(function(e) {
-                    return opts.path ? path.join(opts.path, path.basename(e)) : e
-                })
-
-                var finalJson = {}
-
-                switch (opts.format) {
-
-                    case 'howler':
-                    case 'howler2':
-                        finalJson[opts.format === 'howler' ? 'urls' : 'src'] = [].concat(json.resources)
-                        finalJson.sprite = {}
-                        for (var sn in json.spritemap) {
-                            var spriteInfo = json.spritemap[sn]
-                            finalJson.sprite[sn] = [spriteInfo.start * 1000, (spriteInfo.end - spriteInfo.start) * 1000]
-                            if (spriteInfo.loop) {
-                                finalJson.sprite[sn].push(true)
-                            }
-                        }
-                        break
-
-                    case 'createjs':
-                        finalJson.src = json.resources[0]
-                        finalJson.data = {audioSprite: []}
-                        for (var sn in json.spritemap) {
-                            var spriteInfo = json.spritemap[sn]
-                            finalJson.data.audioSprite.push({
-                                id: sn,
-                                startTime: spriteInfo.start * 1000,
-                                duration: (spriteInfo.end - spriteInfo.start) * 1000
-                            })
-                        }
-                        break
-
-                    case 'default':
-                    default:
-                        finalJson = json
-                        break
+                if (!opts.autoplay) {
+                    json.autoplay = 'silence'
                 }
 
-                fs.unlinkSync(tempFile)
-                callback(null, finalJson)
-            })
+                await appendSilence(opts.silence + opts.gap, tempFile)
+                await processFiles();
+            } else {
+                await processFiles()
+            }
+
+            resolve();
         })
-    }
+    });
 }

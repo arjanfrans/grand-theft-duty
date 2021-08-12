@@ -123,17 +123,6 @@ opts.ignorerounding = parseInt(argv.ignorerounding, 0)
 
 var files = _.uniq(argv._)
 
-if (process.platform === 'win32') {
-    var glob = require('glob');
-    function flatten(arr){
-        return [].concat.apply([], arr);
-    }
-    function getNames(fname){
-        return (glob.hasMagic(fname)) ? glob.sync(fname) : [fname];
-    }
-    files = flatten(files.map(getNames));
-}
-
 if (argv.help || !files.length) {
     if (!argv.help) {
         winston.error('No input files specified.')

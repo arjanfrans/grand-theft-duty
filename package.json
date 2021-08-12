@@ -15,7 +15,7 @@
     "mustache": "^4.2.0",
     "quad-indices": "^2.0.1",
     "react-scripts": "^4.0.3",
-    "three": "^0.84.0",
+    "three": "^0.125.0",
     "ts-node": "^10.2.0",
     "typescript": "^3.9.10",
     "underscore": "^1.13.1",

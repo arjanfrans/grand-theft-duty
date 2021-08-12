@@ -5,42 +5,29 @@
  *
  * @return {Map} Stats per team
  */
-function soldierStatsByTeam (stat) {
-    const resultsByTeam = new Map();
+import { Soldier } from "./entities/Soldier";
 
-    for (let [teamName, soldiers] of this.teams.entries()) {
-        for (const soldier of soldiers) {
-            const teamResult = resultsByTeam.get(teamName);
+export class Match {
+    private matchTime: number = 0;
+    private matchDuration: number = 300000;
+    public readonly soldiers: Set<Soldier> = new Set<Soldier>();
+    private teamNames: string[] = [];
+    private teams: Map<string, Set<Soldier>> = new Map();
 
-            if (teamResult) {
-                resultsByTeam.set(teamName, teamResult + soldier[stat]);
-            } else {
-                resultsByTeam.set(teamName, soldier[stat]);
-            }
-        }
-    }
-}
-
-class Match {
-    constructor (teams) {
-        this.matchTime = 0;
-        this.matchDuration = 300000;
-        this.soldiers = new Set();
-        this.teamNames = [];
-        this.teams = new Map();
-
+    constructor(teams: string[]) {
         for (const teamName of teams) {
             this.teamNames.push(teamName);
             this.teams.set(teamName, new Set());
         }
     }
 
-    teamWithLeastPlayers () {
-        let leastTeamName = null;
+    teamWithLeastPlayers() {
+        let leastTeamName: string | undefined = undefined;
         let minCount = Number.MAX_VALUE;
 
         for (const teamName of this.teamNames) {
-            const count = this.teams.get(teamName).size;
+            const team = this.teams.get(teamName) as Set<Soldier>;
+            const count = team.size;
 
             if (count < minCount) {
                 leastTeamName = teamName;
@@ -51,7 +38,7 @@ class Match {
         return leastTeamName;
     }
 
-    addSoldier (soldier, teamName) {
+    addSoldier(soldier, teamName) {
         if (!teamName) {
             teamName = this.teamWithLeastPlayers();
         }
@@ -71,7 +58,7 @@ class Match {
         return false;
     }
 
-    sortedScores () {
+    sortedScores() {
         const teams = new Map();
 
         for (const soldier of new Set([...this.soldiers])) {
@@ -85,7 +72,7 @@ class Match {
                 teams.set(soldier.team, {
                     kills: soldier.totalKills,
                     deaths: soldier.totalDeaths,
-                    soldiers: [soldier]
+                    soldiers: [soldier],
                 });
             }
         }
@@ -94,12 +81,14 @@ class Match {
             team.soldiers.sort((a, b) => b.kills - a.kills);
         }
 
-        return new Map([...teams.entries()].sort((teamA, teamB) => {
-            return teamB[1].kills - teamA[1].kills;
-        }));
+        return new Map(
+            [...teams.entries()].sort((teamA, teamB) => {
+                return teamB[1].kills - teamA[1].kills;
+            })
+        );
     }
 
-    removeSoldier (soldier) {
+    removeSoldier(soldier) {
         for (const team of this.teams.values()) {
             if (team.has(soldier)) {
                 team.delete(soldier);
@@ -111,23 +100,34 @@ class Match {
         return false;
     }
 
-    killsByTeam () {
-        return soldierStatsByTeam('kills');
+    killsByTeam() {
+        return this.soldierStatsByTeam("kills");
     }
 
-    deathsByTeam () {
-        return soldierStatsByTeam('deaths');
+    deathsByTeam() {
+        return this.soldierStatsByTeam("deaths");
+    }
+    private soldierStatsByTeam(stat) {
+        const resultsByTeam = new Map();
+
+        for (let [teamName, soldiers] of this.teams.entries()) {
+            for (const soldier of soldiers) {
+                const teamResult = resultsByTeam.get(teamName);
+
+                if (teamResult) {
+                    resultsByTeam.set(teamName, teamResult + soldier[stat]);
+                } else {
+                    resultsByTeam.set(teamName, soldier[stat]);
+                }
+            }
+        }
     }
 
-    start () {
+    start() {}
 
-    }
+    end() {}
 
-    end () {
-
-    }
-
-    update (delta) {
+    update(delta): void {
         this.matchTime += delta;
 
         if (this.matchTime >= this.matchDuration) {
@@ -135,5 +135,3 @@ class Match {
         }
     }
 }
-
-export default Match;

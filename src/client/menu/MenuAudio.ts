@@ -1,5 +1,5 @@
 import { StateAudio } from "../StateAudio";
-import MenuState from "./MenuState";
+import { MenuState } from "./MenuState";
 
 class MenuAudio extends StateAudio {
     private selectedItem: any;

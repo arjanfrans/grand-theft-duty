@@ -1,9 +1,9 @@
-import { ObjectPool } from "../engine/utils/ObjectPool";
-import { Bullet } from "./entities/Bullet";
-import CollisionUtils from "./CollisionUtils";
 import { PlayState } from "../client/play/PlayState";
 import { Soldier } from "./entities/Soldier";
+import { ObjectPool } from "../engine/utils/ObjectPool";
+import { Bullet } from "./entities/Bullet";
 import { SeparatingAxisTheorem } from "../engine/physics/SeparatingAxisTheorem";
+import CollisionUtils from "./CollisionUtils";
 
 export class BulletSystem {
     private state: PlayState;
@@ -57,12 +57,7 @@ export class BulletSystem {
         return bullet;
     }
 
-    killBullet(bullet) {
-        bullet.kill();
-        this.bulletPool.free(bullet());
-    }
-
-    update(delta) {
+    update(delta: number): void {
         for (const soldier of this.soldiers) {
             if (soldier.actions.firedBullet) {
                 this._fireBullet(soldier);
@@ -71,7 +66,10 @@ export class BulletSystem {
 
         for (const bullet of this.activeBullets) {
             bullet.update(delta);
-            CollisionUtils.wallCollision(this.map, bullet, () => bullet.kill());
+            CollisionUtils.wallCollision(this.map, bullet, () => {
+                bullet.kill();
+                this.bulletPool.free(bullet);
+            });
 
             if (bullet.dead) {
                 this.deadBullets.add(bullet);

@@ -1,13 +1,18 @@
-import CollisionUtils from './CollisionUtils';
+import CollisionUtils from "../../core/CollisionUtils";
+import { PlayState } from "../play/PlayState";
+import { Soldier } from "../../core/entities/Soldier";
+import { SystemUpdateInterface } from "../../engine/system/SystemUpdateInterface";
 
-class CollisionSystem {
-    constructor (state) {
-        this.state = state;
+export class CollisionUpdateSystem implements SystemUpdateInterface {
+    private readonly entities: Set<Soldier>;
+    private readonly map: any;
+
+    constructor(state: PlayState) {
         this.entities = state.soldiers;
-        this.map = this.state.map;
+        this.map = state.map;
     }
 
-    update (delta) {
+    update(delta: number): boolean {
         for (const entity of this.entities) {
             CollisionUtils.wallCollision(this.map, entity, (response) => {
                 entity.position.x -= response.overlapV.x;
@@ -15,7 +20,7 @@ class CollisionSystem {
             });
 
             CollisionUtils.floorCollision(this.map, entity, delta, (block) => {
-                if (block.type === 'water') {
+                if (block.type === "water") {
                     entity.fall();
                     entity.kill();
                 } else {
@@ -24,7 +29,7 @@ class CollisionSystem {
                 }
             });
         }
+
+        return true;
     }
 }
-
-export default CollisionSystem;

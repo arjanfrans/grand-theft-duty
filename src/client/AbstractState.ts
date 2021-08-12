@@ -1,38 +1,58 @@
 import { Engine } from "../engine/Engine";
-import { StateInput } from "../engine/state/StateInput";
+import { SystemUpdateInterface } from "../engine/system/SystemUpdateInterface";
 
 export abstract class AbstractState {
     protected readonly name: string;
     protected readonly engine: Engine;
-    protected audio?: any;
-    protected inputs: Set<StateInput>;
     public readonly views: Set<any>;
     protected _initialized = false;
+
+    protected systems: { system: SystemUpdateInterface; priority: number }[] =
+        [];
+    private orderedSystems: SystemUpdateInterface[] = [];
 
     protected constructor(name: string, engine: Engine) {
         this.name = name;
         this.engine = engine;
-        this.inputs = new Set();
         this.views = new Set();
-        this.audio = undefined;
     }
 
     public addView(view: any): void {
         this.views.add(view);
     }
 
-    public addInput(input: any): void {
-        this.inputs.add(input);
+    public addSystem(system: SystemUpdateInterface, priority: number) {
+        this.systems.push({
+            system,
+            priority,
+        });
+
+        this.orderSystems();
     }
 
-    public abstract update(delta: number);
+    private orderSystems(): void {
+        const systems = [...this.systems].sort((a, b) => {
+            if (a.priority < b.priority) {
+                return -1;
+            } else if (a.priority > b.priority) {
+                return 1;
+            }
+            return 0;
+        });
+
+        this.orderedSystems = systems.map(({ system }) => system);
+    }
+
+    public update(delta: number) {
+        for (const system of this.orderedSystems) {
+            if (!system.update(delta)) {
+                break;
+            }
+        }
+    }
 
     init() {
         if (!this._initialized) {
-            if (this.audio) {
-                this.audio.init();
-            }
-
             for (const view of this.views.values()) {
                 view.init();
             }
@@ -41,21 +61,9 @@ export abstract class AbstractState {
         }
     }
 
-    updateInputs(delta) {
-        for (const input of this.inputs.values()) {
-            input.update(delta);
-        }
-    }
-
     render(delta) {
         for (const view of this.views.values()) {
             view.update(delta);
-        }
-    }
-
-    updateAudio(delta) {
-        if (this.audio) {
-            this.audio.update(delta);
         }
     }
 }

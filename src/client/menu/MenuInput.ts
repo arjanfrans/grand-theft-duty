@@ -1,5 +1,5 @@
 import Gamepad from "../../engine/input/Gamepad";
-import MenuState from "./MenuState";
+import { MenuState } from "./MenuState";
 import { AllKeys, Keys } from "../../engine/input/Keys";
 import { StateInput } from "../../engine/state/StateInput";
 import { InputSourceInterface } from "../../engine/input/InputSourceInterface";

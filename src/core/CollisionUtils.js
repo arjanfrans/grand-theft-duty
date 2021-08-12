@@ -73,7 +73,7 @@ const CollisionUtils = {
         }
     },
 
-    floorCollision (map, entity, delta, onCollision = () => {}) {
+    floorCollision (map, entity, delta, onCollision) {
         const nextEntityPosition = {
             x: entity.position.x + (entity.velocity.x * delta),
             y: entity.position.y + (entity.velocity.y * delta),

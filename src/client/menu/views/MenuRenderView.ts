@@ -1,7 +1,7 @@
 import { Camera, OrthographicCamera, PerspectiveCamera } from "three";
 import { ThreeRenderView } from "../../../engine/renderer/render-view/ThreeRenderView";
 import { Dimension } from "../../../engine/math/Dimension";
-import MenuState from "../MenuState";
+import { MenuState } from "../MenuState";
 
 export class MenuRenderView extends ThreeRenderView {
     public camera?: OrthographicCamera = undefined;

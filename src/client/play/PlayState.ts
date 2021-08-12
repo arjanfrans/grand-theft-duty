@@ -1,27 +1,29 @@
 import { AbstractState } from "../AbstractState";
 import { Soldier } from "../../core/entities/Soldier";
-import CollisionSystem from "../../core/CollisionSystem";
-import { BulletSystem } from "../../core/BulletSystem";
 import { Player } from "../../core/entities/Player";
+import { SystemUpdateInterface } from "../../engine/system/SystemUpdateInterface";
+import { PauseUpdateSystem } from "../update-system/PauseUpdateSystem";
+import { BulletSystem } from "../../core/BulletSystem";
+import { Match } from "../../core/Match";
+import { Engine } from "../../engine/Engine";
 
 /**
  * State of playing the game.
  */
 export class PlayState extends AbstractState {
-    private collisionSystem?: CollisionSystem;
-    private bulletSystem?: BulletSystem;
+    public bulletSystem: BulletSystem;
     public player?: Player;
     public map: any;
     public match: any;
     public showScores: boolean = false;
-    public paused: boolean = false;
-    private onPause?: () => any;
+    private pauseSystem?: PauseUpdateSystem;
 
-    constructor(engine, match, map) {
+    constructor(engine: Engine, match: Match, map: any) {
         super("play", engine);
 
         this.map = map;
         this.match = match;
+        this.bulletSystem = new BulletSystem(this, 200);
     }
 
     init() {
@@ -32,53 +34,33 @@ export class PlayState extends AbstractState {
         return this.match.soldiers;
     }
 
-    pause() {
-        if (this.onPause) {
-            this.onPause();
-        }
+    get paused(): boolean {
+        const pauseSystem = this.pauseSystem;
 
-        this.paused = true;
+        return pauseSystem ? pauseSystem.isPaused : false;
+    }
+
+    pause() {
+        const pauseSystem = this.pauseSystem;
+
+        if (pauseSystem) {
+            pauseSystem.isPaused = true;
+        }
     }
 
     resume() {
-        this.paused = false;
+        const pauseSystem = this.pauseSystem;
+
+        if (pauseSystem) {
+            pauseSystem.isPaused = false;
+        }
     }
 
-    /**
-     * Update the state. Logic and views are updated.
-     *
-     * @param {float} delta - delta time.
-     *
-     * @returns {void}
-     */
-    update(delta) {
-        super.updateInputs(delta);
-
-        if (this.paused) {
-            return;
+    addSystem(system: SystemUpdateInterface, priority: number) {
+        if (system instanceof PauseUpdateSystem) {
+            this.pauseSystem = system;
         }
 
-        super.updateAudio(delta);
-
-        // Relies on previous turn
-        if (this.bulletSystem) {
-            this.bulletSystem.update(delta);
-        }
-
-        for (const soldier of this.soldiers) {
-            soldier.update(delta);
-
-            if (soldier.dead) {
-                const position = this.map.randomRespawnPosition();
-
-                soldier.respawn(position);
-            }
-        }
-
-        this.match.update(delta);
-
-        if (this.collisionSystem) {
-            this.collisionSystem.update(delta);
-        }
+        super.addSystem(system, priority);
     }
 }

@@ -3,14 +3,13 @@ import { AbstractState } from "../client/AbstractState";
 import { NullState } from "./state/NullState";
 import { InputSourceInterface } from "./input/InputSourceInterface";
 import { RendererInterface } from "./renderer/RendererInterface";
-import { EngineInterface } from "./EngineInterface";
 
 export interface EngineOptions {
     renderer: RendererInterface;
     input: { [key: string]: InputSourceInterface };
 }
 
-export class Engine implements EngineInterface {
+export class Engine {
     private states: Map<string, AbstractState> = new Map();
     private currentState: AbstractState;
     private readonly renderer: RendererInterface;
@@ -27,24 +26,17 @@ export class Engine implements EngineInterface {
 
     /**
      * Add a State to the engine.
-     *
-     * @param {string} name - Name of the state.
-     * @param {AbstractState} state - Instance of the state.
-     *
-     * @returns {void}
      */
-    addState(name, state) {
+    addState(name: string, state: AbstractState): void {
         this.states.set(name, state);
     }
 
     /**
      * Change the current state and change the renderer's view to the view of the state.
      *
-     * @param {string} name - Name of the state to change to.
-     *
-     * @returns {void}
+     * @param name Name of the state to change to.
      */
-    changeState(name) {
+    changeState(name: string): void {
         const state = this.states.get(name);
 
         if (!state) {
@@ -60,20 +52,16 @@ export class Engine implements EngineInterface {
     /**
      * Remove a state from the engine.
      *
-     * @param {string} name - Name of the state to remove.
-     *
-     * @returns {void}
+     * @param name Name of the state to remove.
      */
-    removeState(name) {
+    removeState(name: string): void {
         this.states.delete(name);
     }
 
     /**
      * The game loop. Updates the current state and renders it's Views.
-     *
-     * @returns {void}
      */
-    run() {
+    run(): void {
         const render = (interpolationPercentage) => {
             this.currentState.render(interpolationPercentage);
             this.renderer.render(interpolationPercentage);

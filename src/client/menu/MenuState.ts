@@ -1,30 +1,33 @@
-import {AbstractState} from '../AbstractState';
+import { AbstractState } from "../AbstractState";
 
-class MenuState extends AbstractState {
+export class MenuState extends AbstractState {
+    public menus: Map<any, any>;
+    private _currentMenu: any;
+    public currentMenuName: any;
+    public options: Map<string, string>;
+    public gamePlaying: boolean;
+    public currentOptionsEdit: any;
 
-    constructor (engine) {
-        super('menu', engine);
+    constructor(engine) {
+        super("menu", engine);
 
         this.menus = new Map();
         this._currentMenu = null;
         this.currentMenuName = null;
-        this.options = new Map([
-            ['name', 'Unknown Soldier'],
-        ]);
+        this.options = new Map([["name", "Unknown Soldier"]]);
         this.gamePlaying = false;
         this.currentOptionsEdit = null;
     }
 
-
-    addMenu (name, menu) {
+    addMenu(name, menu) {
         this.menus.set(name, menu);
     }
 
-    changeOption (optionName, value) {
+    changeOption(optionName, value) {
         this.options.set(optionName, value);
     }
 
-    set currentMenu (name) {
+    set currentMenu(name) {
         this._currentMenu = this.menus.get(name);
 
         if (!this._currentMenu) {
@@ -34,19 +37,11 @@ class MenuState extends AbstractState {
         this.currentMenuName = name;
     }
 
-    get currentMenu () {
+    get currentMenu() {
         return this._currentMenu;
     }
 
-    init () {
+    init() {
         super.init();
     }
-
-    update (delta) {
-        super.updateInputs(delta);
-
-        super.updateAudio(delta);
-    }
 }
-
-export default MenuState;

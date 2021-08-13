@@ -1,3 +1,3 @@
-export interface StateInput {
+export interface SystemInterface {
     update(delta: number): void;
 }

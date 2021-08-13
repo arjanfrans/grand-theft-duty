@@ -1,7 +1,7 @@
 import { WebGLRenderer } from "three";
 import { RendererInterface } from "./RendererInterface";
-import { AbstractState } from "../../client/AbstractState";
-import { ThreeRenderView } from "./render-view/ThreeRenderView";
+import { ThreeScene } from "./render-view/ThreeScene";
+import {AbstractState} from "../state/AbstractState";
 
 export interface ThreeRendererOptions {
     /**
@@ -14,7 +14,7 @@ export interface ThreeRendererOptions {
 }
 
 export class ThreeRenderer implements RendererInterface {
-    private _views?: Set<ThreeRenderView>;
+    private _scenes?: Set<ThreeScene>;
     protected webglRenderer: WebGLRenderer;
 
     constructor(private options: ThreeRendererOptions) {
@@ -30,8 +30,8 @@ export class ThreeRenderer implements RendererInterface {
         );
     }
 
-    set views(views) {
-        this._views = views;
+    set scenes(views) {
+        this._scenes = views;
 
         if (!views) {
             return;
@@ -55,15 +55,15 @@ export class ThreeRenderer implements RendererInterface {
     }
 
     handleStateChange(state: AbstractState): void {
-        const views = state.views;
+        const scenes = state.scenes as Set<ThreeScene>;
 
-        if (views.size > 0) {
-            this.views = views;
+        if (scenes.size > 0) {
+            this.scenes = scenes;
         }
     }
 
-    get views() {
-        return this._views;
+    get scenes() {
+        return this._scenes;
     }
 
     preRender(): void {}
@@ -75,7 +75,7 @@ export class ThreeRenderer implements RendererInterface {
 
         let index = 0;
 
-        const views = this._views;
+        const views = this._scenes;
 
         if (!views) {
             return;

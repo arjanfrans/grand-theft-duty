@@ -1,5 +1,5 @@
 import { RendererInterface } from "./RendererInterface";
-import { AbstractState } from "../../client/AbstractState";
+import {AbstractState} from "../state/AbstractState";
 
 export class NullRenderer implements RendererInterface {
     handleStateChange(state: AbstractState): void {}

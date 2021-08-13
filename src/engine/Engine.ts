@@ -1,5 +1,5 @@
 import Mainloop from "@arjanfrans/mainloop";
-import { AbstractState } from "../client/AbstractState";
+import { AbstractState } from "./state/AbstractState";
 import { NullState } from "./state/NullState";
 import { InputSourceInterface } from "./input/InputSourceInterface";
 import { RendererInterface } from "./renderer/RendererInterface";

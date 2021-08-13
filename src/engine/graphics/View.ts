@@ -1,8 +1,13 @@
-export class View {
-    constructor () {
-        this.mesh = null;
-        this.initialPosition = null;
-        this._initialized = false;
+import {Object3D, Vector3} from "three";
+
+export abstract class View {
+    public mesh?: Object3D = undefined;
+    protected initialPosition?: Vector3 = undefined
+    protected _initialized: boolean = false;
+
+    public getMesh(): Object3D
+    {
+        return this.mesh as Object3D;
     }
 
     init () {
@@ -19,12 +24,8 @@ export class View {
         this._initialized = true;
     }
 
-    get position () {
-        return this.mesh.position;
-    }
-
-    set position ({ x, y, z }) {
-        if (this.mesh && this.initialized) {
+    set position ({ x, y, z }: {x?: number, y?: number, z?: number}) {
+        if (this.mesh && this._initialized) {
             if (x) {
                 this.mesh.position.x = x;
             }
@@ -37,11 +38,7 @@ export class View {
                 this.mesh.position.z = z;
             }
         } else {
-            this.initialPosition = {
-                x: x,
-                y: y,
-                z: z
-            };
+            this.initialPosition = new Vector3(x, y, z);
         }
     }
 }

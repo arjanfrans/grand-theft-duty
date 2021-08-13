@@ -32,8 +32,8 @@ export class DebugThreeRenderer extends ThreeRenderer {
 
         let index = 0;
 
-        if (this.views) {
-            for (const view of this.views) {
+        if (this.scenes) {
+            for (const view of this.scenes) {
                 if (index > 0) {
                     this.webglRenderer.clearDepth();
                 }

@@ -1,20 +1,10 @@
 import { Vector2 } from 'three';
 
 export class TextureFrame {
-    constructor (textureAtlas, geometry, initialFrame, fixed = false) {
+    constructor (textureAtlas, geometry, fixed = false) {
         this.textureAtlas = textureAtlas;
         this.geometry = geometry;
         this.fixed = fixed;
-
-        if (initialFrame) {
-            this.frame = initialFrame;
-
-            if (fixed) {
-                const size = this.textureAtlas.getFrameSize(initialFrame);
-
-                this._changeSize(size.width, size.height);
-            }
-        }
     }
 
     get texture () {

@@ -5,11 +5,11 @@ import {
     PerspectiveCamera,
     SpotLight,
 } from "three";
-import { ThreeRenderView } from "../../../engine/renderer/render-view/ThreeRenderView";
-import { PlayState } from "../PlayState";
-import { Dimension } from "../../../engine/math/Dimension";
+import { ThreeScene } from "../engine/renderer/render-view/ThreeScene";
+import { Dimension } from "../engine/math/Dimension";
+import {PlayState} from "../state/PlayState";
 
-export class PlayRenderView extends ThreeRenderView {
+export class PlayScene extends ThreeScene {
     public camera?: PerspectiveCamera = undefined;
     private state: PlayState;
     private map: any;
@@ -68,10 +68,6 @@ export class PlayRenderView extends ThreeRenderView {
     }
 
     update(delta: number) {
-        if (this.state.paused) {
-            return;
-        }
-
         super.update(delta);
 
         if (this.cameraFollowView) {

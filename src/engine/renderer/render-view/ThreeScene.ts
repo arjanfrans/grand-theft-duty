@@ -1,8 +1,8 @@
 import { Camera, OrthographicCamera, PerspectiveCamera, Scene } from "three";
-import { RenderViewInterface } from "./RenderViewInterface";
+import { SceneInterface } from "./SceneInterface";
 import { Dimension } from "../../math/Dimension";
 
-export abstract class ThreeRenderView implements RenderViewInterface {
+export abstract class ThreeScene implements SceneInterface {
     public width: number;
     public height: number;
     protected _initialized: boolean;

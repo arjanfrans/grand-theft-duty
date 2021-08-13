@@ -1,20 +1,20 @@
 import ViewContainer from '../../engine/graphics/ViewContainer';
 
-import {StatsRenderView} from './ui/StatsRenderView';
-import AmmoView from './ui/AmmoView';
-import HealthView from './ui/HealthView';
-import WeaponView from './ui/WeaponView';
+import {StatsScene} from '../../state/StatsScene';
+import AmmoView from '../../views/AmmoView';
+import HealthView from '../../views/HealthView';
+import WeaponView from '../../views/WeaponView';
 import ScoreView from './ui/ScoreView';
 
 import BulletSystemView from './views/BulletSystemView';
 import WorldMapView from './views/WorldMapView';
 import SoldierView from './views/SoldierView';
 import {SoldierViewPool} from './views/SoldierViewPool';
-import {PlayRenderView} from './views/PlayRenderView';
+import {PlayScene} from '../../scene/PlayScene';
 
 export const ViewBuilder = {
     uiView (playState) {
-        const uiView = new StatsRenderView(playState);
+        const uiView = new StatsScene(playState);
         const uiViewContainer = new ViewContainer();
 
         const scoreView = new ScoreView(playState);
@@ -33,7 +33,7 @@ export const ViewBuilder = {
     },
 
     playView (playState) {
-        const playView = new PlayRenderView(playState);
+        const playView = new PlayScene(playState);
 
         const playerView = new SoldierView(playState.player);
         const soldierView = new SoldierViewPool(playState.soldiers);

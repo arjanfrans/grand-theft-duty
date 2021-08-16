@@ -4,7 +4,7 @@ import { Player } from "../../core/entities/Player";
 import { SystemUpdateInterface } from "../../engine/system/SystemUpdateInterface";
 import { PauseUpdateSystem } from "../update-system/PauseUpdateSystem";
 import { BulletSystem } from "../../core/BulletSystem";
-import { Match } from "../../core/Match";
+import { MatchSystem } from "../../ecs/systems/MatchSystem";
 import { Engine } from "../../engine/Engine";
 
 /**
@@ -18,7 +18,7 @@ export class PlayState extends AbstractState {
     public showScores: boolean = false;
     private pauseSystem?: PauseUpdateSystem;
 
-    constructor(engine: Engine, match: Match, map: any) {
+    constructor(engine: Engine, match: MatchSystem, map: any) {
         super("play", engine);
 
         this.map = map;

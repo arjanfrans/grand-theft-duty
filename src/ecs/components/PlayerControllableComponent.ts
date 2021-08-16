@@ -1,11 +1,9 @@
-import {ComponentInterface} from "./ComponentInterface";
+import { ComponentInterface } from "./ComponentInterface";
 
 export class PlayerControllableComponent implements ComponentInterface {
-    public static TYPE: string = 'PlayerControllableComponent';
+    public static TYPE: string = "PlayerControllableComponent";
 
-    get type(): string
-    {
+    get type(): string {
         return PlayerControllableComponent.TYPE;
     }
-
 }

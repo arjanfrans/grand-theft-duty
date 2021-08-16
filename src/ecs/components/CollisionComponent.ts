@@ -1,5 +1,5 @@
 export class CollisionComponent {
-    public static TYPE = 'CollisionComponent';
+    public static TYPE = "CollisionComponent";
 
     public isColliding: boolean;
 
@@ -7,8 +7,7 @@ export class CollisionComponent {
         this.isColliding = isColliding;
     }
 
-    get type(): string
-    {
+    get type(): string {
         return CollisionComponent.TYPE;
     }
 }

@@ -1,12 +1,12 @@
-import {PositionComponent} from "../components/PositionComponent";
-import {MovementComponent} from "../components/MovementComponent";
-import {AliveComponent} from "../components/AliveComponent";
-import {Entity} from "../Entity";
-import {BulletComponent} from "../components/BulletComponent";
-import {ObjectPool} from "../../engine/utils/ObjectPool";
-import {BulletFactory} from "../../factory/BulletFactory";
-import {EntityManager} from "../EntityManager";
-import {SystemInterface} from "./SystemInterface";
+import { PositionComponent } from "../components/PositionComponent";
+import { MovementComponent } from "../components/MovementComponent";
+import { AliveComponent } from "../components/AliveComponent";
+import { Entity } from "../entities/Entity";
+import { BulletComponent } from "../components/BulletComponent";
+import { ObjectPool } from "../../engine/utils/ObjectPool";
+import { BulletFactory } from "../../factory/BulletFactory";
+import { EntityManager } from "../entities/EntityManager";
+import { SystemInterface } from "./SystemInterface";
 
 export class BulletSystem implements SystemInterface {
     private em: EntityManager;
@@ -14,7 +14,7 @@ export class BulletSystem implements SystemInterface {
         MovementComponent.TYPE,
         PositionComponent.TYPE,
         AliveComponent.TYPE,
-        BulletComponent.TYPE
+        BulletComponent.TYPE,
     ];
     private bulletPool: ObjectPool<Entity>;
 
@@ -30,17 +30,21 @@ export class BulletSystem implements SystemInterface {
         );
     }
 
-    private getEntities(): Entity[]
-    {
-        return this.em.getEntitiesWithTypes(BulletSystem.REQUIRED_COMPONENTS)
+    private getEntities(): Entity[] {
+        return this.em.getEntitiesWithTypes(BulletSystem.REQUIRED_COMPONENTS);
     }
-
 
     update(delta: number): void {
         for (const entity of this.getEntities()) {
-            const movement = entity.getComponent<MovementComponent>(MovementComponent.TYPE);
-            const alive = entity.getComponent<AliveComponent>(AliveComponent.TYPE);
-            const bullet = entity.getComponent<BulletComponent>(BulletComponent.TYPE);
+            const movement = entity.getComponent<MovementComponent>(
+                MovementComponent.TYPE
+            );
+            const alive = entity.getComponent<AliveComponent>(
+                AliveComponent.TYPE
+            );
+            const bullet = entity.getComponent<BulletComponent>(
+                BulletComponent.TYPE
+            );
 
             if (!alive.isDead) {
                 bullet.traveledDistance += movement.speed * delta;
@@ -74,5 +78,4 @@ export class BulletSystem implements SystemInterface {
     //
     //     return bullet;
     // }
-
 }

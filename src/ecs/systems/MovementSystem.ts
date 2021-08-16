@@ -1,9 +1,9 @@
-import { Entity } from "../Entity";
+import { Entity } from "../entities/Entity";
 import { PositionComponent } from "../components/PositionComponent";
 import { MovementComponent } from "../components/MovementComponent";
 import { AliveComponent } from "../components/AliveComponent";
-import {EntityManager} from "../EntityManager";
-import {SystemInterface} from "./SystemInterface";
+import { EntityManager } from "../entities/EntityManager";
+import { SystemInterface } from "./SystemInterface";
 
 export class MovementSystem implements SystemInterface {
     public static REQUIRED_COMPONENTS = [
@@ -17,16 +17,21 @@ export class MovementSystem implements SystemInterface {
         this.em = em;
     }
 
-    private getEntities(): Entity[]
-    {
+    private getEntities(): Entity[] {
         return this.em.getEntitiesWithTypes(MovementSystem.REQUIRED_COMPONENTS);
     }
 
     update(delta: number): void {
         for (const entity of this.getEntities()) {
-            const movement = entity.getComponent<MovementComponent>(MovementComponent.TYPE);
-            const position = entity.getComponent<PositionComponent>(PositionComponent.TYPE);
-            const alive = entity.getComponent<AliveComponent>(AliveComponent.TYPE);
+            const movement = entity.getComponent<MovementComponent>(
+                MovementComponent.TYPE
+            );
+            const position = entity.getComponent<PositionComponent>(
+                PositionComponent.TYPE
+            );
+            const alive = entity.getComponent<AliveComponent>(
+                AliveComponent.TYPE
+            );
 
             if (!alive.isDead) {
                 movement.angle += movement.angularVelocity * delta;

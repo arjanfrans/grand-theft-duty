@@ -1,8 +1,8 @@
 import { Vector3 } from "three";
-import {ComponentInterface} from "./ComponentInterface";
+import { ComponentInterface } from "./ComponentInterface";
 
 export class PositionComponent implements ComponentInterface {
-    public static TYPE: string = 'PositionComponent';
+    public static TYPE: string = "PositionComponent";
 
     public readonly position: Vector3;
     public readonly previousPosition: Vector3;
@@ -12,13 +12,9 @@ export class PositionComponent implements ComponentInterface {
         this.previousPosition = this.position.clone();
     }
 
-    public respawn(x: number, y: number, z: number): void
-    {
+    public respawn(x: number, y: number, z: number): void {}
 
-    }
-
-    get type(): string
-    {
+    get type(): string {
         return PositionComponent.TYPE;
     }
 }

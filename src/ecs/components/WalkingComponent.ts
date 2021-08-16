@@ -1,10 +1,9 @@
-import {ComponentInterface} from "./ComponentInterface";
+import { ComponentInterface } from "./ComponentInterface";
 
 export class WalkingComponent implements ComponentInterface {
-    public static TYPE: string = 'WalkingComponent';
+    public static TYPE: string = "WalkingComponent";
 
-    get type(): string
-    {
+    get type(): string {
         return WalkingComponent.TYPE;
     }
 }

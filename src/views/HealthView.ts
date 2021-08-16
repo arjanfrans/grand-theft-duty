@@ -1,21 +1,22 @@
-import {Geometry, Matrix4, Mesh, MeshBasicMaterial, PlaneGeometry} from 'three';
-import {View} from '../engine/graphics/View';
-import {SoldierComponent} from "../ecs/components/SoldierComponent";
-import {Entity} from "../ecs/Entity";
+import { Matrix4, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
+import { View } from "../engine/graphics/View";
+import { SoldierComponent } from "../ecs/components/SoldierComponent";
+import { Entity } from "../ecs/entities/Entity";
+import { PlayerQuery } from "../ecs/entities/queries/PlayerQuery";
 
 export class HealthView extends View {
     private player: Entity;
     private _healthScale: number = 1;
 
-    constructor (state) {
+    constructor(state) {
         super();
 
-        this.player = state.getPlayerEntity();
+        this.player = PlayerQuery.getPlayerEntity(state.em);
     }
 
-    init () {
+    init() {
         const material = new MeshBasicMaterial({
-            color: 0xcc0000
+            color: 0xcc0000,
         });
 
         const geometry = new PlaneGeometry(200, 20);
@@ -28,7 +29,7 @@ export class HealthView extends View {
         super.init();
     }
 
-    set healthScale (value) {
+    set healthScale(value) {
         if (value !== this._healthScale) {
             const mesh = this.mesh as Mesh;
 
@@ -49,8 +50,10 @@ export class HealthView extends View {
         }
     }
 
-    update () {
-        const soldierComponent = this.player.getComponent<SoldierComponent>(SoldierComponent.TYPE);
+    update() {
+        const soldierComponent = this.player.getComponent<SoldierComponent>(
+            SoldierComponent.TYPE
+        );
 
         this.healthScale = soldierComponent.health / soldierComponent.maxHealth;
     }

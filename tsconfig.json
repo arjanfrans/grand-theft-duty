@@ -26,7 +26,6 @@
     "src"
   ],
   "exclude": [
-    "src/client",
-    "src/core/Match.ts"
+    "src/client"
   ]
 }

@@ -1,3 +1,5 @@
+import {Vector3} from "three";
+
 class WorldMap {
     constructor (layers, width, height, depth, blockWidth, blockHeight, blockDepth) {
         this.width = width;
@@ -60,7 +62,7 @@ class WorldMap {
         const respawn = this.respawns[Math.round(Math.random() * (this.respawns.length - 1))];
         const position = this.indexToPosition(respawn.position);
 
-        return position;
+        return new Vector3(position.x, position.y, position.z);
     }
 
     blockAtIndex (index) {

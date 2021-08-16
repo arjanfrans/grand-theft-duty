@@ -1,16 +1,17 @@
-import {MovementComponent} from "../components/MovementComponent";
-import {AliveComponent} from "../components/AliveComponent";
-import {PlayerControllableComponent} from "../components/PlayerControllableComponent";
-import {WeaponComponent} from "../components/WeaponComponent";
-import {Keys, LetterKeys} from "../../engine/input/Keys";
-import {Keyboard} from "../../engine/input/Keyboard";
+import { MovementComponent } from "../components/MovementComponent";
+import { AliveComponent } from "../components/AliveComponent";
+import { PlayerControllableComponent } from "../components/PlayerControllableComponent";
+import { WeaponComponent } from "../components/WeaponComponent";
+import { Keys, LetterKeys } from "../../engine/input/Keys";
+import { Keyboard } from "../../engine/input/Keyboard";
 import Gamepad from "../../engine/input/Gamepad";
-import {InputSourceInterface} from "../../engine/input/InputSourceInterface";
-import {GamepadInputSource} from "../../engine/input/GamepadInputSource";
-import {KeyboardInputSource} from "../../engine/input/KeyboardInputSource";
-import {SystemInterface} from "./SystemInterface";
-import {EntityManager} from "../EntityManager";
-import {Entity} from "../Entity";
+import { InputSourceInterface } from "../../engine/input/InputSourceInterface";
+import { GamepadInputSource } from "../../engine/input/GamepadInputSource";
+import { KeyboardInputSource } from "../../engine/input/KeyboardInputSource";
+import { SystemInterface } from "./SystemInterface";
+import { EntityManager } from "../entities/EntityManager";
+import { Entity } from "../entities/Entity";
+import { PlayState } from "../../state/PlayState";
 
 export class PlayerControllableSystem implements SystemInterface {
     private keyboard: Keyboard;
@@ -22,9 +23,14 @@ export class PlayerControllableSystem implements SystemInterface {
         WeaponComponent.TYPE,
     ];
     private em: EntityManager;
+    private state: PlayState;
 
-    constructor(em: EntityManager, inputSources: Map<string, InputSourceInterface>) {
-        this.em = em;
+    constructor(
+        state: PlayState,
+        inputSources: Map<string, InputSourceInterface>
+    ) {
+        this.state = state;
+        this.em = state.em;
 
         const keyboardInputSource = inputSources.get("keyboard");
         const gamepadInputSource = inputSources.get("gamepad") as
@@ -39,15 +45,33 @@ export class PlayerControllableSystem implements SystemInterface {
         this.gamepad = gamepadInputSource?.gamepad;
     }
 
-    private getEntities(): Entity[]
-    {
-        return this.em.getEntitiesWithTypes(PlayerControllableSystem.REQUIRED_COMPONENTS);
+    private getEntities(): Entity[] {
+        return this.em.getEntitiesWithTypes(
+            PlayerControllableSystem.REQUIRED_COMPONENTS
+        );
     }
 
     update(delta: number): void {
         for (const entity of this.getEntities()) {
-            const movement = entity.getComponent<MovementComponent>(MovementComponent.TYPE);
-            const weapon = entity.getComponent<WeaponComponent>(WeaponComponent.TYPE);
+            const movement = entity.getComponent<MovementComponent>(
+                MovementComponent.TYPE
+            );
+            const weapon = entity.getComponent<WeaponComponent>(
+                WeaponComponent.TYPE
+            );
+
+            if (
+                this.keyboard.isDown(LetterKeys.E) ||
+                this.gamepad?.gamepadButtonDownOnce("leftBumper")
+            ) {
+                this.state.showScores = true;
+            } else {
+                this.state.showScores = false;
+            }
+
+            if (this.keyboard.keyboardDownOnce(Keys.ESC)) {
+                this.state.isPaused = !this.state.isPaused;
+            }
 
             if (
                 this.keyboard.isDown(Keys.UP) ||

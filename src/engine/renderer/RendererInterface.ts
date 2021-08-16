@@ -1,4 +1,4 @@
-import {AbstractState} from "../state/AbstractState";
+import { AbstractState } from "../state/AbstractState";
 
 export interface RendererInterface {
     render(interpolationPercentage: number): void;

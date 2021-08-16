@@ -1,12 +1,12 @@
-import {Vector3} from "three";
-import {ComponentInterface} from "./ComponentInterface";
+import { Vector3 } from "three";
+import { ComponentInterface } from "./ComponentInterface";
 
 const DEFAULT_SPEED = 0.2;
 const DEFAULT_ROTATION_SPEED = 0.3;
 const GRAVITY = -0.2;
 
 export class MovementComponent implements ComponentInterface {
-    public static TYPE: string = 'MovementComponent'
+    public static TYPE: string = "MovementComponent";
     public speed: number;
     public readonly velocity: Vector3;
     public angularVelocity: number;
@@ -72,7 +72,6 @@ export class MovementComponent implements ComponentInterface {
         this.angularVelocity = 0;
     }
 
-
     set isRunning(running) {
         if (running) {
             this._isRunning = true;
@@ -103,8 +102,7 @@ export class MovementComponent implements ComponentInterface {
         this.velocity.z = 0;
     }
 
-    get type(): string
-    {
+    get type(): string {
         return MovementComponent.TYPE;
     }
 }

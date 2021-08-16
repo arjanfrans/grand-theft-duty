@@ -1,31 +1,32 @@
-import {Mesh, MeshBasicMaterial, PlaneGeometry} from 'three';
-import {View} from "../engine/graphics/View";
-import {TextureManager} from "../engine/graphics/TextureManager";
-import {TextureFrame} from "../engine/graphics/TextureFrame";
-import {Entity} from "../ecs/Entity";
-import {PlayState} from "../state/PlayState";
-import {WeaponComponent} from "../ecs/components/WeaponComponent";
+import { Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
+import { View } from "../engine/graphics/View";
+import { TextureManager } from "../engine/graphics/TextureManager";
+import { TextureFrame } from "../engine/graphics/TextureFrame";
+import { Entity } from "../ecs/entities/Entity";
+import { PlayState } from "../state/PlayState";
+import { WeaponComponent } from "../ecs/components/WeaponComponent";
+import { PlayerQuery } from "../ecs/entities/queries/PlayerQuery";
 
 export class WeaponView extends View {
     private player: Entity;
     private _weapon?: string = undefined;
     private textureFrame?: TextureFrame = undefined;
 
-    constructor (state: PlayState) {
+    constructor(state: PlayState) {
         super();
 
-        this.player = state.getPlayerEntity();
+        this.player = PlayerQuery.getPlayerEntity(state.em);
     }
 
-    init () {
-        const textureAtlas = TextureManager.getAtlas('ui', true);
+    init() {
+        const textureAtlas = TextureManager.getAtlas("ui", true);
 
         const geometry = new PlaneGeometry(196, 64);
         this.textureFrame = new TextureFrame(textureAtlas, geometry);
 
         const material = new MeshBasicMaterial({
             map: this.textureFrame.texture,
-            transparent: true
+            transparent: true,
         });
 
         this.mesh = new Mesh(geometry, material);
@@ -33,7 +34,7 @@ export class WeaponView extends View {
         super.init();
     }
 
-    set weapon (weapon) {
+    set weapon(weapon) {
         const mesh = this.mesh as Mesh;
 
         if (this._weapon !== weapon) {
@@ -53,8 +54,10 @@ export class WeaponView extends View {
         }
     }
 
-    update () {
-        const weaponComponent = this.player.getComponent<WeaponComponent>(WeaponComponent.TYPE);
+    update() {
+        const weaponComponent = this.player.getComponent<WeaponComponent>(
+            WeaponComponent.TYPE
+        );
 
         if (weaponComponent.currentWeapon) {
             const weapon = weaponComponent.currentWeapon;

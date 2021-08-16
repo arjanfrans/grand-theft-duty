@@ -1,7 +1,7 @@
-import {ComponentInterface} from "./ComponentInterface";
+import { ComponentInterface } from "./ComponentInterface";
 
 export class SoldierComponent implements ComponentInterface {
-    public static TYPE: string = 'SoldierComponent';
+    public static TYPE: string = "SoldierComponent";
 
     // Contains the character killed, and the count
     public readonly kills: Map<SoldierComponent, number> = new Map();
@@ -11,6 +11,13 @@ export class SoldierComponent implements ComponentInterface {
 
     public readonly maxHealth: number = 100;
     public health: number = 100;
+    public teamName: string;
+    public name: string;
+
+    constructor(name: string, teamName: string) {
+        this.name = name;
+        this.teamName = teamName;
+    }
 
     kill() {
         const suicides = this.deaths.get(this);
@@ -42,8 +49,7 @@ export class SoldierComponent implements ComponentInterface {
         return total;
     }
 
-    get type(): string
-    {
+    get type(): string {
         return SoldierComponent.TYPE;
     }
 }

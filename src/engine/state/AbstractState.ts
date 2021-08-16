@@ -1,5 +1,5 @@
 import { Engine } from "../Engine";
-import {SceneInterface} from "../renderer/render-view/SceneInterface";
+import { SceneInterface } from "../renderer/render-view/SceneInterface";
 
 export abstract class AbstractState {
     protected readonly name: string;

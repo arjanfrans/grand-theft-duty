@@ -1,18 +1,22 @@
-import {PositionComponent} from "../ecs/components/PositionComponent";
-import {MovementComponent} from "../ecs/components/MovementComponent";
-import {Polygon} from "../engine/math/Polygon";
-import {SatResult} from "../engine/physics/SatResult";
-import {SeparatingAxisTheorem} from "../engine/physics/SeparatingAxisTheorem";
+import { PositionComponent } from "../ecs/components/PositionComponent";
+import { MovementComponent } from "../ecs/components/MovementComponent";
+import { Polygon } from "../engine/math/Polygon";
+import { SatResult } from "../engine/physics/SatResult";
+import { SeparatingAxisTheorem } from "../engine/physics/SeparatingAxisTheorem";
 
-const rayPositions = function (position: PositionComponent, movement: MovementComponent, rayDistance: number) {
+const rayPositions = function (
+    position: PositionComponent,
+    movement: MovementComponent,
+    rayDistance: number
+) {
     let x = position.position.x;
     let y = position.position.y;
     const angle = movement.angle;
 
     const reverse = movement.reverse ? -1 : 1;
 
-    const start = {x: 0, y: 0, z: 0};
-    const end = {x: 0, y: 0, z: 0};
+    const start = { x: 0, y: 0, z: 0 };
+    const end = { x: 0, y: 0, z: 0 };
 
     if (Math.abs(movement.velocity.x) > 0) {
         x -= rayDistance * Math.cos(angle) * reverse;
@@ -50,19 +54,25 @@ const rayPositions = function (position: PositionComponent, movement: MovementCo
 
 const cachedSatResult = new SatResult();
 
-
 export class CollisionChecker {
     public static sat: SeparatingAxisTheorem = new SeparatingAxisTheorem();
 
-    private constructor() {
-    }
+    private constructor() {}
 
-    public static wallCollision (map, position: PositionComponent, movement: MovementComponent, body: Polygon, onCollision) {
+    public static wallCollision(
+        map,
+        position: PositionComponent,
+        movement: MovementComponent,
+        body: Polygon,
+        onCollision
+    ) {
         const rayDistance = (map.blockWidth + map.blockHeight) / 2;
         const ray = rayPositions(position, movement, rayDistance);
 
         if (!(ray.min.x === ray.max.x && ray.min.y === ray.max.y)) {
-            const blocks = map.blocksBetweenPositions(ray.min, ray.max, ['wall']);
+            const blocks = map.blocksBetweenPositions(ray.min, ray.max, [
+                "wall",
+            ]);
 
             for (const block of blocks) {
                 if (block.collidable) {
@@ -71,7 +81,13 @@ export class CollisionChecker {
                     for (const polygon of polygons) {
                         cachedSatResult.clear();
 
-                        if (CollisionChecker.sat.testPolygonInPolygon(body, polygon, cachedSatResult)) {
+                        if (
+                            CollisionChecker.sat.testPolygonInPolygon(
+                                body,
+                                polygon,
+                                cachedSatResult
+                            )
+                        ) {
                             onCollision(cachedSatResult);
                         }
                     }
@@ -80,11 +96,18 @@ export class CollisionChecker {
         }
     }
 
-    public static floorCollision (map, position: PositionComponent, movement: MovementComponent, body: Polygon, delta: number, onCollision) {
+    public static floorCollision(
+        map,
+        position: PositionComponent,
+        movement: MovementComponent,
+        body: Polygon,
+        delta: number,
+        onCollision
+    ) {
         const nextEntityPosition = {
-            x: position.position.x + (movement.velocity.x * delta),
-            y: position.position.y + (movement.velocity.y * delta),
-            z: position.position.z + (movement.velocity.z * delta)
+            x: position.position.x + movement.velocity.x * delta,
+            y: position.position.y + movement.velocity.y * delta,
+            z: position.position.z + movement.velocity.z * delta,
         };
 
         const floorBlockIndex = map.positionToIndex(position.position);

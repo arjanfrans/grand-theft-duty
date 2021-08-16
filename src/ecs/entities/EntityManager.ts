@@ -1,25 +1,28 @@
-import {Entity} from "./Entity";
+import { Entity } from "./Entity";
 
 export class EntityManager {
     public readonly entities: Set<Entity> = new Set();
-    public readonly entityComponents: Map<string, Set<Entity>> = new Map<string, Set<Entity>>()
+    public readonly entityComponents: Map<string, Set<Entity>> = new Map<
+        string,
+        Set<Entity>
+    >();
 
-    public addEntity(entity: Entity): void
-    {
+    public addEntity(entity: Entity): void {
         if (!this.entities.has(entity)) {
             this.entities.add(entity);
 
             const types = entity.getComponentTypes();
 
-            for(const type of types) {
-                const entitiesWithComponentTypes = this.entityComponents.get(type);
+            for (const type of types) {
+                const entitiesWithComponentTypes =
+                    this.entityComponents.get(type);
 
                 if (!entitiesWithComponentTypes) {
-                    this.entityComponents.set(type, new Set([entity]))
+                    this.entityComponents.set(type, new Set([entity]));
                 } else {
                     entitiesWithComponentTypes.add(entity);
 
-                    this.entityComponents.set(type, entitiesWithComponentTypes)
+                    this.entityComponents.set(type, entitiesWithComponentTypes);
                 }
             }
         }
@@ -43,9 +46,8 @@ export class EntityManager {
         return entities ? Array.from(entities.values()) : [];
     }
 
-    public removeEntity(entity: Entity): void
-    {
-        this.entities.delete(entity)
+    public removeEntity(entity: Entity): void {
+        this.entities.delete(entity);
 
         for (const type of entity.getComponentTypes()) {
             const entities = this.entityComponents.get(type);

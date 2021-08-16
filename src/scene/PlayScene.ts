@@ -7,7 +7,7 @@ import {
 } from "three";
 import { ThreeScene } from "../engine/renderer/render-view/ThreeScene";
 import { Dimension } from "../engine/math/Dimension";
-import {PlayState} from "../state/PlayState";
+import { PlayState } from "../state/PlayState";
 
 export class PlayScene extends ThreeScene {
     public camera?: PerspectiveCamera = undefined;

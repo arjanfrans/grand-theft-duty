@@ -1,7 +1,7 @@
 import { PlayState } from "./PlayState";
 import { ViewBuilder } from "./ViewBuilder";
 
-import { Match } from "../../core/Match";
+import { MatchSystem } from "../../ecs/systems/MatchSystem";
 import { PlayerInput } from "./input/PlayerInput";
 import { UiInput } from "./input/UiInput";
 import { Player } from "../../core/entities/Player";
@@ -78,7 +78,7 @@ function createViews(state) {
 const PlayBuilder = {
     createSingleplayer(engine, options) {
         const map = MapParser.parse(AssetManager.getMap(options.map));
-        const match = new Match(options.teams);
+        const match = new MatchSystem(options.teams);
         const state = new PlayState(engine, match, map);
 
         const soldiers = createCpuSoldiers(state, options.cpuCount);

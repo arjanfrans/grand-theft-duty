@@ -1,19 +1,18 @@
-import {Object3D, Vector3} from "three";
+import { Object3D, Vector3 } from "three";
 
 export abstract class View {
     public mesh?: Object3D = undefined;
-    protected initialPosition?: Vector3 = undefined
+    protected initialPosition?: Vector3 = undefined;
     protected _initialized: boolean = false;
 
-    public getMesh(): Object3D
-    {
+    public getMesh(): Object3D {
         return this.mesh as Object3D;
     }
 
-    init () {
+    init() {
         if (this.initialPosition) {
             if (!this.mesh) {
-                throw new Error('No mesh initialized!');
+                throw new Error("No mesh initialized!");
             }
 
             this.mesh.position.x = this.initialPosition.x;
@@ -24,7 +23,7 @@ export abstract class View {
         this._initialized = true;
     }
 
-    set position ({ x, y, z }: {x?: number, y?: number, z?: number}) {
+    set position({ x, y, z }: { x?: number; y?: number; z?: number }) {
         if (this.mesh && this._initialized) {
             if (x) {
                 this.mesh.position.x = x;

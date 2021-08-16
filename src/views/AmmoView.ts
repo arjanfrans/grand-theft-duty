@@ -1,45 +1,47 @@
-import { Mesh, MeshBasicMaterial, Object3D, PlaneGeometry } from 'three';
-import {View} from "../engine/graphics/View";
-import {TextureManager} from "../engine/graphics/TextureManager";
-import {TextureFrame} from "../engine/graphics/TextureFrame";
-import {TextView} from "../engine/graphics/TextView";
-import {Entity} from "../ecs/Entity";
-import {WeaponComponent} from "../ecs/components/WeaponComponent";
+import { Mesh, MeshBasicMaterial, Object3D, PlaneGeometry } from "three";
+import { View } from "../engine/graphics/View";
+import { TextureManager } from "../engine/graphics/TextureManager";
+import { TextureFrame } from "../engine/graphics/TextureFrame";
+import { TextView } from "../engine/graphics/TextView";
+import { Entity } from "../ecs/entities/Entity";
+import { WeaponComponent } from "../ecs/components/WeaponComponent";
+import { PlayState } from "../state/PlayState";
+import { PlayerQuery } from "../ecs/entities/queries/PlayerQuery";
 
 class AmmoView extends View {
     private player: Entity;
     private magazineText?: TextView = undefined;
     private ammoText?: TextView = undefined;
 
-    constructor (state) {
+    constructor(state: PlayState) {
         super();
 
-        this.player = state.getPlayerEntity();
+        this.player = PlayerQuery.getPlayerEntity(state.em);
     }
 
-    init () {
+    init() {
         this.mesh = new Object3D();
 
-        const textureAtlas = TextureManager.getAtlas('ui', false);
+        const textureAtlas = TextureManager.getAtlas("ui", false);
 
         const material = new MeshBasicMaterial({
             map: textureAtlas.texture,
-            transparent: true
+            transparent: true,
         });
 
-        const ammoSize = textureAtlas.getFrameSize('ammo');
+        const ammoSize = textureAtlas.getFrameSize("ammo");
 
         const geometry = new PlaneGeometry(ammoSize.width, ammoSize.height);
         const textureFrame = new TextureFrame(textureAtlas, geometry);
 
-        textureFrame.frame = 'ammo'
+        textureFrame.frame = "ammo";
 
         const ammoMesh = new Mesh(geometry, material);
 
         ammoMesh.scale.set(0.5, 0.5, 1);
 
-        const magazineText = new TextView('0', {
-            color: 0xffffcc
+        const magazineText = new TextView("0", {
+            color: 0xffffcc,
         });
 
         magazineText.init();
@@ -48,13 +50,13 @@ class AmmoView extends View {
 
         magazineText.position = {
             x: ammoSize.width + 10,
-            y: -magazineText.height
+            y: -magazineText.height,
         };
 
         this.getMesh().add(magazineText.getMesh());
 
-        const ammoText = new TextView('0', {
-            color: 0xffff99
+        const ammoText = new TextView("0", {
+            color: 0xffff99,
         });
 
         ammoText.init();
@@ -63,7 +65,7 @@ class AmmoView extends View {
 
         ammoText.position = {
             x: ammoSize.width + 64,
-            y: -ammoText.height
+            y: -ammoText.height,
         };
 
         ammoMesh.position.x = 20;
@@ -79,26 +81,28 @@ class AmmoView extends View {
         super.init();
     }
 
-    set ammo (ammo) {
+    set ammo(ammo) {
         const ammoText = this.ammoText as TextView;
 
         if (ammo === null) {
-            ammoText.text = '-';
+            ammoText.text = "-";
         }
         ammoText.text = ammo;
     }
 
-    set magazine (magazine) {
+    set magazine(magazine) {
         const magazineText = this.magazineText as TextView;
 
         if (magazine === null) {
-            magazineText.text = '-';
+            magazineText.text = "-";
         }
         magazineText.text = magazine;
     }
 
-    update () {
-        const weaponComponent = this.player.getComponent<WeaponComponent>(WeaponComponent.TYPE);
+    update() {
+        const weaponComponent = this.player.getComponent<WeaponComponent>(
+            WeaponComponent.TYPE
+        );
 
         if (weaponComponent.currentWeapon) {
             const weapon = weaponComponent.currentWeapon;

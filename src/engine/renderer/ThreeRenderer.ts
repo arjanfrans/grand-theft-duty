@@ -1,7 +1,7 @@
 import { WebGLRenderer } from "three";
 import { RendererInterface } from "./RendererInterface";
 import { ThreeScene } from "./render-view/ThreeScene";
-import {AbstractState} from "../state/AbstractState";
+import { AbstractState } from "../state/AbstractState";
 
 export interface ThreeRendererOptions {
     /**

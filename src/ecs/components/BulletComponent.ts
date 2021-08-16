@@ -1,8 +1,8 @@
-import {ComponentInterface} from "./ComponentInterface";
-import {SoldierComponent} from "./SoldierComponent";
+import { ComponentInterface } from "./ComponentInterface";
+import { SoldierComponent } from "./SoldierComponent";
 
 export class BulletComponent implements ComponentInterface {
-    public static TYPE = 'BulletComponent';
+    public static TYPE = "BulletComponent";
 
     public firedBy?: SoldierComponent;
     public firedByWeapon?: any;
@@ -17,9 +17,7 @@ export class BulletComponent implements ComponentInterface {
         return 0;
     }
 
-    get type(): string
-    {
+    get type(): string {
         return BulletComponent.TYPE;
     }
-
 }

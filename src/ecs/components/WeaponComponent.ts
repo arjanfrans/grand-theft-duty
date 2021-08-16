@@ -1,13 +1,13 @@
-import {ComponentInterface} from "./ComponentInterface";
+import { ComponentInterface } from "./ComponentInterface";
 import Gun from "../../core/weapons/Gun";
 
 enum Direction {
-    UP= "UP",
-    DOWN= "DOWN"
+    UP = "UP",
+    DOWN = "DOWN",
 }
 
 export class WeaponComponent implements ComponentInterface {
-    public static TYPE: string = 'WeaponComponent';
+    public static TYPE: string = "WeaponComponent";
 
     public weapons: Gun[] = [];
     public currentWeaponIndex: number = 0;
@@ -41,14 +41,12 @@ export class WeaponComponent implements ComponentInterface {
         }
     }
 
-    public scrollWeaponsDown(): void
-    {
-        this.scrollWeapons(Direction.DOWN)
+    public scrollWeaponsDown(): void {
+        this.scrollWeapons(Direction.DOWN);
     }
 
-    public scrollWeaponsUp(): void
-    {
-        this.scrollWeapons(Direction.UP)
+    public scrollWeaponsUp(): void {
+        this.scrollWeapons(Direction.UP);
     }
 
     private scrollWeapons(direction: Direction) {
@@ -71,8 +69,7 @@ export class WeaponComponent implements ComponentInterface {
         this.currentWeapon = this.weapons[this.currentWeaponIndex];
     }
 
-    get type(): string
-    {
+    get type(): string {
         return WeaponComponent.TYPE;
     }
 }

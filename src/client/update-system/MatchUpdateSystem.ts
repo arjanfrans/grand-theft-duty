@@ -1,10 +1,10 @@
 import { SystemUpdateInterface } from "../../engine/system/SystemUpdateInterface";
 import { PlayState } from "../play/PlayState";
-import { Match } from "../../core/Match";
+import { MatchSystem } from "../../ecs/systems/MatchSystem";
 
 export class MatchUpdateSystem implements SystemUpdateInterface {
     private map: any;
-    private match: Match;
+    private match: MatchSystem;
 
     constructor(state: PlayState) {
         this.map = state.map;

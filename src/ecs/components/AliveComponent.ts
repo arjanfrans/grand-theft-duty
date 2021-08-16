@@ -1,7 +1,7 @@
 import { ComponentInterface } from "./ComponentInterface";
 
 export class AliveComponent implements ComponentInterface {
-    public static TYPE = 'AliveComponent';
+    public static TYPE = "AliveComponent";
 
     public isDead: boolean;
 

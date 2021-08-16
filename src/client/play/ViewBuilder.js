@@ -4,7 +4,7 @@ import {StatsScene} from '../../state/StatsScene';
 import AmmoView from '../../views/AmmoView';
 import HealthView from '../../views/HealthView';
 import WeaponView from '../../views/WeaponView';
-import ScoreView from './ui/ScoreView';
+import ScoreView from '../../views/ScoreView';
 
 import BulletSystemView from './views/BulletSystemView';
 import WorldMapView from './views/WorldMapView';

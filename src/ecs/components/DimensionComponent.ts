@@ -1,7 +1,7 @@
-import {ComponentInterface} from "./ComponentInterface";
+import { ComponentInterface } from "./ComponentInterface";
 
 export class DimensionComponent implements ComponentInterface {
-    public static TYPE: string = 'DimensionComponent'
+    public static TYPE: string = "DimensionComponent";
 
     public width: number;
     public height: number;
@@ -21,8 +21,7 @@ export class DimensionComponent implements ComponentInterface {
         return this.height / 2;
     }
 
-    get type(): string
-    {
+    get type(): string {
         return DimensionComponent.TYPE;
     }
 }

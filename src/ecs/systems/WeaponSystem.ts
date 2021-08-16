@@ -1,8 +1,8 @@
-import {Entity} from "../Entity";
-import {WeaponComponent} from "../components/WeaponComponent";
-import {AliveComponent} from "../components/AliveComponent";
-import {EntityManager} from "../EntityManager";
-import {SystemInterface} from "./SystemInterface";
+import { Entity } from "../entities/Entity";
+import { WeaponComponent } from "../components/WeaponComponent";
+import { AliveComponent } from "../components/AliveComponent";
+import { EntityManager } from "../entities/EntityManager";
+import { SystemInterface } from "./SystemInterface";
 
 export class WeaponSystem implements SystemInterface {
     private em: EntityManager;
@@ -15,15 +15,18 @@ export class WeaponSystem implements SystemInterface {
         this.em = em;
     }
 
-    private getEntities(): Entity[]
-    {
+    private getEntities(): Entity[] {
         return this.em.getEntitiesWithTypes(WeaponSystem.REQUIRED_COMPONENTS);
     }
 
     update(delta: number): void {
         for (const entity of this.getEntities()) {
-            const weapon = entity.getComponent<WeaponComponent>(WeaponComponent.TYPE);
-            const alive = entity.getComponent<AliveComponent>(AliveComponent.TYPE);
+            const weapon = entity.getComponent<WeaponComponent>(
+                WeaponComponent.TYPE
+            );
+            const alive = entity.getComponent<AliveComponent>(
+                AliveComponent.TYPE
+            );
 
             if (!alive.isDead) {
                 if (weapon.currentWeapon) {

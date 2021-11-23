@@ -1,21 +1,25 @@
 import MapParser from "./core/maps/MapParser";
 import path from "path";
 import AssetManager from "./engine/AssetManager";
-import { Engine } from "./engine/Engine";
-import { KeyboardInputSource } from "./engine/input/KeyboardInputSource";
-import { GamepadInputSource } from "./engine/input/GamepadInputSource";
-import { PlayState } from "./state/PlayState";
-import { DebugThreeRenderer } from "./engine/renderer/DebugThreeRenderer";
-import { StatsScene } from "./state/StatsScene";
-import ViewContainer from "./engine/graphics/ViewContainer";
-import { HealthView } from "./views/HealthView";
-import { Entity } from "./ecs/entities/Entity";
-import { WeaponView } from "./views/WeaponView";
+import {Engine} from "./engine/Engine";
+import {KeyboardInputSource} from "./engine/input/KeyboardInputSource";
+import {GamepadInputSource} from "./engine/input/GamepadInputSource";
+import {PlayState} from "./state/PlayState";
+import {DebugThreeRenderer} from "./engine/renderer/DebugThreeRenderer";
+import {StatsScene} from "./scene/StatsScene";
+import {ViewContainer} from "./engine/graphics/ViewContainer";
+import {HealthView} from "./views/HealthView";
+import {Entity} from "./ecs/entities/Entity";
+import {WeaponView} from "./views/WeaponView";
 import AmmoView from "./views/AmmoView";
-import { TeamComponent } from "./ecs/components/TeamComponent";
-import { ScoreView } from "./views/ScoreView";
-import { PlayerFactory } from "./factory/PlayerFactory";
-import { SoldierFactory } from "./factory/SoldierFactory";
+import {TeamComponent} from "./ecs/components/TeamComponent";
+import {ScoreView} from "./views/ScoreView";
+import {PlayerFactory} from "./factory/PlayerFactory";
+import {SoldierFactory} from "./factory/SoldierFactory";
+import {PlayScene} from "./scene/PlayScene";
+// import SoldierView from "./client/play/views/SoldierView";
+import {StaticBlocksView} from "./views/StaticBlocksView";
+import {Vector3} from "three";
 
 const ASSET_PATH = path.resolve(__dirname, "../../assets/");
 const ASSET_CONFIG = {
@@ -81,21 +85,50 @@ const ASSET_CONFIG = {
     playState.em.addEntity(teamB);
     playState.em.addEntity(player);
 
-    const statsScene = new StatsScene(playState);
+    const statsScene = new StatsScene();
     const uiViewContainer = new ViewContainer();
     const healthView = new HealthView(playState);
     const weaponView = new WeaponView(playState);
     const ammoView = new AmmoView(playState);
     const scoreView = new ScoreView(playState);
 
-    uiViewContainer.addDynamicView(healthView, { x: 600, y: 540, z: 0 });
-    uiViewContainer.addDynamicView(weaponView, { x: 280, y: 540, z: 0 });
-    uiViewContainer.addDynamicView(ammoView, { x: 10, y: 540, z: 0 });
-    uiViewContainer.addDynamicView(scoreView, { x: 100, y: 100, z: 0 });
+    uiViewContainer.addDynamicView(healthView, new Vector3(600, 540, 0 ));
+    uiViewContainer.addDynamicView(weaponView, new Vector3(280, 540, 0 ));
+    uiViewContainer.addDynamicView(ammoView, new Vector3(10, 540, 0 ));
+    uiViewContainer.addDynamicView(scoreView, new Vector3(100,100, 0 ));
 
     statsScene.addViewContainer("stats", uiViewContainer);
     statsScene.currentViewContainer = "stats";
 
+    const playScene = new PlayScene(playState);
+
+    playScene.cameraFollowView = healthView
+
+    // const playerView = new SoldierView(playState);
+    // const soldierView = new SoldierViewPool(playState.soldiers);
+    // const bulletSystemView = new BulletSystemView(playState.bulletSystem);
+    // const worldMapView = new WorldMapView(playState.map);
+
+    const viewContainer = new ViewContainer();
+
+    // viewContainer.addDynamicView(playerView);
+    // viewContainer.addDynamicView(soldierView);
+    // viewContainer.addDynamicView(bulletSystemView);
+    // viewContainer.addDynamicView(worldMapView);
+
+    playScene.addViewContainer('main', viewContainer);
+    playScene.currentViewContainer = 'main';
+
+    // Camera follow
+    // playView._cameraFollowView = playerView;
+
+    // return playView;
+
+    const wallsView = new StaticBlocksView(map, 'tiles');
+
+    viewContainer.addStaticView(wallsView)
+
+    playState.addScene(playScene);
     playState.addScene(statsScene);
 
     engine.addState("play", playState);

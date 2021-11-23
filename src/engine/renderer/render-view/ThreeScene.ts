@@ -12,7 +12,7 @@ export abstract class ThreeScene implements SceneInterface {
     public _currentViewContainer?: any;
     private _scene?: Scene;
 
-    protected constructor() {
+    constructor() {
         this.width = 0;
         this.height = 0;
 

@@ -1,6 +1,6 @@
 import ViewContainer from '../../engine/graphics/ViewContainer';
 
-import {StatsScene} from '../../state/StatsScene';
+import {StatsScene} from '../../scene/StatsScene';
 import AmmoView from '../../views/AmmoView';
 import HealthView from '../../views/HealthView';
 import WeaponView from '../../views/WeaponView';

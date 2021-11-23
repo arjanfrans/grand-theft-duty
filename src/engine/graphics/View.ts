@@ -1,13 +1,9 @@
-import { Object3D, Vector3 } from "three";
+import {Mesh, Object3D, Vector3} from "three";
 
 export abstract class View {
     public mesh?: Object3D = undefined;
     protected initialPosition?: Vector3 = undefined;
     protected _initialized: boolean = false;
-
-    public getMesh(): Object3D {
-        return this.mesh as Object3D;
-    }
 
     init() {
         if (this.initialPosition) {
@@ -39,5 +35,10 @@ export abstract class View {
         } else {
             this.initialPosition = new Vector3(x, y, z);
         }
+    }
+
+    public getMesh(): Object3D|Mesh
+    {
+        return this.mesh as Object3D|Mesh;
     }
 }

@@ -1,9 +1,11 @@
 import { DoubleSide, Matrix4, Mesh, MeshLambertMaterial, Geometry, PlaneGeometry } from 'three';
-import {View} from "../../../../engine/graphics/View";
-import {TextureManager} from "../../../../engine/graphics/TextureManager";
+import {View} from "../engine/graphics/View";
+import {TextureManager} from "../engine/graphics/TextureManager";
+import WorldMap from "../core/maps/WorldMap";
+import TextureAtlas from "../engine/graphics/TextureAtlas";
 
 function wallBlockGeometry (block, textureAtlas) {
-    const geometries = [];
+    const geometries: Geometry[] = [];
 
     if (block.walls.south) {
         const south = textureAtlas.getBounds(block.walls.south);
@@ -95,8 +97,16 @@ function createMergedBlockGeometry (blocks, textureAtlas) {
     return mergedGeometry;
 }
 
-class StaticBlocksView extends View {
-    constructor (map, textureAtlasName) {
+export class StaticBlocksView extends View {
+    private map: WorldMap;
+    private textureAtlasName: string;
+    private blocks: any;
+    private blockWidth: number;
+    private blockHeight: number;
+    private blockDepth: number;
+    private _textureAtlas?: TextureAtlas = undefined;
+
+    constructor (map: WorldMap, textureAtlasName: string) {
         super();
 
         this.map = map;
@@ -108,17 +118,22 @@ class StaticBlocksView extends View {
         this.blockDepth = map.blockDepth;
     }
 
-    init () {
-        this.textureAtlas = TextureManager.getAtlas(this.textureAtlasName, false);
-        this.geometry = createMergedBlockGeometry(this.blocks, this.textureAtlas);
+    private get textureAtlas(): TextureAtlas
+    {
+        return this._textureAtlas as TextureAtlas;
+    }
 
-        this.material = new MeshLambertMaterial({
+    init () {
+        this._textureAtlas = TextureManager.getAtlas(this.textureAtlasName, false);
+        const geometry = createMergedBlockGeometry(this.blocks, this.textureAtlas);
+
+        const material = new MeshLambertMaterial({
             map: this.textureAtlas.texture,
             transparent: true,
             side: DoubleSide
         });
 
-        this.mesh = new Mesh(this.geometry, this.material);
+        this.mesh = new Mesh(geometry, material);
 
         // Set the center of the blocks to bottom left (instead of center)
         this.mesh.applyMatrix(new Matrix4().makeTranslation(this.blockWidth / 2, this.blockHeight / 2, this.blockDepth / 2));
@@ -126,5 +141,3 @@ class StaticBlocksView extends View {
         super.init();
     }
 }
-
-export default StaticBlocksView;

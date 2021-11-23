@@ -1,35 +1,43 @@
-import { Object3D } from 'three';
+import {MeshLambertMaterial, Object3D, Vector3} from 'three';
+import {View} from "./View";
 
-class ViewContainer {
+export class ViewContainer {
+    private staticViews: Set<View>;
+    private dynamicViews: Set<View>
+    private _backgroundView?: View = undefined
+    private _width: number;
+    private _height: number;
+    private _initialized: boolean = false;
+    private mesh: Object3D = new Object3D();
+
     constructor () {
         this.staticViews = new Set();
         this.dynamicViews = new Set();
-        this._backgroundView = null;
         this._width = 800;
         this._height = 600;
-
-        this._initialized = false;
     }
 
     init () {
-        this.mesh = new Object3D();
+        const backgroundView = this._backgroundView;
 
-        if (this._backgroundView) {
-            this._backgroundView.init();
-            this._backgroundView.width = this._width;
-            this._backgroundView.height = this._height;
-            this._backgroundView.mesh.renderOrder = -1;
-            this.mesh.add(this._backgroundView.mesh);
+        if (backgroundView) {
+            const mesh = backgroundView.getMesh();
+
+            backgroundView.init();
+            // mesh.width = this._width;
+            // mesh.height = this._height;
+            mesh.renderOrder = -1;
+            this.mesh.add(mesh);
         }
 
         for (const staticView of this.staticViews) {
             staticView.init();
-            this.mesh.add(staticView.mesh);
+            this.mesh.add(staticView.getMesh());
         }
 
         for (const view of this.dynamicViews) {
             view.init();
-            this.mesh.add(view.mesh);
+            this.mesh.add(view.getMesh());
         }
 
         this._initialized = true;
@@ -38,11 +46,12 @@ class ViewContainer {
     set backgroundView (backgroundView) {
         if (backgroundView !== this._backgroundView) {
             if (this._initialized) {
-                this._backgroundView.init();
-                this._backgroundView.width = this._width;
-                this._backgroundView.height = this._height;
-                this._backgroundView.mesh.renderOrder = -1;
-                this.mesh.remove(this._backgroundView);
+                backgroundView.init();
+                backgroundView.width = this._width;
+                backgroundView.height = this._height;
+                backgroundView.mesh.renderOrder = -1;
+
+                this.mesh.remove(backgroundView.getMesh());
             }
 
             this._backgroundView = backgroundView;
@@ -57,11 +66,11 @@ class ViewContainer {
         }
 
         for (const view of this.dynamicViews) {
-            view.update(delta);
+            // view.update(delta);
         }
     }
 
-    addStaticView (staticView, position) {
+    addStaticView (staticView, position?: Vector3) {
         if (this._initialized) {
             staticView.init();
             this.mesh.add(staticView.mesh);
@@ -74,7 +83,7 @@ class ViewContainer {
         this.staticViews.add(staticView);
     }
 
-    addDynamicView (dynamicView, position) {
+    addDynamicView (dynamicView, position?: Vector3) {
         if (this._initialized) {
             dynamicView.init();
             this.mesh.add(dynamicView.mesh);
@@ -101,7 +110,7 @@ class ViewContainer {
         this._width = width;
 
         if (this._backgroundView) {
-            this._backgroundView.width = this._width;
+            // this._backgroundView.width = this._width;
         }
 
         this.mesh.scale.x = scale;
@@ -115,7 +124,7 @@ class ViewContainer {
         this._height = height;
 
         if (this._backgroundView) {
-            this._backgroundView.height = this._height;
+            // this._backgroundView.height = this._height;
         }
 
         this.mesh.scale.y = scale;
@@ -123,5 +132,3 @@ class ViewContainer {
         this.mesh.updateMatrixWorld(true)
     }
 }
-
-export default ViewContainer;

@@ -8,10 +8,10 @@ import {
 import { ThreeScene } from "../engine/renderer/render-view/ThreeScene";
 import { Dimension } from "../engine/math/Dimension";
 import { PlayState } from "../state/PlayState";
+import {View} from "../engine/graphics/View";
 
 export class PlayScene extends ThreeScene {
     public camera?: PerspectiveCamera = undefined;
-    private state: PlayState;
     private map: any;
     private _cameraFollowView?: any;
     private _cameraFollowLight?: SpotLight;
@@ -19,12 +19,15 @@ export class PlayScene extends ThreeScene {
     constructor(state: PlayState) {
         super();
 
-        this.state = state;
-        this.map = this.state.map;
+        this.map = state.map;
     }
 
-    get cameraFollowView(): any {
-        return this._cameraFollowView as any;
+    get cameraFollowView(): View {
+        return this._cameraFollowView as View;
+    }
+
+    set cameraFollowView(view: View) {
+        this._cameraFollowView = view;
     }
 
     get cameraFollowLight(): SpotLight {
@@ -57,12 +60,14 @@ export class PlayScene extends ThreeScene {
 
         this.scene.add(ambientLight);
 
-        this._cameraFollowLight = new SpotLight(0xfffffff, 2, 800);
-        this._cameraFollowLight.angle = 135 * (Math.PI / 180);
-        this._cameraFollowLight.exponent = 10;
-        this._cameraFollowLight.target = this._cameraFollowView.mesh;
+        if (this._cameraFollowView) {
+            this._cameraFollowLight = new SpotLight(0xfffffff, 2, 800);
+            this._cameraFollowLight.angle = 135 * (Math.PI / 180);
+            this._cameraFollowLight.exponent = 10;
+            this._cameraFollowLight.target = this._cameraFollowView.getMesh();
 
-        this.scene.add(this._cameraFollowLight);
+            this.scene.add(this._cameraFollowLight);
+        }
 
         this._initialized = true;
     }
@@ -71,17 +76,17 @@ export class PlayScene extends ThreeScene {
         super.update(delta);
 
         if (this.cameraFollowView) {
-            this.getCamera().position.setX(this.cameraFollowView.position.x);
-            this.getCamera().position.setY(this.cameraFollowView.position.y);
+            this.getCamera().position.setX(this.cameraFollowView.getMesh().position.x);
+            this.getCamera().position.setY(this.cameraFollowView.getMesh().position.y);
 
             this.cameraFollowLight.position.setX(
-                this.cameraFollowView.position.x
+                this.cameraFollowView.getMesh().position.x
             );
             this.cameraFollowLight.position.setY(
-                this.cameraFollowView.position.y
+                this.cameraFollowView.getMesh().position.y
             );
             this.cameraFollowLight.position.setZ(
-                this.cameraFollowView.position.z + 400
+                this.cameraFollowView.getMesh().position.z + 400
             );
         }
     }
